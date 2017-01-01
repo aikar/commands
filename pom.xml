@@ -14,10 +14,6 @@
 
     <repositories>
         <repository>
-            <id>aikar</id>
-            <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
-        </repository>
-        <repository>
             <id>paper</id>
             <url>https://repo.destroystokyo.com/repository/maven-public/</url>
         </repository>
@@ -67,7 +63,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.10-R0.1-SNAPSHOT</version>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
