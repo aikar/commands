@@ -1,10 +1,11 @@
+*.iml
 *.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+*/.idea
 .idea/
-*.iml
 
 # Package Files #
 *.jar
