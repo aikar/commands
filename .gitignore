@@ -1,13 +1,11 @@
+*.iml
 *.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-.idea/workspace.xml
-.idea/dictionaries
-.idea/misc.xml
-.idea/libraries
-
+*/.idea
+.idea/
 
 # Package Files #
 *.jar
