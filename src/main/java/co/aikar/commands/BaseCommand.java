@@ -97,7 +97,7 @@ public abstract class BaseCommand extends Command {
                     registerSubcommand(method, "__default");
                     foundDefault = true;
                 } else {
-                    SneakyThrow.sneaky(new InvalidConfigurationException("Multiple @Default commands"));
+                    CommandUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands"));
                 }
             }
             if (sub != null) {

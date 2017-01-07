@@ -852,4 +852,14 @@ public final class CommandUtil {
     public static boolean isValidName(String name) {
         return name != null && !name.isEmpty() && CommandPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
+
+    public static void sneaky(Throwable t)
+    {
+        throw CommandUtil.<RuntimeException>superSneaky( t );
+    }
+
+    private static <T extends Throwable> T superSneaky(Throwable t) throws T
+    {
+        throw (T) t;
+    }
 }

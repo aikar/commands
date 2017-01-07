@@ -103,7 +103,7 @@ public class RegisteredCommand {
                     }
                 }
             } else {
-                SneakyThrow.sneaky(new InvalidConfigurationException(
+                CommandUtil.sneaky(new InvalidConfigurationException(
                     "Parameter " + type.getSimpleName() + " of " + this.command + " has no resolver"
                 ));
             }

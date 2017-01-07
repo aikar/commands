@@ -30,7 +30,6 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.CommandLog;
 import co.aikar.commands.CommandPatterns;
-import co.aikar.commands.SneakyThrow;
 import co.aikar.commands.CommandUtil;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -112,7 +111,7 @@ public final class CommandContexts {
                 }
                 return CommandPatterns.getPattern(split.value()).split(val);
             } else if (!c.isLastArg()) {
-                SneakyThrow.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
+                CommandUtil.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
             }
 
             String[] result = c.getArgs().toArray(new String[c.getArgs().size()]);
