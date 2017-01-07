@@ -37,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
 import java.lang.reflect.Method;
@@ -52,17 +53,25 @@ import java.util.stream.Collectors;
 public abstract class BaseCommand extends Command {
 
     private final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    private final Plugin plugin;
 
+    @SuppressWarnings("WeakerAccess")
     protected String execLabel;
+    @SuppressWarnings("WeakerAccess")
     protected String execSubcommand;
+    @SuppressWarnings("WeakerAccess")
     protected String[] origArgs;
 
-    public BaseCommand() {
-        this(null);
+    public BaseCommand(Plugin plugin) {
+        this(plugin, null);
     }
 
-    public BaseCommand(String cmd) {
+    public BaseCommand(Plugin plugin, String cmd) {
         super(cmd);
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin can not be null");
+        }
+        this.plugin = plugin;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
         if (cmd == null) {
@@ -131,7 +140,7 @@ public abstract class BaseCommand extends Command {
     }
 
     private boolean register(String name, Command cmd) {
-        return Bukkit.getServer().getCommandMap().register(name.toLowerCase(), "empire", cmd);
+        return Bukkit.getServer().getCommandMap().register(name.toLowerCase(), plugin.getName().toLowerCase(), cmd);
     }
 
     private void registerSubcommand(Method method, String subCommand) {
@@ -403,6 +412,11 @@ public abstract class BaseCommand extends Command {
 
     public void showSyntax(CommandSender sender,  RegisteredCommand cmd) {
         CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntax);
+    }
+
+
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     /*@Data*/ /*@AllArgsConstructor*/

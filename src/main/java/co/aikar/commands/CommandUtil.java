@@ -881,8 +881,8 @@ public final class CommandUtil {
         }
         if (hasTimings > 0) {
             final String name = "Command: " + command;
-            return hasTimings == 1 ? new AikarTiming(cmd, name): new SpigotTiming(cmd, name);
+            return hasTimings == 1 ? new AikarTiming(cmd, name): new SpigotTiming(name);
         }
-        return new EmptyTiming(cmd);
+        return new EmptyTiming();
     }
 }

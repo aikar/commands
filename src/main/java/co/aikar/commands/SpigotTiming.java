@@ -25,11 +25,11 @@ package co.aikar.commands;
 
 import org.spigotmc.CustomTimingsHandler;
 
-public class SpigotTiming extends CommandTiming {
+public class SpigotTiming implements CommandTiming {
     private final CustomTimingsHandler timing;
 
-    SpigotTiming(BaseCommand command, String name) {
-        super(command);
+    SpigotTiming(String name) {
+        super();
         this.timing = new CustomTimingsHandler(name);
     }
 

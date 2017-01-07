@@ -23,9 +23,23 @@
 
 package co.aikar.commands;
 
-public class AikarTiming extends SpigotTiming {// TODO: Extend CommandTiming once migrated to v2
-    public AikarTiming(BaseCommand command, String name) {
-        super(command, name);
-        // TODO: Take plugin from BaseCommand and use Timing.of(plugin, name) and use Timing class
+import co.aikar.timings.Timing;
+import co.aikar.timings.Timings;
+
+public class AikarTiming implements CommandTiming {
+    private final Timing timing;
+    AikarTiming(BaseCommand command, String name) {
+        super();
+        this.timing = Timings.of(command.getPlugin(), name);
+    }
+
+    @Override
+    public void startTiming() {
+        timing.startTiming();
+    }
+
+    @Override
+    public void stopTiming() {
+        timing.stopTiming();
     }
 }

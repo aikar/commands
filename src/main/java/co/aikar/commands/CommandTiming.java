@@ -23,14 +23,7 @@
 
 package co.aikar.commands;
 
-public abstract class CommandTiming {
-    private final BaseCommand command;
-
-    CommandTiming(BaseCommand command) {
-
-        this.command = command;
-    }
-
-    public abstract void startTiming();
-    public abstract void stopTiming();
+public interface CommandTiming {
+    void startTiming();
+    void stopTiming();
 }

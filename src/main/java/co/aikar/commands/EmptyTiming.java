@@ -23,9 +23,9 @@
 
 package co.aikar.commands;
 
-public class EmptyTiming extends CommandTiming {
-    EmptyTiming(BaseCommand command) {
-        super(command);
+public class EmptyTiming implements CommandTiming {
+    EmptyTiming() {
+        super();
     }
 
     @Override
