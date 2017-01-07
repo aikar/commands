@@ -11,10 +11,10 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.logging.Logger;
 
-public final class Log {
+public final class CommandLog {
     public static Logger LOGGER;
 
-    private Log() {}
+    private CommandLog() {}
 
 
     public static void log(String message) {

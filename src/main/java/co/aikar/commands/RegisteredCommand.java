@@ -170,7 +170,7 @@ public class RegisteredCommand {
                 }
             } else {
                 CommandUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
-                Log.exception("Exception in command: " + command + " " + CommandUtil.join(args), e.getCause());
+                CommandLog.exception("Exception in command: " + command + " " + CommandUtil.join(args), e.getCause());
             }
         }
     }

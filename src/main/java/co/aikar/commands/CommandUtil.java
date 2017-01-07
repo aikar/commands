@@ -7,6 +7,7 @@
 
 package co.aikar.commands;
 
+import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ import java.text.Normalizer.Form;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -74,7 +76,7 @@ public final class CommandUtil {
         message = color(message);
         if (player == null) {
             for (String msg : Patterns.NEWLINE.split(message)) {
-                Log.info(msg);
+                CommandLog.info(msg);
             }
         } else {
             for (String msg : Patterns.NEWLINE.split(message)) {
@@ -123,15 +125,15 @@ public final class CommandUtil {
         return (new StringBuilder(64))
                 .append(loc.getWorld().getName())
                 .append(':')
-                .append(NumUtil.precision(loc.getX(), 4))
+                .append(precision(loc.getX(), 4))
                 .append(':')
-                .append(NumUtil.precision(loc.getY(), 4))
+                .append(precision(loc.getY(), 4))
                 .append(':')
-                .append(NumUtil.precision(loc.getZ(), 4))
+                .append(precision(loc.getZ(), 4))
                 .append(':')
-                .append(NumUtil.precision(loc.getPitch(), 4))
+                .append(precision(loc.getPitch(), 4))
                 .append(':')
-                .append(NumUtil.precision(loc.getYaw(), 4))
+                .append(precision(loc.getYaw(), 4))
                 .toString();
     }
 
@@ -148,9 +150,9 @@ public final class CommandUtil {
                 .append(':')
                 .append(loc.getBlockZ())
                 .append(':')
-                .append(NumUtil.precision(loc.getPitch(), 4))
+                .append(precision(loc.getPitch(), 4))
                 .append(':')
-                .append(NumUtil.precision(loc.getYaw(), 4))
+                .append(precision(loc.getYaw(), 4))
                 .toString();
     }
 
@@ -606,9 +608,9 @@ public final class CommandUtil {
     }
     @NotNull public static Location getRandLoc(Location loc, int xRadius, int yRadius, int zRadius) {
         Location newLoc = loc.clone();
-        newLoc.setX(NumUtil.rand(loc.getX()-xRadius, loc.getX()+xRadius));
-        newLoc.setY(NumUtil.rand(loc.getY()-yRadius, loc.getY()+yRadius));
-        newLoc.setZ(NumUtil.rand(loc.getZ()-zRadius, loc.getZ()+zRadius));
+        newLoc.setX(rand(loc.getX()-xRadius, loc.getX()+xRadius));
+        newLoc.setY(rand(loc.getY()-yRadius, loc.getY()+yRadius));
+        newLoc.setZ(rand(loc.getZ()-zRadius, loc.getZ()+zRadius));
         return newLoc;
     }
 
@@ -680,5 +682,158 @@ public final class CommandUtil {
         }
 
         return list;
+    }
+
+    public static int rand(int min, int max) {
+        return min + RANDOM.nextInt(max - min + 1);
+    }
+
+    /**
+     * Calculate random between 2 points, excluding a center
+     * ex: Util.rand(-12, -6, 6, 12) would not return -5 to 5
+     * @param min1
+     * @param max1
+     * @param min2
+     * @param max2
+     * @return
+     */
+    public static int rand(int min1, int max1, int min2, int max2) {
+        return randBool() ? rand(min1, max1) : rand(min2, max2);
+    }
+
+    public static double rand(double min, double max) {
+        return RANDOM.nextDouble() * (max - min) + min;
+    }
+
+    public static boolean isNumber(String str) {
+        return StringUtils.isNumeric(str);
+    }
+
+    public static String intToRoman(int integer) {
+        if (integer == 1) {
+            return "I";
+        }
+        if (integer == 2) {
+            return "II";
+        }
+        if (integer == 3) {
+            return "III";
+        }
+        if (integer == 4) {
+            return "IV";
+        }
+        if (integer == 5) {
+            return "V";
+        }
+        if (integer == 6) {
+            return "VI";
+        }
+        if (integer == 7) {
+            return "VII";
+        }
+        if (integer == 8) {
+            return "VIII";
+        }
+        if (integer == 9) {
+            return "IX";
+        }
+        if (integer == 10) {
+            return "X";
+        }
+        return null;
+    }
+
+    public static boolean isInteger(String string) {
+        if (!Patterns.INTEGER.matcher(string).matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isFloat(String string) {
+        try {
+            Float.parseFloat(string);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isDouble(String string) {
+        try {
+            Double.parseDouble(string);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isBetween(float num, double min, double max) {
+        if (num >= min && num <= max){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static double precision(double x, int p) {
+        double pow = Math.pow(10, p);
+        return Math.round(x * pow) / pow;
+    }
+
+    public static Player findPlayerSmart(CommandSender requester, String origname) {
+        String name = replace(origname, ":confirm", "");
+        if (name.length() < 3) {
+            requester.sendMessage("§cUsername too short, must be at least three characters");
+            return null;
+        }
+        if (!isValidName(name)) {
+            requester.sendMessage("§c'" + name + "' is not a valid username");
+            return null;
+        }
+
+        List<Player> matches = Bukkit.getServer().matchPlayer(name);
+        List<Player> confirmList = new ArrayList<>();
+
+        // Remove confirmList players from smart matching.
+        Iterator<Player> iter = matches.iterator();
+        while (iter.hasNext()) {
+            Player player = iter.next();
+            if (requester instanceof Player && !((Player) requester).canSee(player)) {
+                if (requester.hasPermission("command.seevanish")) {
+                    if (!origname.endsWith(":confirm")) {
+                        confirmList.add(player);
+                        iter.remove();
+                    }
+                } else {
+                    iter.remove();
+                }
+            }
+        }
+
+        if (matches.size() > 1 || confirmList.size() > 1) {
+            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
+            return null;
+        }
+
+        if (matches.isEmpty()) {
+            if (confirmList.isEmpty()) {
+                requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
+                return null;
+            } else {
+                Player player = Iterables.getOnlyElement(confirmList);
+                sendMsg(requester,
+                        "&cWarning: " + player.getDisplayName() + "&c is confirmList. Do not blow their cover!\n" +
+                                "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
+                                "&bEx: &e/g " + player.getName() + ":confirm");
+                return null;
+            }
+        }
+
+        return matches.get(0);
+    }
+
+    public static boolean isValidName(String name) {
+        return name != null && !name.isEmpty() && Patterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 }

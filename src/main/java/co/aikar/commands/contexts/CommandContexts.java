@@ -12,10 +12,9 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Values;
-import co.aikar.commands.Log;
+import co.aikar.commands.CommandLog;
 import co.aikar.commands.Patterns;
 import co.aikar.commands.SneakyThrow;
-import co.aikar.commands.UserUtil;
 import co.aikar.commands.CommandUtil;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
@@ -107,7 +106,7 @@ public final class CommandContexts {
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();
-            Player player = UserUtil.findPlayerSmart(c.getSender(), playercheck);
+            Player player = CommandUtil.findPlayerSmart(c.getSender(), playercheck);
             if (player == null) {
                 CommandUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
                 throw new InvalidCommandArgument(false);
@@ -171,7 +170,7 @@ public final class CommandContexts {
             }
         } while ((type = type.getSuperclass()) != null);
 
-        Log.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
+        CommandLog.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
         return null;
     }
     private static boolean isValidItem(ItemStack item) {
