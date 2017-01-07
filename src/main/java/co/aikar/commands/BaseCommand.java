@@ -189,15 +189,15 @@ public abstract class BaseCommand extends Command {
             return true;
         }
         commandLabel = commandLabel.toLowerCase();
-        if (preCommand(sender, commandLabel, args)) {
-            return true;
-        }
 
         execSubcommand = null;
         execLabel = commandLabel;
         origArgs = args;
 
         if (args.length == 0) {
+            if (preCommand(sender, commandLabel, args)) {
+                return true;
+            }
             onDefault(sender, commandLabel);
             return true;
         }
@@ -206,6 +206,9 @@ public abstract class BaseCommand extends Command {
         if (cmd != null) {
             execSubcommand = cmd.getCheckSub();
             final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
+            if (preCommand(sender, commandLabel, execargs)) {
+                return true;
+            }
             executeCommand(sender, execargs, cmd.cmd);
             return true;
         }
