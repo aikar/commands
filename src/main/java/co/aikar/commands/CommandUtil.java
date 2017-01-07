@@ -75,11 +75,11 @@ public final class CommandUtil {
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         if (player == null) {
-            for (String msg : Patterns.NEWLINE.split(message)) {
+            for (String msg : CommandPatterns.NEWLINE.split(message)) {
                 CommandLog.info(msg);
             }
         } else {
-            for (String msg : Patterns.NEWLINE.split(message)) {
+            for (String msg : CommandPatterns.NEWLINE.split(message)) {
                 player.sendMessage(msg);
             }
         }
@@ -92,7 +92,7 @@ public final class CommandUtil {
         if (storedLoc == null) {
             return null;
         }
-        String[] args = Patterns.COLON.split(storedLoc);
+        String[] args = CommandPatterns.COLON.split(storedLoc);
         if (args.length >= 4 || (args.length == 3 && forcedWorld != null)) {
             String world = forcedWorld != null ? forcedWorld.getName() : args[0];
             int i = args.length == 3 ? 0 : 1;
@@ -106,7 +106,7 @@ public final class CommandUtil {
             }
             return loc;
         } else if (args.length == 2) {
-            String[] args2 = Patterns.COMMA.split(args[1]);
+            String[] args2 = CommandPatterns.COMMA.split(args[1]);
             if (args2.length == 3) {
                 String world = forcedWorld != null ? forcedWorld.getName() : args[0];
                 double x = Double.parseDouble(args2[0]);
@@ -285,7 +285,7 @@ public final class CommandUtil {
         if (str == null) {
             return null;
         }
-        return Patterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase()).replaceAll("");
+        return CommandPatterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase()).replaceAll("");
     }
 
     public static double round(double x, int scale) {
@@ -379,7 +379,7 @@ public final class CommandUtil {
      * @return
      */
     public static String replace(String string, String pattern, String repl) {
-        return replace(string, Patterns.getPattern(Pattern.quote(pattern)), repl);
+        return replace(string, CommandPatterns.getPattern(Pattern.quote(pattern)), repl);
     }
 
     /**
@@ -390,7 +390,7 @@ public final class CommandUtil {
      * @return
      */
     public static String replacePattern(String string, String pattern, String repl) {
-        return replace(string, Patterns.getPattern(pattern), repl);
+        return replace(string, CommandPatterns.getPattern(pattern), repl);
     }
     /**
      * Pure Regex Pattern matching and replacement, no escaping
@@ -411,7 +411,7 @@ public final class CommandUtil {
      * @return
      */
     public static String replacePatternMatch(String string, String pattern, String repl) {
-        return replacePatternMatch(string, Patterns.getPattern(pattern), repl);
+        return replacePatternMatch(string, CommandPatterns.getPattern(pattern), repl);
     }
 
     public static String replaceStrings(String string, String... replacements) {
@@ -512,7 +512,7 @@ public final class CommandUtil {
         if (s == null) {
             return null;
         }
-        return Patterns.NON_PRINTABLE_CHARACTERS.matcher(Normalizer.normalize(s, Form.NFD)).replaceAll("");
+        return CommandPatterns.NON_PRINTABLE_CHARACTERS.matcher(Normalizer.normalize(s, Form.NFD)).replaceAll("");
     }
 
     public static int indexOf(String arg, String[] split) {
@@ -744,7 +744,7 @@ public final class CommandUtil {
     }
 
     public static boolean isInteger(String string) {
-        if (!Patterns.INTEGER.matcher(string).matches()) {
+        if (!CommandPatterns.INTEGER.matcher(string).matches()) {
             return false;
         }
         return true;
@@ -834,6 +834,6 @@ public final class CommandUtil {
     }
 
     public static boolean isValidName(String name) {
-        return name != null && !name.isEmpty() && Patterns.VALID_NAME_PATTERN.matcher(name).matches();
+        return name != null && !name.isEmpty() && CommandPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 }

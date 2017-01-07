@@ -26,14 +26,14 @@ public final class CommandCompletions {
         if (completion == null) {
             return ImmutableList.of();
         }
-        String[] complete = Patterns.COLON.split(completion, 2);
+        String[] complete = CommandPatterns.COLON.split(completion, 2);
 
         switch (complete[0]) {
             case "@range":
                 if (complete.length == 1) {
                     return ImmutableList.of();
                 }
-                final String[] ranges = Patterns.DASH.split(complete[1]);
+                final String[] ranges = CommandPatterns.DASH.split(complete[1]);
                 int start;
                 int end;
                 if (ranges.length != 2) {
@@ -52,7 +52,7 @@ public final class CommandCompletions {
                                               .map(entityType -> CommandUtil.simplifyString(entityType.getName()));
                 return normal.collect(Collectors.toList());
             default:
-                return Lists.newArrayList(Patterns.PIPE.split(completion));
+                return Lists.newArrayList(CommandPatterns.PIPE.split(completion));
         }
     }
 }

@@ -132,7 +132,7 @@ public class RegisteredCommand {
                         if (values != null) {
                             String arg = args.get(0);
 
-                            final String[] split = Patterns.PIPE.split(values.value());
+                            final String[] split = CommandPatterns.PIPE.split(values.value());
                             Set<String> possible = Sets.newHashSet();
                             for (String s : split) {
                                 List<String> check = CommandCompletions.of(sender, s, arg);

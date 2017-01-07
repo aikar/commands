@@ -23,19 +23,19 @@ public final class CommandLog {
 
 
     public static void info(String message) {
-        for (String s : Patterns.NEWLINE.split(message)) {
+        for (String s : CommandPatterns.NEWLINE.split(message)) {
             LOGGER.info(s);
         }
     }
 
     public static void warn(String message) {
-        for (String s : Patterns.NEWLINE.split(message)) {
+        for (String s : CommandPatterns.NEWLINE.split(message)) {
             LOGGER.warning(s);
         }
     }
 
     public static void severe(String message) {
-        for (String s : Patterns.NEWLINE.split(message)) {
+        for (String s : CommandPatterns.NEWLINE.split(message)) {
             LOGGER.severe(s);
         }
     }

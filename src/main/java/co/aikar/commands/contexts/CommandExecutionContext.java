@@ -11,7 +11,7 @@ import co.aikar.commands.RegisteredCommand;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.Patterns;
+import co.aikar.commands.CommandPatterns;
 import co.aikar.commands.CommandUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -42,8 +42,8 @@ import java.util.Map;
         Flags flags = param.getAnnotation(Flags.class);
         if (flags != null) {
             this.flags = Maps.newHashMap();
-            for (String s : Patterns.COMMA.split(flags.value())) {
-                String[] v = Patterns.EQUALS.split(s, 2);
+            for (String s : CommandPatterns.COMMA.split(flags.value())) {
+                String[] v = CommandPatterns.EQUALS.split(s, 2);
                 this.flags.put(v[0], v.length > 1 ? v[1] : null);
             }
         } else {

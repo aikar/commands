@@ -13,7 +13,7 @@ import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.CommandLog;
-import co.aikar.commands.Patterns;
+import co.aikar.commands.CommandPatterns;
 import co.aikar.commands.SneakyThrow;
 import co.aikar.commands.CommandUtil;
 import com.google.common.collect.Maps;
@@ -94,7 +94,7 @@ public final class CommandContexts {
                 if (val.isEmpty()) {
                     throw new InvalidCommandArgument();
                 }
-                return Patterns.getPattern(split.value()).split(val);
+                return CommandPatterns.getPattern(split.value()).split(val);
             } else if (!c.isLastArg()) {
                 SneakyThrow.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
             }

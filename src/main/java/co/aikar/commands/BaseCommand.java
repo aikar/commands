@@ -53,7 +53,7 @@ public abstract class BaseCommand extends Command {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
             } else {
-                cmd = Patterns.PIPE.split(rootCmdAlias.value())[0];
+                cmd = CommandPatterns.PIPE.split(rootCmdAlias.value())[0];
             }
             cmd = cmd.toLowerCase();
             setName(cmd);
@@ -103,7 +103,7 @@ public abstract class BaseCommand extends Command {
 
         if (rootCmdAlias != null) {
             List<String> cmdList = new ArrayList<>();
-            Collections.addAll(cmdList, Patterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
+            Collections.addAll(cmdList, CommandPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
                register(cmdAlias, new ForwardingCommand(this));
@@ -119,18 +119,18 @@ public abstract class BaseCommand extends Command {
 
     private void registerSubcommand(Method method, String subCommand) {
         subCommand = subCommand.toLowerCase();
-        final String[] subCommandParts = Patterns.SPACE.split(subCommand);
+        final String[] subCommandParts = CommandPatterns.SPACE.split(subCommand);
         // Must run getSubcommandPossibility BEFORE we rewrite it just after this.
         List<String> cmdList = getSubCommandPossibilityList(subCommandParts);
 
         // Strip pipes off for auto complete addition
         for (int i = 0; i < subCommandParts.length; i++) {
-            subCommandParts[i] = Patterns.PIPE.split(subCommandParts[i])[0];
+            subCommandParts[i] = CommandPatterns.PIPE.split(subCommandParts[i])[0];
         }
         String prefSubCommand = StringUtils.join(subCommandParts, " ");
         final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
 
-        final String[] aliasNames = cmdAlias != null ? Patterns.PIPE.split(cmdAlias.value().toLowerCase()) : null;
+        final String[] aliasNames = cmdAlias != null ? CommandPatterns.PIPE.split(cmdAlias.value().toLowerCase()) : null;
         String cmdName = aliasNames != null ? aliasNames[0] : getLabel() + " ";
         RegisteredCommand cmd = new RegisteredCommand(this, cmdName, method, prefSubCommand);
 
@@ -164,7 +164,7 @@ public abstract class BaseCommand extends Command {
             ArrayList<String> newList = new ArrayList<>();
 
             if (i < subCommandParts.length) {
-                for (String s1 : Patterns.PIPE.split(subCommandParts[i])) {
+                for (String s1 : CommandPatterns.PIPE.split(subCommandParts[i])) {
                     if (current != null) {
                         newList.addAll(current.stream().map(s -> s + " " + s1).collect(Collectors.toList()));
                     } else {
@@ -298,7 +298,7 @@ public abstract class BaseCommand extends Command {
                 }
                 String prefCommand = value.prefSubCommand;
 
-                final String[] psplit = Patterns.SPACE.split(prefCommand);
+                final String[] psplit = CommandPatterns.SPACE.split(prefCommand);
                 cmds.add(psplit[args.length - 1]);
             }
         }
@@ -325,7 +325,7 @@ public abstract class BaseCommand extends Command {
             return args.length < 2 ? super.tabComplete(sender, commandLabel, args) : ImmutableList.of();
         }
 
-        String[] completions = Patterns.SPACE.split(cmd.complete.value());
+        String[] completions = CommandPatterns.SPACE.split(cmd.complete.value());
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
