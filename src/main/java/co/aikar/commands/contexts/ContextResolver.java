@@ -23,6 +23,7 @@
 
 package co.aikar.commands.contexts;
 
+import co.aikar.commands.CommandExecutionContext;
 import co.aikar.commands.InvalidCommandArgument;
 
 @FunctionalInterface

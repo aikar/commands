@@ -30,8 +30,6 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
-import co.aikar.commands.contexts.CommandContexts;
-import co.aikar.commands.contexts.CommandExecutionContext;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
@@ -49,7 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RegisteredCommand {
+class RegisteredCommand {
     public final BaseCommand scope;
     public final String command;
     public final Method method;

@@ -27,7 +27,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.util.logging.Logger;
 
-public final class CommandLog {
+final class CommandLog {
     public static Logger LOGGER;
 
     private CommandLog() {}

@@ -23,7 +23,7 @@
 
 package co.aikar.commands;
 
-public class EmptyTiming implements CommandTiming {
+class EmptyTiming implements CommandTiming {
     EmptyTiming() {
         super();
     }

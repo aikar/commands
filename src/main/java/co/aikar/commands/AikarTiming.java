@@ -26,7 +26,7 @@ package co.aikar.commands;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 
-public class AikarTiming implements CommandTiming {
+class AikarTiming implements CommandTiming {
     private final Timing timing;
     AikarTiming(BaseCommand command, String name) {
         super();

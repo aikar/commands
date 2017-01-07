@@ -25,7 +25,7 @@ package co.aikar.commands;
 
 import org.spigotmc.CustomTimingsHandler;
 
-public class SpigotTiming implements CommandTiming {
+class SpigotTiming implements CommandTiming {
     private final CustomTimingsHandler timing;
 
     SpigotTiming(String name) {

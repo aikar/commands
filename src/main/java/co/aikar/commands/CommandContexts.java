@@ -21,16 +21,15 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts;
+package co.aikar.commands;
 
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Values;
-import co.aikar.commands.CommandLog;
-import co.aikar.commands.CommandPatterns;
-import co.aikar.commands.CommandUtil;
+import co.aikar.commands.contexts.ContextResolver;
+import co.aikar.commands.contexts.OnlinePlayer;
+import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -44,7 +43,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public final class CommandContexts {
+final class CommandContexts {
     private static final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
 
     private CommandContexts() {}

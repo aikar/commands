@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
-public final class CommandUtil {
+final class CommandUtil {
 
     public static final Random RANDOM = new Random();
 

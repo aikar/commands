@@ -23,7 +23,7 @@
 
 package co.aikar.commands;
 
-public interface CommandTiming {
+interface CommandTiming {
     void startTiming();
     void stopTiming();
 }

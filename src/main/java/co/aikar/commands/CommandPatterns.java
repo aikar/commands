@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
-public final class CommandPatterns {
+final class CommandPatterns {
     public static final Pattern COMMA = Pattern.compile(",");
     public static final Pattern NEWLINE = Pattern.compile("\n");
     public static final Pattern DASH = Pattern.compile("-");

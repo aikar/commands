@@ -21,14 +21,13 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts;
+package co.aikar.commands;
 
-import co.aikar.commands.RegisteredCommand;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.CommandPatterns;
-import co.aikar.commands.CommandUtil;
+import co.aikar.commands.contexts.ContextResolver;
+import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.bukkit.command.CommandSender;
