@@ -43,7 +43,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-final class CommandContexts {
+public final class CommandContexts {
     private static final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
 
     private CommandContexts() {}
