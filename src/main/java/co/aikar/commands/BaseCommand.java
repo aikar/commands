@@ -75,6 +75,7 @@ public abstract class BaseCommand extends Command {
             setName(cmd);
             setLabel(cmd);
         }
+
         this.description = cmd + " commands";
         this.usageMessage = "/" + cmd;
 
@@ -277,7 +278,9 @@ public abstract class BaseCommand extends Command {
     private static void executeCommand(CommandSender sender, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(sender)) {
             List<String> sargs = Lists.newArrayList(args);
+            cmd.timing.startTiming();
             cmd.invoke(sender, sargs);
+            cmd.timing.stopTiming();
         } else {
             CommandUtil.sendMsg(sender, "&cI'm sorry, but you do not have permission to perform this command.");
         }

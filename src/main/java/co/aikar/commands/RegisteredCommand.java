@@ -62,6 +62,7 @@ public class RegisteredCommand {
     public final CommandCompletion complete;
     public final int nonSenderAwareResolvers;
     public final int optionalResolvers;
+    CommandTiming timing;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -69,6 +70,7 @@ public class RegisteredCommand {
             prefSubCommand = "";
         }
         this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
+        this.timing = CommandUtil.getTiming(scope, command);;
         this.method = method;
         this.prefSubCommand = prefSubCommand;
         this.perm = method.getAnnotation(CommandPermission.class);

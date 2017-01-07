@@ -860,6 +860,29 @@ public final class CommandUtil {
 
     private static <T extends Throwable> T superSneaky(Throwable t) throws T
     {
+        //noinspection ConstantConditions
         throw (T) t;
+    }
+
+    static int hasTimings = -1;
+    public static synchronized CommandTiming getTiming(BaseCommand cmd, String command) {
+        if (hasTimings == -1) {
+            try {
+                Class.forName("co.aikar.timings.Timing");
+                hasTimings = 1;
+            } catch (ClassNotFoundException ignored1) {
+                try {
+                    Class.forName("org.spigotmc.CustomTimingsHandler");
+                    hasTimings = 2;
+                } catch (ClassNotFoundException ignored2) {
+                    hasTimings = 0;
+                }
+            }
+        }
+        if (hasTimings > 0) {
+            final String name = "Command: " + command;
+            return hasTimings == 1 ? new AikarTiming(cmd, name): new SpigotTiming(cmd, name);
+        }
+        return new EmptyTiming(cmd);
     }
 }

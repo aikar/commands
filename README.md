@@ -4,6 +4,10 @@ This is a rough import of my command framework to be a standalone Library. This 
 
 We haven't even decided a name yet!
 
+## Targetted Platforms
+Requires CraftBukkit, Spigot or Paper.
+Sponge maybe in future if we can
+
 ## Purpose
 This is the Framework used on [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
