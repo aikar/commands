@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class RegisteredCommand {
+public class RegisteredCommand {
     public final BaseCommand scope;
     public final String command;
     public final Method method;
