@@ -6,7 +6,8 @@ We haven't even decided a name yet!
 
 ## Targetted Platforms
 Requires CraftBukkit, Spigot or Paper.
-Sponge maybe in future if we can
+
+We have no intentions to support other Servers. If you want on Sponge or something else, you will need to fork and add support for it.
 
 ## Purpose
 This is the Framework used on [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
