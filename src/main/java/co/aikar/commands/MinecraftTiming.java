@@ -26,9 +26,9 @@ package co.aikar.commands;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 
-class AikarTiming implements CommandTiming {
+class MinecraftTiming implements CommandTiming {
     private final Timing timing;
-    AikarTiming(BaseCommand command, String name) {
+    MinecraftTiming(BaseCommand command, String name) {
         super();
         this.timing = Timings.of(command.getPlugin(), name);
     }

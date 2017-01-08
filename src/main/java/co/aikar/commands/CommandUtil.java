@@ -864,25 +864,40 @@ final class CommandUtil {
         throw (T) t;
     }
 
-    static int hasTimings = -1;
+    static TimingType timingProvider;
     public static synchronized CommandTiming getTiming(BaseCommand cmd, String command) {
-        if (hasTimings == -1) {
+        if (timingProvider == null) {
             try {
                 Class.forName("co.aikar.timings.Timing");
-                hasTimings = 1;
+                timingProvider = TimingType.MINECRAFT;
             } catch (ClassNotFoundException ignored1) {
                 try {
                     Class.forName("org.spigotmc.CustomTimingsHandler");
-                    hasTimings = 2;
+                    timingProvider = TimingType.SPIGOT;
                 } catch (ClassNotFoundException ignored2) {
-                    hasTimings = 0;
+                    timingProvider = TimingType.EMPTY;
                 }
             }
         }
-        if (hasTimings > 0) {
-            final String name = "Command: " + command;
-            return hasTimings == 1 ? new AikarTiming(cmd, name): new SpigotTiming(name);
+        return timingProvider.newTiming(cmd, command);
+    }
+    private enum TimingType {
+        SPIGOT() {
+            @Override
+            CommandTiming newTiming(BaseCommand cmd, String command) {
+                return new SpigotTiming(command);
+            }
+        },
+        MINECRAFT() {
+            @Override
+            CommandTiming newTiming(BaseCommand cmd, String command) {
+                return new MinecraftTiming(cmd, command);
+            }
+        },
+        EMPTY();
+
+        CommandTiming newTiming(BaseCommand cmd, String command) {
+            return new EmptyTiming();
         }
-        return new EmptyTiming();
     }
 }
