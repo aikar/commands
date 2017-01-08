@@ -853,14 +853,13 @@ final class CommandUtil {
         return name != null && !name.isEmpty() && CommandPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 
-    public static void sneaky(Throwable t)
-    {
+    public static void sneaky(Throwable t) {
+        //noinspection RedundantTypeArguments
         throw CommandUtil.<RuntimeException>superSneaky( t );
     }
 
-    private static <T extends Throwable> T superSneaky(Throwable t) throws T
-    {
-        //noinspection ConstantConditions
+    private static <T extends Throwable> T superSneaky(Throwable t) throws T {
+        //noinspection ConstantConditions,unchecked
         throw (T) t;
     }
 
