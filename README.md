@@ -1,8 +1,7 @@
-# Aikar Commands
+# Aikar Command Framework (ACF)
 ## WARNING!!! PRE-ALPHA
 This is a rough import of my command framework to be a standalone Library. This project is currently extremely volatile and will receive drastic changes.
 
-We haven't even decided a name yet!
 
 ## Targetted Platforms
 Requires CraftBukkit, Spigot or Paper.
