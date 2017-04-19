@@ -42,6 +42,11 @@ public class BukkitCommandManager implements CommandManager {
     }
 
     @Override
+    public Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    @Override
     public CommandContexts getCommandContexts() {
         if (this.contexts == null) {
             this.contexts = new BukkitCommandContexts();

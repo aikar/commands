@@ -68,7 +68,6 @@ public class RegisteredCommand {
             prefSubCommand = "";
         }
         this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
-        this.timing = CommandUtil.getTiming(scope, command);;
         this.method = method;
         this.prefSubCommand = prefSubCommand;
         this.perm = method.getAnnotation(CommandPermission.class);
@@ -189,6 +188,13 @@ public class RegisteredCommand {
                 CommandLog.exception("Exception in command: " + command + " " + CommandUtil.join(args), e.getCause());
             }
         }
+    }
+
+    CommandTiming getTiming() {
+        if (this.timing == null) {
+            this.timing = CommandUtil.getTiming(scope, command);
+        }
+        return this.timing;
     }
 
     boolean hasPermission(CommandSender check) {

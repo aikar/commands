@@ -34,8 +34,9 @@ class SpigotTiming implements CommandTiming {
     }
 
     @Override
-    public void startTiming() {
+    public CommandTiming startTiming() {
         timing.startTiming();
+        return this;
     }
 
     @Override

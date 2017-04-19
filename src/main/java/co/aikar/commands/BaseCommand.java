@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
+import jdk.nashorn.internal.runtime.Timing;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -54,7 +55,6 @@ import java.util.stream.Collectors;
 public abstract class BaseCommand extends Command {
 
     private final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
-    private final Plugin plugin;
 
     @SuppressWarnings("WeakerAccess")
     protected String execLabel;
@@ -65,16 +65,8 @@ public abstract class BaseCommand extends Command {
     CommandManager manager = null;
     Map<String, Command> registeredCommands = new HashMap<>();
 
-    public BaseCommand(Plugin plugin) {
-        this(plugin, null);
-    }
-
-    public BaseCommand(Plugin plugin, String cmd) {
+    public BaseCommand(String cmd) {
         super(cmd);
-        if (plugin == null) {
-            throw new IllegalArgumentException("Plugin can not be null");
-        }
-        this.plugin = plugin;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
         if (cmd == null) {
@@ -290,9 +282,9 @@ public abstract class BaseCommand extends Command {
     private static void executeCommand(CommandSender sender, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(sender)) {
             List<String> sargs = Lists.newArrayList(args);
-            cmd.timing.startTiming();
-            cmd.invoke(sender, sargs);
-            cmd.timing.stopTiming();
+            try (CommandTiming timing = cmd.getTiming().startTiming()) {
+                cmd.invoke(sender, sargs);
+            }
         } else {
             CommandUtil.sendMsg(sender, "&cI'm sorry, but you do not have permission to perform this command.");
         }
@@ -415,11 +407,6 @@ public abstract class BaseCommand extends Command {
 
     public void showSyntax(CommandSender sender,  RegisteredCommand cmd) {
         CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntax);
-    }
-
-
-    public Plugin getPlugin() {
-        return plugin;
     }
 
     /*@Data*/ /*@AllArgsConstructor*/

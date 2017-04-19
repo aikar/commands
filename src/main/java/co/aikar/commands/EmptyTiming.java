@@ -29,8 +29,8 @@ class EmptyTiming implements CommandTiming {
     }
 
     @Override
-    public final void startTiming() {
-
+    public final CommandTiming startTiming() {
+        return this;
     }
 
     @Override

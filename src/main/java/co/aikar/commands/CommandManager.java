@@ -23,7 +23,11 @@
 
 package co.aikar.commands;
 
+import org.bukkit.plugin.Plugin;
+
 public interface CommandManager {
+
+    Plugin getPlugin();
 
     /**
      * Gets the command contexts manager

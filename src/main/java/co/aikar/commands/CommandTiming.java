@@ -23,7 +23,12 @@
 
 package co.aikar.commands;
 
-interface CommandTiming {
-    void startTiming();
+interface CommandTiming extends AutoCloseable {
+    CommandTiming startTiming();
     void stopTiming();
+
+    @Override
+    default void close() {
+        stopTiming();
+    }
 }

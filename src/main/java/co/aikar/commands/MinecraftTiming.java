@@ -30,12 +30,13 @@ class MinecraftTiming implements CommandTiming {
     private final Timing timing;
     MinecraftTiming(BaseCommand command, String name) {
         super();
-        this.timing = Timings.of(command.getPlugin(), name);
+        this.timing = Timings.of(command.manager.getPlugin(), name);
     }
 
     @Override
-    public void startTiming() {
+    public CommandTiming startTiming() {
         timing.startTiming();
+        return this;
     }
 
     @Override
