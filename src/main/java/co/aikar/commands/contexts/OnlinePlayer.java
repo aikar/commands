@@ -25,7 +25,9 @@ package co.aikar.commands.contexts;
 
 import org.bukkit.entity.Player;
 
-/*@Data*/ public class OnlinePlayer {
+import java.util.Objects;
+
+public class OnlinePlayer {
     public final Player player;
 
     public OnlinePlayer(Player player) {
@@ -36,38 +38,23 @@ import org.bukkit.entity.Player;
         return this.player;
     }
 
+    @Override
     public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof OnlinePlayer)) {
-            return false;
-        }
-        final OnlinePlayer other = (OnlinePlayer) o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        final Object this$player = this.getPlayer();
-        final Object other$player = other.getPlayer();
-        if (this$player == null ? other$player != null : !this$player.equals(other$player)) {
-            return false;
-        }
-        return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OnlinePlayer that = (OnlinePlayer) o;
+        return Objects.equals(player, that.player);
     }
 
+    @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $player = this.getPlayer();
-        result = result * PRIME + ($player == null ? 43 : $player.hashCode());
-        return result;
+        return Objects.hash(player);
     }
 
-    protected boolean canEqual(Object other) {
-        return other instanceof OnlinePlayer;
-    }
-
+    @Override
     public String toString() {
-        return "com.empireminecraft.commands.contexts.OnlinePlayer(player=" + this.getPlayer() + ")";
+        return "OnlinePlayer{" +
+                "player=" + player +
+                '}';
     }
 }

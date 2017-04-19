@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -413,84 +414,31 @@ public abstract class BaseCommand extends Command {
         CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntax);
     }
 
-    /*@Data*/ /*@AllArgsConstructor*/
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;
 
-        public CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {
+        CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {
             this.cmd = cmd;
             this.argIndex = argIndex;
             this.checkSub = checkSub;
         }
 
-        public RegisteredCommand getCmd() {
-            return this.cmd;
-        }
-
-        public int getArgIndex() {
-            return this.argIndex;
-        }
-
-        public String getCheckSub() {
+        String getCheckSub() {
             return this.checkSub;
         }
 
-        public void setCmd(RegisteredCommand cmd) {
-            this.cmd = cmd;
-        }
-
-        public void setArgIndex(int argIndex) {
-            this.argIndex = argIndex;
-        }
-
-        public void setCheckSub(String checkSub) {
-            this.checkSub = checkSub;
-        }
-
+        @Override
         public boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-            if (!(o instanceof CommandSearch)) {
-                return false;
-            }
-            final CommandSearch other = (CommandSearch) o;
-            if (!other.canEqual(this)) {
-                return false;
-            }
-            final Object this$cmd = this.getCmd();
-            final Object other$cmd = other.getCmd();
-            if (this$cmd == null ? other$cmd != null : !this$cmd.equals(other$cmd)) {
-                return false;
-            }
-            if (this.getArgIndex() != other.getArgIndex()) {
-                return false;
-            }
-            final Object this$checkSub = this.getCheckSub();
-            final Object other$checkSub = other.getCheckSub();
-            if (this$checkSub == null ? other$checkSub != null : !this$checkSub.equals(other$checkSub)) {
-                return false;
-            }
-            return true;
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CommandSearch that = (CommandSearch) o;
+            return argIndex == that.argIndex &&
+                    Objects.equals(cmd, that.cmd) &&
+                    Objects.equals(checkSub, that.checkSub);
         }
 
+        @Override
         public int hashCode() {
-            final int PRIME = 59;
-            int result = 1;
-            final Object $cmd = this.getCmd();
-            result = result * PRIME + ($cmd == null ? 43 : $cmd.hashCode());
-            result = result * PRIME + this.getArgIndex();
-            final Object $checkSub = this.getCheckSub();
-            result = result * PRIME + ($checkSub == null ? 43 : $checkSub.hashCode());
-            return result;
-        }
-
-        protected boolean canEqual(Object other) {
-            return other instanceof CommandSearch;
-        }
-
-        public String toString() {
-            return "com.empireminecraft.commands.EmpireCommand.CommandSearch(cmd=" + this.getCmd() + ", argIndex=" + this.getArgIndex() + ", checkSub=" +
-                this.getCheckSub() + ")";
+            return Objects.hash(cmd, argIndex, checkSub);
         }
     }
 }
