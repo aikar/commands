@@ -23,10 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.managers.BukkitCommandManager;
-import co.aikar.commands.managers.CommandManager;
-import co.aikar.commands.managers.PaperCommandManager;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 /**

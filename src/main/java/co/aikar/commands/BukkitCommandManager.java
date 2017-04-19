@@ -21,14 +21,41 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.managers;
+package co.aikar.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 
-public class PaperCommandManager extends BukkitCommandManager {
+import java.util.Map;
 
-    // If we get anything Paper specific
-    public PaperCommandManager(Plugin plugin) {
-        super(plugin);
+public class BukkitCommandManager implements CommandManager {
+
+    @SuppressWarnings("WeakerAccess")
+    protected final Plugin plugin;
+    private CommandContexts contexts;
+
+    public BukkitCommandManager(Plugin plugin) {
+        this.plugin = plugin;
+        this.contexts = new CommandContexts(this);
+    }
+
+    @Override
+    public CommandContexts getCommandContexts() {
+        return contexts;
+    }
+
+    @Override
+    public boolean register(BaseCommand command) {
+        command.manager = this;
+        final String plugin = this.plugin.getName().toLowerCase();
+        boolean allSuccess = true;
+        for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
+            if (!Bukkit.getServer().getCommandMap().register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
+                allSuccess = false;
+            }
+        }
+
+        return allSuccess;
     }
 }

@@ -44,6 +44,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +62,8 @@ public abstract class BaseCommand extends Command {
     protected String execSubcommand;
     @SuppressWarnings("WeakerAccess")
     protected String[] origArgs;
+    CommandManager manager = null;
+    Map<String, Command> registeredCommands = new HashMap<>();
 
     public BaseCommand(Plugin plugin) {
         this(plugin, null);
@@ -139,8 +142,8 @@ public abstract class BaseCommand extends Command {
         register(getName(), this);
     }
 
-    private boolean register(String name, Command cmd) {
-        return Bukkit.getServer().getCommandMap().register(name.toLowerCase(), plugin.getName().toLowerCase(), cmd);
+    private void register(String name, Command cmd) {
+        this.registeredCommands.put(name.toLowerCase(), cmd);
     }
 
     private void registerSubcommand(Method method, String subCommand) {

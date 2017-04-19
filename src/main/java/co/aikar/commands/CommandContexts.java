@@ -32,23 +32,22 @@ import co.aikar.commands.contexts.OnlinePlayer;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Map;
 
-public final class CommandContexts {
-    private static final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
+@SuppressWarnings("WeakerAccess")
+public class CommandContexts {
+    private final CommandManager manager;
+    private final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
 
-    private CommandContexts() {}
-
-    public static void initialize() {
+    CommandContexts(CommandManager manager) {
+        this.manager = manager;
         registerContext(Integer.class, (c) -> {
             try {
                 return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
@@ -118,40 +117,6 @@ public final class CommandContexts {
             return result;
         });
 
-        registerContext(OnlinePlayer.class, (c) -> {
-            final String playercheck = c.popFirstArg();
-            Player player = CommandUtil.findPlayerSmart(c.getSender(), playercheck);
-            if (player == null) {
-                CommandUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
-                throw new InvalidCommandArgument(false);
-            }
-            return new OnlinePlayer(player);
-        });
-        registerSenderAwareContext(World.class, (c) -> {
-            String firstArg = c.getFirstArg();
-            World world = firstArg != null ? Bukkit.getWorld(firstArg) : null;
-            if (world != null) {
-                c.popFirstArg();
-            }
-            if (world == null && c.getSender() instanceof Player) {
-                world = ((Entity) c.getSender()).getWorld();
-            }
-            if (world == null) {
-                throw new InvalidCommandArgument("Invalid World");
-            }
-            return world;
-        });
-        registerSenderAwareContext(CommandSender.class, CommandExecutionContext::getSender);
-        registerSenderAwareContext(Player.class, (c) -> {
-            Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
-            if (player == null && !c.hasAnnotation(Optional.class)) {
-                throw new InvalidCommandArgument("Requires a player to run this command", false);
-            }
-            if (player != null && c.hasFlag("itemheld") && !isValidItem(player.getInventory().getItemInMainHand())) {
-                throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
-            }
-            return player;
-        });
         registerContext(Enum.class, (c) -> {
             final String first = c.popFirstArg();
             Class<? extends Enum<?>> enumCls = (Class<? extends Enum<?>>) c.getParam().getType();
@@ -164,14 +129,14 @@ public final class CommandContexts {
         });
     }
 
-    public static <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T> supplier) {
+    public <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T> supplier) {
         contextMap.put(context, supplier);
     }
-    public static <T> void registerContext(Class<T> context, ContextResolver<T> supplier) {
+    public <T> void registerContext(Class<T> context, ContextResolver<T> supplier) {
         contextMap.put(context, supplier);
     }
 
-    public static ContextResolver<?> getResolver(Class<?> type) {
+    public ContextResolver<?> getResolver(Class<?> type) {
         Class<?> rootType = type;
         do {
             if (type == Object.class) {
@@ -186,8 +151,5 @@ public final class CommandContexts {
 
         CommandLog.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
         return null;
-    }
-    private static boolean isValidItem(ItemStack item) {
-        return item != null && item.getType() != Material.AIR && item.getAmount() > 0;
     }
 }

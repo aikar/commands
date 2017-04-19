@@ -48,18 +48,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RegisteredCommand {
-    public final BaseCommand scope;
+    private final BaseCommand scope;
     public final String command;
-    public final Method method;
-    public final String prefSubCommand;
-    public final Parameter[] parameters;
-    public final ContextResolver<?>[] resolvers;
-    public final String syntax;
+    private final Method method;
+    final String prefSubCommand;
+    final Parameter[] parameters;
+    final ContextResolver<?>[] resolvers;
+    final String syntax;
 
-    public final CommandPermission perm;
-    public final CommandCompletion complete;
-    public final int nonSenderAwareResolvers;
-    public final int optionalResolvers;
+    private final CommandPermission perm;
+    final CommandCompletion complete;
+    final int nonSenderAwareResolvers;
+    final int optionalResolvers;
     CommandTiming timing;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
@@ -83,7 +83,7 @@ public class RegisteredCommand {
         for (int i = 0; i < parameters.length; i++) {
             final Parameter parameter = parameters[i];
             final Class<?> type = parameter.getType();
-            final ContextResolver<?> resolver = CommandContexts.getResolver(type);
+            final ContextResolver<?> resolver = scope.manager.getCommandContexts().getResolver(type);
             if (resolver != null) {
                 resolvers[i] = resolver;
 
@@ -117,7 +117,7 @@ public class RegisteredCommand {
         this.optionalResolvers = optionalResolvers;
     }
 
-    public void invoke(CommandSender sender, List<String> args) {
+    void invoke(CommandSender sender, List<String> args) {
         if (!scope.canExecute(sender, this)) {
             return;
         }
@@ -191,7 +191,7 @@ public class RegisteredCommand {
         }
     }
 
-    public boolean hasPermission(CommandSender check) {
+    boolean hasPermission(CommandSender check) {
         return perm == null || !(check instanceof Player) || check.hasPermission(perm.value());
     }
 }

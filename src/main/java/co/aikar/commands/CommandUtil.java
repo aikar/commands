@@ -34,6 +34,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -880,6 +881,11 @@ final class CommandUtil {
         }
         return timingProvider.newTiming(cmd, command);
     }
+
+    static boolean isValidItem(ItemStack item) {
+        return item != null && item.getType() != Material.AIR && item.getAmount() > 0;
+    }
+
     private enum TimingType {
         SPIGOT() {
             @Override

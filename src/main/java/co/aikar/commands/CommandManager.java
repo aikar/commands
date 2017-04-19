@@ -21,28 +21,21 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.managers;
+package co.aikar.commands;
 
-import co.aikar.commands.BaseCommand;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+public interface CommandManager {
 
-public class BukkitCommandManager implements CommandManager {
+    /**
+     * Gets the command contexts registered
+     * @return Command Contexts
+     */
+    CommandContexts getCommandContexts();
 
-    @SuppressWarnings("WeakerAccess")
-    protected final Plugin plugin;
-
-    public BukkitCommandManager(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
-    public boolean register(BaseCommand command) {
-        return Bukkit.getServer().getCommandMap().register(this.plugin.getDescription().getName(), command);
-    }
-
-    @Override
-    public boolean register(BaseCommand command, String commandName) {
-        return Bukkit.getServer().getCommandMap().register(commandName, this.plugin.getDescription().getName(), command);
-    }
+    /**
+     * Registers a command with ACF
+     *
+     * @param command The command to register
+     * @return boolean
+     */
+    boolean register(BaseCommand command);
 }

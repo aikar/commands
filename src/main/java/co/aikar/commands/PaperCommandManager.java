@@ -21,26 +21,14 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.managers;
+package co.aikar.commands;
 
-import co.aikar.commands.BaseCommand;
+import org.bukkit.plugin.Plugin;
 
-public interface CommandManager {
+public class PaperCommandManager extends BukkitCommandManager {
 
-    /**
-     * Registers a command with ACF
-     *
-     * @param command The command to register
-     * @return boolean
-     */
-    boolean register(BaseCommand command);
-
-    /**
-     * Registers a command with ACF
-     *
-     * @param command The command to register
-     * @param commandName Specific command name to register as
-     * @return boolean
-     */
-    boolean register(BaseCommand command, String commandName);
+    // If we get anything Paper specific
+    public PaperCommandManager(Plugin plugin) {
+        super(plugin);
+    }
 }
