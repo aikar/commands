@@ -29,7 +29,7 @@
 
     <groupId>co.aikar</groupId>
     <artifactId>commands</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
