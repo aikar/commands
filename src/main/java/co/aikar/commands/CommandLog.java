@@ -24,11 +24,12 @@
 package co.aikar.commands;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
 
 final class CommandLog {
-    public static Logger LOGGER;
+    private static final Logger LOGGER = Bukkit.getLogger();
 
     private CommandLog() {}
 
