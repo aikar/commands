@@ -9,6 +9,10 @@ I believe the framework may be usable at this stage. Beta testers welcome
 
 See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
 
+THE API MAY BREAK! We are on:
+ - VERSION `0.1.0-SNAPSHOT`
+
+
 ## Targeted Platforms
 Requires CraftBukkit, Spigot or Paper.
 
