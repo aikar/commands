@@ -23,25 +23,19 @@
 
 package co.aikar.commands;
 
-public interface CommandManager {
+import org.bukkit.entity.EntityType;
 
-    /**
-     * Gets the command contexts manager
-     * @return Command Contexts
-     */
-    CommandContexts getCommandContexts();
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-    /**
-     * Gets the command completions manager
-     * @return
-     */
-    CommandCompletions getCommandCompletions();
+public class BukkitCommandCompletions extends CommandCompletions {
+    BukkitCommandCompletions() {
+        super();
+        registerCompletion("mobs", (sender, completionConfig, input) -> {
+            final Stream<String> normal = Stream.of(EntityType.values())
+                    .map(entityType -> CommandUtil.simplifyString(entityType.getName()));
+            return normal.collect(Collectors.toList());
+        });
+    }
 
-    /**
-     * Registers a command with ACF
-     *
-     * @param command The command to register
-     * @return boolean
-     */
-    boolean register(BaseCommand command);
 }

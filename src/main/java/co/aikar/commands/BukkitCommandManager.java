@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -34,24 +35,36 @@ public class BukkitCommandManager implements CommandManager {
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private CommandContexts contexts;
+    private CommandCompletions completions;
 
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        this.contexts = new CommandContexts(this);
     }
 
     @Override
     public CommandContexts getCommandContexts() {
+        if (this.contexts == null) {
+            this.contexts = new BukkitCommandContexts();
+        }
         return contexts;
+    }
+
+    @Override
+    public CommandCompletions getCommandCompletions() {
+        if (this.completions == null) {
+            this.completions = new BukkitCommandCompletions();
+        }
+        return completions;
     }
 
     @Override
     public boolean register(BaseCommand command) {
         command.manager = this;
         final String plugin = this.plugin.getName().toLowerCase();
+        final CommandMap commandMap = Bukkit.getServer().getCommandMap();
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
-            if (!Bukkit.getServer().getCommandMap().register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
+            if (!commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
                 allSuccess = false;
             }
         }

@@ -33,8 +33,8 @@ import org.bukkit.entity.Player;
 
 public class BukkitCommandContexts extends CommandContexts {
 
-    BukkitCommandContexts(CommandManager manager) {
-        super(manager);
+    BukkitCommandContexts() {
+        super();
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();

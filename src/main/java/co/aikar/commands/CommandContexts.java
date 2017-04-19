@@ -25,29 +25,20 @@ package co.aikar.commands;
 
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Split;
-import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
-import co.aikar.commands.contexts.OnlinePlayer;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandContexts {
-    private final CommandManager manager;
     private final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
 
-    CommandContexts(CommandManager manager) {
-        this.manager = manager;
+    CommandContexts() {
         registerContext(Integer.class, (c) -> {
             try {
                 return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();

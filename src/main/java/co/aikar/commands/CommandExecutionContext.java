@@ -37,7 +37,7 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-/*@Data*/ public class CommandExecutionContext {
+public class CommandExecutionContext {
     private final RegisteredCommand cmd;
     private final Parameter param;
     private final CommandSender sender;

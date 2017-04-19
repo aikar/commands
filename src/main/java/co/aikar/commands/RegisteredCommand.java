@@ -151,7 +151,7 @@ public class RegisteredCommand {
                             final String[] split = CommandPatterns.PIPE.split(values.value());
                             Set<String> possible = Sets.newHashSet();
                             for (String s : split) {
-                                List<String> check = CommandCompletions.of(sender, s, arg);
+                                List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
                                 if (!check.isEmpty()) {
                                     possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
                                 } else {

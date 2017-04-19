@@ -365,7 +365,7 @@ public abstract class BaseCommand extends Command {
         if ("@players".equals(completion)) {
             return super.tabComplete(sender, commandLabel, args);
         }
-        List<String> cmds = CommandCompletions.of(sender, completion, input);
+        List<String> cmds = manager.getCommandCompletions().of(sender, completion, input);
         if (cmds.isEmpty()) {
             cmds = ImmutableList.of(input);
         }

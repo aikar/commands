@@ -28,47 +28,55 @@ import com.google.common.collect.Lists;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 
-public final class CommandCompletions {
-    private CommandCompletions() {}
+@SuppressWarnings("WeakerAccess")
+public class CommandCompletions {
+    private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
-    private static final List<String> EMPTY = ImmutableList.of();
-    public static List<String> of(CommandSender sender,  String completion, String input) {
+    public CommandCompletions() {
+        registerCompletion("range", (sender, completionConfig, input) -> {
+            if (completionConfig == null) {
+                return ImmutableList.of();
+            }
+            final String[] ranges = CommandPatterns.DASH.split(completionConfig);
+            int start;
+            int end;
+            if (ranges.length != 2) {
+                start = 0;
+                end = CommandUtil.parseInt(ranges[0], 0);
+            } else {
+                start = CommandUtil.parseInt(ranges[0], 0);
+                end = CommandUtil.parseInt(ranges[1], 0);
+            }
+            return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
+        });
+        registerCompletion("timeunits", (sender, completionConfig, input) -> ImmutableList.of("hours", "days", "weeks", "months", "minutes"));
+    }
+
+    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler handler) {
+        return this.completionMap.put("@" + id.toLowerCase(), handler);
+    }
+
+    public List<String> of(CommandSender sender, String completion, String input) {
         if (completion == null) {
             return ImmutableList.of();
         }
         String[] complete = CommandPatterns.COLON.split(completion, 2);
 
-        switch (complete[0]) {
-            case "@range":
-                if (complete.length == 1) {
-                    return ImmutableList.of();
-                }
-                final String[] ranges = CommandPatterns.DASH.split(complete[1]);
-                int start;
-                int end;
-                if (ranges.length != 2) {
-                    start = 0;
-                    end = CommandUtil.parseInt(ranges[0], 0);
-                } else {
-                    start = CommandUtil.parseInt(ranges[0], 0);
-                    end = CommandUtil.parseInt(ranges[1], 0);
-                }
-                return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
-            case "@timeunits":
-                return ImmutableList.of("hours", "days", "weeks", "months", "minutes");
-
-            case "@mobs":
-                final Stream<String> normal = Stream.of(EntityType.values())
-                                              .map(entityType -> CommandUtil.simplifyString(entityType.getName()));
-                return normal.collect(Collectors.toList());
-            default:
-                return Lists.newArrayList(CommandPatterns.PIPE.split(completion));
+        CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
+        if (handler != null) {
+            return handler.getCompletions(sender, complete.length == 1 ? null : complete[1], input);
         }
+        return Lists.newArrayList(CommandPatterns.PIPE.split(completion));
+    }
+
+    public interface CommandCompletionHandler {
+        List<String> getCompletions(CommandSender sender, String completionConfig, String input);
     }
 }
