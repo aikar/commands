@@ -65,6 +65,10 @@ public abstract class BaseCommand extends Command {
     CommandManager manager = null;
     Map<String, Command> registeredCommands = new HashMap<>();
 
+    public BaseCommand() {
+        this(null);
+    }
+
     public BaseCommand(String cmd) {
         super(cmd);
         final Class<? extends BaseCommand> self = this.getClass();
