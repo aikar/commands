@@ -43,5 +43,5 @@ public interface CommandManager {
      * @param command The command to register
      * @return boolean
      */
-    boolean register(BaseCommand command);
+    boolean registerCommand(BaseCommand command);
 }
