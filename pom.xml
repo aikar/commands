@@ -35,6 +35,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>aikar</id>
+            <url>http://ci.emc.gs/nexus/content/repositories/aikar-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>aikar</id>
+            <url>http://ci.emc.gs/nexus/content/repositories/aikar-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
     <repositories>
         <repository>
             <id>aikar</id>
