@@ -1,17 +1,18 @@
 # Aikar Command Framework (ACF)
-## WARNING!!! PRE-ALPHA
-This is a rough import of my command framework to be a standalone Library. This project is currently extremely volatile and will receive drastic changes.
-
-
-## Targetted Platforms
-Requires CraftBukkit, Spigot or Paper.
-
-We have no intentions to support other Servers. If you want on Sponge or something else, you will need to fork and add support for it.
-
 ## Purpose
 This is the Framework used on [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
 Many people have wanted to use this framework for themselves, so I am trying to make it general purpose (with help from the community) so that others can use it just as simple as they can [TaskChain](https://taskchain.emc.gs) now.
+
+## Beta Testing
+I believe the framework may be usable at this stage. Beta testers welcome
+
+See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
+
+## Targeted Platforms
+Requires CraftBukkit, Spigot or Paper.
+
+We have no intentions to support other Servers. If you want on Sponge or something else, you will need to fork and add support for it.
 
 ## Example
 ```java
@@ -69,9 +70,15 @@ public class GroupCommand extends co.aikar.commands.BaseCommand {
 
 }
 ```
+## Why does it require Java 8+?
+Get off your dinosaur and get on this rocket ship!
+
+Dinosaurs have been dead for a long time, so get off it before you start to smell.
+
+[Download Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 ## Contributing
-See Issues section. Lots to decide and frame out. 
+See Issues section. 
 
 Join [#aikar on Spigot IRC - irc.spi.gt](https://aikarchat.emc.gs) to discuss. 
 
@@ -81,7 +88,7 @@ Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 ## License
 As with all my other public projects
 
-Commands (c) Daniel Ennis (Aikar) 2016.
+Commands (c) Daniel Ennis (Aikar) 2016-2017.
 
 Commands is licensed [MIT](https://tldrlegal.com/license/mit-license). See [LICENSE](LICENSE)
 
