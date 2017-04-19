@@ -36,7 +36,7 @@ public final class ACF {
      * @param plugin Bukkit Plugin
      * @return Command Manager
      */
-    public CommandManager createManager(Plugin plugin) {
+    public static CommandManager createManager(Plugin plugin) {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             return new PaperCommandManager(plugin);
