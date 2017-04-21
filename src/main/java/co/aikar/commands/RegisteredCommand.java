@@ -146,28 +146,27 @@ public class RegisteredCommand {
                         scope.showSyntax(sender, this);
                         return;
                     }
-                } else {
-                    final Values values = parameter.getAnnotation(Values.class);
-                    if (values != null) {
-                        String arg = args.get(0);
+                }
+                final Values values = parameter.getAnnotation(Values.class);
+                if (values != null) {
+                    String arg = args.get(0);
 
-                        final String[] split = CommandPatterns.PIPE.split(values.value());
-                        Set<String> possible = Sets.newHashSet();
-                        for (String s : split) {
-                            List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
-                            if (!check.isEmpty()) {
-                                possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
-                            } else {
-                                possible.add(s.toLowerCase());
-                            }
-                        }
-
-                        if (!possible.contains(arg.toLowerCase())) {
-                            throw new InvalidCommandArgument("Must be one of: " + CommandUtil.join(possible, ", "));
+                    final String[] split = CommandPatterns.PIPE.split(values.value());
+                    Set<String> possible = Sets.newHashSet();
+                    for (String s : split) {
+                        List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
+                        if (!check.isEmpty()) {
+                            possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
+                        } else {
+                            possible.add(s.toLowerCase());
                         }
                     }
-                    passedArgs.put(parameterName, resolver.getContext(context));
+
+                    if (!possible.contains(arg.toLowerCase())) {
+                        throw new InvalidCommandArgument("Must be one of: " + CommandUtil.join(possible, ", "));
+                    }
                 }
+                passedArgs.put(parameterName, resolver.getContext(context));
             }
 
             method.invoke(scope, passedArgs.values().toArray());
