@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class CommandCompletions {
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
@@ -55,7 +55,7 @@ public class CommandCompletions {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        registerCompletion("timeunits", (sender, completionConfig, input) -> ImmutableList.of("hours", "days", "weeks", "months", "minutes"));
+        registerCompletion("timeunits", (sender, completionConfig, input) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
     }
 
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler handler) {
@@ -66,6 +66,10 @@ public class CommandCompletions {
         if (completion == null) {
             return ImmutableList.of();
         }
+        if (input == null) {
+            input = "";
+        }
+
         String[] complete = CommandPatterns.COLON.split(completion, 2);
 
         CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());

@@ -23,11 +23,21 @@
 
 package co.aikar.commands;
 
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressWarnings("WeakerAccess")
 public class BukkitCommandCompletions extends CommandCompletions {
     BukkitCommandCompletions() {
         super();
@@ -35,6 +45,30 @@ public class BukkitCommandCompletions extends CommandCompletions {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> CommandUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
+        });
+        registerCompletion("worlds", (sender, completionConfig, input) -> (
+                Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()))
+        );
+
+        registerCompletion("players", (sender, completionConfig, input) -> {
+            Validate.notNull(sender, "Sender cannot be null");
+
+            if (input.isEmpty()) {
+                return ImmutableList.of();
+            }
+
+            Player senderPlayer = sender instanceof Player ? (Player) sender : null;
+
+            ArrayList<String> matchedPlayers = new ArrayList<String>();
+            for (Player player : sender.getServer().getOnlinePlayers()) {
+                String name = player.getName();
+                if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, input)) {
+                    matchedPlayers.add(name);
+                }
+            }
+
+            matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);
+            return matchedPlayers;
         });
     }
 

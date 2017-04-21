@@ -31,6 +31,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("WeakerAccess")
 public class BukkitCommandContexts extends CommandContexts {
 
     BukkitCommandContexts() {
