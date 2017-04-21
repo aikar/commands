@@ -410,7 +410,7 @@ public abstract class BaseCommand extends Command {
     }
 
     public void showSyntax(CommandSender sender,  RegisteredCommand cmd) {
-        CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntax);
+        CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

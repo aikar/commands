@@ -54,9 +54,9 @@ public class RegisteredCommand {
     final String prefSubCommand;
     final Parameter[] parameters;
     final ContextResolver<?>[] resolvers;
-    final String syntax;
+    final String syntaxText;
 
-    private final CommandPermission perm;
+    private final CommandPermission permission;
     final CommandCompletion complete;
     final int nonSenderAwareResolvers;
     final int optionalResolvers;
@@ -64,13 +64,13 @@ public class RegisteredCommand {
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
-        if ("__unknown".equals(prefSubCommand)) {
+        if ("__unknown".equals(prefSubCommand) || "__default".equals(prefSubCommand)) {
             prefSubCommand = "";
         }
         this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
-        this.perm = method.getAnnotation(CommandPermission.class);
+        this.permission = method.getAnnotation(CommandPermission.class);
         this.complete = method.getAnnotation(CommandCompletion.class);
         this.parameters = method.getParameters();
         this.resolvers = new ContextResolver[this.parameters.length];
@@ -112,9 +112,9 @@ public class RegisteredCommand {
             }
         }
         if (syntaxStr != null) {
-            this.syntax = syntaxStr.value();
+            this.syntaxText = syntaxStr.value();
         } else {
-            this.syntax = syntaxB.toString();
+            this.syntaxText = syntaxB.toString();
         }
         this.nonSenderAwareResolvers = nonSenderAwareResolvers;
         this.optionalResolvers = optionalResolvers;
@@ -198,6 +198,18 @@ public class RegisteredCommand {
     }
 
     boolean hasPermission(CommandSender check) {
-        return perm == null || !(check instanceof Player) || check.hasPermission(perm.value());
+        return permission == null || !(check instanceof Player) || check.hasPermission(permission.value());
+    }
+
+    public String getPrefSubCommand() {
+        return prefSubCommand;
+    }
+
+    public String getSyntaxText() {
+        return syntaxText;
+    }
+
+    public CommandPermission getPermission() {
+        return permission;
     }
 }
