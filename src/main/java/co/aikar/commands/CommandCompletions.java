@@ -26,7 +26,6 @@ package co.aikar.commands;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 
 import java.util.HashMap;
 import java.util.List;

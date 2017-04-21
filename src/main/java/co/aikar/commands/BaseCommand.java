@@ -321,7 +321,7 @@ public abstract class BaseCommand extends Command {
 
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
-            if (key.startsWith(argString) && !"__unknown".equals(key)) {
+            if (key.startsWith(argString) && !"__unknown".equals(key) && !"__default".equals(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(sender)) {
                     continue;
