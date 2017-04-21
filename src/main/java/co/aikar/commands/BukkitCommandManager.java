@@ -64,9 +64,9 @@ public class BukkitCommandManager implements CommandManager {
 
     @Override
     public boolean registerCommand(BaseCommand command) {
-        command.manager = this;
         final String plugin = this.plugin.getName().toLowerCase();
         final CommandMap commandMap = Bukkit.getServer().getCommandMap();
+        command.onRegister(this);
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
             if (!commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {

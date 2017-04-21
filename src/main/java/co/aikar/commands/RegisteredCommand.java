@@ -75,14 +75,18 @@ public class RegisteredCommand {
         this.parameters = method.getParameters();
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
+        final CommandManager manager = scope.manager;
+        final CommandContexts commandContexts = manager.getCommandContexts();
 
         int nonSenderAwareResolvers = 0;
         int optionalResolvers = 0;
         StringBuilder syntaxB = new StringBuilder(64);
+
         for (int i = 0; i < parameters.length; i++) {
             final Parameter parameter = parameters[i];
             final Class<?> type = parameter.getType();
-            final ContextResolver<?> resolver = scope.manager.getCommandContexts().getResolver(type);
+
+            final ContextResolver<?> resolver = commandContexts.getResolver(type);
             if (resolver != null) {
                 resolvers[i] = resolver;
 

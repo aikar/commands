@@ -32,13 +32,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
-import jdk.nashorn.internal.runtime.Timing;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
 import java.lang.reflect.Method;
@@ -72,8 +69,13 @@ public abstract class BaseCommand extends Command {
 
     public BaseCommand(String cmd) {
         super(cmd);
+    }
+
+    public void onRegister(CommandManager manager) {
+        this.manager = manager;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
+        String cmd = this.getName();
         if (cmd == null) {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
@@ -132,7 +134,7 @@ public abstract class BaseCommand extends Command {
             Collections.addAll(cmdList, CommandPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
-               register(cmdAlias, new ForwardingCommand(this));
+                register(cmdAlias, new ForwardingCommand(this));
             }
         }
 
