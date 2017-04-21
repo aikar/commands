@@ -74,7 +74,12 @@ public class CommandCompletions {
 
         CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
         if (handler != null) {
-            return handler.getCompletions(sender, complete.length == 1 ? null : complete[1], input);
+            List<String> completions = handler.getCompletions(sender, complete.length == 1 ? null : complete[1], input);
+            if (completions == null) {
+                return ImmutableList.of();
+            } else {
+                return completions;
+            }
         }
         return Lists.newArrayList(CommandPatterns.PIPE.split(completion));
     }
