@@ -23,29 +23,6 @@
 
 package co.aikar.commands;
 
-import org.bukkit.plugin.Plugin;
-
 @SuppressWarnings("WeakerAccess")
-public class PaperCommandManager extends BukkitCommandManager {
-
-    // If we get anything Paper specific
-    public PaperCommandManager(Plugin plugin) {
-        super(plugin);
-    }
-
-    @Override
-    public CommandContexts getCommandContexts() {
-        if (this.contexts == null) {
-            this.contexts = new PaperCommandContexts();
-        }
-        return this.contexts;
-    }
-
-    @Override
-    public CommandCompletions getCommandCompletions() {
-        if (this.completions == null) {
-            this.completions = new PaperCommandCompletions();
-        }
-        return this.completions;
-    }
+public class PaperCommandContexts extends BukkitCommandContexts {
 }

@@ -30,12 +30,13 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager implements CommandManager {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
-    private CommandContexts contexts;
-    private CommandCompletions completions;
+    protected CommandContexts contexts;
+    protected CommandCompletions completions;
 
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
