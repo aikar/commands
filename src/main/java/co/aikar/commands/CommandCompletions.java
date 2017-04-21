@@ -85,6 +85,6 @@ public class CommandCompletions {
     }
 
     public interface CommandCompletionHandler {
-        List<String> getCompletions(CommandSender sender, String completionConfig, String input);
+        List<String> getCompletions(CommandSender sender, String config, String input);
     }
 }
