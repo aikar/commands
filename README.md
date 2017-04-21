@@ -10,8 +10,9 @@ I believe the framework may be usable at this stage. Beta testers welcome
 See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
 
 THE API MAY BREAK! We are on:
- - VERSION `0.1.0-SNAPSHOT`
-
+ - GROUP: co.aikar.commands
+ - ARTIFACTID: acf
+ - VERSION `0.2.0-SNAPSHOT`
 
 ## Targeted Platforms
 Requires CraftBukkit, Spigot or Paper.
@@ -21,7 +22,7 @@ We have no intentions to support other Servers. If you want on Sponge or somethi
 ## Example
 ```java
 @CommandAlias("res|residence|resadmin")
-public class ResidenceCommand extends co.aikar.commands.BaseCommand {
+public class ResidenceCommand extends BaseCommand {
     
     @Subcommand("pset")
     @CommandCompletion("@allplayers:30 @flags @flagstates")
@@ -41,7 +42,7 @@ public class ResidenceCommand extends co.aikar.commands.BaseCommand {
     
 }
 @CommandAlias("gr")
-public class GroupCommand extends co.aikar.commands.BaseCommand {
+public class GroupCommand extends BaseCommand {
     public GroupCommand() {
         super("group");
     }
