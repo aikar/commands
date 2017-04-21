@@ -37,6 +37,7 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class CommandExecutionContext {
     private final RegisteredCommand cmd;
     private final Parameter param;
@@ -117,6 +118,7 @@ public class CommandExecutionContext {
         final Object o = passedArgs.get(key);
         for (Class<?> clazz : classes) {
             if (clazz.isInstance(o)) {
+                //noinspection unchecked
                 return (T) o;
             }
         }
@@ -132,7 +134,7 @@ public class CommandExecutionContext {
     }
 
     public String getFlagValue(String flag, String def) {
-        return flags.containsKey(flag) ? flags.get(flag) : def;
+        return flags.getOrDefault(flag, def);
     }
 
     public Integer getFlagValue(String flag, Integer def) {
@@ -173,81 +175,5 @@ public class CommandExecutionContext {
 
     public Map<String, String> getFlags() {
         return this.flags;
-    }
-
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof CommandExecutionContext)) {
-            return false;
-        }
-        final CommandExecutionContext other = (CommandExecutionContext) o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        final Object this$cmd = this.getCmd();
-        final Object other$cmd = other.getCmd();
-        if (this$cmd == null ? other$cmd != null : !this$cmd.equals(other$cmd)) {
-            return false;
-        }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null ? other$param != null : !this$param.equals(other$param)) {
-            return false;
-        }
-        final Object this$sender = this.getSender();
-        final Object other$sender = other.getSender();
-        if (this$sender == null ? other$sender != null : !this$sender.equals(other$sender)) {
-            return false;
-        }
-        final Object this$args = this.getArgs();
-        final Object other$args = other.getArgs();
-        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
-            return false;
-        }
-        if (this.getIndex() != other.getIndex()) {
-            return false;
-        }
-        final Object this$passedArgs = this.getPassedArgs();
-        final Object other$passedArgs = other.getPassedArgs();
-        if (this$passedArgs == null ? other$passedArgs != null : !this$passedArgs.equals(other$passedArgs)) {
-            return false;
-        }
-        final Object this$flags = this.getFlags();
-        final Object other$flags = other.getFlags();
-        if (this$flags == null ? other$flags != null : !this$flags.equals(other$flags)) {
-            return false;
-        }
-        return true;
-    }
-
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $cmd = this.getCmd();
-        result = result * PRIME + ($cmd == null ? 43 : $cmd.hashCode());
-        final Object $param = this.getParam();
-        result = result * PRIME + ($param == null ? 43 : $param.hashCode());
-        final Object $sender = this.getSender();
-        result = result * PRIME + ($sender == null ? 43 : $sender.hashCode());
-        final Object $args = this.getArgs();
-        result = result * PRIME + ($args == null ? 43 : $args.hashCode());
-        result = result * PRIME + this.getIndex();
-        final Object $passedArgs = this.getPassedArgs();
-        result = result * PRIME + ($passedArgs == null ? 43 : $passedArgs.hashCode());
-        final Object $flags = this.getFlags();
-        result = result * PRIME + ($flags == null ? 43 : $flags.hashCode());
-        return result;
-    }
-
-    protected boolean canEqual(Object other) {
-        return other instanceof CommandExecutionContext;
-    }
-
-    public String toString() {
-        return "com.empireminecraft.commands.contexts.CommandExecutionContext(cmd=" + this.getCmd() + ", param=" + this.getParam() + ", sender=" +
-            this.getSender() + ", args=" + this.getArgs() + ", index=" + this.getIndex() + ", passedArgs=" + this.getPassedArgs() + ", flags=" +
-            this.getFlags() + ")";
     }
 }

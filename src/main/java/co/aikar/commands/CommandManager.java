@@ -37,7 +37,7 @@ public interface CommandManager {
 
     /**
      * Gets the command completions manager
-     * @return
+     * @return Command Completions
      */
     CommandCompletions getCommandCompletions();
 

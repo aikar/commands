@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
 
+@SuppressWarnings("WeakerAccess")
 final class CommandLog {
     private static final Logger LOGGER = Bukkit.getLogger();
 

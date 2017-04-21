@@ -23,9 +23,7 @@
 
 package co.aikar.commands.example;
 
-import co.aikar.commands.CommandContexts;
 import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.contexts.ContextResolver;
 
 public abstract class SomeObject {
@@ -34,6 +32,7 @@ public abstract class SomeObject {
     SomeObject(Integer thisValue) {
         this.thisValue = thisValue;
     }
+
     public Integer getValue() {
         return this.thisValue;
     }

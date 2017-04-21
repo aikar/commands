@@ -60,7 +60,7 @@ public class RegisteredCommand {
     final CommandCompletion complete;
     final int nonSenderAwareResolvers;
     final int optionalResolvers;
-    CommandTiming timing;
+    private CommandTiming timing;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -132,45 +132,41 @@ public class RegisteredCommand {
                 final String parameterName = parameter.getName();
                 final Class<?> type = parameter.getType();
                 final ContextResolver<?> resolver = resolvers[i];
-                if (resolver != null) {
-                    CommandExecutionContext context = new CommandExecutionContext(this, parameter, sender, args, i, passedArgs);
-                    if (args.isEmpty() && !(isLast && type == String[].class)) {
-                        Default def = parameter.getAnnotation(Default.class);
-                        Optional opt = parameter.getAnnotation(Optional.class);
-                        if (isLast && def != null) {
-                            args.add(def.value());
-                        } else if (isLast && opt != null) {
-                            passedArgs.put(parameterName, resolver instanceof SenderAwareContextResolver ? resolver.getContext(context) : null);
-                            continue;
-                        } else if (!(resolver instanceof SenderAwareContextResolver)) {
-                            scope.showSyntax(sender, this);
-                            return;
+                CommandExecutionContext context = new CommandExecutionContext(this, parameter, sender, args, i, passedArgs);
+                if (args.isEmpty() && !(isLast && type == String[].class)) {
+                    Default def = parameter.getAnnotation(Default.class);
+                    Optional opt = parameter.getAnnotation(Optional.class);
+                    if (isLast && def != null) {
+                        args.add(def.value());
+                    } else if (isLast && opt != null) {
+                        passedArgs.put(parameterName, resolver instanceof SenderAwareContextResolver ? resolver.getContext(context) : null);
+                        //noinspection UnnecessaryContinue
+                        continue;
+                    } else if (!(resolver instanceof SenderAwareContextResolver)) {
+                        scope.showSyntax(sender, this);
+                        return;
+                    }
+                } else {
+                    final Values values = parameter.getAnnotation(Values.class);
+                    if (values != null) {
+                        String arg = args.get(0);
+
+                        final String[] split = CommandPatterns.PIPE.split(values.value());
+                        Set<String> possible = Sets.newHashSet();
+                        for (String s : split) {
+                            List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
+                            if (!check.isEmpty()) {
+                                possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
+                            } else {
+                                possible.add(s.toLowerCase());
+                            }
                         }
-                    } else {
-                        final Values values = parameter.getAnnotation(Values.class);
-                        if (values != null) {
-                            String arg = args.get(0);
 
-                            final String[] split = CommandPatterns.PIPE.split(values.value());
-                            Set<String> possible = Sets.newHashSet();
-                            for (String s : split) {
-                                List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
-                                if (!check.isEmpty()) {
-                                    possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
-                                } else {
-                                    possible.add(s.toLowerCase());
-                                }
-                            }
-
-                            if (!possible.contains(arg.toLowerCase())) {
-                                throw new InvalidCommandArgument("Must be one of: " + CommandUtil.join(possible, ", "));
-                            }
+                        if (!possible.contains(arg.toLowerCase())) {
+                            throw new InvalidCommandArgument("Must be one of: " + CommandUtil.join(possible, ", "));
                         }
                     }
                     passedArgs.put(parameterName, resolver.getContext(context));
-                } else {
-                    CommandUtil.sendMsg(sender, "&cUnexpected Error. Staff have been notified of the bug.");
-                    return;
                 }
             }
 
