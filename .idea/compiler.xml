@@ -6,10 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="acf" />
+        <module name="acf-example" />
         <module name="commands" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="acf" target="1.8" />
+      <module name="acf-example" target="1.8" />
       <module name="commands" target="1.8" />
     </bytecodeTargetLevel>
   </component>
