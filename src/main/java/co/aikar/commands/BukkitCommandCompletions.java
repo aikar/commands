@@ -53,10 +53,6 @@ public class BukkitCommandCompletions extends CommandCompletions {
         registerCompletion("players", (sender, completionConfig, input) -> {
             Validate.notNull(sender, "Sender cannot be null");
 
-            if (input.isEmpty()) {
-                return ImmutableList.of();
-            }
-
             Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
             ArrayList<String> matchedPlayers = new ArrayList<String>();
@@ -66,6 +62,7 @@ public class BukkitCommandCompletions extends CommandCompletions {
                     matchedPlayers.add(name);
                 }
             }
+
 
             matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);
             return matchedPlayers;
