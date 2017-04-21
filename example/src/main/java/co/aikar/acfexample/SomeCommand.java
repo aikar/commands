@@ -21,14 +21,17 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.example;
+package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.contexts.OnlinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -63,5 +66,11 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("Hello, " + name);
     }
 
+    @Subcommand("completions")
+    @CommandAlias("acfcompletions|acfc")
+    @CommandCompletion("@players @worlds @test foo1|foo2|foo3")
+    public void onTestCompletion(CommandSender sender, OnlinePlayer player, World world, String test, String misc) {
+        sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + misc);
+    }
 
 }

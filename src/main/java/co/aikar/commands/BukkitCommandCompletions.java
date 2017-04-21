@@ -47,8 +47,8 @@ public class BukkitCommandCompletions extends CommandCompletions {
             return normal.collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, completionConfig, input) -> (
-                Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList()))
-        );
+            Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
+        ));
 
         registerCompletion("players", (sender, completionConfig, input) -> {
             Validate.notNull(sender, "Sender cannot be null");

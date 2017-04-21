@@ -21,10 +21,11 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.example;
+package co.aikar.acfexample;
 
 import co.aikar.commands.ACF;
 import co.aikar.commands.CommandManager;
+import com.google.common.collect.Lists;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ACFExample extends JavaPlugin {
@@ -40,6 +41,9 @@ public final class ACFExample extends JavaPlugin {
     private void registerCommands() {
         commandManager = ACF.createManager(this);
         commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
+        commandManager.getCommandCompletions().registerCompletion("test", (sender, completionConfig, input) -> (
+            Lists.newArrayList("foo", "bar", "baz")
+        ));
         commandManager.registerCommand(new SomeCommand());
     }
 

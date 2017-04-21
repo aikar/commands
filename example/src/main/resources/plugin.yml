@@ -1,6 +1,6 @@
 name: ACFExample
 version: ${project.version}
-main: co.aikar.commands.example.ACFExample
+main: co.aikar.acfexample.ACFExample
 prefix: ACF
 authors: [Aikar]
 description: Example / Test for ACF
