@@ -38,6 +38,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.util.StringUtil;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,7 +109,18 @@ public abstract class BaseCommand extends Command {
                 cmd = CommandPatterns.PIPE.split(rootCmdAlias.value())[0];
             }
             cmd = cmd.toLowerCase();
-            setName(cmd);
+            try {
+                setName(cmd);
+            } catch (NoSuchMethodError ignored) {
+                try {
+                    // To support pre 1.8 where setName was not added.
+                    Field field = Command.class.getDeclaredField("name");
+                    field.setAccessible(true);
+                    field.set(this, cmd);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    CommandLog.exception("Error setting name for command", e);
+                }
+            }
             setLabel(cmd);
         }
 
