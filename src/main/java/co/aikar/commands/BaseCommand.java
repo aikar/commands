@@ -50,16 +50,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public abstract class BaseCommand extends Command {
 
     private final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
 
     @SuppressWarnings("WeakerAccess")
-    protected String execLabel;
+    private String execLabel;
     @SuppressWarnings("WeakerAccess")
-    protected String execSubcommand;
+    private String execSubcommand;
     @SuppressWarnings("WeakerAccess")
-    protected String[] origArgs;
+    private String[] origArgs;
     CommandManager manager = null;
     Map<String, Command> registeredCommands = new HashMap<>();
 
@@ -71,7 +72,31 @@ public abstract class BaseCommand extends Command {
         super(cmd);
     }
 
-    public void onRegister(CommandManager manager) {
+    /**
+     * Gets the root command name that the user actually typed
+     * @return Name
+     */
+    public String getExecCommandLabel() {
+        return execLabel;
+    }
+
+    /**
+     * Gets the actual sub command name the user typed
+     * @return Name
+     */
+    public String getExecSubcommand() {
+        return execSubcommand;
+    }
+
+    /**
+     * Gets the actual args in string form the user typed
+     * @return Args
+     */
+    public String[] getOrigArgs() {
+        return origArgs;
+    }
+
+    void onRegister(CommandManager manager) {
         this.manager = manager;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
