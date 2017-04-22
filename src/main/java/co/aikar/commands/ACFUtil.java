@@ -814,7 +814,7 @@ public final class ACFUtil {
         while (iter.hasNext()) {
             Player player = iter.next();
             if (requester instanceof Player && !((Player) requester).canSee(player)) {
-                if (requester.hasPermission("command.seevanish")) {
+                if (requester.hasPermission("acf.seevanish")) {
                     if (!origName.endsWith(":confirm")) {
                         confirmList.add(player);
                         iter.remove();
@@ -837,7 +837,7 @@ public final class ACFUtil {
             } else {
                 Player player = Iterables.getOnlyElement(confirmList);
                 sendMsg(requester,
-                        "&cWarning: " + player.getDisplayName() + "&c is confirmList. Do not blow their cover!\n" +
+                        "&cWarning: " + player.getDisplayName() + "&c is vanished. Do not blow their cover!\n" +
                                 "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
                                 "&bEx: &e/g " + player.getName() + ":confirm");
                 return null;
