@@ -106,7 +106,7 @@ public class RegisteredCommand {
                     }
                 }
             } else {
-                CommandUtil.sneaky(new InvalidConfigurationException(
+                ACFUtil.sneaky(new InvalidConfigurationException(
                     "Parameter " + type.getSimpleName() + " of " + this.command + " has no resolver"
                 ));
             }
@@ -151,7 +151,7 @@ public class RegisteredCommand {
                 if (values != null) {
                     String arg = args.get(0);
 
-                    final String[] split = CommandPatterns.PIPE.split(values.value());
+                    final String[] split = ACFPatterns.PIPE.split(values.value());
                     Set<String> possible = Sets.newHashSet();
                     for (String s : split) {
                         List<String> check = this.scope.manager.getCommandCompletions().of(sender, s, arg);
@@ -163,7 +163,7 @@ public class RegisteredCommand {
                     }
 
                     if (!possible.contains(arg.toLowerCase())) {
-                        throw new InvalidCommandArgument("Must be one of: " + CommandUtil.join(possible, ", "));
+                        throw new InvalidCommandArgument("Must be one of: " + ACFUtil.join(possible, ", "));
                     }
                 }
                 passedArgs.put(parameterName, resolver.getContext(context));
@@ -177,21 +177,21 @@ public class RegisteredCommand {
             if (e instanceof InvalidCommandArgument) {
 
                 if (e.getMessage() != null && !e.getMessage().isEmpty()) {
-                    CommandUtil.sendMsg(sender, "&cError: " + e.getMessage());
+                    ACFUtil.sendMsg(sender, "&cError: " + e.getMessage());
                 }
                 if (((InvalidCommandArgument) e).showSyntax) {
                     scope.showSyntax(sender, this);
                 }
             } else {
-                CommandUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
-                CommandLog.exception("Exception in command: " + command + " " + CommandUtil.join(args), e);
+                ACFUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
+                ACFLog.exception("Exception in command: " + command + " " + ACFUtil.join(args), e);
             }
         }
     }
 
     CommandTiming getTiming() {
         if (this.timing == null) {
-            this.timing = CommandUtil.getTiming(scope, command);
+            this.timing = ACFUtil.getTiming(scope, command);
         }
         return this.timing;
     }

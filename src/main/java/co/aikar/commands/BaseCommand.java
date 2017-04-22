@@ -106,7 +106,7 @@ public abstract class BaseCommand extends Command {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
             } else {
-                cmd = CommandPatterns.PIPE.split(rootCmdAlias.value())[0];
+                cmd = ACFPatterns.PIPE.split(rootCmdAlias.value())[0];
             }
             cmd = cmd.toLowerCase();
             try {
@@ -118,7 +118,7 @@ public abstract class BaseCommand extends Command {
                     field.setAccessible(true);
                     field.set(this, cmd);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
-                    CommandLog.exception("Error setting name for command", e);
+                    ACFLog.exception("Error setting name for command", e);
                 }
             }
             setLabel(cmd);
@@ -146,7 +146,7 @@ public abstract class BaseCommand extends Command {
                     registerSubcommand(method, "__default");
                     foundDefault = true;
                 } else {
-                    CommandUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands"));
+                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands"));
                 }
             }
             if (sub != null) {
@@ -168,7 +168,7 @@ public abstract class BaseCommand extends Command {
 
         if (rootCmdAlias != null) {
             List<String> cmdList = new ArrayList<>();
-            Collections.addAll(cmdList, CommandPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
+            Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
                 register(cmdAlias, new ForwardingCommand(this));
@@ -184,18 +184,18 @@ public abstract class BaseCommand extends Command {
 
     private void registerSubcommand(Method method, String subCommand) {
         subCommand = subCommand.toLowerCase();
-        final String[] subCommandParts = CommandPatterns.SPACE.split(subCommand);
+        final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);
         // Must run getSubcommandPossibility BEFORE we rewrite it just after this.
         List<String> cmdList = getSubCommandPossibilityList(subCommandParts);
 
         // Strip pipes off for auto complete addition
         for (int i = 0; i < subCommandParts.length; i++) {
-            subCommandParts[i] = CommandPatterns.PIPE.split(subCommandParts[i])[0];
+            subCommandParts[i] = ACFPatterns.PIPE.split(subCommandParts[i])[0];
         }
         String prefSubCommand = StringUtils.join(subCommandParts, " ");
         final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
 
-        final String[] aliasNames = cmdAlias != null ? CommandPatterns.PIPE.split(cmdAlias.value().toLowerCase()) : null;
+        final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(cmdAlias.value().toLowerCase()) : null;
         String cmdName = aliasNames != null ? aliasNames[0] : getLabel() + " ";
         RegisteredCommand cmd = new RegisteredCommand(this, cmdName, method, prefSubCommand);
 
@@ -229,7 +229,7 @@ public abstract class BaseCommand extends Command {
             ArrayList<String> newList = new ArrayList<>();
 
             if (i < subCommandParts.length) {
-                for (String s1 : CommandPatterns.PIPE.split(subCommandParts[i])) {
+                for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {
                     if (current != null) {
                         newList.addAll(current.stream().map(s -> s + " " + s1).collect(Collectors.toList()));
                     } else {
@@ -330,7 +330,7 @@ public abstract class BaseCommand extends Command {
                 cmd.invoke(sender, sargs);
             }
         } else {
-            CommandUtil.sendMsg(sender, "&cI'm sorry, but you do not have permission to perform this command.");
+            ACFUtil.sendMsg(sender, "&cI'm sorry, but you do not have permission to perform this command.");
         }
     }
 
@@ -365,7 +365,7 @@ public abstract class BaseCommand extends Command {
                 }
                 String prefCommand = value.prefSubCommand;
 
-                final String[] psplit = CommandPatterns.SPACE.split(prefCommand);
+                final String[] psplit = ACFPatterns.SPACE.split(prefCommand);
                 cmds.add(psplit[args.length - 1]);
             }
         }
@@ -392,7 +392,7 @@ public abstract class BaseCommand extends Command {
             return args.length < 2 ? super.tabComplete(sender, commandLabel, args) : ImmutableList.of();
         }
 
-        String[] completions = CommandPatterns.SPACE.split(cmd.complete.value());
+        String[] completions = ACFPatterns.SPACE.split(cmd.complete.value());
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
@@ -413,7 +413,7 @@ public abstract class BaseCommand extends Command {
     }
 
     public void help(CommandSender sender, String[] args) {
-        CommandUtil.sendMsg(sender, "&cUnknown Command, please type &f/help");
+        ACFUtil.sendMsg(sender, "&cUnknown Command, please type &f/help");
     }
 
     public void onDefault(CommandSender sender, String commandLabel) {
@@ -447,7 +447,7 @@ public abstract class BaseCommand extends Command {
     }
 
     public void showSyntax(CommandSender sender,  RegisteredCommand cmd) {
-        CommandUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
+        ACFUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

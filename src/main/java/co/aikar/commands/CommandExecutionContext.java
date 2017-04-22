@@ -58,8 +58,8 @@ public class CommandExecutionContext {
         Flags flags = param.getAnnotation(Flags.class);
         if (flags != null) {
             this.flags = Maps.newHashMap();
-            for (String s : CommandPatterns.COMMA.split(flags.value())) {
-                String[] v = CommandPatterns.EQUALS.split(s, 2);
+            for (String s : ACFPatterns.COMMA.split(flags.value())) {
+                String[] v = ACFPatterns.EQUALS.split(s, 2);
                 this.flags.put(v[0], v.length > 1 ? v[1] : null);
             }
         } else {
@@ -138,7 +138,7 @@ public class CommandExecutionContext {
     }
 
     public Integer getFlagValue(String flag, Integer def) {
-        return CommandUtil.parseInt(this.flags.get(flag), def);
+        return ACFUtil.parseInt(this.flags.get(flag), def);
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> cls) {

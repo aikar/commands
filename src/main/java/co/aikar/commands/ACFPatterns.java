@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
-final class CommandPatterns {
+final class ACFPatterns {
     public static final Pattern COMMA = Pattern.compile(",");
     public static final Pattern NEWLINE = Pattern.compile("\n");
     public static final Pattern DASH = Pattern.compile("-");
@@ -49,7 +49,7 @@ final class CommandPatterns {
 
 
 
-    private CommandPatterns() {}
+    private ACFPatterns() {}
     @SuppressWarnings("Convert2MethodRef")
     static final LoadingCache<String, Pattern> patternCache =
             CacheBuilder.newBuilder()

@@ -43,15 +43,15 @@ public class CommandCompletions {
             if (completionConfig == null) {
                 return ImmutableList.of();
             }
-            final String[] ranges = CommandPatterns.DASH.split(completionConfig);
+            final String[] ranges = ACFPatterns.DASH.split(completionConfig);
             int start;
             int end;
             if (ranges.length != 2) {
                 start = 0;
-                end = CommandUtil.parseInt(ranges[0], 0);
+                end = ACFUtil.parseInt(ranges[0], 0);
             } else {
-                start = CommandUtil.parseInt(ranges[0], 0);
-                end = CommandUtil.parseInt(ranges[1], 0);
+                start = ACFUtil.parseInt(ranges[0], 0);
+                end = ACFUtil.parseInt(ranges[1], 0);
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
@@ -70,7 +70,7 @@ public class CommandCompletions {
             input = "";
         }
 
-        String[] complete = CommandPatterns.COLON.split(completion, 2);
+        String[] complete = ACFPatterns.COLON.split(completion, 2);
 
         CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
         if (handler != null) {
@@ -81,7 +81,7 @@ public class CommandCompletions {
                 return completions;
             }
         }
-        return Lists.newArrayList(CommandPatterns.PIPE.split(completion));
+        return Lists.newArrayList(ACFPatterns.PIPE.split(completion));
     }
 
     public interface CommandCompletionHandler {

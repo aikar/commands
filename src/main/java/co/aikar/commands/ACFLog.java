@@ -29,10 +29,10 @@ import org.bukkit.Bukkit;
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
-final class CommandLog {
+final class ACFLog {
     private static final Logger LOGGER = Bukkit.getLogger();
 
-    private CommandLog() {}
+    private ACFLog() {}
 
 
     public static void log(String message) {
@@ -41,19 +41,19 @@ final class CommandLog {
 
 
     public static void info(String message) {
-        for (String s : CommandPatterns.NEWLINE.split(message)) {
+        for (String s : ACFPatterns.NEWLINE.split(message)) {
             LOGGER.info(s);
         }
     }
 
     public static void warn(String message) {
-        for (String s : CommandPatterns.NEWLINE.split(message)) {
+        for (String s : ACFPatterns.NEWLINE.split(message)) {
             LOGGER.warning(s);
         }
     }
 
     public static void severe(String message) {
-        for (String s : CommandPatterns.NEWLINE.split(message)) {
+        for (String s : ACFPatterns.NEWLINE.split(message)) {
             LOGGER.severe(s);
         }
     }

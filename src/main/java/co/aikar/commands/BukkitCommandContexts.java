@@ -40,9 +40,9 @@ public class BukkitCommandContexts extends CommandContexts {
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();
-            Player player = CommandUtil.findPlayerSmart(c.getSender(), playercheck);
+            Player player = ACFUtil.findPlayerSmart(c.getSender(), playercheck);
             if (player == null) {
-                CommandUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
+                ACFUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
                 throw new InvalidCommandArgument(false);
             }
             return new OnlinePlayer(player);
@@ -68,7 +68,7 @@ public class BukkitCommandContexts extends CommandContexts {
                 throw new InvalidCommandArgument("Requires a player to run this command", false);
             }
             PlayerInventory inventory = player != null ? player.getInventory() : null;
-            if (inventory != null && c.hasFlag("itemheld") && !CommandUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
+            if (inventory != null && c.hasFlag("itemheld") && !ACFUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
                 throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
             }
             return player;

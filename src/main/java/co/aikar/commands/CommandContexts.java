@@ -41,14 +41,14 @@ public class CommandContexts {
     CommandContexts() {
         registerContext(Integer.class, (c) -> {
             try {
-                return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument("Must be a number");
             }
         });
         registerContext(Long.class, (c) -> {
             try {
-                return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).longValue();
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).longValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument("Must be a number");
             }
@@ -56,40 +56,40 @@ public class CommandContexts {
         });
         registerContext(Float.class, (c) -> {
             try {
-                return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).floatValue();
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).floatValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument("Must be a number");
             }
         });
         registerContext(Double.class, (c) -> {
             try {
-                return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).doubleValue();
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).doubleValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument("Must be a number");
             }
         });
         registerContext(Number.class, (c) -> {
             try {
-                return CommandUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument("Must be a number");
             }
         });
-        registerContext(Boolean.class, (c) -> CommandUtil.isTruthy(c.popFirstArg()));
+        registerContext(Boolean.class, (c) -> ACFUtil.isTruthy(c.popFirstArg()));
         registerContext(String.class, (c) -> {
             final Values values = c.getParam().getAnnotation(Values.class);
             if (values != null) {
                 return c.popFirstArg();
             }
             if (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) {
-                return CommandUtil.join(c.getArgs());
+                return ACFUtil.join(c.getArgs());
             }
             return c.popFirstArg();
         });
         registerContext(String[].class, (c) -> {
             String val;
             if (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) {
-                val = CommandUtil.join(c.getArgs());
+                val = ACFUtil.join(c.getArgs());
             } else {
                 val = c.popFirstArg();
             }
@@ -98,9 +98,9 @@ public class CommandContexts {
                 if (val.isEmpty()) {
                     throw new InvalidCommandArgument();
                 }
-                return CommandPatterns.getPattern(split.value()).split(val);
+                return ACFPatterns.getPattern(split.value()).split(val);
             } else if (!c.isLastArg()) {
-                CommandUtil.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
+                ACFUtil.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
             }
 
             String[] result = c.getArgs().toArray(new String[c.getArgs().size()]);
@@ -111,10 +111,10 @@ public class CommandContexts {
         registerContext(Enum.class, (c) -> {
             final String first = c.popFirstArg();
             Class<? extends Enum<?>> enumCls = (Class<? extends Enum<?>>) c.getParam().getType();
-            Enum<?> match = CommandUtil.simpleMatch(enumCls, first);
+            Enum<?> match = ACFUtil.simpleMatch(enumCls, first);
             if (match == null) {
-                List<String> names = CommandUtil.enumNames(enumCls);
-                throw new InvalidCommandArgument("Please specify one of: " + CommandUtil.join(names));
+                List<String> names = ACFUtil.enumNames(enumCls);
+                throw new InvalidCommandArgument("Please specify one of: " + ACFUtil.join(names));
             }
             return match;
         });
@@ -140,7 +140,7 @@ public class CommandContexts {
             }
         } while ((type = type.getSuperclass()) != null);
 
-        CommandLog.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
+        ACFLog.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
         return null;
     }
 }

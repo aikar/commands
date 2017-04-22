@@ -53,12 +53,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("WeakerAccess")
-final class CommandUtil {
+@SuppressWarnings({"WeakerAccess", "unused"})
+public final class ACFUtil {
 
     public static final Random RANDOM = new Random();
 
-    private CommandUtil() {}
+    private ACFUtil() {}
 
     public static String padRight(String s, int n) {
         return String.format("%1$-" + n + "s", s);
@@ -92,11 +92,11 @@ final class CommandUtil {
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         if (player == null) {
-            for (String msg : CommandPatterns.NEWLINE.split(message)) {
-                CommandLog.info(msg);
+            for (String msg : ACFPatterns.NEWLINE.split(message)) {
+                ACFLog.info(msg);
             }
         } else {
-            for (String msg : CommandPatterns.NEWLINE.split(message)) {
+            for (String msg : ACFPatterns.NEWLINE.split(message)) {
                 player.sendMessage(msg);
             }
         }
@@ -109,7 +109,7 @@ final class CommandUtil {
         if (storedLoc == null) {
             return null;
         }
-        String[] args = CommandPatterns.COLON.split(storedLoc);
+        String[] args = ACFPatterns.COLON.split(storedLoc);
         if (args.length >= 4 || (args.length == 3 && forcedWorld != null)) {
             String world = forcedWorld != null ? forcedWorld.getName() : args[0];
             int i = args.length == 3 ? 0 : 1;
@@ -123,7 +123,7 @@ final class CommandUtil {
             }
             return loc;
         } else if (args.length == 2) {
-            String[] args2 = CommandPatterns.COMMA.split(args[1]);
+            String[] args2 = ACFPatterns.COMMA.split(args[1]);
             if (args2.length == 3) {
                 String world = forcedWorld != null ? forcedWorld.getName() : args[0];
                 double x = Double.parseDouble(args2[0]);
@@ -270,6 +270,7 @@ final class CommandUtil {
     }
 
     public static <T> T nullDefault(Object val, Object def) {
+        //noinspection unchecked
         return (T) (val != null ? val : def);
     }
 
@@ -302,7 +303,7 @@ final class CommandUtil {
         if (str == null) {
             return null;
         }
-        return CommandPatterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase()).replaceAll("");
+        return ACFPatterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase()).replaceAll("");
     }
 
     public static double round(double x, int scale) {
@@ -333,7 +334,7 @@ final class CommandUtil {
     }
 
     public static String removeColors(String msg) {
-        return ChatColor.stripColor(CommandUtil.color(msg));
+        return ChatColor.stripColor(ACFUtil.color(msg));
 
     }
 
@@ -396,7 +397,7 @@ final class CommandUtil {
      * @return
      */
     public static String replace(String string, String pattern, String repl) {
-        return replace(string, CommandPatterns.getPattern(Pattern.quote(pattern)), repl);
+        return replace(string, ACFPatterns.getPattern(Pattern.quote(pattern)), repl);
     }
 
     /**
@@ -407,7 +408,7 @@ final class CommandUtil {
      * @return
      */
     public static String replacePattern(String string, String pattern, String repl) {
-        return replace(string, CommandPatterns.getPattern(pattern), repl);
+        return replace(string, ACFPatterns.getPattern(pattern), repl);
     }
     /**
      * Pure Regex Pattern matching and replacement, no escaping
@@ -428,7 +429,7 @@ final class CommandUtil {
      * @return
      */
     public static String replacePatternMatch(String string, String pattern, String repl) {
-        return replacePatternMatch(string, CommandPatterns.getPattern(pattern), repl);
+        return replacePatternMatch(string, ACFPatterns.getPattern(pattern), repl);
     }
 
     public static String replaceStrings(String string, String... replacements) {
@@ -529,7 +530,7 @@ final class CommandUtil {
         if (s == null) {
             return null;
         }
-        return CommandPatterns.NON_PRINTABLE_CHARACTERS.matcher(Normalizer.normalize(s, Form.NFD)).replaceAll("");
+        return ACFPatterns.NON_PRINTABLE_CHARACTERS.matcher(Normalizer.normalize(s, Form.NFD)).replaceAll("");
     }
 
     public static int indexOf(String arg, String[] split) {
@@ -635,9 +636,9 @@ final class CommandUtil {
         if (item == null) {
             return null;
         }
-        item = CommandUtil.simplifyString(item);
+        item = ACFUtil.simplifyString(item);
         for (Enum<?> s : list.getEnumConstants()) {
-            String simple = CommandUtil.simplifyString(s.name());
+            String simple = ACFUtil.simplifyString(s.name());
             if (item.equals(simple)) {
                 return s;
             }
@@ -761,14 +762,12 @@ final class CommandUtil {
     }
 
     public static boolean isInteger(String string) {
-        if (!CommandPatterns.INTEGER.matcher(string).matches()) {
-            return false;
-        }
-        return true;
+        return ACFPatterns.INTEGER.matcher(string).matches();
     }
 
     public static boolean isFloat(String string) {
         try {
+            //noinspection ResultOfMethodCallIgnored
             Float.parseFloat(string);
             return true;
         } catch (Exception e) {
@@ -778,6 +777,7 @@ final class CommandUtil {
 
     public static boolean isDouble(String string) {
         try {
+            //noinspection ResultOfMethodCallIgnored
             Double.parseDouble(string);
             return true;
         } catch (Exception e) {
@@ -786,20 +786,17 @@ final class CommandUtil {
     }
 
     public static boolean isBetween(float num, double min, double max) {
-        if (num >= min && num <= max){
-            return true;
-        } else {
-            return false;
-        }
+        return num >= min && num <= max;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static double precision(double x, int p) {
         double pow = Math.pow(10, p);
         return Math.round(x * pow) / pow;
     }
 
-    public static Player findPlayerSmart(CommandSender requester, String origname) {
-        String name = replace(origname, ":confirm", "");
+    public static Player findPlayerSmart(CommandSender requester, String origName) {
+        String name = replace(origName, ":confirm", "");
         if (name.length() < 3) {
             requester.sendMessage("§cUsername too short, must be at least three characters");
             return null;
@@ -818,7 +815,7 @@ final class CommandUtil {
             Player player = iter.next();
             if (requester instanceof Player && !((Player) requester).canSee(player)) {
                 if (requester.hasPermission("command.seevanish")) {
-                    if (!origname.endsWith(":confirm")) {
+                    if (!origName.endsWith(":confirm")) {
                         confirmList.add(player);
                         iter.remove();
                     }
@@ -851,12 +848,12 @@ final class CommandUtil {
     }
 
     public static boolean isValidName(String name) {
-        return name != null && !name.isEmpty() && CommandPatterns.VALID_NAME_PATTERN.matcher(name).matches();
+        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 
     public static void sneaky(Throwable t) {
         //noinspection RedundantTypeArguments
-        throw CommandUtil.<RuntimeException>superSneaky( t );
+        throw ACFUtil.<RuntimeException>superSneaky( t );
     }
 
     private static <T extends Throwable> T superSneaky(Throwable t) throws T {

@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -32,8 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +40,7 @@ public class BukkitCommandCompletions extends CommandCompletions {
         super();
         registerCompletion("mobs", (sender, completionConfig, input) -> {
             final Stream<String> normal = Stream.of(EntityType.values())
-                    .map(entityType -> CommandUtil.simplifyString(entityType.getName()));
+                    .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, completionConfig, input) -> (
