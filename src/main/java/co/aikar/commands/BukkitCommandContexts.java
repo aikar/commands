@@ -30,6 +30,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandContexts extends CommandContexts {
@@ -66,7 +67,8 @@ public class BukkitCommandContexts extends CommandContexts {
             if (player == null && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument("Requires a player to run this command", false);
             }
-            if (player != null && c.hasFlag("itemheld") && !CommandUtil.isValidItem(player.getInventory().getItemInMainHand())) {
+            PlayerInventory inventory = player != null ? player.getInventory() : null;
+            if (inventory != null && c.hasFlag("itemheld") && !CommandUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
                 throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
             }
             return player;
