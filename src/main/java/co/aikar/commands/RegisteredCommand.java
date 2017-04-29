@@ -132,20 +132,24 @@ public class RegisteredCommand {
 
             method.invoke(scope, passedArgs.values().toArray());
         } catch (Exception e) {
-            if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
-                e = (Exception) e.getCause();
+            handleException(sender, args, e);
+        }
+    }
+
+    void handleException(CommandSender sender, List<String> args, Exception e) {
+        if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
+            e = (Exception) e.getCause();
+        }
+        if (e instanceof InvalidCommandArgument) {
+            if (e.getMessage() != null && !e.getMessage().isEmpty()) {
+                ACFUtil.sendMsg(sender, "&cError: " + e.getMessage());
             }
-            if (e instanceof InvalidCommandArgument) {
-                if (e.getMessage() != null && !e.getMessage().isEmpty()) {
-                    ACFUtil.sendMsg(sender, "&cError: " + e.getMessage());
-                }
-                if (((InvalidCommandArgument) e).showSyntax) {
-                    scope.showSyntax(sender, this);
-                }
-            } else {
-                ACFUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
-                ACFLog.exception("Exception in command: " + command + " " + ACFUtil.join(args), e);
+            if (((InvalidCommandArgument) e).showSyntax) {
+                scope.showSyntax(sender, this);
             }
+        } else {
+            ACFUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
+            ACFLog.exception("Exception in command: " + command + " " + ACFUtil.join(args), e);
         }
     }
 

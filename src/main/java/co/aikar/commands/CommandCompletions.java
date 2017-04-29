@@ -102,7 +102,7 @@ public class CommandCompletions {
             } catch (CommandCompletionTextLookupException ignored) {
                 // This should only happen if some other feedback error occured.
             } catch (Exception e) {
-                ACFLog.exception(e);
+                command.handleException(sender, Lists.newArrayList(args), e);
             }
             // Something went wrong in lookup, fall back to input
             return ImmutableList.of(input);
