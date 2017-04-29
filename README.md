@@ -12,7 +12,7 @@ See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add 
 THE API MAY BREAK! We are on:
  - GROUP: co.aikar
  - ARTIFACTID: acf-core
- - VERSION `0.3.0-SNAPSHOT`
+ - VERSION `0.4.0-SNAPSHOT`
 
 ## Targeted Platforms
 Requires CraftBukkit, Spigot or Paper.
