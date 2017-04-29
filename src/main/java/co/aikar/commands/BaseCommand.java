@@ -393,16 +393,9 @@ public abstract class BaseCommand extends Command {
         }
 
         String[] completions = ACFPatterns.SPACE.split(cmd.complete.value());
-        final int argIndex = args.length - 1;
 
-        String input = args[argIndex];
-        final String completion = argIndex < completions.length ? completions[argIndex] : null;
-
-        List<String> cmds = manager.getCommandCompletions().of(sender, completion, input);
-        if (cmds.isEmpty()) {
-            cmds = ImmutableList.of(input);
-        }
-        return filterTabComplete(args[(argIndex)], cmds);
+        List<String> cmds = manager.getCommandCompletions().of(cmd, sender, completions, args);
+        return filterTabComplete(args[args.length-1], cmds);
     }
 
     private static List<String> filterTabComplete(String arg, List<String> cmds) {

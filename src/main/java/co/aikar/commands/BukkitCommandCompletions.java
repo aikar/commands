@@ -38,16 +38,16 @@ import java.util.stream.Stream;
 public class BukkitCommandCompletions extends CommandCompletions {
     BukkitCommandCompletions() {
         super();
-        registerCompletion("mobs", (sender, completionConfig, input) -> {
+        registerCompletion("mobs", (sender, config, input, c) -> {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
         });
-        registerCompletion("worlds", (sender, completionConfig, input) -> (
+        registerCompletion("worlds", (sender, config, input, c) -> (
             Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
 
-        registerCompletion("players", (sender, completionConfig, input) -> {
+        registerCompletion("players", (sender, config, input, c) -> {
             Validate.notNull(sender, "Sender cannot be null");
 
             Player senderPlayer = sender instanceof Player ? (Player) sender : null;

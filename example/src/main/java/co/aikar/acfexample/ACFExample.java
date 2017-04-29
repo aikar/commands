@@ -41,7 +41,7 @@ public final class ACFExample extends JavaPlugin {
     private void registerCommands() {
         commandManager = ACF.createManager(this);
         commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
-        commandManager.getCommandCompletions().registerCompletion("test", (sender, completionConfig, input) -> (
+        commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
             Lists.newArrayList("foo", "bar", "baz")
         ));
         commandManager.registerCommand(new SomeCommand());
