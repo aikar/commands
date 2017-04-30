@@ -42,6 +42,9 @@ public class BukkitCommandContexts extends CommandContexts {
             final String playercheck = c.popFirstArg();
             Player player = ACFUtil.findPlayerSmart(c.getSender(), playercheck);
             if (player == null) {
+                if (c.hasAnnotation(Optional.class)) {
+                    return null;
+                }
                 ACFUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
                 throw new InvalidCommandArgument(false);
             }
