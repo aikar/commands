@@ -102,6 +102,10 @@ public class BukkitCommandManager implements CommandManager {
             if (!commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
                 allSuccess = false;
             }
+
+            if (allSuccess) {
+                knownCommands.put(entry.getKey(), command);
+            }
         }
 
         return allSuccess;
