@@ -65,7 +65,6 @@ public class BukkitCommandManager implements CommandManager {
                 new Listener() {
                     @EventHandler
                     public void onPluginDisable(PluginDisableEvent event) {
-                        plugin.getLogger().info("Unregistering commands from ACF!");
                         if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
                             return;
                         }
@@ -112,13 +111,9 @@ public class BukkitCommandManager implements CommandManager {
         command.onRegister(this);
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
-            boolean success;
-
-            if (!(success = commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue()))) {
+            if (!(commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue()))) {
                 allSuccess = false;
-            }
-
-            if (success) {
+            } else {
                 knownCommands.put(entry.getKey(), command);
             }
         }
@@ -128,21 +123,19 @@ public class BukkitCommandManager implements CommandManager {
 
     @Override
     public boolean unregisterCommand(BaseCommand command) {
-        AtomicBoolean allSuccess = new AtomicBoolean(false);
-        command.registeredCommands.entrySet().removeIf(entry -> {
-            boolean remove = entry.getValue().unregister(commandMap);
-
+        final int size = command.registeredCommands.size();
+        final BitSet bitSet = new BitSet(size);
+        Iterator<Map.Entry<String, Command>> registeredCommands = command.registeredCommands.entrySet().iterator();
+        for (int i = 0; registeredCommands.hasNext(); i++) {
+            Map.Entry<String, Command> next = registeredCommands.next();
+            boolean remove = next.getValue().unregister(commandMap);
             if (remove) {
-                commandMap.getKnownCommands().remove(entry.getKey());
+                commandMap.getKnownCommands().remove(next.getKey());
+            } else {
+                bitSet.set(i, false);
             }
-
-            if (!remove) {
-                allSuccess.set(false);
-            }
-
-            return remove;
-        });
-        return allSuccess.get();
+        }
+        return bitSet.cardinality() == size;
     }
 
     @Override
