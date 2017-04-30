@@ -35,15 +35,14 @@ import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -92,7 +91,7 @@ public class RegisteredCommand {
             if (resolver != null) {
                 resolvers[i] = resolver;
 
-                if (type == World.class || resolver instanceof SenderAwareContextResolver || parameter.getAnnotation(Optional.class) != null
+                if (resolver instanceof SenderAwareContextResolver || parameter.getAnnotation(Optional.class) != null
                         || parameter.getAnnotation(Default.class) != null) {
                     optionalResolvers++;
                 } else {
@@ -108,7 +107,7 @@ public class RegisteredCommand {
                     }
                 }
             } else {
-                ACFUtil.sneaky(new InvalidConfigurationException(
+                ACFUtil.sneaky(new InvalidParameterException(
                     "Parameter " + type.getSimpleName() + " of " + this.command + " has no resolver"
                 ));
             }
