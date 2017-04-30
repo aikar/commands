@@ -46,7 +46,8 @@ public class BukkitCommandCompletions extends CommandCompletions {
         });
         registerCompletion("chatcolors", (sender, config, input, c) -> {
             final Stream<String> normal = Stream.of(ChatColor.values())
-                    .map(entityType -> ACFUtil.simplifyString(entityType.name()));
+                    .filter(color -> color.ordinal() <= 0xF)
+                    .map(color -> ACFUtil.simplifyString(color.name()));
             return normal.collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, config, input, c) -> (
