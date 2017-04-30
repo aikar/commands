@@ -23,8 +23,10 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Split;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -126,14 +128,41 @@ public class CommandCompletions {
         private final CommandSender sender;
         private final String input;
         private final String config;
+        private final Map<String, String> configs = Maps.newHashMap();
         private final List<String> args;
 
         CommandCompletionContext(RegisteredCommand command, CommandSender sender, String input, String config, String[] args) {
             this.command = command;
             this.sender = sender;
             this.input = input;
-            this.config = config;
+            if (config != null) {
+                String[] configs = ACFPatterns.COMMA.split(config);
+                for (String conf : configs) {
+                    String[] confsplit = ACFPatterns.EQUALS.split(conf, 2);
+                    this.configs.put(confsplit[0].toLowerCase(), confsplit.length > 1 ? confsplit[1] : null);
+                }
+                this.config = configs[0];
+            } else {
+                this.config = null;
+            }
+
             this.args = Lists.newArrayList(args);
+        }
+
+        public Map<String, String> getConfigs() {
+            return configs;
+        }
+
+        public String getConfig(String key) {
+            return getConfig(key, null);
+        }
+
+        public String getConfig(String key, String def) {
+            return this.configs.getOrDefault(key.toLowerCase(), def);
+        }
+
+        public boolean hasConfig(String key) {
+            return this.configs.containsKey(key.toLowerCase());
         }
 
         public <T> T getContextValue(Class<? extends T> clazz) throws InvalidCommandArgument {

@@ -32,6 +32,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,9 +51,17 @@ public class BukkitCommandCompletions extends CommandCompletions {
         });
         registerCompletion("chatcolors", (sender, config, input, c) -> {
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
-            if ("colorsonly".equalsIgnoreCase(config)) {
+            if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
             }
+            String filter = c.getConfig("filter");
+            if (filter != null) {
+                Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter))
+                        .map(ACFUtil::simplifyString).collect(Collectors.toSet());
+
+                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.name())));
+            }
+
             return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, config, input, c) -> (

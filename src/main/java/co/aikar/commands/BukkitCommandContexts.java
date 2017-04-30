@@ -87,6 +87,12 @@ public class BukkitCommandContexts extends CommandContexts {
             if (c.hasFlag("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
             }
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
+                filter = ACFUtil.simplifyString(filter);
+                String finalFilter = filter;
+                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.name())));
+            }
 
             ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);
             if (match == null) {
