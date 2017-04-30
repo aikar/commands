@@ -83,32 +83,38 @@ public class CommandCompletions {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
-        String[] complete = ACFPatterns.COLONEQUALS.split(completion, 2);
+        List<String> allCompletions = Lists.newArrayList();
 
-        CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
-        if (handler != null) {
-            String config = complete.length == 1 ? null : complete[1];
-            CommandCompletionContext context = new CommandCompletionContext(command, sender, input, config, args);
+        for (String value : ACFPatterns.PIPE.split(completion)) {
+            String[] complete = ACFPatterns.COLONEQUALS.split(value, 2);
+            CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
+            if (handler != null) {
+                String config = complete.length == 1 ? null : complete[1];
+                CommandCompletionContext context = new CommandCompletionContext(command, sender, input, config, args);
 
-            try {
-                Collection<String> completions = handler.getCompletions(sender, config, input, context);
-                if (completions != null) {
-                    return Lists.newArrayList(completions);
+                try {
+                    Collection<String> completions = handler.getCompletions(sender, config, input, context);
+                    if (completions != null) {
+                        allCompletions.addAll(completions);
+                        continue;
+                    }
+                    //noinspection ConstantIfStatement,ConstantConditions
+                    if (false) { // Hack to fool compiler. since its sneakily thrown.
+                        throw new CommandCompletionTextLookupException();
+                    }
+                } catch (CommandCompletionTextLookupException ignored) {
+                    // This should only happen if some other feedback error occured.
+                } catch (Exception e) {
+                    command.handleException(sender, Lists.newArrayList(args), e);
                 }
-                //noinspection ConstantIfStatement,ConstantConditions
-                if (false) { // Hack to fool compiler. since its sneakily thrown.
-                    throw new CommandCompletionTextLookupException();
-                }
-            } catch (CommandCompletionTextLookupException ignored) {
-                // This should only happen if some other feedback error occured.
-            } catch (Exception e) {
-                command.handleException(sender, Lists.newArrayList(args), e);
+                // Something went wrong in lookup, fall back to input
+                return ImmutableList.of(input);
+            } else {
+                // Plaintext value
+                allCompletions.add(value);
             }
-            // Something went wrong in lookup, fall back to input
-            return ImmutableList.of(input);
         }
-        // Plaintext values.
-        return Lists.newArrayList(ACFPatterns.PIPE.split(completion));
+        return allCompletions;
     }
 
     public interface CommandCompletionHandler {
