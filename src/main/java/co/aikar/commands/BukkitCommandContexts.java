@@ -91,7 +91,7 @@ public class BukkitCommandContexts extends CommandContexts {
             ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);
             if (match == null) {
                 String valid = colors
-                        .map(color -> color + ACFUtil.simplifyString(color.name()))
+                        .map(color -> ChatColor.YELLOW + ACFUtil.simplifyString(color.name()))
                         .collect(Collectors.joining("&c, "));
 
                 throw new InvalidCommandArgument("Please specify one of: " + valid);
