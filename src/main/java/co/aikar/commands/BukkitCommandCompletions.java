@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -41,6 +42,11 @@ public class BukkitCommandCompletions extends CommandCompletions {
         registerCompletion("mobs", (sender, config, input, c) -> {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
+            return normal.collect(Collectors.toList());
+        });
+        registerCompletion("chatcolors", (sender, config, input, c) -> {
+            final Stream<String> normal = Stream.of(ChatColor.values())
+                    .map(entityType -> ACFUtil.simplifyString(entityType.name()));
             return normal.collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, config, input, c) -> (
