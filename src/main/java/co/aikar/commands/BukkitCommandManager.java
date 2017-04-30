@@ -27,6 +27,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
@@ -58,6 +62,19 @@ public class BukkitCommandManager implements CommandManager {
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
+        Bukkit.getPluginManager().registerEvents(
+                new Listener() {
+                    @EventHandler
+                    public void onPluginDisable(PluginDisableEvent event) {
+                        if (!(event.getPlugin().equals(plugin))) {
+                            return;
+                        }
+
+                        unregisterCommands();
+                    }
+                },
+                plugin
+        );
     }
 
     @Override
