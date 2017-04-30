@@ -91,13 +91,13 @@ public class RegisteredCommand {
             if (resolver != null) {
                 resolvers[i] = resolver;
 
-                if (resolver instanceof SenderAwareContextResolver || parameter.getAnnotation(Optional.class) != null
-                        || parameter.getAnnotation(Default.class) != null) {
-                    optionalResolvers++;
-                } else {
-                    nonSenderAwareResolvers++;
-                }
                 if (!CommandSender.class.isAssignableFrom(parameter.getType())) {
+                    if (resolver instanceof SenderAwareContextResolver || parameter.getAnnotation(Optional.class) != null
+                            || parameter.getAnnotation(Default.class) != null) {
+                        optionalResolvers++;
+                    } else {
+                        nonSenderAwareResolvers++;
+                    }
                     if (parameter.getAnnotation(Default.class) != null ||
                         parameter.getAnnotation(Optional.class) != null ||
                         resolver instanceof SenderAwareContextResolver) {

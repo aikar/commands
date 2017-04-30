@@ -347,14 +347,13 @@ public abstract class BaseCommand extends Command {
 
         final CommandSearch search = findSubCommand(args, true);
 
-        if (search != null) {
-            args = Arrays.copyOfRange(args, search.argIndex, args.length);
-            return completeCommand(sender, search.cmd, args, commandLabel);
-        }
-
         String argString = StringUtils.join(args, " ").toLowerCase();
 
         final List<String> cmds = new ArrayList<>();
+
+        if (search != null) {
+            cmds.addAll(completeCommand(sender, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
+        }
 
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
