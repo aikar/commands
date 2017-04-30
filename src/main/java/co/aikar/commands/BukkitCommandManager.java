@@ -34,10 +34,8 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager implements CommandManager {
@@ -62,14 +60,15 @@ public class BukkitCommandManager implements CommandManager {
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
+        this.knownCommands = new HashMap<>();
         Bukkit.getPluginManager().registerEvents(
                 new Listener() {
                     @EventHandler
                     public void onPluginDisable(PluginDisableEvent event) {
-                        if (!(event.getPlugin().equals(plugin))) {
+                        plugin.getLogger().info("Unregistering commands from ACF!");
+                        if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
                             return;
                         }
-
                         unregisterCommands();
                     }
                 },
@@ -88,9 +87,6 @@ public class BukkitCommandManager implements CommandManager {
 
     @Override
     public Map<String, BaseCommand> getKnownCommands() {
-        if (this.knownCommands == null) {
-            this.knownCommands = new HashMap<>();
-        }
         return knownCommands;
     }
 
@@ -132,7 +128,21 @@ public class BukkitCommandManager implements CommandManager {
 
     @Override
     public boolean unregisterCommand(BaseCommand command) {
-        return command.unregister(commandMap);
+        AtomicBoolean allSuccess = new AtomicBoolean(false);
+        command.registeredCommands.entrySet().removeIf(entry -> {
+            boolean remove = entry.getValue().unregister(commandMap);
+
+            if (remove) {
+                commandMap.getKnownCommands().remove(entry.getKey());
+            }
+
+            if (!remove) {
+                allSuccess.set(false);
+            }
+
+            return remove;
+        });
+        return allSuccess.get();
     }
 
     @Override
