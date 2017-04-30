@@ -39,6 +39,7 @@ final class ACFPatterns {
     public static final Pattern SPACE = Pattern.compile(" ");
     public static final Pattern SEMICOLON = Pattern.compile(";");
     public static final Pattern COLON = Pattern.compile(":");
+    public static final Pattern COLONEQUALS = Pattern.compile("([:=])");
     public static final Pattern PIPE = Pattern.compile("\\|");
     public static final Pattern NON_ALPHA_NUMERIC = Pattern.compile("[^a-zA-Z0-9]");
     public static final Pattern INTEGER = Pattern.compile("^[0-9]+$");

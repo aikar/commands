@@ -83,7 +83,7 @@ public class CommandCompletions {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
-        String[] complete = ACFPatterns.COLON.split(completion, 2);
+        String[] complete = ACFPatterns.COLONEQUALS.split(completion, 2);
 
         CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
         if (handler != null) {
