@@ -81,10 +81,25 @@ public class CommandContexts {
             if (values != null) {
                 return c.popFirstArg();
             }
-            if (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) {
-                return ACFUtil.join(c.getArgs());
+            String ret = (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) ?
+                ACFUtil.join(c.getArgs())
+                :
+                c.popFirstArg();
+
+            Integer minLen = c.getFlagValue("minlen", (Integer) null);
+            Integer maxLen = c.getFlagValue("maxlen", (Integer) null);
+            if (minLen != null) {
+                if (ret.length() < minLen) {
+                    throw new InvalidCommandArgument("Must be at least " + minLen + " characters long");
+                }
             }
-            return c.popFirstArg();
+            if (maxLen != null) {
+                if (ret.length() > maxLen) {
+                    throw new InvalidCommandArgument("Must be less " + maxLen + " characters long");
+                }
+            }
+
+            return ret;
         });
         registerContext(String[].class, (c) -> {
             String val;
