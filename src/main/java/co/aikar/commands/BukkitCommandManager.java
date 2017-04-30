@@ -99,11 +99,13 @@ public class BukkitCommandManager implements CommandManager {
         command.onRegister(this);
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
-            if (!commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
+            boolean success;
+
+            if (!(success = commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue()))) {
                 allSuccess = false;
             }
 
-            if (allSuccess) {
+            if (success) {
                 knownCommands.put(entry.getKey(), command);
             }
         }
