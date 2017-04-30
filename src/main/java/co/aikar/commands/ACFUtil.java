@@ -632,7 +632,7 @@ public final class ACFUtil {
         return newLoc;
     }
 
-    @Nullable public static Enum<?> simpleMatch(Class<? extends Enum<?>> list, String item) {
+    @Nullable public static <E extends Enum<E>> E simpleMatch(Class<? extends Enum<?>> list, String item) {
         if (item == null) {
             return null;
         }
@@ -640,7 +640,8 @@ public final class ACFUtil {
         for (Enum<?> s : list.getEnumConstants()) {
             String simple = ACFUtil.simplifyString(s.name());
             if (item.equals(simple)) {
-                return s;
+                //noinspection unchecked
+                return (E) s;
             }
         }
 

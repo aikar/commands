@@ -45,10 +45,11 @@ public class BukkitCommandCompletions extends CommandCompletions {
             return normal.collect(Collectors.toList());
         });
         registerCompletion("chatcolors", (sender, config, input, c) -> {
-            final Stream<String> normal = Stream.of(ChatColor.values())
-                    .filter(color -> color.ordinal() <= 0xF)
-                    .map(color -> ACFUtil.simplifyString(color.name()));
-            return normal.collect(Collectors.toList());
+            Stream<ChatColor> colors = Stream.of(ChatColor.values());
+            if ("colorsonly".equalsIgnoreCase(config)) {
+                colors = colors.filter(color -> color.ordinal() <= 0xF);
+            }
+            return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
         registerCompletion("worlds", (sender, config, input, c) -> (
             Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())

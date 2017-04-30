@@ -26,11 +26,16 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandContexts extends CommandContexts {
@@ -75,6 +80,23 @@ public class BukkitCommandContexts extends CommandContexts {
                 throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
             }
             return player;
+        });
+        registerContext(ChatColor.class, c -> {
+            String first = c.popFirstArg();
+            Stream<ChatColor> colors = Stream.of(ChatColor.values());
+            if (c.hasFlag("colorsonly")) {
+                colors = colors.filter(color -> color.ordinal() <= 0xF);
+            }
+
+            ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);
+            if (match == null) {
+                String valid = colors
+                        .map(color -> color + ACFUtil.simplifyString(color.name()))
+                        .collect(Collectors.joining("&c, "));
+
+                throw new InvalidCommandArgument("Please specify one of: " + valid);
+            }
+            return match;
         });
     }
 }
