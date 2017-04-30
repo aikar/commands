@@ -30,7 +30,10 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager implements CommandManager {
@@ -38,6 +41,7 @@ public class BukkitCommandManager implements CommandManager {
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
+    protected Map<String, BaseCommand> knownCommands;
     protected CommandContexts contexts;
     protected CommandCompletions completions;
 
@@ -63,6 +67,14 @@ public class BukkitCommandManager implements CommandManager {
 
     public CommandMap getCommandMap() {
         return commandMap;
+    }
+
+    @Override
+    public Map<String, BaseCommand> getKnownCommands() {
+        if (this.knownCommands == null) {
+            this.knownCommands = new HashMap<>();
+        }
+        return knownCommands;
     }
 
     @Override
@@ -93,5 +105,26 @@ public class BukkitCommandManager implements CommandManager {
         }
 
         return allSuccess;
+    }
+
+    @Override
+    public boolean unregisterCommand(BaseCommand command) {
+        return command.unregister(commandMap);
+    }
+
+    @Override
+    public boolean unregisterCommands() {
+        boolean allSuccess = true;
+        for (Map.Entry<String, BaseCommand> entry : knownCommands.entrySet()) {
+            if (!(unregisterCommand(entry.getValue()))) {
+                allSuccess = false;
+            }
+        }
+        return allSuccess;
+    }
+
+    @Override
+    public BaseCommand getCommandByAlias(String alias) {
+        return knownCommands.get(alias);
     }
 }
