@@ -26,7 +26,6 @@ package co.aikar.commands;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
-import java.util.Set;
 
 public interface CommandManager {
 
