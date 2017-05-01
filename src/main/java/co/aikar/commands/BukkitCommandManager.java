@@ -27,10 +27,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager implements CommandManager {
@@ -38,6 +41,7 @@ public class BukkitCommandManager implements CommandManager {
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
+    protected Map<String, BaseCommand> knownCommands;
     protected CommandContexts contexts;
     protected CommandCompletions completions;
 
@@ -54,6 +58,19 @@ public class BukkitCommandManager implements CommandManager {
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
+        this.knownCommands = new HashMap<>();
+        Bukkit.getPluginManager().registerEvents(
+                new Listener() {
+                    @EventHandler
+                    public void onPluginDisable(PluginDisableEvent event) {
+                        if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
+                            return;
+                        }
+                        unregisterCommands();
+                    }
+                },
+                plugin
+        );
     }
 
     @Override
@@ -63,6 +80,11 @@ public class BukkitCommandManager implements CommandManager {
 
     public CommandMap getCommandMap() {
         return commandMap;
+    }
+
+    @Override
+    public Map<String, BaseCommand> getKnownCommands() {
+        return knownCommands;
     }
 
     @Override
@@ -87,11 +109,44 @@ public class BukkitCommandManager implements CommandManager {
         command.onRegister(this);
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
-            if (!commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue())) {
+            if (!(commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue()))) {
                 allSuccess = false;
+            } else {
+                knownCommands.put(entry.getKey(), command);
             }
         }
 
         return allSuccess;
+    }
+
+    @Override
+    public boolean unregisterCommand(BaseCommand command) {
+        boolean[] allSuccess = {true};
+        command.registeredCommands.entrySet().removeIf(entry -> {
+            boolean removed = entry.getValue().unregister(commandMap);
+            if (removed) {
+                commandMap.getKnownCommands().remove(entry.getKey());
+            } else {
+                allSuccess[0] = false;
+            }
+            return removed;
+        });
+        return allSuccess[0];
+    }
+
+    @Override
+    public boolean unregisterCommands() {
+        boolean allSuccess = true;
+        for (Map.Entry<String, BaseCommand> entry : knownCommands.entrySet()) {
+            if (!(unregisterCommand(entry.getValue()))) {
+                allSuccess = false;
+            }
+        }
+        return allSuccess;
+    }
+
+    @Override
+    public BaseCommand getCommandByAlias(String alias) {
+        return knownCommands.get(alias);
     }
 }

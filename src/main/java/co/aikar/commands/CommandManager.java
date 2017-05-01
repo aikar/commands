@@ -25,9 +25,17 @@ package co.aikar.commands;
 
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
+
 public interface CommandManager {
 
     Plugin getPlugin();
+
+    /**
+     * Gets the commands this CommandManager knows about
+     * @return the commands
+     */
+    Map<String, BaseCommand> getKnownCommands();
 
     /**
      * Gets the command contexts manager
@@ -48,4 +56,27 @@ public interface CommandManager {
      * @return boolean
      */
     boolean registerCommand(BaseCommand command);
+
+    /**
+     * Unregisters a command from ACF
+     *
+     * @param command The command to unregister
+     * @return boolean
+     */
+    boolean unregisterCommand(BaseCommand command);
+
+    /**
+     * Unregisters all commands registered via this manager from ACF
+     *
+     * @return boolean
+     */
+    boolean unregisterCommands();
+
+    /**
+     * Matches an alias to its BaseCommand instance
+     *
+     * @param alias The command alias
+     * @return The command
+     */
+    BaseCommand getCommandByAlias(String alias);
 }
