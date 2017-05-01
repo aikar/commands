@@ -122,7 +122,6 @@ public class BukkitCommandManager implements CommandManager {
     @Override
     public boolean unregisterCommand(BaseCommand command) {
         boolean[] allSuccess = {true};
-        allSuccess[0] = true;
         command.registeredCommands.entrySet().removeIf(entry -> {
             boolean removed = entry.getValue().unregister(commandMap);
             if (removed) {
