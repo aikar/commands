@@ -36,6 +36,7 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.IntStream;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager implements CommandManager {
@@ -123,19 +124,18 @@ public class BukkitCommandManager implements CommandManager {
 
     @Override
     public boolean unregisterCommand(BaseCommand command) {
-        final int size = command.registeredCommands.size();
-        final BitSet bitSet = new BitSet(size);
-        Iterator<Map.Entry<String, Command>> registeredCommands = command.registeredCommands.entrySet().iterator();
-        for (int i = 0; registeredCommands.hasNext(); i++) {
-            Map.Entry<String, Command> next = registeredCommands.next();
-            boolean remove = next.getValue().unregister(commandMap);
-            if (remove) {
-                commandMap.getKnownCommands().remove(next.getKey());
+        boolean[] allSuccess = new boolean[0];
+        allSuccess[0] = true;
+        command.registeredCommands.entrySet().removeIf(entry -> {
+            boolean removed = entry.getValue().unregister(commandMap);
+            if (removed) {
+                commandMap.getKnownCommands().remove(entry.getKey());
             } else {
-                bitSet.set(i, false);
+                allSuccess[0] = false;
             }
-        }
-        return bitSet.cardinality() == size;
+            return removed;
+        });
+        return allSuccess[0];
     }
 
     @Override
