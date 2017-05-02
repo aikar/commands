@@ -32,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -41,7 +42,8 @@ public class BukkitCommandManager implements CommandManager {
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
-    protected Map<String, BaseCommand> knownCommands;
+    protected Map<String, Command> knownCommands = new HashMap<>();
+    protected Map<String, BaseCommand> registeredCommands = new HashMap<>();
     protected CommandContexts contexts;
     protected CommandCompletions completions;
 
@@ -53,24 +55,16 @@ public class BukkitCommandManager implements CommandManager {
             Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");
             getCommandMap.setAccessible(true);
             commandMap = (CommandMap) getCommandMap.invoke(server);
+            Field knownCommands = commandMap.getClass().getDeclaredField("knownCommands");
+            knownCommands.setAccessible(true);
+            //noinspection unchecked
+            this.knownCommands = (Map<String, Command>) knownCommands.get(commandMap);
         } catch (Exception e) {
             ACFLog.severe("Failed to get Command Map. ACF will not function.");
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
-        this.knownCommands = new HashMap<>();
-        Bukkit.getPluginManager().registerEvents(
-                new Listener() {
-                    @EventHandler
-                    public void onPluginDisable(PluginDisableEvent event) {
-                        if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
-                            return;
-                        }
-                        unregisterCommands();
-                    }
-                },
-                plugin
-        );
+        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
     }
 
     @Override
@@ -80,11 +74,6 @@ public class BukkitCommandManager implements CommandManager {
 
     public CommandMap getCommandMap() {
         return commandMap;
-    }
-
-    @Override
-    public Map<String, BaseCommand> getKnownCommands() {
-        return knownCommands;
     }
 
     @Override
@@ -109,44 +98,50 @@ public class BukkitCommandManager implements CommandManager {
         command.onRegister(this);
         boolean allSuccess = true;
         for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
-            if (!(commandMap.register(entry.getKey().toLowerCase(), plugin, entry.getValue()))) {
+            String key = entry.getKey().toLowerCase();
+            if (!(commandMap.register(key, plugin, entry.getValue()))) {
                 allSuccess = false;
-            } else {
-                knownCommands.put(entry.getKey(), command);
             }
+            registeredCommands.put(key, command);
         }
 
         return allSuccess;
     }
 
-    @Override
-    public boolean unregisterCommand(BaseCommand command) {
-        boolean[] allSuccess = {true};
+    public void unregisterCommand(BaseCommand command) {
+        final String plugin = this.plugin.getName().toLowerCase();
         command.registeredCommands.entrySet().removeIf(entry -> {
-            boolean removed = entry.getValue().unregister(commandMap);
-            if (removed) {
-                commandMap.getKnownCommands().remove(entry.getKey());
-            } else {
-                allSuccess[0] = false;
+            Command cmd = entry.getValue();
+            cmd.unregister(commandMap);
+            String key = entry.getKey();
+            Command registered = knownCommands.get(key);
+            if (registered == command) {
+                knownCommands.remove(key);
             }
-            return removed;
+            knownCommands.remove(plugin + ":" + key);
+            return true;
         });
-        return allSuccess[0];
     }
 
-    @Override
-    public boolean unregisterCommands() {
-        boolean allSuccess = true;
-        for (Map.Entry<String, BaseCommand> entry : knownCommands.entrySet()) {
-            if (!(unregisterCommand(entry.getValue()))) {
-                allSuccess = false;
-            }
+    public void unregisterCommands() {
+        for (Map.Entry<String, BaseCommand> entry : registeredCommands.entrySet()) {
+            unregisterCommand(entry.getValue());
         }
-        return allSuccess;
     }
 
-    @Override
-    public BaseCommand getCommandByAlias(String alias) {
-        return knownCommands.get(alias);
+    private class ACFBukkitListener implements Listener {
+        private final Plugin plugin;
+
+        public ACFBukkitListener(Plugin plugin) {
+            this.plugin = plugin;
+        }
+
+        @EventHandler
+        public void onPluginDisable(PluginDisableEvent event) {
+            if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
+                return;
+            }
+            unregisterCommands();
+        }
     }
 }
