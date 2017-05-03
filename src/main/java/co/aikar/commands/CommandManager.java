@@ -23,9 +23,8 @@
 
 package co.aikar.commands;
 
+import co.aikar.timings.lib.TimingManager;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Map;
 
 public interface CommandManager {
 
@@ -50,4 +49,6 @@ public interface CommandManager {
      * @return boolean
      */
     boolean registerCommand(BaseCommand command);
+
+    TimingManager getTimings();
 }

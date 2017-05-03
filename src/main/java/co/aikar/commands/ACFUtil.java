@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.timings.lib.CommandTiming;
 import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -862,45 +863,7 @@ public final class ACFUtil {
         throw (T) t;
     }
 
-    static TimingType timingProvider;
-    public static synchronized CommandTiming getTiming(BaseCommand cmd, String command) {
-        if (timingProvider == null) {
-            try {
-                Class.forName("co.aikar.timings.Timing");
-                timingProvider = TimingType.MINECRAFT;
-            } catch (ClassNotFoundException ignored1) {
-                try {
-                    Class.forName("org.spigotmc.CustomTimingsHandler");
-                    timingProvider = TimingType.SPIGOT;
-                } catch (ClassNotFoundException ignored2) {
-                    timingProvider = TimingType.EMPTY;
-                }
-            }
-        }
-        return timingProvider.newTiming(cmd, command);
-    }
-
     static boolean isValidItem(ItemStack item) {
         return item != null && item.getType() != Material.AIR && item.getAmount() > 0;
-    }
-
-    private enum TimingType {
-        SPIGOT() {
-            @Override
-            CommandTiming newTiming(BaseCommand cmd, String command) {
-                return new SpigotTiming(command);
-            }
-        },
-        MINECRAFT() {
-            @Override
-            CommandTiming newTiming(BaseCommand cmd, String command) {
-                return new MinecraftTiming(cmd, command);
-            }
-        },
-        EMPTY();
-
-        CommandTiming newTiming(BaseCommand cmd, String command) {
-            return new EmptyTiming();
-        }
     }
 }

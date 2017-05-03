@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.timings.lib.TimingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -42,6 +43,7 @@ public class BukkitCommandManager implements CommandManager {
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
+    private final TimingManager timingManager;
     protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BaseCommand> registeredCommands = new HashMap<>();
     protected CommandContexts contexts;
@@ -49,6 +51,7 @@ public class BukkitCommandManager implements CommandManager {
 
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
+        this.timingManager = TimingManager.of(plugin);
         CommandMap commandMap = null;
         try {
             Server server = Bukkit.getServer();
@@ -143,5 +146,10 @@ public class BukkitCommandManager implements CommandManager {
             }
             unregisterCommands();
         }
+    }
+
+    @Override
+    public TimingManager getTimings() {
+        return timingManager;
     }
 }

@@ -32,6 +32,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
+import co.aikar.timings.lib.CommandTiming;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -208,7 +209,7 @@ public class RegisteredCommand {
 
     CommandTiming getTiming() {
         if (this.timing == null) {
-            this.timing = ACFUtil.getTiming(scope, command);
+            this.timing = scope.manager.getTimings().of("Command: " + command);
         }
         return this.timing;
     }
