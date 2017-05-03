@@ -27,7 +27,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
-import co.aikar.timings.lib.CommandTiming;
+import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -327,7 +327,7 @@ public abstract class BaseCommand extends Command {
     private static void executeCommand(CommandSender sender, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(sender)) {
             List<String> sargs = Lists.newArrayList(args);
-            try (CommandTiming timing = cmd.getTiming().startTiming()) {
+            try (MCTiming timing = cmd.getTiming().startTiming()) {
                 cmd.invoke(sender, sargs);
             }
         } else {

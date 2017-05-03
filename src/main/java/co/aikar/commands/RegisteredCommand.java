@@ -32,7 +32,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
-import co.aikar.timings.lib.CommandTiming;
+import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -62,7 +62,7 @@ public class RegisteredCommand {
     final CommandCompletion complete;
     final int nonSenderAwareResolvers;
     final int optionalResolvers;
-    private CommandTiming timing;
+    private MCTiming timing;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -207,7 +207,7 @@ public class RegisteredCommand {
         return passedArgs;
     }
 
-    CommandTiming getTiming() {
+    MCTiming getTiming() {
         if (this.timing == null) {
             this.timing = scope.manager.getTimings().of("Command: " + command);
         }

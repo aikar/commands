@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.timings.lib.CommandTiming;
 import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
