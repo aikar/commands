@@ -67,7 +67,7 @@ public class BukkitCommandManager extends CommandManager {
                 ACFLog.severe("We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");
                 ACFLog.severe("We can not guarantee things are going to work.");
                 Field cmField = server.getClass().getDeclaredField("commandMap");
-                cmField.set(server, new ProxyCommandMap(commandMap));
+                cmField.set(server, commandMap = new ProxyCommandMap(commandMap));
                 ACFLog.info("Injected Proxy Command Map... good luck...");
             }
             Field knownCommands = commandMap.getClass().getDeclaredField("knownCommands");
