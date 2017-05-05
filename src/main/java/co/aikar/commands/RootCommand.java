@@ -79,11 +79,11 @@ public class RootCommand extends Command {
         }
         command.subCommands.keySet().forEach(key -> {
             BaseCommand regged = this.subCommands.get(key);
-            /*if (regged != null) {
+            if (regged != null) {
                 ACFLog.severe("ACF Error: " + command.getLabel() + " registered subcommand " + key + " - but it is already defined in " + regged.getLabel());
                 ACFLog.severe("2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
                 return;
-            }*/
+            }
             this.subCommands.put(key, command);
         });
         this.children.add(command);

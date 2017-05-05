@@ -29,7 +29,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class ForwardingCommand extends Command {
+public class ForwardingCommand extends BaseCommand {
     private final Command command;
     private final String[] baseArgs;
     private static final String[] NO_ARGS =  new String[0];

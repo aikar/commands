@@ -180,10 +180,10 @@ public abstract class BaseCommand extends Command {
         register(getName(), this);
     }
 
-    private void register(String name, Command cmd) {
+    private void register(String name, BaseCommand cmd) {
         String nameLower = name.toLowerCase();
         RootCommand rootCommand = manager.obtainRootCommand(nameLower);
-        rootCommand.addChild(this);
+        rootCommand.addChild(cmd);
         this.registeredCommands.put(nameLower, rootCommand);
     }
 
@@ -254,7 +254,7 @@ public abstract class BaseCommand extends Command {
     }
 
     @Override
-    public final boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         commandLabel = commandLabel.toLowerCase();
 
         execSubcommand = null;
