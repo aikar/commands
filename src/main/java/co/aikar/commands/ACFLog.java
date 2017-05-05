@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 @SuppressWarnings("WeakerAccess")
 final class ACFLog {
     private static final Logger LOGGER = Bukkit.getLogger();
+    public static final String PREFIX = "[ACF] ";
 
     private ACFLog() {}
 
@@ -42,19 +43,19 @@ final class ACFLog {
 
     public static void info(String message) {
         for (String s : ACFPatterns.NEWLINE.split(message)) {
-            LOGGER.info(s);
+            LOGGER.info(PREFIX + s);
         }
     }
 
     public static void warn(String message) {
         for (String s : ACFPatterns.NEWLINE.split(message)) {
-            LOGGER.warning(s);
+            LOGGER.warning(PREFIX + s);
         }
     }
 
     public static void severe(String message) {
         for (String s : ACFPatterns.NEWLINE.split(message)) {
-            LOGGER.severe(s);
+            LOGGER.severe(PREFIX + s);
         }
     }
 
@@ -89,7 +90,7 @@ final class ACFLog {
         final StackTraceElement[] stack = dbg.getStackTrace();
         for (int i = 0; i < lines && i < stack.length; i++) {
             final StackTraceElement cur = stack[i];
-            Logger.getGlobal().severe("  " + cur);
+            severe("  " + cur);
         }
     }
 }

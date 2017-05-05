@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -58,6 +59,10 @@ public class BukkitCommandManager extends CommandManager {
             Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");
             getCommandMap.setAccessible(true);
             commandMap = (CommandMap) getCommandMap.invoke(server);
+            if (!commandMap.getClass().equals(SimpleCommandMap.class)) {
+                ACFLog.severe("ERROR: CommandMap has been hijacked! Offending command map is located at: " + commandMap.getClass().getName());
+                ACFLog.severe("Commands are most likely broken unless the hijacker did it in a friendly way.");
+            }
             Field knownCommands = commandMap.getClass().getDeclaredField("knownCommands");
             knownCommands.setAccessible(true);
             //noinspection unchecked
