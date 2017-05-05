@@ -78,6 +78,9 @@ public class RootCommand extends Command {
             this.defCommand = command;
         }
         command.subCommands.keySet().forEach(key -> {
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
+                return;
+            }
             BaseCommand regged = this.subCommands.get(key);
             if (regged != null) {
                 ACFLog.severe("ACF Error: " + command.getLabel() + " registered subcommand " + key + " - but it is already defined in " + regged.getLabel());

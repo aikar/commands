@@ -27,6 +27,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -55,6 +56,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public abstract class BaseCommand extends Command {
 
+    public static final String UNKNOWN = "__unknown";
+    public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
 
     @SuppressWarnings("WeakerAccess")
@@ -134,6 +137,7 @@ public abstract class BaseCommand extends Command {
         }
 
         boolean foundDefault = false;
+        boolean foundUnknown = false;
         for (Method method : self.getDeclaredMethods()) {
             method.setAccessible(true);
             String sublist = null;
@@ -144,10 +148,10 @@ public abstract class BaseCommand extends Command {
 
             if (def != null) {
                 if (!foundDefault) {
-                    registerSubcommand(method, "__default");
+                    registerSubcommand(method, DEFAULT);
                     foundDefault = true;
                 } else {
-                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands"));
+                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             }
             if (sub != null) {
@@ -158,15 +162,19 @@ public abstract class BaseCommand extends Command {
             if (sublist != null) {
                 registerSubcommand(method, sublist);
             }
+
+
+            //CommandSender.class, String.class, String[].class
+            UnknownHandler unknown = method.getAnnotation(UnknownHandler.class);
+            if (unknown != null) {
+                if (!foundUnknown) {
+                    registerSubcommand(method, UNKNOWN);
+                    foundUnknown = true;
+                } else {
+                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @UnknownHandler commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                }
+            }
         }
-
-        try {
-            // TODO: Annotation based
-            Method unknown = self.getMethod("onUnknown", CommandSender.class, String.class, String[].class);
-            unknown.setAccessible(true);
-            registerSubcommand(unknown, "__unknown");
-        } catch (NoSuchMethodException ignored) {}
-
 
         if (rootCmdAlias != null) {
             List<String> cmdList = new ArrayList<>();
@@ -265,7 +273,7 @@ public abstract class BaseCommand extends Command {
             if (preCommand(sender, commandLabel, args)) {
                 return true;
             }
-            onDefault(sender, commandLabel);
+            executeSubcommand(DEFAULT, sender);
             return true;
         }
 
@@ -280,7 +288,7 @@ public abstract class BaseCommand extends Command {
             return true;
         }
 
-        if (!onUnknown(sender, commandLabel, args)) {
+        if (!executeSubcommand(UNKNOWN, sender, args)) {
             help(sender, args);
         }
         return true;
@@ -358,7 +366,7 @@ public abstract class BaseCommand extends Command {
 
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
-            if (key.startsWith(argString) && !"__unknown".equals(key) && !"__default".equals(key)) {
+            if (key.startsWith(argString) && !UNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(sender)) {
                     continue;
@@ -398,15 +406,8 @@ public abstract class BaseCommand extends Command {
         ACFUtil.sendMsg(sender, "&cUnknown Command, please type &f/help");
     }
 
-    public void onDefault(CommandSender sender, String commandLabel) {
-        executeDefault(sender);
-    }
-    public boolean onUnknown(CommandSender sender, String commandLabel, String[] args) {
-        help(sender, args);
-        return true;
-    }
-    public boolean executeDefault(CommandSender sender,  String... args) {
-        final Set<RegisteredCommand> defs = subCommands.get("__default");
+    private boolean executeSubcommand(String subcommand, CommandSender sender, String... args) {
+        final Set<RegisteredCommand> defs = subCommands.get(subcommand);
         RegisteredCommand def = null;
         if (!defs.isEmpty()) {
             if (defs.size() == 1) {
@@ -428,7 +429,7 @@ public abstract class BaseCommand extends Command {
         help(sender, args);
     }
 
-    public void showSyntax(CommandSender sender,  RegisteredCommand cmd) {
+    public void showSyntax(CommandSender sender, RegisteredCommand cmd) {
         ACFUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
