@@ -54,16 +54,19 @@ public class RootCommand extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (!this.defCommand.testPermission(sender)) {
-            return true;
-        }
         for (int i = args.length; i >= 0; i--) {
             String checkSub = StringUtils.join(args, " ", 0, i).toLowerCase();
             BaseCommand subHandler = this.subCommands.get(checkSub);
             if (subHandler != null) {
+                if (!subHandler.testPermission(sender)) {
+                    return true;
+                }
                 subHandler.execute(sender, commandLabel, args);
                 return false;
             }
+        }
+        if (!this.defCommand.testPermission(sender)) {
+            return true;
         }
         this.defCommand.execute(sender, commandLabel, args);
         return false;
