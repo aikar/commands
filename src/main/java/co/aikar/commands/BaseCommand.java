@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public abstract class BaseCommand extends Command {
 
-    private final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
 
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
@@ -64,7 +64,7 @@ public abstract class BaseCommand extends Command {
     @SuppressWarnings("WeakerAccess")
     private String[] origArgs;
     CommandManager manager = null;
-    Map<String, Command> registeredCommands = new HashMap<>();
+    Map<String, RootCommand> registeredCommands = new HashMap<>();
 
     public BaseCommand() {
         this(null);
@@ -161,6 +161,7 @@ public abstract class BaseCommand extends Command {
         }
 
         try {
+            // TODO: Annotation based
             Method unknown = self.getMethod("onUnknown", CommandSender.class, String.class, String[].class);
             unknown.setAccessible(true);
             registerSubcommand(unknown, "__unknown");
@@ -180,7 +181,10 @@ public abstract class BaseCommand extends Command {
     }
 
     private void register(String name, Command cmd) {
-        this.registeredCommands.put(name.toLowerCase(), cmd);
+        String nameLower = name.toLowerCase();
+        RootCommand rootCommand = manager.obtainRootCommand(nameLower);
+        rootCommand.addChild(this);
+        this.registeredCommands.put(nameLower, rootCommand);
     }
 
     private void registerSubcommand(Method method, String subCommand) {
@@ -251,9 +255,6 @@ public abstract class BaseCommand extends Command {
 
     @Override
     public final boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (!testPermission(sender)) {
-            return true;
-        }
         commandLabel = commandLabel.toLowerCase();
 
         execSubcommand = null;
@@ -345,7 +346,6 @@ public abstract class BaseCommand extends Command {
 
         commandLabel = commandLabel.toLowerCase();
 
-
         final CommandSearch search = findSubCommand(args, true);
 
         String argString = StringUtils.join(args, " ").toLowerCase();
@@ -367,17 +367,6 @@ public abstract class BaseCommand extends Command {
 
                 final String[] psplit = ACFPatterns.SPACE.split(prefCommand);
                 cmds.add(psplit[args.length - 1]);
-            }
-        }
-
-        final Set<RegisteredCommand> unknownCmds = subCommands.get("__unknown");
-        if (cmds.isEmpty() && !unknownCmds.isEmpty()) {
-            RegisteredCommand unknownCommand = null;
-            if (unknownCmds.size() == 1) {
-                unknownCommand = Iterables.getOnlyElement(unknownCmds);
-            }
-            if (unknownCommand != null) {
-                return completeCommand(sender, unknownCommand, args, commandLabel);
             }
         }
 

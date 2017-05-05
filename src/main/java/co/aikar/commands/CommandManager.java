@@ -24,23 +24,25 @@
 package co.aikar.commands;
 
 import co.aikar.timings.lib.TimingManager;
-import org.bukkit.plugin.Plugin;
 
-public interface CommandManager {
+import java.util.HashMap;
+import java.util.Map;
 
-    Plugin getPlugin();
+public abstract class CommandManager {
+
+    protected Map<String, RootCommand> rootCommands = new HashMap<>();
 
     /**
      * Gets the command contexts manager
      * @return Command Contexts
      */
-    CommandContexts getCommandContexts();
+    public abstract CommandContexts getCommandContexts();
 
     /**
      * Gets the command completions manager
      * @return Command Completions
      */
-    CommandCompletions getCommandCompletions();
+    public abstract CommandCompletions getCommandCompletions();
 
     /**
      * Registers a command with ACF
@@ -48,7 +50,11 @@ public interface CommandManager {
      * @param command The command to register
      * @return boolean
      */
-    boolean registerCommand(BaseCommand command);
+    public abstract boolean registerCommand(BaseCommand command);
 
-    TimingManager getTimings();
+    public abstract TimingManager getTimings();
+
+    public synchronized RootCommand obtainRootCommand(String cmd) {
+        return rootCommands.computeIfAbsent(cmd.toLowerCase(), k -> new RootCommand(cmd));
+    }
 }

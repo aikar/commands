@@ -23,36 +23,18 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.ACF;
-import co.aikar.commands.CommandManager;
-import com.google.common.collect.Lists;
-import org.bukkit.plugin.java.JavaPlugin;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.Subcommand;
+import org.bukkit.command.CommandSender;
 
-public final class ACFExample extends JavaPlugin {
+@CommandAlias("acf")
+public class SomeCommand_ExtraSubs extends BaseCommand {
 
-    private static ACFExample plugin;
-    private static CommandManager commandManager;
-    @Override
-    public void onEnable() {
-        plugin = this;
-        registerCommands();
-    }
-
-    private void registerCommands() {
-        commandManager = ACF.createManager(this);
-        commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
-        commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
-            Lists.newArrayList("foo", "bar", "baz")
-        ));
-        commandManager.registerCommand(new SomeCommand());
-        commandManager.registerCommand(new SomeCommand_ExtraSubs());
-    }
-
-    public static ACFExample getPlugin() {
-        return plugin;
-    }
-
-    public static CommandManager getCommandManager() {
-        return commandManager;
+    @Subcommand("testsub test2")
+    @CommandCompletion("Foo2")
+    public void onTestSub2(CommandSender sender, String hi) {
+        sender.sendMessage(hi);
     }
 }

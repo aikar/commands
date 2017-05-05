@@ -73,4 +73,10 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + misc);
     }
 
+
+    @Subcommand("testsub test1")
+    @CommandCompletion("Foo")
+    public void onTestSub1(CommandSender sender, String hi) {
+        sender.sendMessage(hi);
+    }
 }

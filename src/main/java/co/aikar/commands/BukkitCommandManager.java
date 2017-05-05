@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandManager implements CommandManager {
+public class BukkitCommandManager extends CommandManager {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
@@ -70,17 +70,12 @@ public class BukkitCommandManager implements CommandManager {
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
     }
 
-    @Override
     public Plugin getPlugin() {
         return this.plugin;
     }
 
-    public CommandMap getCommandMap() {
-        return commandMap;
-    }
-
     @Override
-    public CommandContexts getCommandContexts() {
+    public synchronized CommandContexts getCommandContexts() {
         if (this.contexts == null) {
             this.contexts = new BukkitCommandContexts();
         }
@@ -88,7 +83,7 @@ public class BukkitCommandManager implements CommandManager {
     }
 
     @Override
-    public CommandCompletions getCommandCompletions() {
+    public synchronized CommandCompletions getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new BukkitCommandCompletions();
         }
@@ -100,11 +95,13 @@ public class BukkitCommandManager implements CommandManager {
         final String plugin = this.plugin.getName().toLowerCase();
         command.onRegister(this);
         boolean allSuccess = true;
-        for (Map.Entry<String, Command> entry : command.registeredCommands.entrySet()) {
+        for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String key = entry.getKey().toLowerCase();
-            if (!(commandMap.register(key, plugin, entry.getValue()))) {
+            RootCommand value = entry.getValue();
+            if (!value.isRegistered && !(commandMap.register(key, plugin, value))) {
                 allSuccess = false;
             }
+            value.isRegistered = true;
             registeredCommands.put(key, command);
         }
 

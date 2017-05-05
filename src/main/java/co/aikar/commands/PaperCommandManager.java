@@ -34,7 +34,7 @@ public class PaperCommandManager extends BukkitCommandManager {
     }
 
     @Override
-    public CommandContexts getCommandContexts() {
+    public synchronized CommandContexts getCommandContexts() {
         if (this.contexts == null) {
             this.contexts = new PaperCommandContexts();
         }
@@ -42,7 +42,7 @@ public class PaperCommandManager extends BukkitCommandManager {
     }
 
     @Override
-    public CommandCompletions getCommandCompletions() {
+    public synchronized CommandCompletions getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new PaperCommandCompletions();
         }
