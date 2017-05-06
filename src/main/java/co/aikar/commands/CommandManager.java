@@ -28,9 +28,11 @@ import co.aikar.timings.lib.TimingManager;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
+    protected CommandReplacements replacements = new CommandReplacements();
 
     /**
      * Gets the command contexts manager
@@ -45,12 +47,25 @@ public abstract class CommandManager {
     public abstract CommandCompletions getCommandCompletions();
 
     /**
+     * Lets you add custom string replacements that can be applied to annotation values,
+     * to reduce duplication/repetition of common values such as permission nodes and command prefixes.
+     *
+     * Any replacement registered starts with a %
+     *
+     * So for ex @CommandPermission("%staff")
+     * @return Replacements Manager
+     */
+    public CommandReplacements getCommandReplacements() {
+        return replacements;
+    }
+
+    /**
      * Registers a command with ACF
      *
      * @param command The command to register
      * @return boolean
      */
-    public abstract boolean registerCommand(BaseCommand command);
+    public abstract void registerCommand(BaseCommand command);
 
     public abstract TimingManager getTimings();
 

@@ -58,7 +58,7 @@ public class CommandExecutionContext {
         Flags flags = param.getAnnotation(Flags.class);
         if (flags != null) {
             this.flags = Maps.newHashMap();
-            for (String s : ACFPatterns.COMMA.split(flags.value())) {
+            for (String s : ACFPatterns.COMMA.split(cmd.scope.manager.getCommandReplacements().replace(flags.value()))) {
                 String[] v = ACFPatterns.EQUALS.split(s, 2);
                 this.flags.put(v[0], v.length > 1 ? v[1] : null);
             }

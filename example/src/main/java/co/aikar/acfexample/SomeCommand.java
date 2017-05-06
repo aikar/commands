@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -85,13 +86,14 @@ public class SomeCommand extends BaseCommand {
     public class Test extends BaseSubCommand {
 
         @Subcommand("test1|td1")
-        @CommandCompletion("FOO")
+        @CommandCompletion("%foo")
         public void onTest1(Player player, String testX) {
             player.sendMessage("You got test inner test1: " + testX);
         }
-        @Subcommand("test2|td2")
-        @CommandCompletion("BAR")
-        public void onTest2(Player player, String testY) {
+        @Subcommand("test2|td2|%test")
+        @CommandCompletion("%test")
+        @CommandPermission("%test")
+        public void onTest2(Player player, @Values("%test") String testY) {
             player.sendMessage("You got test inner test2: " + testY);
         }
 

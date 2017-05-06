@@ -36,7 +36,7 @@ public class PaperCommandManager extends BukkitCommandManager {
     @Override
     public synchronized CommandContexts getCommandContexts() {
         if (this.contexts == null) {
-            this.contexts = new PaperCommandContexts();
+            this.contexts = new PaperCommandContexts(this);
         }
         return this.contexts;
     }
@@ -44,7 +44,7 @@ public class PaperCommandManager extends BukkitCommandManager {
     @Override
     public synchronized CommandCompletions getCommandCompletions() {
         if (this.completions == null) {
-            this.completions = new PaperCommandCompletions();
+            this.completions = new PaperCommandCompletions(this);
         }
         return this.completions;
     }

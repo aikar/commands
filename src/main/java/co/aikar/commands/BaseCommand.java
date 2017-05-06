@@ -116,7 +116,7 @@ public class BaseCommand extends Command {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
             } else {
-                cmd = ACFPatterns.PIPE.split(rootCmdAlias.value())[0];
+                cmd = ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(rootCmdAlias.value()))[0];
             }
             cmd = cmd.toLowerCase();
             try {
@@ -139,7 +139,7 @@ public class BaseCommand extends Command {
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);
         if (perm != null) {
-            this.setPermission(perm.value());
+            this.setPermission(manager.getCommandReplacements().replace(perm.value()));
         }
 
         boolean foundDefault = false;
@@ -250,7 +250,7 @@ public class BaseCommand extends Command {
     }
 
     private void registerSubcommand(Method method, String subCommand) {
-        subCommand = subCommand.toLowerCase();
+        subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase());
         final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);
         // Must run getSubcommandPossibility BEFORE we rewrite it just after this.
         List<String> cmdList = getSubCommandPossibilityList(subCommandParts);
@@ -262,7 +262,7 @@ public class BaseCommand extends Command {
         String prefSubCommand = StringUtils.join(subCommandParts, " ");
         final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
 
-        final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(cmdAlias.value().toLowerCase()) : null;
+        final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(cmdAlias.value().toLowerCase())) : null;
         String cmdName = aliasNames != null ? aliasNames[0] : getLabel() + " ";
         RegisteredCommand cmd = new RegisteredCommand(this, cmdName, method, prefSubCommand);
 
@@ -443,7 +443,7 @@ public class BaseCommand extends Command {
             return args.length < 2 ? super.tabComplete(sender, commandLabel, args) : ImmutableList.of();
         }
 
-        String[] completions = ACFPatterns.SPACE.split(cmd.complete.value());
+        String[] completions = ACFPatterns.SPACE.split(cmd.complete);
 
         List<String> cmds = manager.getCommandCompletions().of(cmd, sender, completions, args);
         return filterTabComplete(args[args.length-1], cmds);

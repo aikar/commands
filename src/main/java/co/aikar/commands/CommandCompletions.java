@@ -41,9 +41,11 @@ import java.util.stream.IntStream;
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class CommandCompletions {
+    private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
-    public CommandCompletions() {
+    public CommandCompletions(CommandManager manager) {
+        this.manager = manager;
         registerCompletion("range", (sender, config, input, c) -> {
             if (config == null) {
                 return ImmutableList.of();
@@ -82,6 +84,7 @@ public class CommandCompletions {
 
     @NotNull
     List<String> getCompletionValues(RegisteredCommand command, CommandSender sender, String completion, String[] args) {
+        completion = manager.getCommandReplacements().replace(completion);
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];

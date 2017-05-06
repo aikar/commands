@@ -40,8 +40,8 @@ import java.util.stream.Stream;
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandContexts extends CommandContexts {
 
-    BukkitCommandContexts() {
-        super();
+    public BukkitCommandContexts(BukkitCommandManager manager) {
+        super(manager);
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();

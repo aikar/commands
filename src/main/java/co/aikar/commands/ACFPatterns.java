@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("WeakerAccess")
 final class ACFPatterns {
     public static final Pattern COMMA = Pattern.compile(",");
+    public static final Pattern PERCENTAGE = Pattern.compile("%", Pattern.LITERAL);
     public static final Pattern NEWLINE = Pattern.compile("\n");
     public static final Pattern DASH = Pattern.compile("-");
     public static final Pattern SPACE = Pattern.compile(" ");

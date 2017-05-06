@@ -42,8 +42,8 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandCompletions extends CommandCompletions {
-    BukkitCommandCompletions() {
-        super();
+    public BukkitCommandCompletions(BukkitCommandManager manager) {
+        super(manager);
         registerCompletion("mobs", (sender, config, input, c) -> {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> ACFUtil.simplifyString(entityType.getName()));

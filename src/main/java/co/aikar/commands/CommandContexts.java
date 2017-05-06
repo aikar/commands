@@ -37,8 +37,10 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class CommandContexts {
     private final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
+    private final CommandManager manager;
 
-    CommandContexts() {
+    CommandContexts(CommandManager manager) {
+        this.manager = manager;
         registerContext(Integer.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();

@@ -40,6 +40,7 @@ public final class ACFExample extends JavaPlugin {
 
     private void registerCommands() {
         commandManager = ACF.createManager(this);
+        commandManager.getCommandReplacements().addReplacements("test", "foobar", "%foo", "barbaz");
         commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
         commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
             Lists.newArrayList("foo", "bar", "baz")

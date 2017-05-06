@@ -50,7 +50,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RegisteredCommand {
-    private final BaseCommand scope;
+    final BaseCommand scope;
     public final String command;
     private final Method method;
     final String prefSubCommand;
@@ -58,8 +58,8 @@ public class RegisteredCommand {
     final ContextResolver<?>[] resolvers;
     final String syntaxText;
 
-    private final CommandPermission permission;
-    final CommandCompletion complete;
+    private final String permission;
+    final String complete;
     final int nonSenderAwareResolvers;
     final int optionalResolvers;
     private MCTiming timing;
@@ -72,8 +72,10 @@ public class RegisteredCommand {
         this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
-        this.permission = method.getAnnotation(CommandPermission.class);
-        this.complete = method.getAnnotation(CommandCompletion.class);
+        CommandPermission permissionAnno = method.getAnnotation(CommandPermission.class);
+        this.permission = permissionAnno != null ? scope.manager.getCommandReplacements().replace(permissionAnno.value()) : null;
+        CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
+        this.complete = completionAnno != null ? scope.manager.getCommandReplacements().replace(completionAnno.value()) : null;
         this.parameters = method.getParameters();
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
@@ -114,9 +116,9 @@ public class RegisteredCommand {
             }
         }
         if (syntaxStr != null) {
-            this.syntaxText = syntaxStr.value();
+            this.syntaxText = manager.getCommandReplacements().replace(syntaxStr.value());
         } else {
-            this.syntaxText = syntaxB.toString();
+            this.syntaxText = manager.getCommandReplacements().replace(syntaxB.toString());
         }
         this.nonSenderAwareResolvers = nonSenderAwareResolvers;
         this.optionalResolvers = optionalResolvers;
@@ -173,7 +175,7 @@ public class RegisteredCommand {
                 Default def = parameter.getAnnotation(Default.class);
                 Optional opt = parameter.getAnnotation(Optional.class);
                 if (isLast && def != null) {
-                    args.add(def.value());
+                    args.add(scope.manager.getCommandReplacements().replace(def.value()));
                 } else if (isLast && opt != null) {
                     passedArgs.put(parameterName, resolver instanceof SenderAwareContextResolver ? resolver.getContext(context) : null);
                     //noinspection UnnecessaryContinue
@@ -187,7 +189,7 @@ public class RegisteredCommand {
             if (values != null) {
                 String arg = args.get(0);
 
-                final String[] split = ACFPatterns.PIPE.split(values.value());
+                final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
                 for (String s : split) {
                     List<String> check = this.scope.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs);
@@ -215,7 +217,11 @@ public class RegisteredCommand {
     }
 
     boolean hasPermission(CommandSender check) {
-        return permission == null || !(check instanceof Player) || check.hasPermission(permission.value());
+        return permission == null || !(check instanceof Player) || check.hasPermission(permission);
+    }
+
+    public String getPermission() {
+        return permission;
     }
 
     public String getPrefSubCommand() {
@@ -224,9 +230,5 @@ public class RegisteredCommand {
 
     public String getSyntaxText() {
         return syntaxText;
-    }
-
-    public CommandPermission getPermission() {
-        return permission;
     }
 }

@@ -25,7 +25,6 @@ package co.aikar.commands;
 
 import co.aikar.timings.lib.TimingManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -89,7 +88,7 @@ public class BukkitCommandManager extends CommandManager {
     @Override
     public synchronized CommandContexts getCommandContexts() {
         if (this.contexts == null) {
-            this.contexts = new BukkitCommandContexts();
+            this.contexts = new BukkitCommandContexts(this);
         }
         return contexts;
     }
@@ -97,27 +96,24 @@ public class BukkitCommandManager extends CommandManager {
     @Override
     public synchronized CommandCompletions getCommandCompletions() {
         if (this.completions == null) {
-            this.completions = new BukkitCommandCompletions();
+            this.completions = new BukkitCommandCompletions(this);
         }
         return completions;
     }
 
     @Override
-    public boolean registerCommand(BaseCommand command) {
+    public void registerCommand(BaseCommand command) {
         final String plugin = this.plugin.getName().toLowerCase();
         command.onRegister(this);
-        boolean allSuccess = true;
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String key = entry.getKey().toLowerCase();
             RootCommand value = entry.getValue();
-            if (!value.isRegistered && !(commandMap.register(key, plugin, value))) {
-                allSuccess = false;
+            if (!value.isRegistered) {
+                commandMap.register(key, plugin, value);
             }
             value.isRegistered = true;
             registeredCommands.put(key, command);
         }
-
-        return allSuccess;
     }
 
     public void unregisterCommand(BaseCommand command) {

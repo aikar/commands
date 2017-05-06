@@ -25,4 +25,7 @@ package co.aikar.commands;
 
 @SuppressWarnings("WeakerAccess")
 public class PaperCommandCompletions extends BukkitCommandCompletions {
+    public PaperCommandCompletions(PaperCommandManager manager) {
+        super(manager);
+    }
 }
