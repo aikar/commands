@@ -1,18 +1,28 @@
-# Aikar Command Framework (ACF)
+# Annotation Command Framework (ACF)
 ## Purpose
-This is the Framework used on [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
+This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
-Many people have wanted to use this framework for themselves, so I am trying to make it general purpose (with help from the community) so that others can use it just as simple as they can [TaskChain](https://taskchain.emc.gs) now.
+Many people have wanted to use this framework for themselves, So here are, a public ready version!
+
 
 ## Beta Testing
-I believe the framework may be usable at this stage. Beta testers welcome
+ACF On the core itself is very stable. It has been used for years on EMC.
+
+I believe the framework is very usable at this stage.
+
+It is labeled Beta as the framework is growing fast and gaining new features, and API's are subject to breakage. The new features also may contain bugs, but I am working to fix them fast.
+
+Please be prepared to keep up with changes, but I try to keep them as least disruptful as possible.
 
 See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
 
-THE API MAY BREAK! We are on:
+We are on version:
  - GROUP: co.aikar
  - ARTIFACTID: acf-core
  - VERSION `0.4.0-SNAPSHOT`
+
+Any bump in version implies an API break. 
+Every change that should not cause any API break will be deployed over the current version.
 
 ## Targeted Platforms
 Requires CraftBukkit, Spigot or Paper.
@@ -89,6 +99,9 @@ Join [#aikar on Spigot IRC - irc.spi.gt](https://aikarchat.emc.gs) to discuss.
 
 Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 
+## Other projects by Aikar / Empire Minecraft
+ - [TaskChain](https://taskchain.emc.gs) - Powerful context control to dispatch tasks Async, then access the result sync for API usage. Concurrency controls too.
+ - [Minecraft Timings](https://github.com/aikar/commands) - Add Timings to your plugin in a safe way that works on all Bukkit platforms (CraftBukkit - no timings, Spigot - Timings v1, Paper and Paper forks - Timings v2)
 
 ## License
 As with all my other public projects
