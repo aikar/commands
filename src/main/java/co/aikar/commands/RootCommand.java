@@ -24,7 +24,6 @@
 package co.aikar.commands;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -76,6 +75,11 @@ public class RootCommand extends Command {
     void addChild(BaseCommand command) {
         if (this.defCommand == null || command.subCommands.get("__default") != null) {
             this.defCommand = command;
+            this.setDescription(command.getDescription());
+            this.setUsage(command.getUsage());
+            this.setAliases(command.getAliases());
+            this.setPermission(command.getPermission());
+            this.setPermissionMessage(command.getPermissionMessage());
         }
         command.subCommands.keySet().forEach(key -> {
             if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
