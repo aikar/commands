@@ -40,8 +40,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.util.StringUtil;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,9 +55,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-public abstract class BaseCommand extends Command {
+public class BaseCommand extends Command {
 
     public static final String UNKNOWN = "__unknown";
     public static final String DEFAULT = "__default";
@@ -102,10 +106,12 @@ public abstract class BaseCommand extends Command {
     }
 
     void onRegister(CommandManager manager) {
+        onRegister(manager, getName());
+    }
+    void onRegister(CommandManager manager, String cmd) {
         this.manager = manager;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
-        String cmd = this.getName();
         if (cmd == null) {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
@@ -141,7 +147,7 @@ public abstract class BaseCommand extends Command {
         for (Method method : self.getDeclaredMethods()) {
             method.setAccessible(true);
             String sublist = null;
-            final Subcommand sub = method.getAnnotation(Subcommand.class);
+            String sub = getSubcommandValue(method);
             final Default def = method.getAnnotation(Default.class);
 
             final CommandAlias commandAliases = method.getAnnotation(CommandAlias.class);
@@ -155,7 +161,7 @@ public abstract class BaseCommand extends Command {
                 }
             }
             if (sub != null) {
-                sublist = sub.value();
+                sublist = sub;
             } else if (commandAliases != null) {
                 sublist = commandAliases.value();
             }
@@ -185,7 +191,55 @@ public abstract class BaseCommand extends Command {
             }
         }
 
-        register(getName(), this);
+        register(cmd, this);
+        for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
+            if (BaseSubCommand.class.isAssignableFrom(clazz)) {
+                try {
+                    BaseSubCommand subCommand = null;
+                    Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+                    for (Constructor<?> declaredConstructor : declaredConstructors) {
+
+                        declaredConstructor.setAccessible(true);
+                        Parameter[] parameters = declaredConstructor.getParameters();
+                        if (parameters.length == 1) {
+                            subCommand = (BaseSubCommand) declaredConstructor.newInstance(this);
+                        } else {
+                            ACFLog.info("Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", ")) + ")");
+                        }
+                    }
+                    if (subCommand != null) {
+                        subCommand.setParentCommand(this);
+                        subCommand.onRegister(manager, cmd);
+                        this.subCommands.putAll(subCommand.subCommands);
+                        this.registeredCommands.putAll(subCommand.registeredCommands);
+                    } else {
+                        ACFLog.severe("Could not find a subcommand ctor for " + clazz.getName());
+                    }
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private String getSubcommandValue(Method method) {
+        final Subcommand sub = method.getAnnotation(Subcommand.class);
+        if (sub == null) {
+            return null;
+        }
+        List<String> subList = new ArrayList<>();
+        subList.add(sub.value());
+        Class<?> clazz = method.getDeclaringClass();
+        while (clazz != null) {
+            Subcommand classSub = clazz.getAnnotation(Subcommand.class);
+            if (classSub != null) {
+                subList.add(classSub.value());
+            }
+            clazz = clazz.getEnclosingClass();
+        }
+        Collections.reverse(subList);
+        return ACFUtil.join(subList, " ");
     }
 
     private void register(String name, BaseCommand cmd) {

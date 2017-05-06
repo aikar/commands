@@ -24,6 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.BaseSubCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -38,7 +39,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("acf|somecommand|sc|somcom")
 public class SomeCommand extends BaseCommand {
 
-    @Subcommand("test")
+    @Subcommand("test4")
     @CommandAlias("acftest|acft")
     public void onCommand(CommandSender sender, SomeObject someObject) {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
@@ -78,5 +79,36 @@ public class SomeCommand extends BaseCommand {
     @CommandCompletion("Foo")
     public void onTestSub1(CommandSender sender, String hi) {
         sender.sendMessage(hi);
+    }
+
+    @Subcommand("test|txt|tfoo")
+    public class Test extends BaseSubCommand {
+
+        @Subcommand("test1|td1")
+        @CommandCompletion("FOO")
+        public void onTest1(Player player, String testX) {
+            player.sendMessage("You got test inner test1: " + testX);
+        }
+        @Subcommand("test2|td2")
+        @CommandCompletion("BAR")
+        public void onTest2(Player player, String testY) {
+            player.sendMessage("You got test inner test2: " + testY);
+        }
+
+        @Subcommand("next")
+        public class TestInner extends BaseSubCommand {
+
+            @Subcommand("test3|td4")
+            @CommandCompletion("FOO")
+            public void onTest1(Player player, String testX) {
+                player.sendMessage("You got test inner inner test3: " + testX);
+            }
+            @CommandAlias("deepinner")
+            @Subcommand("test4|td4")
+            @CommandCompletion("BAR")
+            public void onTest2(Player player, String testY) {
+                player.sendMessage("You got test inner inner test4: " + testY);
+            }
+        }
     }
 }
