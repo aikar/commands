@@ -69,7 +69,7 @@ public class BukkitCommandManager extends CommandManager {
                 cmField.set(server, commandMap = new ProxyCommandMap(commandMap));
                 ACFLog.info("Injected Proxy Command Map... good luck...");
             }
-            Field knownCommands = commandMap.getClass().getDeclaredField("knownCommands");
+            Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
             knownCommands.setAccessible(true);
             //noinspection unchecked
             this.knownCommands = (Map<String, Command>) knownCommands.get(commandMap);
