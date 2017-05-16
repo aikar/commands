@@ -68,12 +68,13 @@ public class RootCommand extends Command {
         if (!this.defCommand.testPermission(sender)) {
             return true;
         }
+
         this.defCommand.execute(sender, commandLabel, args);
         return false;
     }
 
     void addChild(BaseCommand command) {
-        if (this.defCommand == null || command.subCommands.get("__default") != null) {
+        if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
             this.defCommand = command;
             this.setDescription(command.getDescription());
             this.setUsage(command.getUsage());
