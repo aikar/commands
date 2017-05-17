@@ -95,17 +95,11 @@ public class RegisteredCommand {
                 resolvers[i] = resolver;
 
                 if (!CommandSender.class.isAssignableFrom(parameter.getType())) {
-                    if (resolver instanceof SenderAwareContextResolver || parameter.getAnnotation(Optional.class) != null
-                            || parameter.getAnnotation(Default.class) != null) {
+                    if (isOptionalResolver(resolver, parameter)) {
                         optionalResolvers++;
-                    } else {
-                        nonSenderAwareResolvers++;
-                    }
-                    if (parameter.getAnnotation(Default.class) != null ||
-                        parameter.getAnnotation(Optional.class) != null ||
-                        resolver instanceof SenderAwareContextResolver) {
                         syntaxB.append('[').append(parameter.getName()).append("] ");
                     } else {
+                        nonSenderAwareResolvers++;
                         syntaxB.append('<').append(parameter.getName()).append("> ");
                     }
                 }
@@ -122,6 +116,12 @@ public class RegisteredCommand {
         }
         this.nonSenderAwareResolvers = nonSenderAwareResolvers;
         this.optionalResolvers = optionalResolvers;
+    }
+
+    static boolean isOptionalResolver(ContextResolver<?> resolver, Parameter parameter) {
+        return resolver instanceof SenderAwareContextResolver
+                || parameter.getAnnotation(Optional.class) != null
+                || parameter.getAnnotation(Default.class) != null;
     }
 
     void invoke(CommandSender sender, List<String> args) {
@@ -164,19 +164,24 @@ public class RegisteredCommand {
         args = Lists.newArrayList(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
+        int remainingRequired = nonSenderAwareResolvers;
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
             boolean isLast = i == parameters.length - 1;
+            boolean allowOptional = remainingRequired == 0;
             final Parameter parameter = parameters[i];
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             final ContextResolver<?> resolver = resolvers[i];
             CommandExecutionContext context = new CommandExecutionContext(this, parameter, sender, args, i, passedArgs);
+            if (!isOptionalResolver(resolver, parameter)) {
+                remainingRequired--;
+            }
             if (args.isEmpty() && !(isLast && type == String[].class)) {
                 Default def = parameter.getAnnotation(Default.class);
                 Optional opt = parameter.getAnnotation(Optional.class);
-                if (isLast && def != null) {
+                if (allowOptional && def != null) {
                     args.add(scope.manager.getCommandReplacements().replace(def.value()));
-                } else if (isLast && opt != null) {
+                } else if (allowOptional && opt != null) {
                     passedArgs.put(parameterName, resolver instanceof SenderAwareContextResolver ? resolver.getContext(context) : null);
                     //noinspection UnnecessaryContinue
                     continue;
