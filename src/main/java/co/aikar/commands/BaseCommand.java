@@ -363,12 +363,12 @@ public class BaseCommand extends Command {
                     cmd = Iterables.getOnlyElement(cmds);
                 } else {
                     Optional<RegisteredCommand> optCmd = cmds.stream().filter(c -> {
-                        int nonSender = c.nonSenderAwareResolvers;
+                        int nonSender = c.requiredResolvers;
                         int partialSender = c.optionalResolvers;
                         return extraArgs <= nonSender + partialSender && (completion || extraArgs >= nonSender);
                     }).sorted((c1, c2) -> {
-                        int a = c1.nonSenderAwareResolvers + c1.optionalResolvers;
-                        int b = c2.nonSenderAwareResolvers + c2.optionalResolvers;
+                        int a = c1.requiredResolvers + c1.optionalResolvers;
+                        int b = c2.requiredResolvers + c2.optionalResolvers;
 
                         if (a == b) {
                             return 0;
@@ -436,7 +436,7 @@ public class BaseCommand extends Command {
     }
 
     private List<String> completeCommand(CommandSender sender, RegisteredCommand cmd, String[] args, String commandLabel) {
-        if (args.length > cmd.nonSenderAwareResolvers + cmd.optionalResolvers) {
+        if (args.length > cmd.requiredResolvers + cmd.optionalResolvers) {
             return ImmutableList.of();
         }
         if (args.length == 0 || cmd.complete == null) {

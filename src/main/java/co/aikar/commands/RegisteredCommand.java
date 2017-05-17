@@ -60,7 +60,7 @@ public class RegisteredCommand {
 
     private final String permission;
     final String complete;
-    final int nonSenderAwareResolvers;
+    final int requiredResolvers;
     final int optionalResolvers;
     private MCTiming timing;
 
@@ -82,7 +82,7 @@ public class RegisteredCommand {
         final CommandManager manager = scope.manager;
         final CommandContexts commandContexts = manager.getCommandContexts();
 
-        int nonSenderAwareResolvers = 0;
+        int requiredResolvers = 0;
         int optionalResolvers = 0;
         StringBuilder syntaxB = new StringBuilder(64);
 
@@ -99,7 +99,7 @@ public class RegisteredCommand {
                         optionalResolvers++;
                         syntaxB.append('[').append(parameter.getName()).append("] ");
                     } else {
-                        nonSenderAwareResolvers++;
+                        requiredResolvers++;
                         syntaxB.append('<').append(parameter.getName()).append("> ");
                     }
                 }
@@ -114,7 +114,7 @@ public class RegisteredCommand {
         } else {
             this.syntaxText = manager.getCommandReplacements().replace(syntaxB.toString());
         }
-        this.nonSenderAwareResolvers = nonSenderAwareResolvers;
+        this.requiredResolvers = requiredResolvers;
         this.optionalResolvers = optionalResolvers;
     }
 
@@ -164,7 +164,7 @@ public class RegisteredCommand {
         args = Lists.newArrayList(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
-        int remainingRequired = nonSenderAwareResolvers;
+        int remainingRequired = requiredResolvers;
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
