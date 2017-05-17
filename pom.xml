@@ -107,9 +107,9 @@
             <version>1.0.3</version>
         </dependency>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.11.2-R0.1-SNAPSHOT</version>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12-pre2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

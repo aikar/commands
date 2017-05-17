@@ -34,6 +34,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -104,5 +106,16 @@ public class BukkitCommandContexts extends CommandContexts {
             }
             return match;
         });
+        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?.*?\\)");
+        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());
+        if (matcher.find()) {
+            int mcMajorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(1), 0);
+            int mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);
+            ACFLog.info("Minecraft Version: " + mcMajorVersion + "." + mcMinorVersion);
+            if (mcMajorVersion >= 1 && mcMinorVersion >= 12) {
+                BukkitCommandContexts_1_12.register(this);
+            }
+        }
+
     }
 }
