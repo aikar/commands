@@ -30,15 +30,11 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class ForwardingCommand extends BaseCommand {
-    private final Command command;
+    private final BaseCommand command;
     private final String[] baseArgs;
     private static final String[] NO_ARGS =  new String[0];
 
-    public ForwardingCommand(Command command) {
-        this(command, NO_ARGS);
-    }
-
-    public ForwardingCommand(Command command, String[] baseArgs) {
+    ForwardingCommand(BaseCommand command, String[] baseArgs) {
         super(command.getName());
         this.command = command;
         this.baseArgs = baseArgs;

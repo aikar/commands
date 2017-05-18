@@ -187,7 +187,7 @@ public class BaseCommand extends Command {
             Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
-                register(cmdAlias, new ForwardingCommand(this));
+                register(cmdAlias, this);
             }
         }
 
