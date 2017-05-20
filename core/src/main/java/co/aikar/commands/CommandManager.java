@@ -32,7 +32,7 @@ import java.util.Map;
 public abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
-    protected CommandReplacements replacements = new CommandReplacements();
+    protected CommandReplacements replacements = new CommandReplacements(this);
 
     /**
      * Gets the command contexts manager
@@ -66,6 +66,7 @@ public abstract class CommandManager {
      * @return boolean
      */
     public abstract void registerCommand(BaseCommand command);
+    public abstract boolean hasRegisteredCommands();
 
     public abstract TimingManager getTimings();
 

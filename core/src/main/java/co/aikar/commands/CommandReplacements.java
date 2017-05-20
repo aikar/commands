@@ -32,6 +32,12 @@ import java.util.regex.Pattern;
  * Manages replacement template strings
  */
 public class CommandReplacements {
+
+    private final CommandManager manager;
+
+    CommandReplacements(CommandManager manager) {
+        this.manager = manager;
+    }
     private final Map<String, Map.Entry<Pattern, String>> replacements = new LinkedHashMap<>();
 
     public void addReplacements(String... replacements) {
@@ -44,6 +50,11 @@ public class CommandReplacements {
     }
 
     public String addReplacement(String key, String val) {
+        if (this.manager.hasRegisteredCommands()) {
+            ACFLog.severe("You are registering replacements after you have registered your commands!");
+            ACFLog.severe("This is not allowed, and this replacement (" + key + ") will not work for any previously registered command.");
+        }
+
         key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase()).replaceAll("");
         Pattern pattern = Pattern.compile("%" + Pattern.quote(key) + "\\b", Pattern.CASE_INSENSITIVE);
 

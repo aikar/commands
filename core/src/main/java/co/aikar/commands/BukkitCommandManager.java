@@ -102,6 +102,11 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
+    public boolean hasRegisteredCommands() {
+        return !registeredCommands.isEmpty();
+    }
+
+    @Override
     public void registerCommand(BaseCommand command) {
         final String plugin = this.plugin.getName().toLowerCase();
         command.onRegister(this);
