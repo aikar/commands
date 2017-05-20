@@ -40,8 +40,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("acf|somecommand|sc|somcom")
 public class SomeCommand extends BaseCommand {
 
-    @Subcommand("test4")
-    @CommandAlias("acftest|acft")
+    @CommandAlias("%testcmd")
     public void onCommand(CommandSender sender, SomeObject someObject) {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
     }
