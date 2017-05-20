@@ -112,12 +112,13 @@ public class BaseCommand extends Command {
     void onRegister(CommandManager manager, String cmd) {
         this.manager = manager;
         final Class<? extends BaseCommand> self = this.getClass();
-        CommandAlias rootCmdAlias = self.getAnnotation(CommandAlias.class);
+        CommandAlias rootCmdAliasAnno = self.getAnnotation(CommandAlias.class);
+        String rootCmdAlias = rootCmdAliasAnno != null ? manager.getCommandReplacements().replace(rootCmdAliasAnno.value()).toLowerCase() : null;
         if (cmd == null) {
             if (rootCmdAlias == null) {
                 cmd = "__" + self.getSimpleName();
             } else {
-                cmd = ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(rootCmdAlias.value()))[0];
+                cmd = ACFPatterns.PIPE.split(rootCmdAlias)[0];
             }
             cmd = cmd.toLowerCase();
             try {
@@ -185,7 +186,7 @@ public class BaseCommand extends Command {
 
         if (rootCmdAlias != null) {
             Set<String> cmdList = new HashSet<>();
-            Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
+            Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
                 register(cmdAlias, this);
