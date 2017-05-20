@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -183,7 +184,7 @@ public class BaseCommand extends Command {
         }
 
         if (rootCmdAlias != null) {
-            List<String> cmdList = new ArrayList<>();
+            Set<String> cmdList = new HashSet<>();
             Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias.value().toLowerCase()));
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
@@ -253,7 +254,7 @@ public class BaseCommand extends Command {
         subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase());
         final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);
         // Must run getSubcommandPossibility BEFORE we rewrite it just after this.
-        List<String> cmdList = getSubCommandPossibilityList(subCommandParts);
+        Set<String> cmdList = getSubCommandPossibilityList(subCommandParts);
 
         // Strip pipes off for auto complete addition
         for (int i = 0; i < subCommandParts.length; i++) {
@@ -289,11 +290,11 @@ public class BaseCommand extends Command {
      * @param subCommandParts
      * @return List of all sub command possibilities
      */
-    private static List<String> getSubCommandPossibilityList(String[] subCommandParts) {
+    private static Set<String> getSubCommandPossibilityList(String[] subCommandParts) {
         int i = 0;
-        ArrayList<String> current = null;
+        Set<String> current = null;
         while (true) {
-            ArrayList<String> newList = new ArrayList<>();
+            Set<String> newList = new HashSet<>();
 
             if (i < subCommandParts.length) {
                 for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {

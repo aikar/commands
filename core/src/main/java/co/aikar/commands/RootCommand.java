@@ -88,7 +88,7 @@ public class RootCommand extends Command {
             }
             BaseCommand regged = this.subCommands.get(key);
             if (regged != null) {
-                ACFLog.severe("ACF Error: " + command.getLabel() + " registered subcommand " + key + " - but it is already defined in " + regged.getLabel());
+                ACFLog.severe("ACF Error: " + command.getLabel() + " registered subcommand " + key + " for root command " + getName() + " - but it is already defined in " + regged.getLabel());
                 ACFLog.severe("2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
                 return;
             }
