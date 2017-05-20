@@ -34,24 +34,22 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>acf-core</artifactId>
+    <artifactId>acf-bukkit</artifactId>
     <version><!--VERSION-->0.5.0<!--VERSION--></version>
 
-    <name>ACF (Core)</name>
+    <name>ACF (Bukkit)</name>
 
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
-            <artifactId>minecraft-timings</artifactId>
-            <version>1.0.3</version>
-            <scope>compile</scope>
+            <artifactId>acf-core</artifactId>
+            <version><!--VERSION-->0.5.0<!--VERSION--></version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-             <scope>provided</scope>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12-pre2-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
 </project>

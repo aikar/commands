@@ -33,26 +33,25 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandContexts extends CommandContexts {
+public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutionContext> {
 
     public BukkitCommandContexts(BukkitCommandManager manager) {
         super(manager);
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();
-            Player player = ACFUtil.findPlayerSmart(c.getSender(), playercheck);
+            Player player = ACFBukkitUtil.findPlayerSmart(c.getIssuer(), playercheck);
             if (player == null) {
                 if (c.hasAnnotation(Optional.class)) {
                     return null;
                 }
-                ACFUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
+                ACFBukkitUtil.sendMsg(c.getIssuer(), "&cCould not find a player by the name " + playercheck);
                 throw new InvalidCommandArgument(false);
             }
             return new OnlinePlayer(player);
@@ -63,22 +62,22 @@ public class BukkitCommandContexts extends CommandContexts {
             if (world != null) {
                 c.popFirstArg();
             }
-            if (world == null && c.getSender() instanceof Player) {
-                world = ((Entity) c.getSender()).getWorld();
+            if (world == null && c.getIssuer() instanceof Player) {
+                world = ((Entity) c.getIssuer()).getWorld();
             }
             if (world == null) {
                 throw new InvalidCommandArgument("Invalid World");
             }
             return world;
         });
-        registerSenderAwareContext(CommandSender.class, CommandExecutionContext::getSender);
+        registerSenderAwareContext(CommandSender.class, bukkitCommandExecutionContext -> bukkitCommandExecutionContext.getSender());
         registerSenderAwareContext(Player.class, (c) -> {
-            Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
+            Player player = c.getIssuer() instanceof Player ? (Player) c.getIssuer() : null;
             if (player == null && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument("Requires a player to run this command", false);
             }
             PlayerInventory inventory = player != null ? player.getInventory() : null;
-            if (inventory != null && c.hasFlag("itemheld") && !ACFUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
+            if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
                 throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
             }
             return player;
@@ -116,6 +115,5 @@ public class BukkitCommandContexts extends CommandContexts {
                 BukkitCommandContexts_1_12.register(this);
             }
         }
-
     }
 }

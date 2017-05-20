@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+  ~
+  ~  Permission is hereby granted, free of charge, to any person obtaining
+  ~  a copy of this software and associated documentation files (the
+  ~  "Software"), to deal in the Software without restriction, including
+  ~  without limitation the rights to use, copy, modify, merge, publish,
+  ~  distribute, sublicense, and/or sell copies of the Software, and to
+  ~  permit persons to whom the Software is furnished to do so, subject to
+  ~  the following conditions:
+  ~
+  ~  The above copyright notice and this permission notice shall be
+  ~  included in all copies or substantial portions of the Software.
+  ~
+  ~  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  ~  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  ~  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  ~  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  ~  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>co.aikar</groupId>
+    <artifactId>acf-parent</artifactId>
+    <version><!--VERSION-->0.5.0<!--VERSION--></version>
+    <packaging>pom</packaging>
+    <name>ACF (All)</name>
+    <url>https://acf.emc.gs</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>aikar</id>
+            <url>http://ci.emc.gs/nexus/content/repositories/aikar-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>aikar</id>
+            <url>http://ci.emc.gs/nexus/content/repositories/aikar-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>aikar</id>
+            <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showDeprecation>false</showDeprecation>
+                    <showWarnings>false</showWarnings>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>core</module>
+        <module>bukkit</module>
+        <module>paper</module>
+        <!--module>bungee</module-->
+        <!--module>sponge</module-->
+        <module>example</module>
+    </modules>
+</project>

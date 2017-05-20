@@ -25,7 +25,9 @@ package co.aikar.commands;
 
 import co.aikar.timings.lib.TimingManager;
 
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
@@ -69,7 +71,10 @@ public abstract class CommandManager {
 
     public abstract TimingManager getTimings();
 
+    public abstract RootCommand createRootCommand(String cmd);
     public synchronized RootCommand obtainRootCommand(String cmd) {
-        return rootCommands.computeIfAbsent(cmd.toLowerCase(), k -> new RootCommand(cmd));
+        return rootCommands.computeIfAbsent(cmd.toLowerCase(), this::createRootCommand);
     }
+
+    public abstract CommandExecutionContext<? extends CommandExecutionContext> createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 }

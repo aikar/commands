@@ -23,30 +23,27 @@
 
 package co.aikar.commands;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 
 import java.util.List;
 
 public class ForwardingCommand extends BaseCommand {
     private final BaseCommand command;
     private final String[] baseArgs;
-    private static final String[] NO_ARGS =  new String[0];
 
     ForwardingCommand(BaseCommand command, String[] baseArgs) {
-        super(command.getName());
+        this.commandName = command.commandName;
         this.command = command;
         this.baseArgs = baseArgs;
     }
 
     @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return command.tabComplete(sender, alias, (String[]) ArrayUtils.addAll(baseArgs, args));
+    public List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
+        return command.tabComplete(sender, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        return command.execute(sender, commandLabel, (String[]) ArrayUtils.addAll(baseArgs, args));
+    public boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
+        return command.execute(sender, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 }

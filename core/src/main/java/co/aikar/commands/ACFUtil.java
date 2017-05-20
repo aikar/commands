@@ -23,18 +23,8 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Iterables;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,10 +34,8 @@ import java.text.Normalizer.Form;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -72,123 +60,6 @@ public final class ACFUtil {
         return NumberFormat.getInstance().format(balance);
     }
 
-    public static String formatLocation(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-        return loc.getWorld().getName() +
-                ":" +
-                loc.getBlockX() +
-                "," +
-                loc.getBlockY() +
-                "," +
-                loc.getBlockZ();
-    }
-
-    public static String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    public static void sendMsg(CommandSender player, String message) {
-        message = color(message);
-        if (player == null) {
-            for (String msg : ACFPatterns.NEWLINE.split(message)) {
-                ACFLog.info(msg);
-            }
-        } else {
-            for (String msg : ACFPatterns.NEWLINE.split(message)) {
-                player.sendMessage(msg);
-            }
-        }
-    }
-
-    public static Location stringToLocation(String storedLoc) {
-        return stringToLocation(storedLoc, null);
-    }
-    public static Location stringToLocation(String storedLoc, World forcedWorld) {
-        if (storedLoc == null) {
-            return null;
-        }
-        String[] args = ACFPatterns.COLON.split(storedLoc);
-        if (args.length >= 4 || (args.length == 3 && forcedWorld != null)) {
-            String world = forcedWorld != null ? forcedWorld.getName() : args[0];
-            int i = args.length == 3 ? 0 : 1;
-            double x = Double.parseDouble(args[i]);
-            double y = Double.parseDouble(args[i + 1]);
-            double z = Double.parseDouble(args[i + 2]);
-            Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-            if (args.length >= 6) {
-                loc.setPitch(Float.parseFloat(args[4]));
-                loc.setYaw(Float.parseFloat(args[5]));
-            }
-            return loc;
-        } else if (args.length == 2) {
-            String[] args2 = ACFPatterns.COMMA.split(args[1]);
-            if (args2.length == 3) {
-                String world = forcedWorld != null ? forcedWorld.getName() : args[0];
-                double x = Double.parseDouble(args2[0]);
-                double y = Double.parseDouble(args2[1]);
-                double z = Double.parseDouble(args2[2]);
-                return new Location(Bukkit.getWorld(world), x, y, z);
-            }
-        }
-        return null;
-    }
-
-    public static String fullLocationToString(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-        return (new StringBuilder(64))
-                .append(loc.getWorld().getName())
-                .append(':')
-                .append(precision(loc.getX(), 4))
-                .append(':')
-                .append(precision(loc.getY(), 4))
-                .append(':')
-                .append(precision(loc.getZ(), 4))
-                .append(':')
-                .append(precision(loc.getPitch(), 4))
-                .append(':')
-                .append(precision(loc.getYaw(), 4))
-                .toString();
-    }
-
-    public static String fullBlockLocationToString(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-        return (new StringBuilder(64))
-                .append(loc.getWorld().getName())
-                .append(':')
-                .append(loc.getBlockX())
-                .append(':')
-                .append(loc.getBlockY())
-                .append(':')
-                .append(loc.getBlockZ())
-                .append(':')
-                .append(precision(loc.getPitch(), 4))
-                .append(':')
-                .append(precision(loc.getYaw(), 4))
-                .toString();
-    }
-
-    public static String blockLocationToString(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-
-        return (new StringBuilder(32))
-                .append(loc.getWorld().getName())
-                .append(':')
-                .append(loc.getBlockX())
-                .append(':')
-                .append(loc.getBlockY())
-                .append(':')
-                .append(loc.getBlockZ())
-                .toString();
-    }
-
     public static <T extends Enum> T getEnumFromName(T[] types, String name) {
         return getEnumFromName(types, name, null);
     }
@@ -210,7 +81,7 @@ public final class ACFUtil {
     }
 
     public static String ucfirst(String str) {
-        return WordUtils.capitalizeFully(str);
+        return ApacheCommonsLangUtil.capitalizeFully(str);
     }
 
     public static Double parseDouble(String var) {
@@ -275,17 +146,17 @@ public final class ACFUtil {
     }
 
     public static String join(Collection<String> args) {
-        return StringUtils.join(args, " ");
+        return ApacheCommonsLangUtil.join(args, " ");
     }
     public static String join(Collection<String> args, String sep) {
-        return StringUtils.join(args, sep);
+        return ApacheCommonsLangUtil.join(args, sep);
     }
     public static String join(String[] args) {
         return join(args, 0, ' ');
     }
 
     public static String join(String[] args, String sep) {
-        return StringUtils.join(args, sep);
+        return ApacheCommonsLangUtil.join(args, sep);
     }
     public static String join(String[] args, char sep) {
         return join(args, 0, sep);
@@ -296,7 +167,7 @@ public final class ACFUtil {
     }
 
     public static String join(String[] args, int index, char sep) {
-        return StringUtils.join(args, sep, index, args.length);
+        return ApacheCommonsLangUtil.join(args, sep, index, args.length);
     }
 
     public static String simplifyString(String str) {
@@ -331,36 +202,6 @@ public final class ACFUtil {
         }
         return num + multiple - remainder;
 
-    }
-
-    public static String removeColors(String msg) {
-        return ChatColor.stripColor(ACFUtil.color(msg));
-
-    }
-
-    public static String replaceChatString(String message, String replace, String with) {
-        return replaceChatString(message, Pattern.compile(Pattern.quote(replace), Pattern.CASE_INSENSITIVE), with);
-    }
-    public static String replaceChatString(String message, Pattern replace, String with) {
-        final String[] split = replace.split(message + "1");
-
-        if (split.length < 2) {
-            return replace.matcher(message).replaceAll(with);
-        }
-        message = split[0];
-
-        for (int i = 1; i < split.length; i++) {
-            final String prev = ChatColor.getLastColors(message);
-            message += with + prev + split[i];
-        }
-        return message.substring(0, message.length() - 1);
-    }
-
-    public static boolean isWithinDistance(@NotNull Player p1, @NotNull Player p2, int dist) {
-        return isWithinDistance(p1.getLocation(), p2.getLocation(), dist);
-    }
-    public static boolean isWithinDistance(@NotNull Location loc1, @NotNull Location loc2, int dist) {
-        return loc1.getWorld() == loc2.getWorld() && loc1.distance(loc2) <= dist;
     }
 
     public static String limit(String str, int limit) {
@@ -457,48 +298,11 @@ public final class ACFUtil {
         return string;
     }
 
-
-    /**
-     * Copied from Apache Commons WordUtils, with an exception to skip spaces after delimiters.
-     *
-     * @see org.apache.commons.lang.WordUtils#capitalize(String, char[])
-     * @param str
-     * @param delimiters
-     * @return
-     */
     public static String capitalize(String str, char[] delimiters) {
-        int delimLen = (delimiters == null ? -1 : delimiters.length);
-        if (str == null || str.isEmpty() || delimLen == 0) {
-            return str;
-        }
-        int strLen = str.length();
-        StringBuilder builder = new StringBuilder(strLen);
-        boolean capitalizeNext = true;
-        for (int i = 0; i < strLen; i++) {
-            char ch = str.charAt(i);
-
-            if (isDelimiter(ch, delimiters)) {
-                builder.append(ch);
-                capitalizeNext = true;
-            } else if (ch != ' ' && capitalizeNext) {
-                builder.append(Character.toTitleCase(ch));
-                capitalizeNext = false;
-            } else {
-                builder.append(ch);
-            }
-        }
-        return builder.toString();
+        return ApacheCommonsLangUtil.capitalize(str, delimiters);
     }
     private static boolean isDelimiter(char ch, char[] delimiters) {
-        if (delimiters == null) {
-            return Character.isWhitespace(ch);
-        }
-        for (char delimiter : delimiters) {
-            if (ch == delimiter) {
-                return true;
-            }
-        }
-        return false;
+        return ApacheCommonsLangUtil.isDelimiter(ch, delimiters);
     }
 
     public static <T> T random(List<T> arr) {
@@ -584,53 +388,6 @@ public final class ACFUtil {
         return sb.toString();
     }
 
-    public static double distance(@NotNull Entity e1, @NotNull Entity e2) {
-        return distance(e1.getLocation(), e2.getLocation());
-    }
-    public static double distance2d(@NotNull Entity e1, @NotNull Entity e2) {
-        return distance2d(e1.getLocation(), e2.getLocation());
-    }
-    public static double distance2d(@NotNull  Location loc1, @NotNull Location loc2) {
-        loc1 = loc1.clone();
-        loc1.setY(loc2.getY());
-        return distance(loc1, loc2);
-    }
-    public static double distance(@NotNull  Location loc1, @NotNull Location loc2) {
-        if (loc1.getWorld() != loc2.getWorld()) {
-            return 0;
-        }
-        return loc1.distance(loc2);
-    }
-
-    public static Location getTargetLoc(Player player) {
-        return getTargetLoc(player, 128);
-    }
-    public static Location getTargetLoc(Player player, int maxDist) {
-        return getTargetLoc(player, maxDist, 1.5);
-    }
-    public static Location getTargetLoc(Player player, int maxDist, double addY) {
-        try {
-            Location target = player.getTargetBlock((Set<Material>) null, maxDist).getLocation();
-            target.setY(target.getY() + addY);
-            return target;
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
-
-    public static Location getRandLoc(Location loc, int radius) {
-        return getRandLoc(loc, radius, radius, radius);
-    }
-    public static Location getRandLoc(Location loc, int xzRadius, int yRadius) {
-        return getRandLoc(loc, xzRadius, yRadius, xzRadius);
-    }
-    @NotNull public static Location getRandLoc(Location loc, int xRadius, int yRadius, int zRadius) {
-        Location newLoc = loc.clone();
-        newLoc.setX(rand(loc.getX()-xRadius, loc.getX()+xRadius));
-        newLoc.setY(rand(loc.getY()-yRadius, loc.getY()+yRadius));
-        newLoc.setZ(rand(loc.getZ()-zRadius, loc.getZ()+zRadius));
-        return newLoc;
-    }
 
     @Nullable public static <E extends Enum<E>> E simpleMatch(Class<? extends Enum<?>> list, String item) {
         if (item == null) {
@@ -725,7 +482,7 @@ public final class ACFUtil {
     }
 
     public static boolean isNumber(String str) {
-        return StringUtils.isNumeric(str);
+        return ApacheCommonsLangUtil.isNumeric(str);
     }
 
     public static String intToRoman(int integer) {
@@ -796,62 +553,6 @@ public final class ACFUtil {
         return Math.round(x * pow) / pow;
     }
 
-    public static Player findPlayerSmart(CommandSender requester, String origName) {
-        String name = replace(origName, ":confirm", "");
-        if (name.length() < 3) {
-            requester.sendMessage("§cUsername too short, must be at least three characters");
-            return null;
-        }
-        if (!isValidName(name)) {
-            requester.sendMessage("§c'" + name + "' is not a valid username");
-            return null;
-        }
-
-        List<Player> matches = Bukkit.getServer().matchPlayer(name);
-        List<Player> confirmList = new ArrayList<>();
-
-        // Remove confirmList players from smart matching.
-        Iterator<Player> iter = matches.iterator();
-        while (iter.hasNext()) {
-            Player player = iter.next();
-            if (requester instanceof Player && !((Player) requester).canSee(player)) {
-                if (requester.hasPermission("acf.seevanish")) {
-                    if (!origName.endsWith(":confirm")) {
-                        confirmList.add(player);
-                        iter.remove();
-                    }
-                } else {
-                    iter.remove();
-                }
-            }
-        }
-
-        if (matches.size() > 1 || confirmList.size() > 1) {
-            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
-            return null;
-        }
-
-        if (matches.isEmpty()) {
-            if (confirmList.isEmpty()) {
-                requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
-                return null;
-            } else {
-                Player player = Iterables.getOnlyElement(confirmList);
-                sendMsg(requester,
-                        "&cWarning: " + player.getDisplayName() + "&c is vanished. Do not blow their cover!\n" +
-                                "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
-                                "&bEx: &e/g " + player.getName() + ":confirm");
-                return null;
-            }
-        }
-
-        return matches.get(0);
-    }
-
-    public static boolean isValidName(String name) {
-        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
-    }
-
     public static void sneaky(Throwable t) {
         //noinspection RedundantTypeArguments
         throw ACFUtil.<RuntimeException>superSneaky( t );
@@ -862,7 +563,4 @@ public final class ACFUtil {
         throw (T) t;
     }
 
-    static boolean isValidItem(ItemStack item) {
-        return item != null && item.getType() != Material.AIR && item.getAmount() > 0;
-    }
 }

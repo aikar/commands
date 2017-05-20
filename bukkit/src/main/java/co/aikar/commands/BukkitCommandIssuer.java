@@ -21,39 +21,36 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.acfexample;
+package co.aikar.commands;
 
-import co.aikar.commands.BukkitCommandManager;
-import co.aikar.commands.CommandManager;
-import com.google.common.collect.Lists;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public final class ACFExample extends JavaPlugin {
+public class BukkitCommandIssuer implements CommandIssuer {
+    private final CommandSender sender;
 
-    private static ACFExample plugin;
-    private static CommandManager commandManager;
+    BukkitCommandIssuer(CommandSender sender) {
+        this.sender = sender;
+    }
+
     @Override
-    public void onEnable() {
-        plugin = this;
-        registerCommands();
+    public boolean isPlayer() {
+        return sender instanceof Player;
     }
 
-    private void registerCommands() {
-        commandManager = new BukkitCommandManager(this);
-        commandManager.getCommandReplacements().addReplacements("test", "foobar", "%foo", "barbaz");
-        commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
-        commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
-            Lists.newArrayList("foo", "bar", "baz")
-        ));
-        commandManager.registerCommand(new SomeCommand());
-        commandManager.registerCommand(new SomeCommand_ExtraSubs());
+    @Override
+    public <T> T getIssuer() {
+        //noinspection unchecked
+        return (T) sender;
     }
 
-    public static ACFExample getPlugin() {
-        return plugin;
+    @Override
+    public void sendMessage(String message) {
+        sender.sendMessage(message);
     }
 
-    public static CommandManager getCommandManager() {
-        return commandManager;
+    @Override
+    public boolean hasPermission(String name) {
+        return sender.hasPermission(name);
     }
 }

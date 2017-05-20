@@ -29,14 +29,13 @@ import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class CommandContexts {
-    private final Map<Class<?>, ContextResolver<?>> contextMap = Maps.newHashMap();
+public class CommandContexts <R extends CommandExecutionContext> {
+    protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
     private final CommandManager manager;
 
     CommandContexts(CommandManager manager) {
@@ -105,8 +104,11 @@ public class CommandContexts {
         });
         registerContext(String[].class, (c) -> {
             String val;
+            // Go home IDEA, you're drunk
+            //noinspection unchecked
+            List<String> args = c.getArgs();
             if (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) {
-                val = ACFUtil.join(c.getArgs());
+                val = ACFUtil.join(args);
             } else {
                 val = c.popFirstArg();
             }
@@ -117,16 +119,17 @@ public class CommandContexts {
                 }
                 return ACFPatterns.getPattern(split.value()).split(val);
             } else if (!c.isLastArg()) {
-                ACFUtil.sneaky(new InvalidConfigurationException("Weird Command signature... String[] should be last or @Split"));
+                ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));
             }
 
-            String[] result = c.getArgs().toArray(new String[c.getArgs().size()]);
-            c.getArgs().clear();
+            String[] result = args.toArray(new String[args.size()]);
+            args.clear();
             return result;
         });
 
         registerContext(Enum.class, (c) -> {
             final String first = c.popFirstArg();
+            //noinspection unchecked
             Class<? extends Enum<?>> enumCls = (Class<? extends Enum<?>>) c.getParam().getType();
             Enum<?> match = ACFUtil.simpleMatch(enumCls, first);
             if (match == null) {
@@ -137,27 +140,27 @@ public class CommandContexts {
         });
     }
 
-    public <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T> supplier) {
+    <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
-    public <T> void registerContext(Class<T> context, ContextResolver<T> supplier) {
+    <T> void registerContext(Class<T> context, ContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
 
-    public ContextResolver<?> getResolver(Class<?> type) {
+    public ContextResolver<?, R> getResolver(Class<?> type) {
         Class<?> rootType = type;
         do {
             if (type == Object.class) {
                 break;
             }
 
-            final ContextResolver<?> resolver = contextMap.get(type);
+            final ContextResolver<?, R> resolver = contextMap.get(type);
             if (resolver != null) {
                 return resolver;
             }
         } while ((type = type.getSuperclass()) != null);
 
-        ACFLog.exception(new InvalidConfigurationException("No context resolver defined for " + rootType.getName()));
+        ACFLog.exception(new IllegalStateException("No context resolver defined for " + rootType.getName()));
         return null;
     }
 }

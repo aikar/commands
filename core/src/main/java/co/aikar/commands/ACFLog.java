@@ -23,14 +23,14 @@
 
 package co.aikar.commands;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.bukkit.Bukkit;
+
+import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
 final class ACFLog {
-    private static final Logger LOGGER = Bukkit.getLogger();
+    private static final Logger LOGGER = Logger.getLogger("ACF");
     public static final String PREFIX = "[ACF] ";
 
     private ACFLog() {}
@@ -76,7 +76,7 @@ final class ACFLog {
         if (msg != null) {
             severe(msg);
         }
-        severe(ExceptionUtils.getFullStackTrace(e));
+        severe(ApacheCommonsExceptionUtil.getFullStackTrace(e));
     }
 
     public static void exception(Throwable dbg, int lines) {

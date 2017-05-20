@@ -36,8 +36,6 @@ import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +53,7 @@ public class RegisteredCommand {
     private final Method method;
     final String prefSubCommand;
     final Parameter[] parameters;
-    final ContextResolver<?>[] resolvers;
+    final ContextResolver<?, ?>[] resolvers;
     final String syntaxText;
 
     private final String permission;
@@ -90,11 +88,11 @@ public class RegisteredCommand {
             final Parameter parameter = parameters[i];
             final Class<?> type = parameter.getType();
 
-            final ContextResolver<?> resolver = commandContexts.getResolver(type);
+            final ContextResolver<?, ?> resolver = commandContexts.getResolver(type);
             if (resolver != null) {
                 resolvers[i] = resolver;
 
-                if (!CommandSender.class.isAssignableFrom(parameter.getType())) {
+                if (!CommandIssuer.class.isAssignableFrom(parameter.getType())) {
                     if (isOptionalResolver(resolver, parameter)) {
                         optionalResolvers++;
                         syntaxB.append('[').append(parameter.getName()).append("] ");
@@ -118,13 +116,13 @@ public class RegisteredCommand {
         this.optionalResolvers = optionalResolvers;
     }
 
-    static boolean isOptionalResolver(ContextResolver<?> resolver, Parameter parameter) {
+    static boolean isOptionalResolver(ContextResolver<?, ?> resolver, Parameter parameter) {
         return resolver instanceof SenderAwareContextResolver
                 || parameter.getAnnotation(Optional.class) != null
                 || parameter.getAnnotation(Default.class) != null;
     }
 
-    void invoke(CommandSender sender, List<String> args) {
+    void invoke(CommandIssuer sender, List<String> args) {
         if (!scope.canExecute(sender, this)) {
             return;
         }
@@ -138,29 +136,29 @@ public class RegisteredCommand {
         }
     }
 
-    void handleException(CommandSender sender, List<String> args, Exception e) {
+    void handleException(CommandIssuer sender, List<String> args, Exception e) {
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
             e = (Exception) e.getCause();
         }
         if (e instanceof InvalidCommandArgument) {
             if (e.getMessage() != null && !e.getMessage().isEmpty()) {
-                ACFUtil.sendMsg(sender, "&cError: " + e.getMessage());
+                sender.sendMessage("&cError: " + e.getMessage());
             }
             if (((InvalidCommandArgument) e).showSyntax) {
                 scope.showSyntax(sender, this);
             }
         } else {
-            ACFUtil.sendMsg(sender, "&cI'm sorry, but there was an error performing this command.");
+            sender.sendMessage("&cI'm sorry, but there was an error performing this command.");
             ACFLog.exception("Exception in command: " + command + " " + ACFUtil.join(args), e);
         }
     }
 
     @Nullable
-    Map<String, Object> resolveContexts(CommandSender sender, List<String> args) throws InvalidCommandArgument {
+    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args) throws InvalidCommandArgument {
         return resolveContexts(sender, args, parameters.length);
     }
     @Nullable
-    Map<String, Object> resolveContexts(CommandSender sender, List<String> args, int argLimit) throws InvalidCommandArgument {
+    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = Lists.newArrayList(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
@@ -171,8 +169,8 @@ public class RegisteredCommand {
             final Parameter parameter = parameters[i];
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
-            final ContextResolver<?> resolver = resolvers[i];
-            CommandExecutionContext context = new CommandExecutionContext(this, parameter, sender, args, i, passedArgs);
+            final ContextResolver<?, ?> resolver = resolvers[i];
+            CommandExecutionContext context = this.scope.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
             if (!isOptionalResolver(resolver, parameter)) {
                 remainingRequired--;
             }
@@ -221,8 +219,8 @@ public class RegisteredCommand {
         return this.timing;
     }
 
-    boolean hasPermission(CommandSender check) {
-        return permission == null || !(check instanceof Player) || check.hasPermission(permission);
+    boolean hasPermission(CommandIssuer check) {
+        return permission == null || !check.isPlayer() || check.hasPermission(permission);
     }
 
     public String getPermission() {

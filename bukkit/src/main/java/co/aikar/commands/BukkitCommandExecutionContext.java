@@ -23,24 +23,19 @@
 
 package co.aikar.commands;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.command.CommandSender;
 
-/**
- * Aikar Command Framework
- */
-public final class ACF {
-    private ACF() {}
+import java.lang.reflect.Parameter;
+import java.util.List;
+import java.util.Map;
 
-    /**
-     * Creates a manager for your current supported platform.
-     * @param plugin Bukkit Plugin
-     * @return Command Manager
-     */
-    public static CommandManager createManager(Plugin plugin) {
-        try {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
-            return new PaperCommandManager(plugin);
-        } catch (ClassNotFoundException ignored) {}
-        return new BukkitCommandManager(plugin);
+public class BukkitCommandExecutionContext extends CommandExecutionContext<BukkitCommandExecutionContext> {
+    BukkitCommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandIssuer sender, List<String> args,
+                                  int index, Map<String, Object> passedArgs) {
+        super(cmd, param, sender, args, index, passedArgs);
+    }
+
+    public CommandSender getSender() {
+        return this.issuer.getIssuer();
     }
 }

@@ -21,20 +21,32 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.acfexample;
+package co.aikar.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Subcommand;
-import org.bukkit.command.CommandIssuer;
+public interface CommandIssuer {
+    /**
+     * Gets the issuer in the platforms native object
+     * @param <T>
+     * @return
+     */
+    <T> T getIssuer();
 
-@CommandAlias("acf")
-public class SomeCommand_ExtraSubs extends BaseCommand {
+    /**
+     * Is this issue a player, or server/console sender
+     * @return
+     */
+    boolean isPlayer();
 
-    @Subcommand("testsub test2")
-    @CommandCompletion("Foo2")
-    public void onTestSub2(CommandIssuer sender, String hi) {
-        sender.sendMessage(hi);
-    }
+    /**
+     * Send the Command Issuer a message
+     * @param message
+     */
+    void sendMessage(String message);
+
+    /**
+     * Has permission node
+     * @param permission
+     * @return
+     */
+    boolean hasPermission(String permission);
 }

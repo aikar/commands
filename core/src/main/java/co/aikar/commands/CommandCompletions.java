@@ -27,7 +27,6 @@ import co.aikar.commands.annotation.Split;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Parameter;
@@ -70,7 +69,7 @@ public class CommandCompletions {
     }
 
     @NotNull
-    List<String> of(RegisteredCommand command, CommandSender sender, String[] completionInfo, String[] args) {
+    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args) {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
@@ -83,7 +82,7 @@ public class CommandCompletions {
     }
 
     @NotNull
-    List<String> getCompletionValues(RegisteredCommand command, CommandSender sender, String completion, String[] args) {
+    List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args) {
         completion = manager.getCommandReplacements().replace(completion);
         final int argIndex = args.length - 1;
 
@@ -123,18 +122,18 @@ public class CommandCompletions {
     }
 
     public interface CommandCompletionHandler {
-        Collection<String> getCompletions(CommandSender sender, String config, String input, CommandCompletionContext context) throws InvalidCommandArgument;
+        Collection<String> getCompletions(CommandIssuer sender, String config, String input, CommandCompletionContext context) throws InvalidCommandArgument;
     }
 
     public class CommandCompletionContext {
         private final RegisteredCommand command;
-        private final CommandSender sender;
+        private final CommandIssuer sender;
         private final String input;
         private final String config;
         private final Map<String, String> configs = Maps.newHashMap();
         private final List<String> args;
 
-        CommandCompletionContext(RegisteredCommand command, CommandSender sender, String input, String config, String[] args) {
+        CommandCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
             this.command = command;
             this.sender = sender;
             this.input = input;
@@ -208,7 +207,7 @@ public class CommandCompletions {
             return (T) resolved.get(name);
         }
 
-        public CommandSender getSender() {
+        public CommandIssuer getSender() {
             return sender;
         }
 

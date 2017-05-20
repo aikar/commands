@@ -8,15 +8,20 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="acf" />
+        <module name="acf-bukkit" />
         <module name="acf-core" />
         <module name="acf-example" />
+        <module name="acf-paper" />
         <module name="commands" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
+      <module name="acf-bukkit" target="1.8" />
       <module name="acf-core" target="1.8" />
       <module name="acf-example" target="1.8" />
+      <module name="acf-paper" target="1.8" />
+      <module name="acf-parent" target="1.8" />
       <module name="commands" target="1.8" />
     </bytecodeTargetLevel>
   </component>

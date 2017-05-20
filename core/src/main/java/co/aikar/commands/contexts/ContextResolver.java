@@ -27,6 +27,6 @@ import co.aikar.commands.CommandExecutionContext;
 import co.aikar.commands.InvalidCommandArgument;
 
 @FunctionalInterface
-public interface ContextResolver <C> {
-    C getContext(CommandExecutionContext c) throws InvalidCommandArgument;
+public interface ContextResolver <C, T extends CommandExecutionContext> {
+    C getContext(CommandExecutionContext<T> c) throws InvalidCommandArgument;
 }

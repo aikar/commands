@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="All But Apache Commons" pattern="(file[acf-bukkit]:*/||file[acf-parent]:*/||file[acf-core]:*/||file[acf-example]:*/||file[acf-paper]:*/)&amp;&amp;!file[acf-core]:src/main/java/co/aikar/commands/apachecommonslang//*" />
+</component>

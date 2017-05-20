@@ -28,20 +28,15 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.util.StringUtil;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -59,7 +54,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
-public class BaseCommand extends Command {
+public abstract class BaseCommand {
 
     public static final String UNKNOWN = "__unknown";
     public static final String DEFAULT = "__default";
@@ -73,14 +68,10 @@ public class BaseCommand extends Command {
     private String[] origArgs;
     CommandManager manager = null;
     Map<String, RootCommand> registeredCommands = new HashMap<>();
-
-    public BaseCommand() {
-        this(null);
-    }
-
-    public BaseCommand(String cmd) {
-        super(cmd);
-    }
+    String description;
+    String commandName;
+    String usageMessage;
+    String permission;
 
     /**
      * Gets the root command name that the user actually typed
@@ -107,7 +98,7 @@ public class BaseCommand extends Command {
     }
 
     void onRegister(CommandManager manager) {
-        onRegister(manager, getName());
+        onRegister(manager, null);
     }
     void onRegister(CommandManager manager, String cmd) {
         this.manager = manager;
@@ -120,27 +111,15 @@ public class BaseCommand extends Command {
                 cmd = ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(rootCmdAlias.value()))[0];
             }
             cmd = cmd.toLowerCase();
-            try {
-                setName(cmd);
-            } catch (NoSuchMethodError ignored) {
-                try {
-                    // To support pre 1.8 where setName was not added.
-                    Field field = Command.class.getDeclaredField("name");
-                    field.setAccessible(true);
-                    field.set(this, cmd);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    ACFLog.exception("Error setting name for command", e);
-                }
-            }
-            setLabel(cmd);
         }
+        this.commandName = cmd;
 
         this.description = cmd + " commands";
         this.usageMessage = "/" + cmd;
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);
         if (perm != null) {
-            this.setPermission(manager.getCommandReplacements().replace(perm.value()));
+            this.permission = manager.getCommandReplacements().replace(perm.value());
         }
 
         boolean foundDefault = false;
@@ -158,7 +137,7 @@ public class BaseCommand extends Command {
                     registerSubcommand(method, DEFAULT);
                     foundDefault = true;
                 } else {
-                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @Default commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                    ACFUtil.sneaky(new IllegalStateException("Multiple @Default commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             }
             if (sub != null) {
@@ -171,14 +150,14 @@ public class BaseCommand extends Command {
             }
 
 
-            //CommandSender.class, String.class, String[].class
+            //CommandIssuer.class, String.class, String[].class
             UnknownHandler unknown = method.getAnnotation(UnknownHandler.class);
             if (unknown != null) {
                 if (!foundUnknown) {
                     registerSubcommand(method, UNKNOWN);
                     foundUnknown = true;
                 } else {
-                    ACFUtil.sneaky(new InvalidConfigurationException("Multiple @UnknownHandler commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                    ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             }
         }
@@ -247,6 +226,7 @@ public class BaseCommand extends Command {
         String nameLower = name.toLowerCase();
         RootCommand rootCommand = manager.obtainRootCommand(nameLower);
         rootCommand.addChild(cmd);
+
         this.registeredCommands.put(nameLower, rootCommand);
     }
 
@@ -260,11 +240,11 @@ public class BaseCommand extends Command {
         for (int i = 0; i < subCommandParts.length; i++) {
             subCommandParts[i] = ACFPatterns.PIPE.split(subCommandParts[i])[0];
         }
-        String prefSubCommand = StringUtils.join(subCommandParts, " ");
+        String prefSubCommand = ApacheCommonsLangUtil.join(subCommandParts, " ");
         final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
 
         final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(cmdAlias.value().toLowerCase())) : null;
-        String cmdName = aliasNames != null ? aliasNames[0] : getLabel() + " ";
+        String cmdName = aliasNames != null ? aliasNames[0] : this.commandName + " ";
         RegisteredCommand cmd = new RegisteredCommand(this, cmdName, method, prefSubCommand);
 
         for (String subcmd : cmdList) {
@@ -316,8 +296,7 @@ public class BaseCommand extends Command {
         }
     }
 
-    @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
         commandLabel = commandLabel.toLowerCase();
 
         execSubcommand = null;
@@ -354,7 +333,7 @@ public class BaseCommand extends Command {
     }
     private CommandSearch findSubCommand(String[] args, boolean completion) {
         for (int i = args.length; i >= 0; i--) {
-            String checkSub = StringUtils.join(args, " ", 0, i).toLowerCase();
+            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
             Set<RegisteredCommand> cmds = subCommands.get(checkSub);
 
             final int extraArgs = args.length - i;
@@ -388,30 +367,29 @@ public class BaseCommand extends Command {
         return null;
     }
 
-    private static void executeCommand(CommandSender sender, String[] args, RegisteredCommand cmd) {
+    private static void executeCommand(CommandIssuer sender, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(sender)) {
             List<String> sargs = Lists.newArrayList(args);
             try (MCTiming timing = cmd.getTiming().startTiming()) {
                 cmd.invoke(sender, sargs);
             }
         } else {
-            ACFUtil.sendMsg(sender, "&cI'm sorry, but you do not have permission to perform this command.");
+            sender.sendMessage("&cI'm sorry, but you do not have permission to perform this command.");
         }
     }
 
-    public boolean canExecute(CommandSender sender, RegisteredCommand cmd) {
+    public boolean canExecute(CommandIssuer sender, RegisteredCommand cmd) {
         return true;
     }
 
-    @Override
-    public List<String> tabComplete(CommandSender sender, String commandLabel, String[] args)
+    public List<String> tabComplete(CommandIssuer sender, String commandLabel, String[] args)
         throws IllegalArgumentException {
 
         commandLabel = commandLabel.toLowerCase();
 
         final CommandSearch search = findSubCommand(args, true);
 
-        String argString = StringUtils.join(args, " ").toLowerCase();
+        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
 
         final List<String> cmds = new ArrayList<>();
 
@@ -436,12 +414,12 @@ public class BaseCommand extends Command {
         return filterTabComplete(args[args.length-1], cmds);
     }
 
-    private List<String> completeCommand(CommandSender sender, RegisteredCommand cmd, String[] args, String commandLabel) {
+    private List<String> completeCommand(CommandIssuer sender, RegisteredCommand cmd, String[] args, String commandLabel) {
         if (args.length > cmd.requiredResolvers + cmd.optionalResolvers) {
             return ImmutableList.of();
         }
         if (args.length == 0 || cmd.complete == null) {
-            return args.length < 2 ? super.tabComplete(sender, commandLabel, args) : ImmutableList.of();
+            return args.length < 2 ? null : ImmutableList.of();
         }
 
         String[] completions = ACFPatterns.SPACE.split(cmd.complete);
@@ -453,20 +431,20 @@ public class BaseCommand extends Command {
     private static List<String> filterTabComplete(String arg, List<String> cmds) {
         return cmds.stream()
                    .distinct()
-                   .filter(cmd -> cmd != null && (arg.isEmpty() || StringUtil.startsWithIgnoreCase(cmd, arg)))
+                   .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
                    .collect(Collectors.toList());
     }
 
-    public void help(CommandSender sender, String[] args) {
-        ACFUtil.sendMsg(sender, "&cUnknown Command, please type &f/help");
+    public void help(CommandIssuer sender, String[] args) {
+        sender.sendMessage("&cUnknown Command, please type &f/help");
     }
 
-    private boolean executeSubcommand(String subcommand, CommandSender sender, String... args) {
+    private boolean executeSubcommand(String subcommand, CommandIssuer sender, String... args) {
         final Set<RegisteredCommand> defs = subCommands.get(subcommand);
         RegisteredCommand def = null;
         if (!defs.isEmpty()) {
             if (defs.size() == 1) {
-                def = Iterables.getOnlyElement(defs);
+                def = defs.iterator().next();
             }
             if (def != null) {
                 executeCommand(sender, args, def);
@@ -476,16 +454,28 @@ public class BaseCommand extends Command {
         return false;
     }
 
-    public boolean preCommand(CommandSender sender, String commandLabel, String[] args) {
+    public boolean preCommand(CommandIssuer sender, String commandLabel, String[] args) {
         return false;
     }
 
-    public void doHelp(CommandSender sender, String... args) {
+    public void doHelp(CommandIssuer sender, String... args) {
         help(sender, args);
     }
 
-    public void showSyntax(CommandSender sender, RegisteredCommand cmd) {
-        ACFUtil.sendMsg(sender, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
+    public void showSyntax(CommandIssuer sender, RegisteredCommand cmd) {
+        sender.sendMessage("&cUsage: /" + cmd.command + " " + cmd.syntaxText);
+    }
+
+    public boolean testPermission(CommandIssuer sender) {
+        if (permission != null && !permission.isEmpty() && !sender.hasPermission(permission)) {
+            // TODO: Msg
+            return false;
+        }
+        return true;
+    }
+
+    public String getName() {
+        return commandName;
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

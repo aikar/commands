@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/bukkit/acf-bukkit.iml" filepath="$PROJECT_DIR$/bukkit/acf-bukkit.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/acf-core.iml" filepath="$PROJECT_DIR$/core/acf-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/acf-example.iml" filepath="$PROJECT_DIR$/example/acf-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/paper/acf-paper.iml" filepath="$PROJECT_DIR$/paper/acf-paper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/acf-parent.iml" filepath="$PROJECT_DIR$/acf-parent.iml" />
     </modules>
   </component>
 </project>

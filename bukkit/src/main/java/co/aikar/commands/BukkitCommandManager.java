@@ -38,6 +38,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
@@ -48,7 +49,7 @@ public class BukkitCommandManager extends CommandManager {
     private final CommandMap commandMap;
     private final TimingManager timingManager;
     protected Map<String, Command> knownCommands = new HashMap<>();
-    protected Map<String, BaseCommand> registeredCommands = new HashMap<>();
+    protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected CommandContexts contexts;
     protected CommandCompletions completions;
 
@@ -107,32 +108,28 @@ public class BukkitCommandManager extends CommandManager {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String key = entry.getKey().toLowerCase();
-            RootCommand value = entry.getValue();
+            BukkitRootCommand value = (BukkitRootCommand) entry.getValue();
             if (!value.isRegistered) {
                 commandMap.register(key, plugin, value);
             }
             value.isRegistered = true;
-            registeredCommands.put(key, command);
+            registeredCommands.put(key, value);
         }
     }
 
-    public void unregisterCommand(BaseCommand command) {
+    public void unregisterCommand(BukkitRootCommand command) {
         final String plugin = this.plugin.getName().toLowerCase();
-        command.registeredCommands.entrySet().removeIf(entry -> {
-            Command cmd = entry.getValue();
-            cmd.unregister(commandMap);
-            String key = entry.getKey();
-            Command registered = knownCommands.get(key);
-            if (registered == command) {
-                knownCommands.remove(key);
-            }
-            knownCommands.remove(plugin + ":" + key);
-            return true;
-        });
+        command.unregister(commandMap);
+        String key = command.getName();
+        Command registered = knownCommands.get(key);
+        if (command.equals(registered)) {
+            knownCommands.remove(key);
+        }
+        knownCommands.remove(plugin + ":" + key);
     }
 
     public void unregisterCommands() {
-        for (Map.Entry<String, BaseCommand> entry : registeredCommands.entrySet()) {
+        for (Map.Entry<String, BukkitRootCommand> entry : registeredCommands.entrySet()) {
             unregisterCommand(entry.getValue());
         }
     }
@@ -156,6 +153,16 @@ public class BukkitCommandManager extends CommandManager {
     @Override
     public TimingManager getTimings() {
         return timingManager;
+    }
+
+    @Override
+    public RootCommand createRootCommand(String cmd) {
+        return new BukkitRootCommand(this, cmd);
+    }
+
+    @Override
+    public CommandExecutionContext<? extends CommandExecutionContext> createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        return new BukkitCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
     }
 
     class ProxyCommandMap extends SimpleCommandMap {
@@ -187,7 +194,7 @@ public class BukkitCommandManager extends CommandManager {
 
         }
         boolean isOurCommand(Command command) {
-            return command instanceof BaseCommand && ((BaseCommand) command).manager == BukkitCommandManager.this;
+            return command instanceof RootCommand && ((RootCommand) command).getManager() == BukkitCommandManager.this;
         }
 
         @Override

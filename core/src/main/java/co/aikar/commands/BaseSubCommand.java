@@ -35,19 +35,4 @@ public class BaseSubCommand extends BaseCommand {
     public String getName() {
         return parentCommand.getName();
     }
-
-    @Override
-    public String getLabel() {
-        return parentCommand.getLabel();
-    }
-
-    @Override
-    public String getDescription() {
-        return parentCommand.getDescription();
-    }
-
-    @Override
-    public String getUsage() {
-        return parentCommand.getUsage();
-    }
 }

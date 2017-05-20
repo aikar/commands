@@ -30,28 +30,26 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.bukkit.command.CommandSender;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class CommandExecutionContext {
+public class CommandExecutionContext <T extends CommandExecutionContext> {
     private final RegisteredCommand cmd;
     private final Parameter param;
-    private final CommandSender sender;
+    protected final CommandIssuer issuer;
     private final List<String> args;
     private final int index;
     private final Map<String, Object> passedArgs;
     private final Map<String, String> flags;
 
-    public CommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandSender sender, List<String> args,
+    CommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandIssuer sender, List<String> args,
                                    int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
         this.param = param;
-        this.sender = sender;
+        this.issuer = sender;
         this.args = args;
         this.index = index;
         this.passedArgs = passedArgs;
@@ -87,7 +85,8 @@ public class CommandExecutionContext {
         int numRequired = getNumParams();
         for (int i = 0; i < cmd.resolvers.length; i++) {
             Parameter parameter = cmd.parameters[i];
-            ContextResolver<?> resolver = cmd.resolvers[i];
+            //noinspection unchecked
+            ContextResolver<?, ?> resolver = cmd.resolvers[i];
             if (parameter.getAnnotation(Optional.class) != null || parameter.getAnnotation(Default.class) != null) {
                 numRequired--;
             } else if (resolver instanceof SenderAwareContextResolver) {
@@ -157,8 +156,8 @@ public class CommandExecutionContext {
         return this.param;
     }
 
-    public CommandSender getSender() {
-        return this.sender;
+    public CommandIssuer getIssuer() {
+        return this.issuer;
     }
 
     public List<String> getArgs() {
