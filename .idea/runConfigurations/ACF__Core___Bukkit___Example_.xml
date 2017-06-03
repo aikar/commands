@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="acf-example" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="ACF (Core + Bukkit + Example)" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -24,6 +24,7 @@
     </MavenSettings>
     <method>
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/core/pom.xml" goal="clean install" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/bukkit/pom.xml" goal="clean install" />
     </method>
   </configuration>
 </component>

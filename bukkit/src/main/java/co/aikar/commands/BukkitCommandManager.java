@@ -31,7 +31,6 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -184,6 +183,11 @@ public class BukkitCommandManager extends CommandManager {
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return (R) new BukkitCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+    }
+
+    @Override
+    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
+        return new BukkitCommandCompletionContext(command, sender, input, config, args);
     }
 
     @Override

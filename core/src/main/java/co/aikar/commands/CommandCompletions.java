@@ -26,6 +26,7 @@ package co.aikar.commands;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
+import sun.reflect.generics.scope.Scope;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -91,10 +92,11 @@ public class CommandCompletions <I, C extends CommandCompletionContext> {
             CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
             if (handler != null) {
                 String config = complete.length == 1 ? null : complete[1];
-                CommandCompletionContext context = new CommandCompletionContext(command, sender, input, config, args);
+                CommandCompletionContext context = manager.createCompletionContext(command, sender, input, config, args);
 
                 try {
-                    Collection<String> completions = handler.getCompletions(sender, config, input, context);
+                    //noinspection unchecked
+                    Collection<String> completions = handler.getCompletions(sender.getIssuer(), config, input, context);
                     if (completions != null) {
                         allCompletions.addAll(completions);
                         continue;
