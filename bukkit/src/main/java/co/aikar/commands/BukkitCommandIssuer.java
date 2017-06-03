@@ -46,7 +46,7 @@ public class BukkitCommandIssuer implements CommandIssuer {
 
     @Override
     public void sendMessage(String message) {
-        sender.sendMessage(message);
+        sender.sendMessage(ACFBukkitUtil.color(message));
     }
 
     @Override

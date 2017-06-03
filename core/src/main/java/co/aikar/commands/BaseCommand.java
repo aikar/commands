@@ -59,7 +59,7 @@ public abstract class BaseCommand {
     public static final String UNKNOWN = "__unknown";
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
-    Method preCommandHandler;
+    private Method preCommandHandler;
 
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
@@ -111,18 +111,13 @@ public abstract class BaseCommand {
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAliasAnno = self.getAnnotation(CommandAlias.class);
         String rootCmdAlias = rootCmdAliasAnno != null ? manager.getCommandReplacements().replace(rootCmdAliasAnno.value()).toLowerCase() : null;
-        if (cmd == null) {
-            if (rootCmdAlias == null) {
-                cmd = "__" + self.getSimpleName();
-            } else {
-                cmd = ACFPatterns.PIPE.split(rootCmdAlias)[0];
-            }
-            cmd = cmd.toLowerCase();
+        if (cmd == null && rootCmdAlias != null) {
+            cmd = ACFPatterns.PIPE.split(rootCmdAlias)[0];
         }
-        this.commandName = cmd;
+        this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
 
-        this.description = cmd + " commands";
-        this.usageMessage = "/" + cmd;
+        this.description = this.commandName + " commands";
+        this.usageMessage = "/" + this.commandName;
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);
         if (perm != null) {
@@ -148,9 +143,6 @@ public abstract class BaseCommand {
                 }
             }
 
-
-
-
             if (sub != null) {
                 sublist = sub;
             } else if (commandAliases != null) {
@@ -158,10 +150,8 @@ public abstract class BaseCommand {
             }
 
 
-            //CommandIssuer.class, String.class, String[].class
-            UnknownHandler unknown = method.getAnnotation(UnknownHandler.class);
-            //CommandIssuer.class, String.class, String[].class
-            PreCommand preCommand = method.getAnnotation(PreCommand.class);
+            UnknownHandler unknown    = method.getAnnotation(UnknownHandler.class);
+            PreCommand     preCommand = method.getAnnotation(PreCommand.class);
             if (unknown != null) {
                 if (!foundUnknown) {
                     registerSubcommand(method, UNKNOWN);
@@ -189,7 +179,9 @@ public abstract class BaseCommand {
             }
         }
 
-        register(cmd, this);
+        if (cmd != null) {
+            register(cmd, this);
+        }
         for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
             if (BaseSubCommand.class.isAssignableFrom(clazz)) {
                 try {
