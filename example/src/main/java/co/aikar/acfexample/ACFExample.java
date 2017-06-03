@@ -24,14 +24,13 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BukkitCommandManager;
-import co.aikar.commands.CommandManager;
 import com.google.common.collect.Lists;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ACFExample extends JavaPlugin {
 
     private static ACFExample plugin;
-    private static CommandManager commandManager;
+    private static BukkitCommandManager commandManager;
     @Override
     public void onEnable() {
         plugin = this;
@@ -54,7 +53,7 @@ public final class ACFExample extends JavaPlugin {
         return plugin;
     }
 
-    public static CommandManager getCommandManager() {
+    public static BukkitCommandManager getCommandManager() {
         return commandManager;
     }
 }

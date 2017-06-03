@@ -26,10 +26,10 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.PreCommand;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -59,6 +59,7 @@ public abstract class BaseCommand {
     public static final String UNKNOWN = "__unknown";
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    Method preCommandHandler;
 
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
@@ -72,6 +73,11 @@ public abstract class BaseCommand {
     String commandName;
     String usageMessage;
     String permission;
+
+    public BaseCommand() {}
+    public BaseCommand(String cmd) {
+        this.commandName = cmd;
+    }
 
     /**
      * Gets the root command name that the user actually typed
@@ -98,7 +104,7 @@ public abstract class BaseCommand {
     }
 
     void onRegister(CommandManager manager) {
-        onRegister(manager, null);
+        onRegister(manager, this.commandName);
     }
     void onRegister(CommandManager manager, String cmd) {
         this.manager = manager;
@@ -141,18 +147,21 @@ public abstract class BaseCommand {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @Default commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             }
+
+
+
+
             if (sub != null) {
                 sublist = sub;
             } else if (commandAliases != null) {
                 sublist = commandAliases.value();
             }
-            if (sublist != null) {
-                registerSubcommand(method, sublist);
-            }
 
 
             //CommandIssuer.class, String.class, String[].class
             UnknownHandler unknown = method.getAnnotation(UnknownHandler.class);
+            //CommandIssuer.class, String.class, String[].class
+            PreCommand preCommand = method.getAnnotation(PreCommand.class);
             if (unknown != null) {
                 if (!foundUnknown) {
                     registerSubcommand(method, UNKNOWN);
@@ -160,6 +169,14 @@ public abstract class BaseCommand {
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
+            } else if (preCommand != null) {
+                if (this.preCommandHandler == null) {
+                    this.preCommandHandler = method;
+                } else {
+                    ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                }
+            } else if (sublist != null) {
+                registerSubcommand(method, sublist);
             }
         }
 
@@ -246,7 +263,7 @@ public abstract class BaseCommand {
 
         final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(cmdAlias.value().toLowerCase())) : null;
         String cmdName = aliasNames != null ? aliasNames[0] : this.commandName + " ";
-        RegisteredCommand cmd = new RegisteredCommand(this, cmdName, method, prefSubCommand);
+        RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);
 
         for (String subcmd : cmdList) {
             subCommands.put(subcmd, cmd);
@@ -305,7 +322,7 @@ public abstract class BaseCommand {
         origArgs = args;
 
         if (args.length == 0) {
-            if (preCommand(sender, commandLabel, args)) {
+            if (checkPrecommand(sender, args)) {
                 return true;
             }
             executeSubcommand(DEFAULT, sender);
@@ -316,7 +333,7 @@ public abstract class BaseCommand {
         if (cmd != null) {
             execSubcommand = cmd.getCheckSub();
             final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
-            if (preCommand(sender, commandLabel, execargs)) {
+            if (checkPrecommand(sender, execargs)) {
                 return true;
             }
             executeCommand(sender, execargs, cmd.cmd);
@@ -371,15 +388,13 @@ public abstract class BaseCommand {
     private static void executeCommand(CommandIssuer sender, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(sender)) {
             List<String> sargs = Lists.newArrayList(args);
-            try (MCTiming timing = cmd.getTiming().startTiming()) {
-                cmd.invoke(sender, sargs);
-            }
+            cmd.invoke(sender, sargs);
         } else {
             sender.sendMessage("&cI'm sorry, but you do not have permission to perform this command.");
         }
     }
 
-    public boolean canExecute(CommandIssuer sender, RegisteredCommand cmd) {
+    public boolean canExecute(CommandIssuer sender, RegisteredCommand<?> cmd) {
         return true;
     }
 
@@ -416,11 +431,8 @@ public abstract class BaseCommand {
     }
 
     private List<String> completeCommand(CommandIssuer sender, RegisteredCommand cmd, String[] args, String commandLabel) {
-        if (args.length > cmd.requiredResolvers + cmd.optionalResolvers) {
+        if (args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0 || cmd.complete == null) {
             return ImmutableList.of();
-        }
-        if (args.length == 0 || cmd.complete == null) {
-            return args.length < 2 ? null : ImmutableList.of();
         }
 
         String[] completions = ACFPatterns.SPACE.split(cmd.complete);
@@ -436,9 +448,6 @@ public abstract class BaseCommand {
                    .collect(Collectors.toList());
     }
 
-    public void help(CommandIssuer sender, String[] args) {
-        sender.sendMessage("&cUnknown Command, please type &f/help");
-    }
 
     private boolean executeSubcommand(String subcommand, CommandIssuer sender, String... args) {
         final Set<RegisteredCommand> defs = subCommands.get(subcommand);
@@ -455,24 +464,44 @@ public abstract class BaseCommand {
         return false;
     }
 
-    public boolean preCommand(CommandIssuer sender, String commandLabel, String[] args) {
+    private boolean checkPrecommand(CommandIssuer sender, String[] args) {
+        if (this.preCommandHandler != null) {
+            try {
+                if (this.preCommandHandler.getParameterCount() == 1) {
+                    return (boolean) preCommandHandler.invoke(this, new Object[]{ sender.getIssuer() });
+                } else {
+                    return (boolean) preCommandHandler.invoke(this, sender.getIssuer(), args);
+                }
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                ACFLog.exception(e);
+            }
+        }
         return false;
     }
 
+    public void help(Object sender, String[] args) {
+        help(manager.getCommandIssuer(sender), args);
+    }
+    public void help(CommandIssuer sender, String[] args) {
+        sender.sendMessage("&cUnknown Command, please type &f/help");
+    }
+    public void doHelp(Object sender, String... args) {
+        doHelp(manager.getCommandIssuer(sender), args);
+    }
     public void doHelp(CommandIssuer sender, String... args) {
         help(sender, args);
     }
 
-    public void showSyntax(CommandIssuer sender, RegisteredCommand cmd) {
+    public void showSyntax(CommandIssuer sender, RegisteredCommand<?> cmd) {
         sender.sendMessage("&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
+    public boolean testPermission(Object sender) {
+        return testPermission(manager.getCommandIssuer(sender));
+    }
+
     public boolean testPermission(CommandIssuer sender) {
-        if (permission != null && !permission.isEmpty() && !sender.hasPermission(permission)) {
-            // TODO: Msg
-            return false;
-        }
-        return true;
+        return permission == null || permission.isEmpty() || sender.hasPermission(permission);
     }
 
     public String getName() {

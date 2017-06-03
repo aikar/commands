@@ -25,4 +25,4 @@ package co.aikar.commands.contexts;
 
 import co.aikar.commands.CommandExecutionContext;
 
-public interface SenderAwareContextResolver<C, T extends CommandExecutionContext> extends ContextResolver <C, T> {}
+public interface SenderAwareContextResolver<T, C extends CommandExecutionContext<?>> extends ContextResolver <T, C> {}

@@ -21,32 +21,11 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.annotation;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("WeakerAccess")
-public class PaperCommandManager extends BukkitCommandManager {
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-    // If we get anything Paper specific
-    public PaperCommandManager(Plugin plugin) {
-        super(plugin);
-    }
-
-    @Override
-    public synchronized CommandContexts<BukkitCommandExecutionContext> getCommandContexts() {
-        if (this.contexts == null) {
-            this.contexts = new PaperCommandContexts(this);
-        }
-        return this.contexts;
-    }
-
-    @Override
-    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
-        if (this.completions == null) {
-            this.completions = new PaperCommandCompletions(this);
-        }
-        return this.completions;
-    }
-}
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PreCommand {}

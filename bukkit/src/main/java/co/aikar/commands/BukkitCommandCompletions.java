@@ -27,21 +27,19 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandCompletions extends CommandCompletions {
+public class BukkitCommandCompletions extends CommandCompletions<CommandSender, BukkitCommandCompletionContext> {
     public BukkitCommandCompletions(BukkitCommandManager manager) {
         super(manager);
         registerCompletion("mobs", (sender, config, input, c) -> {
@@ -74,7 +72,7 @@ public class BukkitCommandCompletions extends CommandCompletions {
             Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
             ArrayList<String> matchedPlayers = new ArrayList<String>();
-            for (Player player : sender.getServer().getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 String name = player.getName();
                 if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, input)) {
                     matchedPlayers.add(name);

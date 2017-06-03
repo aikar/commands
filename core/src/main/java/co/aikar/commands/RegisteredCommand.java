@@ -32,7 +32,6 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
-import co.aikar.timings.lib.MCTiming;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -47,20 +46,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RegisteredCommand {
+public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext>> {
     final BaseCommand scope;
     public final String command;
     private final Method method;
     final String prefSubCommand;
     final Parameter[] parameters;
-    final ContextResolver<?, ?>[] resolvers;
+    final ContextResolver<?, R>[] resolvers;
     final String syntaxText;
 
     private final String permission;
     final String complete;
     final int requiredResolvers;
     final int optionalResolvers;
-    private MCTiming timing;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -75,6 +73,7 @@ public class RegisteredCommand {
         CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
         this.complete = completionAnno != null ? scope.manager.getCommandReplacements().replace(completionAnno.value()) : null;
         this.parameters = method.getParameters();
+        //noinspection unchecked
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
         final CommandManager manager = scope.manager;
@@ -88,17 +87,19 @@ public class RegisteredCommand {
             final Parameter parameter = parameters[i];
             final Class<?> type = parameter.getType();
 
-            final ContextResolver<?, ?> resolver = commandContexts.getResolver(type);
+            //noinspection unchecked
+            final ContextResolver<?, R> resolver = commandContexts.getResolver(type);
             if (resolver != null) {
                 resolvers[i] = resolver;
 
-                if (!CommandIssuer.class.isAssignableFrom(parameter.getType())) {
+                if (!scope.manager.isCommandIssuer(type)) {
+                    String name = parameter.getName();
                     if (isOptionalResolver(resolver, parameter)) {
                         optionalResolvers++;
-                        syntaxB.append('[').append(parameter.getName()).append("] ");
+                        syntaxB.append('[').append(name).append("] ");
                     } else {
                         requiredResolvers++;
-                        syntaxB.append('<').append(parameter.getName()).append("> ");
+                        syntaxB.append('<').append(name).append("> ");
                     }
                 }
             } else {
@@ -116,7 +117,7 @@ public class RegisteredCommand {
         this.optionalResolvers = optionalResolvers;
     }
 
-    static boolean isOptionalResolver(ContextResolver<?, ?> resolver, Parameter parameter) {
+    private boolean isOptionalResolver(ContextResolver<?, R> resolver, Parameter parameter) {
         return resolver instanceof SenderAwareContextResolver
                 || parameter.getAnnotation(Optional.class) != null
                 || parameter.getAnnotation(Default.class) != null;
@@ -126,6 +127,7 @@ public class RegisteredCommand {
         if (!scope.canExecute(sender, this)) {
             return;
         }
+        preCommand();
         try {
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
@@ -134,7 +136,10 @@ public class RegisteredCommand {
         } catch (Exception e) {
             handleException(sender, args, e);
         }
+        postCommand();
     }
+    public void preCommand() {}
+    public void postCommand() {}
 
     void handleException(CommandIssuer sender, List<String> args, Exception e) {
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
@@ -169,8 +174,9 @@ public class RegisteredCommand {
             final Parameter parameter = parameters[i];
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
-            final ContextResolver<?, ?> resolver = resolvers[i];
-            CommandExecutionContext context = this.scope.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            //noinspection unchecked
+            final ContextResolver<?, R> resolver = resolvers[i];
+            R context = this.scope.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
             if (!isOptionalResolver(resolver, parameter)) {
                 remainingRequired--;
             }
@@ -210,13 +216,6 @@ public class RegisteredCommand {
             passedArgs.put(parameterName, resolver.getContext(context));
         }
         return passedArgs;
-    }
-
-    MCTiming getTiming() {
-        if (this.timing == null) {
-            this.timing = scope.manager.getTimings().of("Command: " + command);
-        }
-        return this.timing;
     }
 
     boolean hasPermission(CommandIssuer check) {

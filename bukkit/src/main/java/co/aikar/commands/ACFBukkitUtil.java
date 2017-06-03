@@ -31,6 +31,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -61,7 +62,7 @@ public class ACFBukkitUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static void sendMsg(CommandIssuer player, String message) {
+    public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         if (player == null) {
             for (String msg : ACFPatterns.NEWLINE.split(message)) {
@@ -239,7 +240,7 @@ public class ACFBukkitUtil {
         return loc1.getWorld() == loc2.getWorld() && loc1.distance(loc2) <= dist;
     }
 
-    public static Player findPlayerSmart(CommandIssuer requester, String origName) {
+    public static Player findPlayerSmart(CommandSender requester, String origName) {
         String name = ACFUtil.replace(origName, ":confirm", "");
         if (name.length() < 3) {
             requester.sendMessage("§cUsername too short, must be at least three characters");

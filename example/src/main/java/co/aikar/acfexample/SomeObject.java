@@ -23,6 +23,7 @@
 
 package co.aikar.acfexample;
 
+import co.aikar.commands.BukkitCommandExecutionContext;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.contexts.ContextResolver;
 
@@ -37,7 +38,7 @@ public abstract class SomeObject {
         return this.thisValue;
     }
 
-    public static ContextResolver<SomeObject> getContextResolver() {
+    public static ContextResolver<SomeObject, BukkitCommandExecutionContext> getContextResolver() {
         return (c) -> {
             String first = c.popFirstArg();
             if (first == null) {

@@ -24,29 +24,13 @@
 package co.aikar.commands;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("WeakerAccess")
-public class PaperCommandManager extends BukkitCommandManager {
-
-    // If we get anything Paper specific
-    public PaperCommandManager(Plugin plugin) {
-        super(plugin);
+public class BukkitCommandCompletionContext extends CommandCompletionContext {
+    BukkitCommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {
+        super(command, issuer, input, config, args);
     }
 
-    @Override
-    public synchronized CommandContexts<BukkitCommandExecutionContext> getCommandContexts() {
-        if (this.contexts == null) {
-            this.contexts = new PaperCommandContexts(this);
-        }
-        return this.contexts;
-    }
-
-    @Override
-    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
-        if (this.completions == null) {
-            this.completions = new PaperCommandCompletions(this);
-        }
-        return this.completions;
+    public CommandSender getSender() {
+        return this.getIssuer().getIssuer();
     }
 }

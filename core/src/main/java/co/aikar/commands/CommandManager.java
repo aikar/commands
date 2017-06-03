@@ -23,15 +23,14 @@
 
 package co.aikar.commands;
 
-import co.aikar.timings.lib.TimingManager;
-
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager {
+abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
@@ -40,13 +39,13 @@ public abstract class CommandManager {
      * Gets the command contexts manager
      * @return Command Contexts
      */
-    public abstract CommandContexts getCommandContexts();
+    public abstract CommandContexts<?> getCommandContexts();
 
     /**
      * Gets the command completions manager
      * @return Command Completions
      */
-    public abstract CommandCompletions getCommandCompletions();
+    public abstract CommandCompletions<?, ?> getCommandCompletions();
 
     /**
      * Lets you add custom string replacements that can be applied to annotation values,
@@ -69,13 +68,18 @@ public abstract class CommandManager {
      */
     public abstract void registerCommand(BaseCommand command);
     public abstract boolean hasRegisteredCommands();
-
-    public abstract TimingManager getTimings();
+    public abstract boolean isCommandIssuer(Class<?> type);
+    public abstract CommandIssuer getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
+
     public synchronized RootCommand obtainRootCommand(String cmd) {
         return rootCommands.computeIfAbsent(cmd.toLowerCase(), this::createRootCommand);
     }
 
-    public abstract CommandExecutionContext<? extends CommandExecutionContext> createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+    public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+
+    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
+        return new RegisteredCommand(command, cmdName, method, prefSubCommand);
+    }
 }

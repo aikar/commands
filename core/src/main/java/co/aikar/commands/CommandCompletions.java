@@ -23,13 +23,10 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Split;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Parameter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +36,7 @@ import java.util.stream.IntStream;
 
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
-public class CommandCompletions {
+public class CommandCompletions <I, C extends CommandCompletionContext> {
     private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
@@ -64,7 +61,7 @@ public class CommandCompletions {
         registerCompletion("timeunits", (sender, config, input, c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
     }
 
-    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler handler) {
+    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<I, C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
@@ -121,105 +118,8 @@ public class CommandCompletions {
         return allCompletions;
     }
 
-    public interface CommandCompletionHandler {
-        Collection<String> getCompletions(CommandIssuer sender, String config, String input, CommandCompletionContext context) throws InvalidCommandArgument;
+    public interface CommandCompletionHandler <I, C extends CommandCompletionContext> {
+        Collection<String> getCompletions(I sender, String config, String input, C context) throws InvalidCommandArgument;
     }
 
-    public class CommandCompletionContext {
-        private final RegisteredCommand command;
-        private final CommandIssuer sender;
-        private final String input;
-        private final String config;
-        private final Map<String, String> configs = Maps.newHashMap();
-        private final List<String> args;
-
-        CommandCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
-            this.command = command;
-            this.sender = sender;
-            this.input = input;
-            if (config != null) {
-                String[] configs = ACFPatterns.COMMA.split(config);
-                for (String conf : configs) {
-                    String[] confsplit = ACFPatterns.EQUALS.split(conf, 2);
-                    this.configs.put(confsplit[0].toLowerCase(), confsplit.length > 1 ? confsplit[1] : null);
-                }
-                this.config = configs[0];
-            } else {
-                this.config = null;
-            }
-
-            this.args = Lists.newArrayList(args);
-        }
-
-        public Map<String, String> getConfigs() {
-            return configs;
-        }
-
-        public String getConfig(String key) {
-            return getConfig(key, null);
-        }
-
-        public String getConfig(String key, String def) {
-            return this.configs.getOrDefault(key.toLowerCase(), def);
-        }
-
-        public boolean hasConfig(String key) {
-            return this.configs.containsKey(key.toLowerCase());
-        }
-
-        public <T> T getContextValue(Class<? extends T> clazz) throws InvalidCommandArgument {
-            return getContextValue(clazz, null);
-        }
-
-        public <T> T getContextValue(Class<? extends T> clazz, Integer paramIdx) throws InvalidCommandArgument {
-            String name = null;
-            if (paramIdx != null) {
-                if (paramIdx >= command.parameters.length) {
-                    throw new IllegalArgumentException("Param index is higher than number of parameters");
-                }
-                Parameter param = command.parameters[paramIdx];
-                Class<?> paramType = param.getType();
-                if (!clazz.isAssignableFrom(paramType)) {
-                    throw new IllegalArgumentException(param.getName() +":" + paramType.getName() + " can not satisfy " + clazz.getName());
-                }
-                name = param.getName();
-            } else {
-                Parameter[] parameters = command.parameters;
-                for (int i = 0; i < parameters.length; i++) {
-                    Parameter param = parameters[i];
-                    if (clazz.isAssignableFrom(param.getType())) {
-                        paramIdx = i;
-                        name = param.getName();
-                        break;
-                    }
-                }
-                if (paramIdx == null) {
-                    throw new IllegalStateException("Can not find any parameter that can satisfy " + clazz.getName());
-                }
-            }
-            Map<String, Object> resolved = command.resolveContexts(sender, args, args.size());
-            if (resolved == null || paramIdx > resolved.size()) {
-                ACFLog.error("resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null ));
-                ACFUtil.sneaky(new CommandCompletionTextLookupException());
-            }
-
-            //noinspection unchecked
-            return (T) resolved.get(name);
-        }
-
-        public CommandIssuer getSender() {
-            return sender;
-        }
-
-        public String getInput() {
-            return input;
-        }
-
-        public String getConfig() {
-            return config;
-        }
-    }
-
-    private class CommandCompletionTextLookupException extends Throwable {
-    }
 }

@@ -46,12 +46,12 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
 
         registerContext(OnlinePlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();
-            Player player = ACFBukkitUtil.findPlayerSmart(c.getIssuer(), playercheck);
+            Player player = ACFBukkitUtil.findPlayerSmart(c.getSender(), playercheck);
             if (player == null) {
                 if (c.hasAnnotation(Optional.class)) {
                     return null;
                 }
-                ACFBukkitUtil.sendMsg(c.getIssuer(), "&cCould not find a player by the name " + playercheck);
+                ACFBukkitUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
                 throw new InvalidCommandArgument(false);
             }
             return new OnlinePlayer(player);
@@ -62,17 +62,17 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             if (world != null) {
                 c.popFirstArg();
             }
-            if (world == null && c.getIssuer() instanceof Player) {
-                world = ((Entity) c.getIssuer()).getWorld();
+            if (world == null && c.getSender() instanceof Player) {
+                world = ((Entity) c.getSender()).getWorld();
             }
             if (world == null) {
                 throw new InvalidCommandArgument("Invalid World");
             }
             return world;
         });
-        registerSenderAwareContext(CommandSender.class, bukkitCommandExecutionContext -> bukkitCommandExecutionContext.getSender());
+        registerSenderAwareContext(CommandSender.class, BukkitCommandExecutionContext::getSender);
         registerSenderAwareContext(Player.class, (c) -> {
-            Player player = c.getIssuer() instanceof Player ? (Player) c.getIssuer() : null;
+            Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
             if (player == null && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument("Requires a player to run this command", false);
             }

@@ -27,14 +27,14 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Subcommand;
-import org.bukkit.command.CommandIssuer;
+import org.bukkit.command.CommandSender;
 
 @CommandAlias("acf")
 public class SomeCommand_ExtraSubs extends BaseCommand {
 
     @Subcommand("testsub test2")
     @CommandCompletion("Foo2")
-    public void onTestSub2(CommandIssuer sender, String hi) {
+    public void onTestSub2(CommandSender sender, String hi) {
         sender.sendMessage(hi);
     }
 }

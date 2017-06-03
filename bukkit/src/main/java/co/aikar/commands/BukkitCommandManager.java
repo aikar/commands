@@ -31,6 +31,7 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -39,7 +40,10 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager extends CommandManager {
@@ -50,8 +54,8 @@ public class BukkitCommandManager extends CommandManager {
     private final TimingManager timingManager;
     protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
-    protected CommandContexts contexts;
-    protected CommandCompletions completions;
+    protected BukkitCommandContexts contexts;
+    protected BukkitCommandCompletions completions;
 
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -87,7 +91,12 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
-    public synchronized CommandContexts getCommandContexts() {
+    public boolean isCommandIssuer(Class<?> type) {
+        return CommandSender.class.isAssignableFrom(type);
+    }
+
+    @Override
+    public synchronized CommandContexts<BukkitCommandExecutionContext> getCommandContexts() {
         if (this.contexts == null) {
             this.contexts = new BukkitCommandContexts(this);
         }
@@ -95,7 +104,7 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
-    public synchronized CommandCompletions getCommandCompletions() {
+    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new BukkitCommandCompletions(this);
         }
@@ -155,7 +164,6 @@ public class BukkitCommandManager extends CommandManager {
         }
     }
 
-    @Override
     public TimingManager getTimings() {
         return timingManager;
     }
@@ -166,8 +174,21 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
-    public CommandExecutionContext<? extends CommandExecutionContext> createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new BukkitCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+    public CommandIssuer getCommandIssuer(Object issuer) {
+        if (!(issuer instanceof CommandSender)) {
+            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
+        }
+        return new BukkitCommandIssuer((CommandSender) issuer);
+    }
+
+    @Override
+    public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        return (R) new BukkitCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+    }
+
+    @Override
+    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
+        return new RegisteredCommand(command, cmdName, method, prefSubCommand);
     }
 
     class ProxyCommandMap extends SimpleCommandMap {

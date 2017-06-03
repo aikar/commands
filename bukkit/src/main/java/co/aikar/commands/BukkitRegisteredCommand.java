@@ -23,30 +23,27 @@
 
 package co.aikar.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
+import co.aikar.timings.lib.MCTiming;
 
-@SuppressWarnings("WeakerAccess")
-public class PaperCommandManager extends BukkitCommandManager {
+import java.lang.reflect.Method;
 
-    // If we get anything Paper specific
-    public PaperCommandManager(Plugin plugin) {
-        super(plugin);
+public class BukkitRegisteredCommand extends RegisteredCommand<BukkitCommandExecutionContext> {
+    private final MCTiming timing;
+    BukkitRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
+        super(scope, command, method, prefSubCommand);
+        this.timing = ((BukkitCommandManager) scope.manager).getTimings().of("Command: " + command);
+    }
+
+
+    @Override
+    public void preCommand() {
+        timing.startTiming();
+        super.preCommand();
     }
 
     @Override
-    public synchronized CommandContexts<BukkitCommandExecutionContext> getCommandContexts() {
-        if (this.contexts == null) {
-            this.contexts = new PaperCommandContexts(this);
-        }
-        return this.contexts;
-    }
-
-    @Override
-    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
-        if (this.completions == null) {
-            this.completions = new PaperCommandCompletions(this);
-        }
-        return this.completions;
+    public void postCommand() {
+        super.postCommand();
+        timing.stopTiming();
     }
 }

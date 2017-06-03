@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class CommandContexts <R extends CommandExecutionContext> {
+public class CommandContexts <R extends CommandExecutionContext<?>> {
     protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
     private final CommandManager manager;
 
@@ -140,10 +140,10 @@ public class CommandContexts <R extends CommandExecutionContext> {
         });
     }
 
-    <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T, R> supplier) {
+    public <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
-    <T> void registerContext(Class<T> context, ContextResolver<T, R> supplier) {
+    public <T> void registerContext(Class<T> context, ContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
 
