@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class CommandCompletionContext {
     private final RegisteredCommand command;
-    private final CommandIssuer issuer;
+    protected final CommandIssuer issuer;
     private final String input;
     private final String config;
     private final Map<String, String> configs = Maps.newHashMap();
