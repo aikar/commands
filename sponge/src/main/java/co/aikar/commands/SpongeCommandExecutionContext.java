@@ -36,7 +36,7 @@ public class SpongeCommandExecutionContext extends CommandExecutionContext<Spong
         super(cmd, param, sender, args, index, passedArgs);
     }
 
-    public CommandSource getSender() {
+    public CommandSource getSource() {
         return this.issuer.getIssuer();
     }
 }

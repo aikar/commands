@@ -23,10 +23,16 @@
 
 package co.aikar.commands;
 
+import org.spongepowered.api.command.CommandSource;
+
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandCompletionContext extends CommandCompletionContext {
 
     SpongeCommandCompletionContext(final RegisteredCommand command, final CommandIssuer issuer, final String input, final String config, final String[] args) {
         super(command, issuer, input, config, args);
+    }
+
+    public CommandSource getSource() {
+        return this.issuer.getIssuer();
     }
 }
