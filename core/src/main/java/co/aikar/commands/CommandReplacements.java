@@ -51,8 +51,8 @@ public class CommandReplacements {
 
     public String addReplacement(String key, String val) {
         if (this.manager.hasRegisteredCommands()) {
-            ACFLog.severe("You are registering replacements after you have registered your commands!");
-            ACFLog.severe("This is not allowed, and this replacement (" + key + ") will not work for any previously registered command.");
+            this.manager.log(LogLevel.ERROR, "You are registering replacements after you have registered your commands!");
+            this.manager.log(LogLevel.ERROR, "This is not allowed, and this replacement (" + key + ") will not work for any previously registered command.");
         }
 
         key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase()).replaceAll("");

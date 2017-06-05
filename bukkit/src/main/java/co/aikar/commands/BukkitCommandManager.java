@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.TimingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -43,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager extends CommandManager {
@@ -66,19 +68,19 @@ public class BukkitCommandManager extends CommandManager {
             getCommandMap.setAccessible(true);
             commandMap = (CommandMap) getCommandMap.invoke(server);
             if (!SimpleCommandMap.class.isAssignableFrom(commandMap.getClass())) {
-                ACFLog.severe("ERROR: CommandMap has been hijacked! Offending command map is located at: " + commandMap.getClass().getName());
-                ACFLog.severe("We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");
-                ACFLog.severe("We can not guarantee things are going to work.");
+                this.log(LogLevel.ERROR, "ERROR: CommandMap has been hijacked! Offending command map is located at: " + commandMap.getClass().getName());
+                this.log(LogLevel.ERROR, "We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");
+                this.log(LogLevel.ERROR, "We can not guarantee things are going to work.");
                 Field cmField = server.getClass().getDeclaredField("commandMap");
                 cmField.set(server, commandMap = new ProxyCommandMap(commandMap));
-                ACFLog.info("Injected Proxy Command Map... good luck...");
+                this.log(LogLevel.INFO, "Injected Proxy Command Map... good luck...");
             }
             Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
             knownCommands.setAccessible(true);
             //noinspection unchecked
             this.knownCommands = (Map<String, Command>) knownCommands.get(commandMap);
         } catch (Exception e) {
-            ACFLog.severe("Failed to get Command Map. ACF will not function.");
+            this.log(LogLevel.ERROR, "Failed to get Command Map. ACF will not function.");
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
@@ -193,6 +195,31 @@ public class BukkitCommandManager extends CommandManager {
     @Override
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
+    }
+
+    @Override
+    public void log(LogLevel level, String message) {
+        switch(level) {
+            case INFO:
+                this.plugin.getLogger().info(LogLevel.LOG_PREFIX + message);
+                return;
+            case ERROR:
+                this.plugin.getLogger().severe(LogLevel.LOG_PREFIX + message);
+        }
+    }
+
+    @Override
+    public void log(LogLevel level, String message, Throwable throwable) {
+        switch(level) {
+            case INFO:
+                this.plugin.getLogger().log(Level.INFO, LogLevel.LOG_PREFIX + message, throwable);
+                return;
+            case ERROR:
+                this.plugin.getLogger().log(Level.SEVERE, LogLevel.LOG_PREFIX + message);
+                for(String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
+                    this.plugin.getLogger().severe(LogLevel.LOG_PREFIX + line);
+                }
+        }
     }
 
     class ProxyCommandMap extends SimpleCommandMap {

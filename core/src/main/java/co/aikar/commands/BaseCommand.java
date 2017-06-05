@@ -194,7 +194,7 @@ public abstract class BaseCommand {
                         if (parameters.length == 1) {
                             subCommand = (BaseSubCommand) declaredConstructor.newInstance(this);
                         } else {
-                            ACFLog.info("Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", ")) + ")");
+                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", ")) + ")");
                         }
                     }
                     if (subCommand != null) {
@@ -203,7 +203,7 @@ public abstract class BaseCommand {
                         this.subCommands.putAll(subCommand.subCommands);
                         this.registeredCommands.putAll(subCommand.registeredCommands);
                     } else {
-                        ACFLog.severe("Could not find a subcommand ctor for " + clazz.getName());
+                        this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -465,7 +465,7 @@ public abstract class BaseCommand {
                     return (boolean) preCommandHandler.invoke(this, sender.getIssuer(), args);
                 }
             } catch (IllegalAccessException | InvocationTargetException e) {
-                ACFLog.exception(e);
+                this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);
             }
         }
         return false;

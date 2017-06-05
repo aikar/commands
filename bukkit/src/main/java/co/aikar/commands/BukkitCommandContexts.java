@@ -110,7 +110,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         if (matcher.find()) {
             int mcMajorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(1), 0);
             int mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);
-            ACFLog.info("Minecraft Version: " + mcMajorVersion + "." + mcMinorVersion);
+            manager.log(LogLevel.INFO, "Minecraft Version: " + mcMajorVersion + "." + mcMinorVersion);
             if (mcMajorVersion >= 1 && mcMinorVersion >= 12) {
                 BukkitCommandContexts_1_12.register(this);
             }

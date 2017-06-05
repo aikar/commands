@@ -24,8 +24,6 @@
 package co.aikar.commands;
 
 import com.google.common.collect.Iterables;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -64,14 +62,8 @@ public class ACFBukkitUtil {
 
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
-        if (player == null) {
-            for (String msg : ACFPatterns.NEWLINE.split(message)) {
-                ACFLog.info(msg);
-            }
-        } else {
-            for (String msg : ACFPatterns.NEWLINE.split(message)) {
-                player.sendMessage(msg);
-            }
+        for (String msg : ACFPatterns.NEWLINE.split(message)) {
+            player.sendMessage(msg);
         }
     }
 
