@@ -160,7 +160,7 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
             }
         } while ((type = type.getSuperclass()) != null);
 
-        ACFLog.exception(new IllegalStateException("No context resolver defined for " + rootType.getName()));
+        this.manager.log(LogLevel.ERROR, "Could not find context resolver", new IllegalStateException("No context resolver defined for " + rootType.getName()));
         return null;
     }
 }

@@ -98,8 +98,8 @@ public class BukkitRootCommand extends Command implements RootCommand {
             }
             BaseCommand regged = this.subCommands.get(key);
             if (regged != null) {
-                ACFLog.severe("ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getName() + " - but it is already defined in " + regged.getName());
-                ACFLog.severe("2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
+                this.manager.log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getName() + " - but it is already defined in " + regged.getName());
+                this.manager.log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
                 return;
             }
             this.subCommands.put(key, command);

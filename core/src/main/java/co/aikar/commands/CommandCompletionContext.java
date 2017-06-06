@@ -105,7 +105,7 @@ public class CommandCompletionContext {
         //noinspection unchecked
         Map<String, Object> resolved = command.resolveContexts(issuer, args, args.size());
         if (resolved == null || paramIdx > resolved.size()) {
-            ACFLog.error("resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null ));
+            this.command.scope.manager.log(LogLevel.ERROR, "resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null ));
             ACFUtil.sneaky(new CommandCompletionTextLookupException());
         }
 

@@ -84,4 +84,7 @@ abstract class CommandManager {
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
     }
+
+    public abstract void log(final LogLevel level, final String message);
+    public abstract void log(final LogLevel level, final String message, final Throwable throwable);
 }
