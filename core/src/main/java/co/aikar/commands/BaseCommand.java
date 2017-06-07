@@ -401,7 +401,7 @@ public abstract class BaseCommand {
 
         final List<String> cmds = new ArrayList<>();
 
-        if (search != null && this.testPermission(sender)) {
+        if (search != null) {
             cmds.addAll(completeCommand(sender, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
         }
 
@@ -423,7 +423,8 @@ public abstract class BaseCommand {
     }
 
     private List<String> completeCommand(CommandIssuer sender, RegisteredCommand cmd, String[] args, String commandLabel) {
-        if (args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0 || cmd.complete == null) {
+        if (this.testPermission(sender) ||args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
+                || cmd.complete == null) {
             return ImmutableList.of();
         }
 
