@@ -71,6 +71,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
             BaseCommand subHandler = this.subCommands.get(checkSub);
             if (subHandler != null) {
                 if (!subHandler.testPermission(sender)) {
+                    sender.sendMessage("&cI'm sorry, but you do not have permission to perform this command.");
                     return true;
                 }
                 subHandler.execute(sender, commandLabel, args);
@@ -78,6 +79,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
             }
         }
         if (!this.defCommand.testPermission(sender)) {
+            sender.sendMessage("&cI'm sorry, but you do not have permission to perform this command.");
             return true;
         }
 
