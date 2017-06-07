@@ -38,6 +38,11 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
+    public boolean testPermission(CommandIssuer sender) {
+        return command.testPermission(sender);
+    }
+
+    @Override
     public List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
         return command.tabComplete(sender, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
