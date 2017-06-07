@@ -401,7 +401,7 @@ public abstract class BaseCommand {
 
         final List<String> cmds = new ArrayList<>();
 
-        if (search != null) {
+        if (search != null && this.testPermission(sender)) {
             cmds.addAll(completeCommand(sender, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
         }
 
