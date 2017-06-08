@@ -48,7 +48,7 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
-    public boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
-        return command.execute(sender, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
+    public void execute(CommandIssuer sender, String commandLabel, String[] args) {
+        command.execute(sender, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 }

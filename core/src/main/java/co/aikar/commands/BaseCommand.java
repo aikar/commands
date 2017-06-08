@@ -73,6 +73,7 @@ public abstract class BaseCommand {
     String commandName;
     String usageMessage;
     String permission;
+    public String permissionMessage = "&cI'm sorry, but you do not have permission to perform this command.";
 
     public BaseCommand() {}
     public BaseCommand(String cmd) {
@@ -306,7 +307,11 @@ public abstract class BaseCommand {
         }
     }
 
-    public boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
+    public void execute(CommandIssuer sender, String commandLabel, String[] args) {
+        if (!this.testPermission(sender)) {
+            sender.sendMessage(permissionMessage);
+            return;
+        }
         commandLabel = commandLabel.toLowerCase();
 
         execSubcommand = null;
@@ -315,10 +320,10 @@ public abstract class BaseCommand {
 
         if (args.length == 0) {
             if (checkPrecommand(sender, args)) {
-                return true;
+                return;
             }
             executeSubcommand(DEFAULT, sender);
-            return true;
+            return;
         }
 
         CommandSearch cmd = findSubCommand(args);
@@ -326,16 +331,16 @@ public abstract class BaseCommand {
             execSubcommand = cmd.getCheckSub();
             final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
             if (checkPrecommand(sender, execargs)) {
-                return true;
+                return;
             }
             executeCommand(sender, execargs, cmd.cmd);
-            return true;
+            return;
         }
 
         if (!executeSubcommand(UNKNOWN, sender, args)) {
             help(sender, args);
         }
-        return true;
+        return;
     }
 
     private CommandSearch findSubCommand(String[] args) {
@@ -382,7 +387,7 @@ public abstract class BaseCommand {
             List<String> sargs = Lists.newArrayList(args);
             cmd.invoke(sender, sargs);
         } else {
-            sender.sendMessage("&cI'm sorry, but you do not have permission to perform this command.");
+            sender.sendMessage(cmd.scope.permissionMessage);
         }
     }
 
