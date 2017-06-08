@@ -68,6 +68,7 @@ public abstract class BaseCommand {
     @SuppressWarnings("WeakerAccess")
     private String[] origArgs;
     CommandManager manager = null;
+    BaseCommand parentCommand;
     Map<String, RootCommand> registeredCommands = new HashMap<>();
     String description;
     String commandName;
@@ -104,6 +105,9 @@ public abstract class BaseCommand {
         return origArgs;
     }
 
+    void setParentCommand(BaseCommand command) {
+        this.parentCommand = command;
+    }
     void onRegister(CommandManager manager) {
         onRegister(manager, this.commandName);
     }
@@ -184,16 +188,16 @@ public abstract class BaseCommand {
             register(cmd, this);
         }
         for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
-            if (BaseSubCommand.class.isAssignableFrom(clazz)) {
+            if (BaseCommand.class.isAssignableFrom(clazz)) {
                 try {
-                    BaseSubCommand subCommand = null;
+                    BaseCommand subCommand = null;
                     Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
                     for (Constructor<?> declaredConstructor : declaredConstructors) {
 
                         declaredConstructor.setAccessible(true);
                         Parameter[] parameters = declaredConstructor.getParameters();
                         if (parameters.length == 1) {
-                            subCommand = (BaseSubCommand) declaredConstructor.newInstance(this);
+                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);
                         } else {
                             manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", ")) + ")");
                         }

@@ -24,7 +24,6 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.BaseSubCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -82,7 +81,7 @@ public class SomeCommand extends BaseCommand {
     }
 
     @Subcommand("test|txt|tfoo")
-    public class Test extends BaseSubCommand {
+    public class Test extends BaseCommand {
 
         @Subcommand("test1|td1")
         @CommandCompletion("%foo")
@@ -97,7 +96,7 @@ public class SomeCommand extends BaseCommand {
         }
 
         @Subcommand("next")
-        public class TestInner extends BaseSubCommand {
+        public class TestInner extends BaseCommand {
 
             @Subcommand("test3|td4")
             @CommandCompletion("FOO")
