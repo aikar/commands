@@ -40,6 +40,7 @@ public class ForwardingCommand extends BaseCommand {
         this.baseArgs = baseArgs;
     }
 
+
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         return command.tabComplete(sender, alias, (String[]) ArrayUtils.addAll(baseArgs, args));
@@ -48,5 +49,10 @@ public class ForwardingCommand extends BaseCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         return command.execute(sender, commandLabel, (String[]) ArrayUtils.addAll(baseArgs, args));
+    }
+
+    @Override
+    public boolean testPermission(CommandSender target) {
+        return command.testPermission(target);
     }
 }
