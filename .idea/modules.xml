@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/example/acf-example.iml" filepath="$PROJECT_DIR$/example/acf-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/paper/acf-paper.iml" filepath="$PROJECT_DIR$/paper/acf-paper.iml" />
       <module fileurl="file://$PROJECT_DIR$/acf-parent.iml" filepath="$PROJECT_DIR$/acf-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sponge/acf-sponge.iml" filepath="$PROJECT_DIR$/sponge/acf-sponge.iml" />
     </modules>
   </component>
 </project>

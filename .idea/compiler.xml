@@ -12,6 +12,7 @@
         <module name="acf-core" />
         <module name="acf-example" />
         <module name="acf-paper" />
+        <module name="acf-sponge" />
         <module name="commands" />
       </profile>
     </annotationProcessing>
@@ -22,6 +23,7 @@
       <module name="acf-example" target="1.8" />
       <module name="acf-paper" target="1.8" />
       <module name="acf-parent" target="1.8" />
+      <module name="acf-sponge" target="1.8" />
       <module name="commands" target="1.8" />
     </bytecodeTargetLevel>
   </component>
