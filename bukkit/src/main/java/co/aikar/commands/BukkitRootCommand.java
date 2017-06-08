@@ -82,9 +82,10 @@ public class BukkitRootCommand extends Command implements RootCommand {
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
             this.defCommand = command;
+            this.setPermission(command.permission);
+            this.setPermissionMessage(command.permissionMessage);
             //this.setDescription(command.getDescription());
             //this.setUsage(command.getUsage());
-            //this.setAliases(command.getAliases());
         }
         command.subCommands.keySet().forEach(key -> {
             if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
