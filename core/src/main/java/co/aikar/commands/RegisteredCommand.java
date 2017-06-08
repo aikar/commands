@@ -219,7 +219,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     }
 
     boolean hasPermission(CommandIssuer issuer) {
-        return scope.manager.hasPermission(issuer, permission);
+        return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) && scope.hasPermission(issuer);
     }
 
     public String getPermission() {

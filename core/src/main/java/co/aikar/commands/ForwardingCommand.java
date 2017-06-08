@@ -43,12 +43,12 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
-    public List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
-        return command.tabComplete(sender, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
+    public List<String> tabComplete(CommandIssuer issuer, String alias, String[] args) throws IllegalArgumentException {
+        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 
     @Override
-    public void execute(CommandIssuer sender, String commandLabel, String[] args) {
-        command.execute(sender, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
+    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
+        command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 }
