@@ -432,7 +432,7 @@ public abstract class BaseCommand {
     }
 
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel) {
-        if (!this.hasPermission(issuer) || !cmd.hasPermission(issuer) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
+        if (!cmd.hasPermission(issuer) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
                 || cmd.complete == null) {
             return ImmutableList.of();
         }
