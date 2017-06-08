@@ -26,7 +26,6 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandMapping;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
@@ -72,7 +71,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public boolean testPermission(CommandSource source) {
-        return this.defCommand.testPermission(source);
+        return this.defCommand.hasPermission(source);
     }
 
     @Override

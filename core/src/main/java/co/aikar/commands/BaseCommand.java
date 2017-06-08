@@ -308,7 +308,7 @@ public abstract class BaseCommand {
     }
 
     public void execute(CommandIssuer sender, String commandLabel, String[] args) {
-        if (!this.testPermission(sender)) {
+        if (!this.hasPermission(sender)) {
             sender.sendMessage(permissionMessage);
             return;
         }
@@ -428,7 +428,7 @@ public abstract class BaseCommand {
     }
 
     private List<String> completeCommand(CommandIssuer sender, RegisteredCommand cmd, String[] args, String commandLabel) {
-        if (!this.testPermission(sender) || !cmd.hasPermission(sender) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
+        if (!this.hasPermission(sender) || !cmd.hasPermission(sender) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
                 || cmd.complete == null) {
             return ImmutableList.of();
         }
@@ -494,11 +494,11 @@ public abstract class BaseCommand {
         sender.sendMessage("&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
-    public boolean testPermission(Object sender) {
-        return testPermission(manager.getCommandIssuer(sender));
+    public boolean hasPermission(Object sender) {
+        return hasPermission(manager.getCommandIssuer(sender));
     }
 
-    public boolean testPermission(CommandIssuer sender) {
+    public boolean hasPermission(CommandIssuer sender) {
         return permission == null || permission.isEmpty() || sender.hasPermission(permission);
     }
 

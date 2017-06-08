@@ -38,8 +38,8 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
-    public boolean testPermission(CommandIssuer sender) {
-        return command.testPermission(sender);
+    public boolean hasPermission(CommandIssuer sender) {
+        return command.hasPermission(sender);
     }
 
     @Override
