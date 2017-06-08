@@ -499,7 +499,7 @@ public abstract class BaseCommand {
     }
 
     public boolean hasPermission(CommandIssuer sender) {
-        return permission == null || permission.isEmpty() || sender.hasPermission(permission);
+        return manager.hasPermission(sender, permission);
     }
 
     public String getName() {

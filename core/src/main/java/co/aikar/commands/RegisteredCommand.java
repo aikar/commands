@@ -218,8 +218,8 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         return passedArgs;
     }
 
-    boolean hasPermission(CommandIssuer check) {
-        return permission == null || !check.isPlayer() || check.hasPermission(permission);
+    boolean hasPermission(CommandIssuer issuer) {
+        return scope.manager.hasPermission(issuer, permission);
     }
 
     public String getPermission() {
