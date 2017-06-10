@@ -153,7 +153,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 scope.showSyntax(sender, this);
             }
         } else {
-            sender.sendMessage("&cI'm sorry, but there was an error performing this command.ssssssss");
+            sender.sendMessage("&cI'm sorry, but there was an error performing this command.");
             this.scope.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
             this.scope.manager.handleUncaughtException(sender, args, e);
         }
