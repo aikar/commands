@@ -104,7 +104,13 @@ abstract class CommandManager {
         exceptionHandlers.add(exceptionHandler);
     }
 
-    protected void handleUncaughtException(CommandIssuer sender, List<String> args, Exception e){
-        exceptionHandlers.forEach(handler -> handler.execute(sender, args, e));
+    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t){
+        boolean result = false;
+        for(ExceptionHandler handler : exceptionHandlers){
+            if(handler.execute(scope,registeredCommand,sender,args,t)){
+                result = true;
+            }
+        }
+        return result;
     }
 }

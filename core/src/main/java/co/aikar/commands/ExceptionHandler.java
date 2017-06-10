@@ -32,11 +32,17 @@ import java.util.List;
 public interface ExceptionHandler {
 
   /**
-   * Called when a exception occurs while executing a command
+   * Called when an exception occurs while executing a command<br>
+   * If an exception handler properly handles an exception, the user will not be noticied by the
+   * framework that something went unexceptected.
    *
+   * @param command the command that was executed
+   * @param registeredCommand the registered command
    * @param sender the issuer who send the command
    * @param args the args he used
-   * @param e the thrown exception
+   * @param t the throwable that caused this exception
+   *
+   * @return if the exception was handeled by the exception handler.
    */
-  void execute(CommandIssuer sender, List<String> args, Exception e);
+  boolean execute(BaseCommand command, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t);
 }
