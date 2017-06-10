@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
+    protected List<ExceptionHandler> exceptionHandlers = new ArrayList<>();
 
     /**
      * Gets the command contexts manager
@@ -92,4 +94,17 @@ abstract class CommandManager {
     public abstract void log(final LogLevel level, final String message);
 
     public abstract void log(final LogLevel level, final String message, final Throwable throwable);
+
+    /**
+     * Registers an {@link ExceptionHandler} that is called when an exception occurs while executing a command.
+     *
+     * @param exceptionHandler the handler that should handle uncaught exceptions
+     */
+    public void registerExceptionHandler(ExceptionHandler exceptionHandler){
+        exceptionHandlers.add(exceptionHandler);
+    }
+
+    protected void handleUncaughtException(CommandIssuer sender, List<String> args, Exception e){
+        exceptionHandlers.forEach(handler -> handler.execute(sender, args, e));
+    }
 }
