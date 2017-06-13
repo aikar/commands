@@ -25,9 +25,6 @@ package co.aikar.commands;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeRegisteredCommand extends RegisteredCommand<BungeeCommandExecutionContext> {
 
     BungeeRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {

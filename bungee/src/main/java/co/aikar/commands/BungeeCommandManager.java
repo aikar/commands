@@ -35,9 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeCommandManager extends CommandManager {
 
     protected final Plugin plugin;

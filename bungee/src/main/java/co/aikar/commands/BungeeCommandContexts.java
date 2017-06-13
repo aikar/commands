@@ -33,9 +33,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutionContext> {
 
     BungeeCommandContexts(CommandManager manager) {

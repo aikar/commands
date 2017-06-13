@@ -25,9 +25,6 @@ package co.aikar.commands;
 
 import net.md_5.bungee.api.CommandSender;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeCommandCompletionContext extends CommandCompletionContext {
 
     BungeeCommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {

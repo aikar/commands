@@ -27,9 +27,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Objects;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class OnlineProxiedPlayer {
 
     public final ProxiedPlayer player;

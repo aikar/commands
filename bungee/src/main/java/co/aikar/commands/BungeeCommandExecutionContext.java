@@ -29,9 +29,6 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeCommandExecutionContext extends CommandExecutionContext<BungeeCommandExecutionContext> {
 
     BungeeCommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandIssuer sender, List<String> args, int index, Map<String, Object> passedArgs) {

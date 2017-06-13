@@ -27,9 +27,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeCommandIssuer implements CommandIssuer{
     private final CommandSender sender;
 

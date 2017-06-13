@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class ACFBungeeUtil {
 
     public static String color(String message) {

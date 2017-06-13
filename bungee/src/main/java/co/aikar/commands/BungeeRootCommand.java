@@ -30,9 +30,6 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 import java.util.*;
 
-/**
- * Created by Williambraecky on 13-06-17.
- */
 public class BungeeRootCommand extends Command implements RootCommand, TabExecutor {
 
     private final BungeeCommandManager manager;
