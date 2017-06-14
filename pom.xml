@@ -99,7 +99,7 @@
         <module>core</module>
         <module>bukkit</module>
         <module>paper</module>
-        <!--module>bungee</module-->
+        <module>bungee</module>
         <module>sponge</module>
     </modules>
 </project>
