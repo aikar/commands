@@ -33,7 +33,6 @@
             <groupId>net.md-5</groupId>
             <artifactId>BungeeCord-api</artifactId>
             <version>1.11-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
