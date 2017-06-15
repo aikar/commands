@@ -103,6 +103,15 @@ abstract class CommandManager {
         defaultExceptionHandler = exceptionHandler;
     }
 
+    /**
+     * Gets the current default exception handler, might be null.
+     *
+     * @return the default exception handler
+     */
+    public ExceptionHandler getDefaultExceptionHandler() {
+        return defaultExceptionHandler;
+    }
+
     protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t){
         boolean result = false;
         if(scope.getExceptionHandler() != null){
