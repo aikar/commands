@@ -45,8 +45,17 @@ public final class ACFExample extends JavaPlugin {
         commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
             Lists.newArrayList("foo", "bar", "baz")
         ));
-        commandManager.registerCommand(new SomeCommand());
+
+        commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
+                sender.sendMessage("An error occured. This problem has been logged. Sorry for the inconvienence.");
+                return true; // mark as handeled, default message will not be send to sender
+        }));
         commandManager.registerCommand(new SomeCommand_ExtraSubs());
+
+        commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            getLogger().warning("Error occured while executing command " + command.getName());
+            return false; // mark as unhandeled, sender will see default message
+        });
     }
 
     public static ACFExample getPlugin() {

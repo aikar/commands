@@ -76,6 +76,8 @@ public abstract class BaseCommand {
     String permission;
     public String permissionMessage = "&cI'm sorry, but you do not have permission to perform this command.";
 
+    private ExceptionHandler exceptionHandler = null;
+
     public BaseCommand() {}
     public BaseCommand(String cmd) {
         this.commandName = cmd;
@@ -508,6 +510,15 @@ public abstract class BaseCommand {
 
     public String getName() {
         return commandName;
+    }
+
+    public ExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
+    }
+
+    public BaseCommand setExceptionHandler(ExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+        return this;
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

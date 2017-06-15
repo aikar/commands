@@ -25,7 +25,6 @@ package co.aikar.commands;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
-    protected List<ExceptionHandler> exceptionHandlers = new ArrayList<>();
+    protected ExceptionHandler defaultExceptionHandler = null;
 
     /**
      * Gets the command contexts manager
@@ -96,20 +95,20 @@ abstract class CommandManager {
     public abstract void log(final LogLevel level, final String message, final Throwable throwable);
 
     /**
-     * Registers an {@link ExceptionHandler} that is called when an exception occurs while executing a command.
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
      *
      * @param exceptionHandler the handler that should handle uncaught exceptions
      */
-    public void registerExceptionHandler(ExceptionHandler exceptionHandler){
-        exceptionHandlers.add(exceptionHandler);
+    public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler){
+        defaultExceptionHandler = exceptionHandler;
     }
 
     protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t){
         boolean result = false;
-        for(ExceptionHandler handler : exceptionHandlers){
-            if(handler.execute(scope,registeredCommand,sender,args,t)){
-                result = true;
-            }
+        if(scope.getExceptionHandler() != null){
+            result = scope.getExceptionHandler().execute(scope, registeredCommand, sender, args, t);
+        }else if(defaultExceptionHandler != null){
+            result = defaultExceptionHandler.execute(scope, registeredCommand, sender, args, t);
         }
         return result;
     }
