@@ -16,7 +16,7 @@
 
     <repositories>
         <repository>
-            <id>BungeeCord-repo</id>
+            <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
@@ -31,8 +31,8 @@
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
-            <artifactId>BungeeCord-api</artifactId>
-            <version>1.11-SNAPSHOT</version>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
