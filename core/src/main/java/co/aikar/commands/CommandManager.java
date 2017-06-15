@@ -34,6 +34,7 @@ abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
+    protected ExceptionHandler defaultExceptionHandler = null;
 
     /**
      * Gets the command contexts manager
@@ -92,4 +93,32 @@ abstract class CommandManager {
     public abstract void log(final LogLevel level, final String message);
 
     public abstract void log(final LogLevel level, final String message, final Throwable throwable);
+
+    /**
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
+     *
+     * @param exceptionHandler the handler that should handle uncaught exceptions
+     */
+    public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler){
+        defaultExceptionHandler = exceptionHandler;
+    }
+
+    /**
+     * Gets the current default exception handler, might be null.
+     *
+     * @return the default exception handler
+     */
+    public ExceptionHandler getDefaultExceptionHandler() {
+        return defaultExceptionHandler;
+    }
+
+    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t){
+        boolean result = false;
+        if(scope.getExceptionHandler() != null){
+            result = scope.getExceptionHandler().execute(scope, registeredCommand, sender, args, t);
+        }else if(defaultExceptionHandler != null){
+            result = defaultExceptionHandler.execute(scope, registeredCommand, sender, args, t);
+        }
+        return result;
+    }
 }
