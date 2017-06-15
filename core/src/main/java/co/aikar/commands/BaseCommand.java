@@ -412,6 +412,8 @@ public abstract class BaseCommand {
 
         if (search != null) {
             cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
+        } else if (subCommands.get(UNKNOWN).size() == 1) {
+            cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel));
         }
 
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
