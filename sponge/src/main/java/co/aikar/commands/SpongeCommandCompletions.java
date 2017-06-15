@@ -23,10 +23,8 @@
 
 package co.aikar.commands;
 
-import org.spongepowered.api.command.CommandSource;
-
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandCompletions extends CommandCompletions<CommandSource, SpongeCommandCompletionContext> {
+public class SpongeCommandCompletions extends CommandCompletions<SpongeCommandCompletionContext> {
 
     public SpongeCommandCompletions(final SpongeCommandManager manager) {
         super(manager);

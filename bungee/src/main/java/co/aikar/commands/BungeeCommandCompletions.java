@@ -35,11 +35,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BungeeCommandCompletions extends CommandCompletions<CommandSender, BungeeCommandCompletionContext> {
+public class BungeeCommandCompletions extends CommandCompletions<BungeeCommandCompletionContext> {
 
     public BungeeCommandCompletions(CommandManager manager) {
         super(manager);
-        registerCompletion("chatcolors", (sender, config, input, c) -> {
+        registerCompletion("chatcolors", c -> {
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
             if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
@@ -54,8 +54,10 @@ public class BungeeCommandCompletions extends CommandCompletions<CommandSender, 
 
             return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
-        registerCompletion("players", (sender, config, input, c) -> {
+        registerCompletion("players", c -> {
+            CommandSender sender = c.getSender();
             ACFBungeeUtil.validate(sender, "Sender cannot be null");
+            String input = c.getInput();
 
             ArrayList<String> matchedPlayers = new ArrayList<>();
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {

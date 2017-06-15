@@ -42,7 +42,7 @@ public final class ACFExample extends JavaPlugin {
         commandManager.getCommandReplacements().addReplacements("test", "foobar", "%foo", "barbaz");
         commandManager.getCommandReplacements().addReplacement("testcmd", "test4|foobar|barbaz");
         commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
-        commandManager.getCommandCompletions().registerCompletion("test", (sender, config, input, c) -> (
+        commandManager.getCommandCompletions().registerCompletion("test", c -> (
             Lists.newArrayList("foo", "bar", "baz")
         ));
         commandManager.registerCommand(new SomeCommand());

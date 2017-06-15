@@ -62,7 +62,7 @@ public class SpongeCommandManager extends CommandManager {
     }
 
     @Override
-    public synchronized CommandCompletions<CommandSource, SpongeCommandCompletionContext> getCommandCompletions() {
+    public synchronized CommandCompletions<SpongeCommandCompletionContext> getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new SpongeCommandCompletions(this);
         }

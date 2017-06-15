@@ -105,7 +105,7 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
-    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
+    public synchronized CommandCompletions<BukkitCommandCompletionContext> getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new BukkitCommandCompletions(this);
         }

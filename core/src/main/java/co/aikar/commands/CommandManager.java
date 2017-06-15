@@ -45,7 +45,7 @@ abstract class CommandManager {
      * Gets the command completions manager
      * @return Command Completions
      */
-    public abstract CommandCompletions<?, ?> getCommandCompletions();
+    public abstract CommandCompletions<?> getCommandCompletions();
 
     /**
      * Lets you add custom string replacements that can be applied to annotation values,

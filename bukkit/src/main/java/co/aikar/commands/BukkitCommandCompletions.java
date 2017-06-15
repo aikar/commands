@@ -39,15 +39,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandCompletions extends CommandCompletions<CommandSender, BukkitCommandCompletionContext> {
+public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCompletionContext> {
     public BukkitCommandCompletions(BukkitCommandManager manager) {
         super(manager);
-        registerCompletion("mobs", (sender, config, input, c) -> {
+        registerCompletion("mobs", c -> {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
         });
-        registerCompletion("chatcolors", (sender, config, input, c) -> {
+        registerCompletion("chatcolors", c -> {
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
             if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
@@ -62,11 +62,12 @@ public class BukkitCommandCompletions extends CommandCompletions<CommandSender, 
 
             return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
-        registerCompletion("worlds", (sender, config, input, c) -> (
+        registerCompletion("worlds", c -> (
             Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
 
-        registerCompletion("players", (sender, config, input, c) -> {
+        registerCompletion("players", c -> {
+            CommandSender sender = c.getSender();
             Validate.notNull(sender, "Sender cannot be null");
 
             Player senderPlayer = sender instanceof Player ? (Player) sender : null;
@@ -74,7 +75,7 @@ public class BukkitCommandCompletions extends CommandCompletions<CommandSender, 
             ArrayList<String> matchedPlayers = new ArrayList<String>();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String name = player.getName();
-                if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, input)) {
+                if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, c.getInput())) {
                     matchedPlayers.add(name);
                 }
             }

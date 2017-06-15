@@ -60,7 +60,7 @@ public class BungeeCommandManager extends CommandManager {
     }
 
     @Override
-    public synchronized CommandCompletions<CommandSender, BungeeCommandCompletionContext> getCommandCompletions() {
+    public synchronized CommandCompletions<BungeeCommandCompletionContext> getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new BungeeCommandCompletions(this);
         }
@@ -69,7 +69,6 @@ public class BungeeCommandManager extends CommandManager {
 
     @Override
     public void registerCommand(BaseCommand command) {
-        final String plugin = this.plugin.getDescription().getName().toLowerCase();
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String key = entry.getKey().toLowerCase();

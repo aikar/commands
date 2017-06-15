@@ -37,13 +37,14 @@ import java.util.stream.IntStream;
 
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
-public class CommandCompletions <I, C extends CommandCompletionContext> {
+public class CommandCompletions <C extends CommandCompletionContext> {
     private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
-        registerCompletion("range", (sender, config, input, c) -> {
+        registerCompletion("range", (c) -> {
+            String config = c.getConfig();
             if (config == null) {
                 return ImmutableList.of();
             }
@@ -59,10 +60,10 @@ public class CommandCompletions <I, C extends CommandCompletionContext> {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        registerCompletion("timeunits", (sender, config, input, c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
+        registerCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
     }
 
-    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<I, C> handler) {
+    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
@@ -96,7 +97,7 @@ public class CommandCompletions <I, C extends CommandCompletionContext> {
 
                 try {
                     //noinspection unchecked
-                    Collection<String> completions = handler.getCompletions(sender.getIssuer(), config, input, context);
+                    Collection<String> completions = handler.getCompletions(context);
                     if (completions != null) {
                         allCompletions.addAll(completions);
                         continue;
@@ -120,8 +121,8 @@ public class CommandCompletions <I, C extends CommandCompletionContext> {
         return allCompletions;
     }
 
-    public interface CommandCompletionHandler <I, C extends CommandCompletionContext> {
-        Collection<String> getCompletions(I sender, String config, String input, C context) throws InvalidCommandArgument;
+    public interface CommandCompletionHandler <C extends CommandCompletionContext> {
+        Collection<String> getCompletions(C context) throws InvalidCommandArgument;
     }
 
 }

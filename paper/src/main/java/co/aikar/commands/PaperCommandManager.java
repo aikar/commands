@@ -43,7 +43,7 @@ public class PaperCommandManager extends BukkitCommandManager {
     }
 
     @Override
-    public synchronized CommandCompletions<CommandSender, BukkitCommandCompletionContext> getCommandCompletions() {
+    public synchronized CommandCompletions<BukkitCommandCompletionContext> getCommandCompletions() {
         if (this.completions == null) {
             this.completions = new PaperCommandCompletions(this);
         }
