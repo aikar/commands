@@ -4,30 +4,36 @@ This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?ga
 
 Many people have wanted to use this framework for themselves, So here are, a public ready version!
 
+ACF Core is now game agnostic, and can be used in any Java Server Software that implements a command system.
 
 ## Beta Testing
-ACF On the core itself is very stable. It has been used for years on EMC.
+While the 0.x.x series of ACF is "Beta", note that it is very stable.
+It has been used for years on EMC. 
 
-I believe the framework is very usable at this stage.
 
-It is labeled Beta as the framework is growing fast and gaining new features, and API's are subject to breakage. The new features also may contain bugs, but I am working to fix them fast.
+It is labeled Beta as the framework is growing fast and gaining new features, and API's are subject to breakage. The new features also may contain bugs, but we will work to fix them fast.
 
 Please be prepared to keep up with changes, but I try to keep them as least disruptful as possible.
 
 See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
 
+## Targeted Platforms / Current Version
+
 We are on version:
  - GROUP: co.aikar
- - ARTIFACTID: acf-core
- - VERSION `0.4.0-SNAPSHOT`
+ - VERSION `0.5.0-SNAPSHOT`
 
-Any bump in version implies an API break. 
+ARTIFACTID varies by platform target:
+ * [Bukkit](https://spigotmc.org): ***acf-bukkit*** (For targetting Spigot)
+ * [Paper](https://paper.emc.gs): ***acf-paper*** (Recommended for plugins that require Paper, incase Paper specific improvements are added)
+ * [Sponge](https://www.spongepowered.org/): ***acf-sponge***
+ * [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/): ***acf-bungee*** 
+ 
+You may include more than 1 platform in your jar if your plugin supports multiple platforms.
+    
+Any bump in version implies an API break. See [CHANGELOG](CHANGELOG.md) for information on migration guides for API breaks.
+ 
 Every change that should not cause any API break will be deployed over the current version.
-
-## Targeted Platforms
-Requires CraftBukkit, Spigot or Paper.
-
-We have no intentions to support other Servers. If you want on Sponge or something else, you will need to fork and add support for it.
 
 ## Example
 ```java
