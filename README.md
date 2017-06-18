@@ -57,11 +57,9 @@ public class ResidenceCommand extends BaseCommand {
     }
     
 }
-@CommandAlias("gr")
+@CommandAlias("group|gr")
 public class GroupCommand extends BaseCommand {
-    public GroupCommand() {
-        super("group");
-    }
+
     @Subcommand("invitenear|invnear")
     @CommandAlias("invitenear|invnear|ginvnear")
     @Syntax("[radius=32] &e- Invite Nearby Players to the group.")
