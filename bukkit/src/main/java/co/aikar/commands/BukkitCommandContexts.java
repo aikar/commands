@@ -32,7 +32,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -44,17 +47,28 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     public BukkitCommandContexts(BukkitCommandManager manager) {
         super(manager);
 
-        registerContext(OnlinePlayer.class, (c) -> {
-            final String playercheck = c.popFirstArg();
-            Player player = ACFBukkitUtil.findPlayerSmart(c.getSender(), playercheck);
-            if (player == null) {
-                if (c.hasAnnotation(Optional.class)) {
-                    return null;
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getSender(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+        registerContext(OnlinePlayer[].class, (c) ->  {
+            CommandSender sender = c.getSender();
+            final String input = c.popFirstArg();
+            boolean allowMissing = c.hasFlag("allowmissing");
+            Set<OnlinePlayer> players = new HashSet<>();
+            Pattern split = ACFPatterns.COMMA;
+            String splitter = c.getFlagValue("splitter", (String) null);
+            if (splitter != null) {
+                split = Pattern.compile(Pattern.quote(splitter));
+            }
+            for (String lookup : split.split(input)) {
+                OnlinePlayer player = getOnlinePlayer(sender, lookup, allowMissing);
+                if (player != null) {
+                    players.add(player);
                 }
-                ACFBukkitUtil.sendMsg(c.getSender(), "&cCould not find a player by the name " + playercheck);
+            }
+            if (players.isEmpty() && !c.hasFlag("allowempty")) {
+                ACFBukkitUtil.sendMsg(sender, "&cCould not find any players by " + input);
                 throw new InvalidCommandArgument(false);
             }
-            return new OnlinePlayer(player);
+            return players.toArray(new OnlinePlayer[players.size()]);
         });
         registerSenderAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();
@@ -115,5 +129,18 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 BukkitCommandContexts_1_12.register(this);
             }
         }
+    }
+
+    @Nullable
+    OnlinePlayer getOnlinePlayer(CommandSender sender, String lookup, boolean allowMissing) throws InvalidCommandArgument {
+        Player player = ACFBukkitUtil.findPlayerSmart(sender, lookup);
+        if (player == null) {
+            if (allowMissing) {
+                return null;
+            }
+            ACFBukkitUtil.sendMsg(sender, "&cCould not find a player by the name " + lookup);
+            throw new InvalidCommandArgument(false);
+        }
+        return new OnlinePlayer(player);
     }
 }
