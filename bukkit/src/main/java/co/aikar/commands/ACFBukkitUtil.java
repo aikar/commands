@@ -233,6 +233,9 @@ public class ACFBukkitUtil {
     }
 
     public static Player findPlayerSmart(CommandSender requester, String origName) {
+        if (origName == null) {
+            return null;
+        }
         String name = ACFUtil.replace(origName, ":confirm", "");
         if (name.length() < 3) {
             requester.sendMessage("§cUsername too short, must be at least three characters");
