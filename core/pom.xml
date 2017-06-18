@@ -41,15 +41,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>minecraft-timings</artifactId>
-            <version>1.0.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>17.0</version>
+            <version>15.0</version>
              <scope>provided</scope>
         </dependency>
     </dependencies>
