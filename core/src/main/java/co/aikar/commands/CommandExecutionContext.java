@@ -27,7 +27,8 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.ContextResolver;
-import co.aikar.commands.contexts.SenderAwareContextResolver;
+import co.aikar.commands.contexts.IssuerAwareContextResolver;
+import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import java.lang.annotation.Annotation;
@@ -89,7 +90,7 @@ public class CommandExecutionContext <T extends CommandExecutionContext> {
             ContextResolver<?, ?> resolver = cmd.resolvers[i];
             if (parameter.getAnnotation(Optional.class) != null || parameter.getAnnotation(Default.class) != null) {
                 numRequired--;
-            } else if (resolver instanceof SenderAwareContextResolver) {
+            } else if (resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver) {
                 numRequired--;
             }
         }

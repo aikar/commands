@@ -26,10 +26,8 @@ package co.aikar.commands.contexts;
 import co.aikar.commands.CommandExecutionContext;
 
 /**
- * Wrapper for IssuerAwareContextResolver
- *
- * @deprecated Please use {@link IssuerAwareContextResolver}
- * @see IssuerAwareContextResolver
+ * A context resolver that will never consume input, and only resolves using the context of the issuer of the command
+ * @param <T>
+ * @param <C>
  */
-@Deprecated
-public interface SenderAwareContextResolver<T, C extends CommandExecutionContext<?>> extends IssuerAwareContextResolver <T, C> {}
+public interface IssuerOnlyContextResolver<T, C extends CommandExecutionContext<?>> extends ContextResolver <T, C> {}

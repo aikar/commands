@@ -31,7 +31,8 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
-import co.aikar.commands.contexts.SenderAwareContextResolver;
+import co.aikar.commands.contexts.IssuerAwareContextResolver;
+import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -96,7 +97,9 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                     String name = parameter.getName();
                     if (isOptionalResolver(resolver, parameter)) {
                         optionalResolvers++;
-                        syntaxB.append('[').append(name).append("] ");
+                        if (!(resolver instanceof IssuerOnlyContextResolver)) {
+                            syntaxB.append('[').append(name).append("] ");
+                        }
                     } else {
                         requiredResolvers++;
                         syntaxB.append('<').append(name).append("> ");
@@ -118,7 +121,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     }
 
     private boolean isOptionalResolver(ContextResolver<?, R> resolver, Parameter parameter) {
-        return resolver instanceof SenderAwareContextResolver
+        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver
                 || parameter.getAnnotation(Optional.class) != null
                 || parameter.getAnnotation(Default.class) != null;
     }
@@ -180,7 +183,8 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             //noinspection unchecked
             final ContextResolver<?, R> resolver = resolvers[i];
             R context = this.scope.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
-            if (!isOptionalResolver(resolver, parameter)) {
+            boolean isOptionalResolver = isOptionalResolver(resolver, parameter);
+            if (!isOptionalResolver) {
                 remainingRequired--;
             }
             if (args.isEmpty() && !(isLast && type == String[].class)) {
@@ -189,10 +193,10 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 if (allowOptional && def != null) {
                     args.add(scope.manager.getCommandReplacements().replace(def.value()));
                 } else if (allowOptional && opt != null) {
-                    passedArgs.put(parameterName, resolver instanceof SenderAwareContextResolver ? resolver.getContext(context) : null);
+                    passedArgs.put(parameterName, isOptionalResolver ? resolver.getContext(context) : null);
                     //noinspection UnnecessaryContinue
                     continue;
-                } else if (!(resolver instanceof SenderAwareContextResolver)) {
+                } else if (!isOptionalResolver) {
                     scope.showSyntax(sender, this);
                     return null;
                 }

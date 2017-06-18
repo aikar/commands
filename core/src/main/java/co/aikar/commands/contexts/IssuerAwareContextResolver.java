@@ -25,11 +25,5 @@ package co.aikar.commands.contexts;
 
 import co.aikar.commands.CommandExecutionContext;
 
-/**
- * Wrapper for IssuerAwareContextResolver
- *
- * @deprecated Please use {@link IssuerAwareContextResolver}
- * @see IssuerAwareContextResolver
- */
-@Deprecated
-public interface SenderAwareContextResolver<T, C extends CommandExecutionContext<?>> extends IssuerAwareContextResolver <T, C> {}
+
+public interface IssuerAwareContextResolver<T, C extends CommandExecutionContext<?>> extends ContextResolver<T, C> {}

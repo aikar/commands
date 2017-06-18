@@ -27,6 +27,8 @@ import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
+import co.aikar.commands.contexts.IssuerAwareContextResolver;
+import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
 
@@ -140,9 +142,38 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
         });
     }
 
-    public <T> void registerSenderAwareContext(Class<T> context, SenderAwareContextResolver<T, R> supplier) {
+    /**
+     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}
+     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender
+     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)
+     */
+    @Deprecated
+    public <T> void registerSenderAwareContext(Class<T> context, IssuerAwareContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
+
+    /**
+     * Registers a context resolver that may conditionally consume input, falling back to using the context of the
+     * issuer to potentially fulfill this context.
+     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}
+     * if you want to consume that input.
+     */
+    public <T> void registerIssuerAwareContext(Class<T> context, IssuerAwareContextResolver<T, R> supplier) {
+        contextMap.put(context, supplier);
+    }
+
+    /**
+     * Registers a context resolver that will never consume input. It will always satisfy its context based on the
+     * issuer of the command, so it will not appear in syntax strings.
+     */
+    public <T> void registerIssuerOnlyContext(Class<T> context, IssuerOnlyContextResolver<T, R> supplier) {
+        contextMap.put(context, supplier);
+    }
+
+    /**
+     * Registers a context that requires input from the command issuer to resolve. This resolver should always
+     * call {@link CommandExecutionContext#popFirstArg()}
+     */
     public <T> void registerContext(Class<T> context, ContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
