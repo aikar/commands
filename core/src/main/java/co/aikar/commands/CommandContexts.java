@@ -78,7 +78,13 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
                 throw new InvalidCommandArgument("Must be a number");
             }
         });
-        registerContext(Boolean.class, (c) -> ACFUtil.isTruthy(c.popFirstArg()));
+        registerContext(Boolean.class, (c) -> {
+            String test = c.popFirstArg();
+            if (test == null) {
+                return null;
+            }
+            return ACFUtil.isTruthy(test);
+        });
         registerContext(String.class, (c) -> {
             final Values values = c.getParam().getAnnotation(Values.class);
             if (values != null) {

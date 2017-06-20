@@ -405,7 +405,7 @@ public final class ACFUtil {
         return null;
     }
 
-    @NotNull public static Boolean isTruthy(String test) {
+    public static boolean isTruthy(String test) {
         switch (test) {
             case "t":
             case "true":
