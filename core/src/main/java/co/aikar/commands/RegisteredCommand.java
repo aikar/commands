@@ -126,6 +126,10 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 || parameter.getAnnotation(Default.class) != null;
     }
 
+    private boolean isSenderAwareResolver(ContextResolver<?, R> resolver) {
+        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver;
+    }
+
     void invoke(CommandIssuer sender, List<String> args) {
         if (!scope.canExecute(sender, this)) {
             return;
@@ -193,7 +197,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 if (allowOptional && def != null) {
                     args.add(scope.manager.getCommandReplacements().replace(def.value()));
                 } else if (allowOptional && opt != null) {
-                    passedArgs.put(parameterName, isOptionalResolver ? resolver.getContext(context) : null);
+                    passedArgs.put(parameterName, isSenderAwareResolver(resolver) ? resolver.getContext(context) : null);
                     //noinspection UnnecessaryContinue
                     continue;
                 } else if (!isOptionalResolver) {
