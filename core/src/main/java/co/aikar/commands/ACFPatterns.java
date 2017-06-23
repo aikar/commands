@@ -23,12 +23,9 @@
 
 package co.aikar.commands;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Maps;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
@@ -52,18 +49,8 @@ final class ACFPatterns {
 
     private ACFPatterns() {}
     @SuppressWarnings("Convert2MethodRef")
-    static final LoadingCache<String, Pattern> patternCache =
-            CacheBuilder.newBuilder()
-                    .expireAfterAccess(90, TimeUnit.DAYS)
-                    .maximumSize(1024)
-                    // has to be this or fails to compile
-                    .build(CacheLoader.from((pattern) -> Pattern.compile(pattern)));
+    static final Map<String, Pattern> patternCache = Maps.newHashMap();
     public static Pattern getPattern(String pattern) {
-        try {
-            return patternCache.get(pattern);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return Pattern.compile(pattern);
-        }
+        return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
     }
 }
