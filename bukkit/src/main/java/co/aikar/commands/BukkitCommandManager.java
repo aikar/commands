@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
+import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -57,10 +58,13 @@ public class BukkitCommandManager extends CommandManager {
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
     protected BukkitCommandCompletions completions;
+    MCTiming commandTiming;
 
+    @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
         this.timingManager = TimingManager.of(plugin);
+        this.commandTiming = this.timingManager.of("Commands");
         CommandMap commandMap = null;
         try {
             Server server = Bukkit.getServer();
@@ -194,7 +198,7 @@ public class BukkitCommandManager extends CommandManager {
 
     @Override
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
-        return new RegisteredCommand(command, cmdName, method, prefSubCommand);
+        return new BukkitRegisteredCommand(command, cmdName, method, prefSubCommand);
     }
 
     @Override

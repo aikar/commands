@@ -43,9 +43,11 @@ public class SpongeCommandManager extends CommandManager {
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
     protected SpongeCommandContexts contexts;
     protected SpongeCommandCompletions completions;
+    private Timing commandTiming;
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
+        this.commandTiming = Timings.of(plugin, "Commands");
     }
 
     @Override
@@ -89,8 +91,8 @@ public class SpongeCommandManager extends CommandManager {
         }
     }
 
-    public Timing createTiming(final SpongeRegisteredCommand command) {
-        return Timings.of(this.plugin, "Command: " + command.command);
+    public Timing createTiming(final String name) {
+        return Timings.of(this.plugin, name, this.commandTiming);
     }
 
     @Override
@@ -118,7 +120,7 @@ public class SpongeCommandManager extends CommandManager {
 
     @Override
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
-        return new RegisteredCommand(command, cmdName, method, prefSubCommand);
+        return new SpongeRegisteredCommand(command, cmdName, method, prefSubCommand);
     }
 
     @Override

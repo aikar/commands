@@ -36,7 +36,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-all:5.0.4" level="project" />
     <orderEntry type="module" module-name="acf-bukkit" />
     <orderEntry type="module" module-name="acf-core" />
-    <orderEntry type="library" name="Maven: co.aikar:minecraft-timings:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: co.aikar:minecraft-timings:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
   </component>
 </module>

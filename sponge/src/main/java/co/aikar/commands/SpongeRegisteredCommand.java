@@ -33,7 +33,7 @@ public class SpongeRegisteredCommand extends RegisteredCommand<SpongeCommandExec
 
     SpongeRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         super(scope, command, method, prefSubCommand);
-        this.timing = ((SpongeCommandManager) scope.manager).createTiming(this);
+        this.timing = ((SpongeCommandManager) scope.manager).createTiming("Command: " + this.command);
     }
 
     @Override
