@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Deprecated
 public class MessageKey {
     private static final AtomicInteger counter = new AtomicInteger();
     private static final Map<String, MessageKey> keyMap = new ConcurrentHashMap<>();

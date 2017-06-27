@@ -25,34 +25,14 @@ package co.aikar.commands;
 
 import org.bukkit.ChatColor;
 
-public class BukkitMessageFormatter implements MessageFormatter {
-    private final ChatColor color1;
-    private final ChatColor color2;
-    private final ChatColor color3;
+public class BukkitMessageFormatter extends MessageFormatter<ChatColor> {
 
-    public BukkitMessageFormatter(ChatColor color1) {
-        this(color1, color1);
-    }
-    public BukkitMessageFormatter(ChatColor color1, ChatColor color2) {
-        this(color1, color2, color2);
-    }
-    public BukkitMessageFormatter(ChatColor color1, ChatColor color2, ChatColor color3) {
-        this.color1 = color1;
-        this.color2 = color2;
-        this.color3 = color3;
-    }
-    @Override
-    public String c1(String message) {
-        return color1 + message;
+    public BukkitMessageFormatter(ChatColor... colors) {
+        super(colors);
     }
 
     @Override
-    public String c2(String message) {
-        return color2 + message;
-    }
-
-    @Override
-    public String c3(String message) {
-        return color3 + message;
+    String format(ChatColor color, String message) {
+        return color + message;
     }
 }

@@ -25,8 +25,9 @@ package co.aikar.commands;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@SuppressWarnings("WeakerAccess")
+@Deprecated
 public class MessageType {
-    @SuppressWarnings("WeakerAccess")
     public static MessageType INFO = new MessageType();
     public static MessageType SYNTAX = new MessageType();
     public static MessageType ERROR = new MessageType();

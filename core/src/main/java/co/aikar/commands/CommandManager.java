@@ -41,7 +41,12 @@ abstract class CommandManager {
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
     {
-        MessageFormatter plain = message -> message;
+        MessageFormatter plain = new MessageFormatter() {
+            @Override
+            String format(Object color, String message) {
+                return message;
+            }
+        };
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
         formatters.put(MessageType.ERROR, plain);

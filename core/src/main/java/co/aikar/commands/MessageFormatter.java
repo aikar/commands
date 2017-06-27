@@ -23,33 +23,59 @@
 
 package co.aikar.commands;
 
+import java.util.*;
 import java.util.regex.Matcher;
 
-public interface MessageFormatter {
+/**
+ * Handles formatting Messages and managing colors
+ * @param <C> The platform specific color object
+ */
+@Deprecated
+public abstract class MessageFormatter <C> {
 
-    String c1(String message);
+    private final List<C> colors = new ArrayList<>();
 
-    default String c2(String message) {
-        return c1(message);
+    public MessageFormatter(C... colors) {
+        for (int i = 0; i < colors.length; i++) {
+            this.colors.set(i, colors[i]);
+        }
+
     }
-    default String c3(String message) {
-        return c2(message);
+    public C setColor(int index, C color) {
+        if (this.colors.size() < index) {
+            this.colors.addAll(Collections.nCopies(index - this.colors.size(), null));
+        }
+        return colors.set(index, color);
     }
 
-    default String format(String message) {
+    public C getColor(int index) {
+        C color = colors.get(index);
+        if (color == null) {
+            color = getDefaultColor();
+        }
+        return color;
+    }
+
+    public C getDefaultColor() {
+        return getColor(1);
+    }
+
+    abstract String format(C color, String message);
+
+    public String format(int index, String message) {
+        return format(getColor(index), message);
+    }
+
+    public String format(String message) {
+        String def = format(1, "");
         Matcher matcher = ACFPatterns.FORMATTER.matcher(message);
         StringBuffer sb = new StringBuffer(message.length());
         while (matcher.find()) {
-            String type = matcher.group("type");
-            String msg = matcher.group("msg");
-            switch (type.toLowerCase()) {
-                case "c3": msg = c3(msg); break;
-                case "c2": msg = c2(msg); break;
-                default:   msg = c1(msg); break;
-            }
-            matcher.appendReplacement(sb, Matcher.quoteReplacement(msg + c1("")));
+            Integer color = ACFUtil.parseInt(matcher.group("color"), 1);
+            String msg = format(color, matcher.group("msg")) + def;
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(msg));
         }
         matcher.appendTail(sb);
-        return c1("") + sb.toString();
+        return def + sb.toString();
     }
 }
