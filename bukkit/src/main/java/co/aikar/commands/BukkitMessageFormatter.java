@@ -23,39 +23,36 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.ChatColor;
 
-public class BungeeCommandIssuer implements CommandIssuer{
-    private final BungeeCommandManager manager;
-    private final CommandSender sender;
+public class BukkitMessageFormatter implements MessageFormatter {
+    private final ChatColor color1;
+    private final ChatColor color2;
+    private final ChatColor color3;
 
-    BungeeCommandIssuer(BungeeCommandManager manager, CommandSender sender) {
-        this.manager = manager;
-        this.sender = sender;
+    public BukkitMessageFormatter(ChatColor color1) {
+        this(color1, color1);
     }
-
-
-    @Override
-    public <T> T getIssuer() {
-        //noinspection unchecked
-        return (T) sender;
+    public BukkitMessageFormatter(ChatColor color1, ChatColor color2) {
+        this(color1, color2, color2);
     }
-
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof ProxiedPlayer;
+    public BukkitMessageFormatter(ChatColor color1, ChatColor color2, ChatColor color3) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.color3 = color3;
     }
-
     @Override
-    public void sendMessage(MessageType type, String message) {
-        message = format(manager, type, message);
-        sender.sendMessage(new TextComponent(ACFBungeeUtil.color(message)));
+    public String c1(String message) {
+        return color1 + message;
     }
 
     @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
+    public String c2(String message) {
+        return color2 + message;
+    }
+
+    @Override
+    public String c3(String message) {
+        return color3 + message;
     }
 }

@@ -77,7 +77,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        execute(new BungeeCommandIssuer(sender), getName(), args);
+        execute(new BungeeCommandIssuer(manager, sender), getName(), args);
     }
 
     private void execute(CommandIssuer sender, String commandLabel, String[] args) {
@@ -95,7 +95,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-        return onTabComplete(new BungeeCommandIssuer(commandSender), getName(), strings);
+        return onTabComplete(new BungeeCommandIssuer(manager, commandSender), getName(), strings);
     }
 
     private List<String> onTabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {

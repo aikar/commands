@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +38,13 @@ abstract class CommandManager {
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected Locales locales = new Locales(this);
     protected ExceptionHandler defaultExceptionHandler = null;
+    protected EnumMap<MessageType, MessageFormatter> formatters = new EnumMap<>(MessageType.class);
+    {
+        MessageFormatter plain = message -> message;
+        formatters.put(MessageType.INFO, plain);
+        formatters.put(MessageType.SYNTAX, plain);
+        formatters.put(MessageType.ERROR, plain);
+    }
 
     /**
      * Gets the command contexts manager
@@ -107,13 +115,12 @@ abstract class CommandManager {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
     }
 
-
     /**
      * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
      *
      * @param exceptionHandler the handler that should handle uncaught exceptions
      */
-    public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler){
+    public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler) {
         defaultExceptionHandler = exceptionHandler;
     }
 
@@ -126,11 +133,11 @@ abstract class CommandManager {
         return defaultExceptionHandler;
     }
 
-    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t){
+    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t) {
         boolean result = false;
-        if(scope.getExceptionHandler() != null){
+        if (scope.getExceptionHandler() != null) {
             result = scope.getExceptionHandler().execute(scope, registeredCommand, sender, args, t);
-        }else if(defaultExceptionHandler != null){
+        } else if (defaultExceptionHandler != null) {
             result = defaultExceptionHandler.execute(scope, registeredCommand, sender, args, t);
         }
         return result;
@@ -143,7 +150,6 @@ abstract class CommandManager {
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
-        // TODO: Colors?
         issuer.sendMessage(type, message);
     }
 

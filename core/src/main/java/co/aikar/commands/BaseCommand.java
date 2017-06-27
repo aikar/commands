@@ -499,7 +499,7 @@ public abstract class BaseCommand {
     }
 
     public void showSyntax(CommandIssuer issuer, RegisteredCommand<?> cmd) {
-        issuer.sendMessage(MessageType.SYNTAX, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
+        issuer.sendMessage(MessageType.SYNTAX, "Usage: <c2>/" + cmd.command + "</c2> <c3>" + cmd.syntaxText + "</c3>");
     }
 
     public boolean hasPermission(Object issuer) {

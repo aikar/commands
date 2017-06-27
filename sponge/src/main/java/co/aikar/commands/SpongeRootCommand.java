@@ -58,7 +58,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public CommandResult process(CommandSource source, String arguments) throws CommandException {
-        if(this.execute(new SpongeCommandIssuer(source), this.name, arguments.split(" "))) {
+        if(this.execute(new SpongeCommandIssuer(manager, source), this.name, arguments.split(" "))) {
             return CommandResult.success();
         }
         return CommandResult.empty();
@@ -66,7 +66,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> location) throws CommandException {
-        return tabComplete(new SpongeCommandIssuer(source), this.name, arguments.split(" "));
+        return tabComplete(new SpongeCommandIssuer(manager, source), this.name, arguments.split(" "));
     }
 
     @Override

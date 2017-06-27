@@ -27,6 +27,7 @@ import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -89,6 +90,9 @@ public class BukkitCommandManager extends CommandManager {
             ACFUtil.sneaky(e);
         }
         this.commandMap = commandMap;
+        this.formatters.put(MessageType.ERROR, new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
+        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
     }
 
@@ -184,7 +188,7 @@ public class BukkitCommandManager extends CommandManager {
         if (!(issuer instanceof CommandSender)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
-        return new BukkitCommandIssuer((CommandSender) issuer);
+        return new BukkitCommandIssuer(this, (CommandSender) issuer);
     }
 
     @Override

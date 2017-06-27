@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -46,6 +47,9 @@ public class BungeeCommandManager extends CommandManager {
 
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
+        this.formatters.put(MessageType.ERROR, new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
+        this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
     }
 
     public Plugin getPlugin() {
@@ -97,7 +101,7 @@ public class BungeeCommandManager extends CommandManager {
         if (!(issuer instanceof CommandSender)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
-        return new BungeeCommandIssuer((CommandSender) issuer);
+        return new BungeeCommandIssuer(this, (CommandSender) issuer);
     }
 
     @Override
@@ -107,6 +111,7 @@ public class BungeeCommandManager extends CommandManager {
 
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        //noinspection unchecked
         return (R) new BungeeCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
     }
 

@@ -23,39 +23,33 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import java.util.regex.Matcher;
 
-public class BungeeCommandIssuer implements CommandIssuer{
-    private final BungeeCommandManager manager;
-    private final CommandSender sender;
+public interface MessageFormatter {
 
-    BungeeCommandIssuer(BungeeCommandManager manager, CommandSender sender) {
-        this.manager = manager;
-        this.sender = sender;
+    String c1(String message);
+
+    default String c2(String message) {
+        return c1(message);
+    }
+    default String c3(String message) {
+        return c2(message);
     }
 
-
-    @Override
-    public <T> T getIssuer() {
-        //noinspection unchecked
-        return (T) sender;
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof ProxiedPlayer;
-    }
-
-    @Override
-    public void sendMessage(MessageType type, String message) {
-        message = format(manager, type, message);
-        sender.sendMessage(new TextComponent(ACFBungeeUtil.color(message)));
-    }
-
-    @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
+    default String format(String message) {
+        Matcher matcher = ACFPatterns.FORMATTER.matcher(message);
+        StringBuffer sb = new StringBuffer(message.length());
+        while (matcher.find()) {
+            String type = matcher.group("type");
+            String msg = matcher.group("msg");
+            switch (type.toLowerCase()) {
+                case "c3": msg = c3(msg); break;
+                case "c2": msg = c2(msg); break;
+                default:   msg = c1(msg); break;
+            }
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(msg + c1("")));
+        }
+        matcher.appendTail(sb);
+        return c1("") + sb.toString();
     }
 }

@@ -28,9 +28,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BukkitCommandIssuer implements CommandIssuer {
+    private final BukkitCommandManager manager;
     private final CommandSender sender;
 
-    BukkitCommandIssuer(CommandSender sender) {
+    BukkitCommandIssuer(BukkitCommandManager manager, CommandSender sender) {
+        this.manager = manager;
         this.sender = sender;
     }
 
@@ -47,14 +49,7 @@ public class BukkitCommandIssuer implements CommandIssuer {
 
     @Override
     public void sendMessage(MessageType type, String message) {
-        switch (type) {
-            case ERROR:
-            case SYNTAX:
-                sender.sendMessage(ChatColor.RED + ACFBukkitUtil.color(message));
-                break;
-            default:
-                sender.sendMessage(ChatColor.YELLOW + ACFBukkitUtil.color(message));
-        }
+        sender.sendMessage(ACFBukkitUtil.color(format(manager, type, message)));
     }
 
     @Override

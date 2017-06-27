@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -49,6 +50,10 @@ public class SpongeCommandManager extends CommandManager {
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
         this.commandTiming = Timings.of(plugin, "Commands");
+
+        this.formatters.put(MessageType.ERROR, new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
+        this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));
+        this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
     }
 
     @Override
@@ -106,11 +111,12 @@ public class SpongeCommandManager extends CommandManager {
         if (!(issuer instanceof CommandSource)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
-        return new SpongeCommandIssuer((CommandSource) issuer);
+        return new SpongeCommandIssuer(this, (CommandSource) issuer);
     }
 
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        //noinspection unchecked
         return (R) new SpongeCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
     }
 

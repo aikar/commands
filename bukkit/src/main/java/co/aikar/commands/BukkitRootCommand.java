@@ -51,12 +51,12 @@ public class BukkitRootCommand extends Command implements RootCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return tabComplete(new BukkitCommandIssuer(sender), alias, args);
+        return tabComplete(new BukkitCommandIssuer(manager, sender), alias, args);
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        return execute(new BukkitCommandIssuer(sender), commandLabel, args);
+        return execute(new BukkitCommandIssuer(manager, sender), commandLabel, args);
     }
 
     private List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {

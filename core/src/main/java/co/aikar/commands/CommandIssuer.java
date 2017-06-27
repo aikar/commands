@@ -53,4 +53,11 @@ public interface CommandIssuer {
     boolean hasPermission(String permission);
 
     void sendMessage(MessageType type, String message);
+    default String format(CommandManager manager, MessageType type,  String message) {
+        MessageFormatter formatter = manager.formatters.get(type);
+        if (formatter != null) {
+            message = formatter.format(message);
+        }
+        return message;
+    }
 }

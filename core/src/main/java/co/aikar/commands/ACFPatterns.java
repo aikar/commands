@@ -44,6 +44,7 @@ final class ACFPatterns {
     public static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{2,16}$");
     public static final Pattern NON_PRINTABLE_CHARACTERS = Pattern.compile("[^\\x20-\\x7F]");
     public static final Pattern EQUALS = Pattern.compile("=");
+    public static final Pattern FORMATTER = Pattern.compile("<(?<type>c1|c2|c3)>(?<msg>.+?)</(c1|c2|c3)>", Pattern.CASE_INSENSITIVE);
 
 
 
