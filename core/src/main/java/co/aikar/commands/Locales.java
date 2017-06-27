@@ -91,7 +91,7 @@ public class Locales {
     }
 
     public LanguageTable getTable(Locale locale) {
-        return tables.computeIfAbsent(locale, (l) -> new LanguageTable(locale));
+        return tables.computeIfAbsent(locale, LanguageTable::new);
     }
 
 }

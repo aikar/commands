@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,7 +39,7 @@ abstract class CommandManager {
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected Locales locales = new Locales(this);
     protected ExceptionHandler defaultExceptionHandler = null;
-    protected EnumMap<MessageType, MessageFormatter> formatters = new EnumMap<>(MessageType.class);
+    protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
     {
         MessageFormatter plain = message -> message;
         formatters.put(MessageType.INFO, plain);

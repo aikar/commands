@@ -23,6 +23,23 @@
 
 package co.aikar.commands;
 
-public enum MessageType {
-    INFO, SYNTAX, ERROR
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MessageType {
+    @SuppressWarnings("WeakerAccess")
+    public static MessageType INFO = new MessageType();
+    public static MessageType SYNTAX = new MessageType();
+    public static MessageType ERROR = new MessageType();
+
+    private static final AtomicInteger counter = new AtomicInteger();
+    private final int id = counter.getAndIncrement();
+
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return (this == o);
+    }
 }
