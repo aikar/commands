@@ -26,6 +26,7 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
+import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -124,26 +125,23 @@ public class SpongeCommandManager extends CommandManager {
     }
 
     @Override
-    public void log(final LogLevel level, final String message) {
-        switch(level) {
-            case INFO:
-                this.plugin.getLogger().info(LogLevel.LOG_PREFIX + message);
-                return;
-            case ERROR:
-                this.plugin.getLogger().error(LogLevel.LOG_PREFIX + message);
-        }
-    }
-
-    @Override
     public void log(final LogLevel level, final String message, final Throwable throwable) {
+        Logger logger = this.plugin.getLogger();
         switch(level) {
             case INFO:
-                this.plugin.getLogger().info(LogLevel.LOG_PREFIX + message, throwable);
+                logger.info(LogLevel.LOG_PREFIX + message);
+                if (throwable != null) {
+                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
+                        logger.info(LogLevel.LOG_PREFIX + line);
+                    }
+                }
                 return;
             case ERROR:
-                this.plugin.getLogger().error(LogLevel.LOG_PREFIX + message, throwable);
-                for(String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
-                    this.plugin.getLogger().error(LogLevel.LOG_PREFIX + line);
+                logger.error(LogLevel.LOG_PREFIX + message);
+                if (throwable != null) {
+                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
+                        logger.error(LogLevel.LOG_PREFIX + line);
+                    }
                 }
         }
     }

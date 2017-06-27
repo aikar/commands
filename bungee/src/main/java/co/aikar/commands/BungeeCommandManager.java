@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BungeeCommandManager extends CommandManager {
 
@@ -120,27 +121,14 @@ public class BungeeCommandManager extends CommandManager {
     }
 
     @Override
-    public void log(LogLevel level, String message) {
-        switch(level) {
-            case INFO:
-                this.plugin.getLogger().info(LogLevel.LOG_PREFIX + message);
-                return;
-            case ERROR:
-                this.plugin.getLogger().severe(LogLevel.LOG_PREFIX + message);
-        }
-    }
-
-    @Override
     public void log(LogLevel level, String message, Throwable throwable) {
-        switch(level) {
-            case INFO:
-                this.plugin.getLogger().log(Level.INFO, LogLevel.LOG_PREFIX + message, throwable);
-                return;
-            case ERROR:
-                this.plugin.getLogger().log(Level.SEVERE, LogLevel.LOG_PREFIX + message);
-                for(String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
-                    this.plugin.getLogger().severe(LogLevel.LOG_PREFIX + line);
-                }
+        Logger logger = this.plugin.getLogger();
+        Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;
+        logger.log(logLevel, LogLevel.LOG_PREFIX + message);
+        if (throwable != null) {
+            for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
+                logger.log(logLevel, LogLevel.LOG_PREFIX + line);
+            }
         }
     }
 }

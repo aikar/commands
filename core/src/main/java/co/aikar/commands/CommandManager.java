@@ -68,9 +68,11 @@ abstract class CommandManager {
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
 
-    public abstract void log(final LogLevel level, final String message);
-
     public abstract void log(final LogLevel level, final String message, final Throwable throwable);
+
+    public void log(final LogLevel level, final String message) {
+        log(level, message, null);
+    }
 
     /**
      * Lets you add custom string replacements that can be applied to annotation values,
