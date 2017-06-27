@@ -24,6 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.MessageType;
 import com.google.common.collect.Lists;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,7 +48,7 @@ public final class ACFExample extends JavaPlugin {
         ));
 
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
-                sender.sendMessage("An error occured. This problem has been logged. Sorry for the inconvienence.");
+                sender.sendMessage(MessageType.ERROR, "An error occured. This problem has been logged. Sorry for the inconvienence.");
                 return true; // mark as handeled, default message will not be send to sender
         }));
         commandManager.registerCommand(new SomeCommand_ExtraSubs());

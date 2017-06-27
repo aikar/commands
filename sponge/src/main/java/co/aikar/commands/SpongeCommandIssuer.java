@@ -25,6 +25,9 @@ package co.aikar.commands;
 
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 public class SpongeCommandIssuer implements CommandIssuer {
@@ -47,8 +50,15 @@ public class SpongeCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public void sendMessage(final String message) {
-        this.source.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(message));
+    public void sendMessage(MessageType type, String message) {
+        switch (type) {
+            case ERROR:
+            case SYNTAX:
+                this.source.sendMessage(Text.of(TextColors.RED, TextSerializers.LEGACY_FORMATTING_CODE.stripCodes(message)));
+                break;
+            default:
+                this.source.sendMessage(Text.of(TextColors.YELLOW, TextSerializers.LEGACY_FORMATTING_CODE.stripCodes(message)));
+        }
     }
 
     @Override

@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -45,8 +46,15 @@ public class BukkitCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public void sendMessage(String message) {
-        sender.sendMessage(ACFBukkitUtil.color(message));
+    public void sendMessage(MessageType type, String message) {
+        switch (type) {
+            case ERROR:
+            case SYNTAX:
+                sender.sendMessage(ChatColor.RED + ACFBukkitUtil.color(message));
+                break;
+            default:
+                sender.sendMessage(ChatColor.YELLOW + ACFBukkitUtil.color(message));
+        }
     }
 
     @Override

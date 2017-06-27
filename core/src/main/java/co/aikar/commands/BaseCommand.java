@@ -315,7 +315,7 @@ public abstract class BaseCommand {
 
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
         if (!this.hasPermission(issuer)) {
-            issuer.sendMessage(permissionMessage);
+            issuer.sendMessage(MessageType.ERROR, permissionMessage);
             return;
         }
         commandLabel = commandLabel.toLowerCase();
@@ -393,7 +393,7 @@ public abstract class BaseCommand {
             List<String> sargs = Lists.newArrayList(args);
             cmd.invoke(issuer, sargs);
         } else {
-            issuer.sendMessage(cmd.scope.permissionMessage);
+            issuer.sendMessage(MessageType.ERROR, cmd.scope.permissionMessage);
         }
     }
 
@@ -489,7 +489,7 @@ public abstract class BaseCommand {
         help(manager.getCommandIssuer(issuer), args);
     }
     public void help(CommandIssuer issuer, String[] args) {
-        issuer.sendMessage("&cUnknown Command, please type &f/help");
+        issuer.sendMessage(MessageType.ERROR, "&cUnknown Command, please type &f/help");
     }
     public void doHelp(Object issuer, String... args) {
         doHelp(manager.getCommandIssuer(issuer), args);
@@ -499,7 +499,7 @@ public abstract class BaseCommand {
     }
 
     public void showSyntax(CommandIssuer issuer, RegisteredCommand<?> cmd) {
-        issuer.sendMessage("&cUsage: /" + cmd.command + " " + cmd.syntaxText);
+        issuer.sendMessage(MessageType.SYNTAX, "&cUsage: /" + cmd.command + " " + cmd.syntaxText);
     }
 
     public boolean hasPermission(Object issuer) {

@@ -23,43 +23,34 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class BungeeCommandIssuer implements CommandIssuer{
-    private final CommandSender sender;
+public class MessageKey {
+    private static final AtomicInteger counter = new AtomicInteger();
+    private static final Map<String, MessageKey> keyMap = new ConcurrentHashMap<>();
+    private final int id = counter.getAndIncrement();
+    private final String key;
 
-    BungeeCommandIssuer(CommandSender sender) {
-        this.sender = sender;
+    private MessageKey(String key) {
+        this.key = key;
     }
 
-
-    @Override
-    public <T> T getIssuer() {
-        return (T) sender;
+    public static MessageKey of(String key) {
+        return keyMap.computeIfAbsent(key.toLowerCase(), MessageKey::new);
     }
 
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof ProxiedPlayer;
-    }
-
-    @Override
-    public void sendMessage(MessageType type, String message) {
-        switch (type) {
-            case ERROR:
-            case SYNTAX:
-                sender.sendMessage(new TextComponent(ChatColor.RED + ACFBungeeUtil.color(message)));
-                break;
-            default:
-                sender.sendMessage(new TextComponent(ChatColor.YELLOW + ACFBungeeUtil.color(message)));
-        }
+    public int hashCode() {
+        return id;
     }
 
     @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
+    public boolean equals(Object o) {
+        return (this == o);
+    }
+
+    public String getKey() {
+        return key;
     }
 }

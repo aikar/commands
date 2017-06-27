@@ -38,7 +38,7 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class CommandContexts <R extends CommandExecutionContext<?>> {
     protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
-    private final CommandManager manager;
+    protected final CommandManager manager;
 
     CommandContexts(CommandManager manager) {
         this.manager = manager;

@@ -23,43 +23,6 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-
-public class BungeeCommandIssuer implements CommandIssuer{
-    private final CommandSender sender;
-
-    BungeeCommandIssuer(CommandSender sender) {
-        this.sender = sender;
-    }
-
-
-    @Override
-    public <T> T getIssuer() {
-        return (T) sender;
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof ProxiedPlayer;
-    }
-
-    @Override
-    public void sendMessage(MessageType type, String message) {
-        switch (type) {
-            case ERROR:
-            case SYNTAX:
-                sender.sendMessage(new TextComponent(ChatColor.RED + ACFBungeeUtil.color(message)));
-                break;
-            default:
-                sender.sendMessage(new TextComponent(ChatColor.YELLOW + ACFBungeeUtil.color(message)));
-        }
-    }
-
-    @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
-    }
+public enum MessageType {
+    INFO, SYNTAX, ERROR
 }

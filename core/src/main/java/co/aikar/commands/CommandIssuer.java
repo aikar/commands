@@ -41,7 +41,9 @@ public interface CommandIssuer {
      * Send the Command Issuer a message
      * @param message
      */
-    void sendMessage(String message);
+    default void sendMessage(String message) {
+        sendMessage(MessageType.ERROR, message);
+    }
 
     /**
      * Has permission node
@@ -49,4 +51,6 @@ public interface CommandIssuer {
      * @return
      */
     boolean hasPermission(String permission);
+
+    void sendMessage(MessageType type, String message);
 }

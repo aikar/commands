@@ -154,7 +154,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         }
         if (e instanceof InvalidCommandArgument) {
             if (e.getMessage() != null && !e.getMessage().isEmpty()) {
-                sender.sendMessage("&cError: " + e.getMessage());
+                sender.sendMessage(MessageType.ERROR, "&cError: " + e.getMessage());
             }
             if (((InvalidCommandArgument) e).showSyntax) {
                 scope.showSyntax(sender, this);
@@ -162,7 +162,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         } else {
             boolean handeled = this.scope.manager.handleUncaughtException(scope, this, sender, args, e);
             if(!handeled){
-                sender.sendMessage("&cI'm sorry, but there was an error performing this command.");
+                sender.sendMessage(MessageType.ERROR, "&cI'm sorry, but there was an error performing this command.");
             }
             this.scope.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
         }

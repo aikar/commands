@@ -23,43 +23,30 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 
-public class BungeeCommandIssuer implements CommandIssuer{
-    private final CommandSender sender;
+import java.util.Locale;
+import java.util.Map;
 
-    BungeeCommandIssuer(CommandSender sender) {
-        this.sender = sender;
+class LanguageTable {
+
+    private final Locale locale;
+    private final Map<MessageKey, String> messages = Maps.newHashMap();
+
+    LanguageTable(Locale locale) {
+        this.locale = locale;
     }
 
-
-    @Override
-    public <T> T getIssuer() {
-        return (T) sender;
+    public String addMessage(MessageKey key, String message) {
+        return messages.put(key, message);
     }
 
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof ProxiedPlayer;
+    public String getMessage(MessageKey key) {
+        return messages.get(key);
     }
 
-    @Override
-    public void sendMessage(MessageType type, String message) {
-        switch (type) {
-            case ERROR:
-            case SYNTAX:
-                sender.sendMessage(new TextComponent(ChatColor.RED + ACFBungeeUtil.color(message)));
-                break;
-            default:
-                sender.sendMessage(new TextComponent(ChatColor.YELLOW + ACFBungeeUtil.color(message)));
-        }
-    }
-
-    @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
+    public void addMessages(@NotNull Map<MessageKey, String> messages) {
+        this.messages.putAll(messages);
     }
 }

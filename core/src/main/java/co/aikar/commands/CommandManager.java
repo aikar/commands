@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
@@ -34,6 +35,7 @@ abstract class CommandManager {
 
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
+    protected Locales locales = new Locales(this);
     protected ExceptionHandler defaultExceptionHandler = null;
 
     /**
@@ -49,6 +51,28 @@ abstract class CommandManager {
     public abstract CommandCompletions<?> getCommandCompletions();
 
     /**
+     * Registers a command with ACF
+     *
+     * @param command The command to register
+     * @return boolean
+     */
+    public abstract void registerCommand(BaseCommand command);
+    public abstract boolean hasRegisteredCommands();
+    public abstract boolean isCommandIssuer(Class<?> type);
+
+    public abstract CommandIssuer getCommandIssuer(Object issuer);
+
+    public abstract RootCommand createRootCommand(String cmd);
+
+    public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+
+    public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
+
+    public abstract void log(final LogLevel level, final String message);
+
+    public abstract void log(final LogLevel level, final String message, final Throwable throwable);
+
+    /**
      * Lets you add custom string replacements that can be applied to annotation values,
      * to reduce duplication/repetition of common values such as permission nodes and command prefixes.
      *
@@ -62,37 +86,25 @@ abstract class CommandManager {
     }
 
     /**
-     * Registers a command with ACF
-     *
-     * @param command The command to register
-     * @return boolean
+     * Returns a Locales Manager to add and modify language tables for your commands.
+     * @return
      */
-    public abstract void registerCommand(BaseCommand command);
-    public abstract boolean hasRegisteredCommands();
-    public abstract boolean isCommandIssuer(Class<?> type);
+    Locales getLocales() {
+        return locales;
+    }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
         return permission == null || permission.isEmpty() || issuer.hasPermission(permission);
     }
 
-    public abstract CommandIssuer getCommandIssuer(Object issuer);
-
-    public abstract RootCommand createRootCommand(String cmd);
-
     public synchronized RootCommand obtainRootCommand(String cmd) {
         return rootCommands.computeIfAbsent(cmd.toLowerCase(), this::createRootCommand);
     }
 
-    public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
-
-    public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
-
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
     }
-    public abstract void log(final LogLevel level, final String message);
 
-    public abstract void log(final LogLevel level, final String message, final Throwable throwable);
 
     /**
      * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
@@ -120,5 +132,20 @@ abstract class CommandManager {
             result = defaultExceptionHandler.execute(scope, registeredCommand, sender, args, t);
         }
         return result;
+    }
+
+    protected void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
+        CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
+        Locale locale = getIssuerLocale(issuer);
+        String message = getLocales().getMessage(locale, key);
+        if (replacements.length > 0) {
+            message = ACFUtil.replaceStrings(message, replacements);
+        }
+        // TODO: Colors?
+        issuer.sendMessage(type, message);
+    }
+
+    public Locale getIssuerLocale(CommandIssuer issuer) {
+        return getLocales().getDefaultLocale();
     }
 }
