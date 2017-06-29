@@ -74,7 +74,6 @@ public abstract class BaseCommand {
     String commandName;
     String usageMessage;
     String permission;
-    public String permissionMessage = "&cI'm sorry, but you do not have permission to perform this command.";
 
     private ExceptionHandler exceptionHandler = null;
 
@@ -315,7 +314,7 @@ public abstract class BaseCommand {
 
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
         if (!this.hasPermission(issuer)) {
-            issuer.sendMessage(MessageType.ERROR, permissionMessage);
+            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
             return;
         }
         commandLabel = commandLabel.toLowerCase();
@@ -393,7 +392,7 @@ public abstract class BaseCommand {
             List<String> sargs = Lists.newArrayList(args);
             cmd.invoke(issuer, sargs);
         } else {
-            issuer.sendMessage(MessageType.ERROR, cmd.scope.permissionMessage);
+            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
         }
     }
 
@@ -489,7 +488,7 @@ public abstract class BaseCommand {
         help(manager.getCommandIssuer(issuer), args);
     }
     public void help(CommandIssuer issuer, String[] args) {
-        issuer.sendMessage(MessageType.ERROR, "&cUnknown Command, please type &f/help");
+        issuer.sendMessage(MessageType.ERROR, MessageKeys.UNKNOWN_COMMAND);
     }
     public void doHelp(Object issuer, String... args) {
         doHelp(manager.getCommandIssuer(issuer), args);
@@ -499,7 +498,10 @@ public abstract class BaseCommand {
     }
 
     public void showSyntax(CommandIssuer issuer, RegisteredCommand<?> cmd) {
-        issuer.sendMessage(MessageType.SYNTAX, "Usage: <c2>/" + cmd.command + "</c2> <c3>" + cmd.syntaxText + "</c3>");
+        issuer.sendMessage(MessageType.SYNTAX, MessageKeys.INVALID_SYNTAX,
+                "{command}", "/" + cmd.command,
+                "{syntax}", cmd.syntaxText
+        );
     }
 
     public boolean hasPermission(Object issuer) {

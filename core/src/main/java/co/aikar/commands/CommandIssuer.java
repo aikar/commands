@@ -46,7 +46,7 @@ public interface CommandIssuer {
      * @param message
      */
     default void sendMessage(String message) {
-        sendMessage(MessageType.ERROR, message);
+        getManager().sendMessage(this, MessageType.INFO, MessageKeys.INFO_MESSAGE, "{message}", message);
     }
 
     /**
@@ -60,13 +60,10 @@ public interface CommandIssuer {
         getManager().sendMessage(this, type, key, replacements);
     }
 
-    void sendMessage(MessageType type, String message);
-
-    default String format(CommandManager manager, MessageType type,  String message) {
-        MessageFormatter formatter = manager.formatters.get(type);
-        if (formatter != null) {
-            message = formatter.format(message);
-        }
-        return message;
-    }
+    /**
+     * @deprecated Do not call this, for internal use. Not considered part of the API and may break.
+     * @param message
+     */
+    @Deprecated
+    void sendMessageInternal(String message);
 }

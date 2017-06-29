@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.LanguageTable;
 import co.aikar.locales.LocaleManager;
 import co.aikar.locales.MessageKey;
 import org.jetbrains.annotations.NotNull;
@@ -30,12 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * This isn't public yet, still WIP - API will break
- * @deprecated
- */
 @SuppressWarnings("WeakerAccess")
-@Deprecated
 public class Locales {
 
     private final CommandManager manager;
@@ -44,36 +40,27 @@ public class Locales {
     Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
-        this.initializeSystemMessages();
-    }
-
-    private void initializeSystemMessages() {
-        //table.addMessage(MessageKey.FOO, "bar");
-    }
-
-    /**
-     * Changes the default locale to use if the specified language key is missing for the desired locale
-     * @param locale
-     * @return Previous default locale
-     */
-    public Locale setDefaultLocale(Locale locale) {
-        return localeManager.setDefaultLocale(locale);
+        this.localeManager.addMessageBundle("acf-core", Locale.ENGLISH);
     }
 
     public Locale getDefaultLocale() {
-        return localeManager.getDefaultLocale();
+        return this.localeManager.getDefaultLocale();
+    }
+
+    public void addMessageBundle(String bundleName, Locale locale) {
+        this.localeManager.addMessageBundle(bundleName, locale);
     }
 
     public void addMessages(Locale locale, @NotNull Map<MessageKey, String> messages) {
-        localeManager.addMessages(locale, messages);
+        this.localeManager.addMessages(locale, messages);
     }
 
     public String addMessage(Locale locale, MessageKey key, String message) {
-        return localeManager.addMessage(locale, key, message);
+        return this.localeManager.addMessage(locale, key, message);
     }
 
     public String getMessage(CommandIssuer issuer, MessageKey key) {
-        String message = localeManager.getMessage(issuer, key);
+        String message = this.localeManager.getMessage(issuer, key);
         if (message == null) {
             manager.log(LogLevel.ERROR, "Missing Language Key: " + key);
             message = "<MISSING_LANGUAGE_KEY:" + key + ">";

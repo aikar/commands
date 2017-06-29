@@ -25,6 +25,13 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
 
-public class MessageKeys  {
-    public static final MessageKey KEY = MessageKey.of("");
+@SuppressWarnings("WeakerAccess")
+public class MessageKeys {
+    public static final MessageKey PERMISSION_DENIED = MessageKey.of("permission_denied");
+    public static final MessageKey ERROR_GENERIC_LOGGED = MessageKey.of("error_generic_logged");
+    public static final MessageKey UNKNOWN_COMMAND = MessageKey.of("unknown_command");
+    public static final MessageKey INVALID_SYNTAX = MessageKey.of("invalid_syntax");
+    public static final MessageKey ERROR_PREFIX = MessageKey.of("error_prefix");
+    public static final MessageKey ERROR_PERFORMING_COMMAND = MessageKey.of("error_performing_command");
+    public static final MessageKey INFO_MESSAGE = MessageKey.of("info_message");
 }

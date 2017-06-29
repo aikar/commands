@@ -54,8 +54,7 @@ public class BungeeCommandIssuer implements CommandIssuer{
     }
 
     @Override
-    public void sendMessage(MessageType type, String message) {
-        message = format(manager, type, message);
+    public void sendMessageInternal(String message) {
         sender.sendMessage(new TextComponent(ACFBungeeUtil.color(message)));
     }
 

@@ -35,20 +35,35 @@ public abstract class MessageFormatter <C> {
 
     private final List<C> colors = new ArrayList<>();
 
+    @SafeVarargs
     public MessageFormatter(C... colors) {
-        for (int i = 0; i < colors.length; i++) {
-            this.colors.set(i, colors[i]);
-        }
+        this.colors.addAll(Arrays.asList(colors));
 
     }
     public C setColor(int index, C color) {
-        if (this.colors.size() < index) {
-            this.colors.addAll(Collections.nCopies(index - this.colors.size(), null));
+        if (index > 0) {
+            index--;
+        } else {
+            index = 0;
         }
-        return colors.set(index, color);
+        if (this.colors.size() <= index) {
+            int needed = index - this.colors.size();
+            if (needed > 0) {
+                this.colors.addAll(Collections.nCopies(needed, null));
+            }
+            colors.add(color);
+            return null;
+        } else {
+            return colors.set(index, color);
+        }
     }
 
     public C getColor(int index) {
+        if (index > 0) {
+            index--;
+        } else {
+            index = 0;
+        }
         C color = colors.get(index);
         if (color == null) {
             color = getDefaultColor();

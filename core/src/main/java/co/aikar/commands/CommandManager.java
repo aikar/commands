@@ -157,8 +157,13 @@ abstract class CommandManager {
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
-        issuer.sendMessage(type, message);
+        MessageFormatter formatter = formatters.get(type);
+        if (formatter != null) {
+            message = formatter.format(message);
+        }
+        issuer.sendMessageInternal(message);
     }
+
 
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
