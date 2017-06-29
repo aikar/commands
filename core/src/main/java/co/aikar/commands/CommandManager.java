@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKey;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.EnumMap;
@@ -41,7 +43,7 @@ abstract class CommandManager {
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
     {
-        MessageFormatter plain = new MessageFormatter() {
+        MessageFormatter plain = new MessageFormatter<Object>() {
             @Override
             String format(Object color, String message) {
                 return message;
@@ -151,8 +153,7 @@ abstract class CommandManager {
 
     protected void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
         CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
-        Locale locale = getIssuerLocale(issuer);
-        String message = getLocales().getMessage(locale, key);
+        String message = getLocales().getMessage(issuer, key);
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }

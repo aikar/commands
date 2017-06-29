@@ -23,12 +23,12 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Maps;
+import co.aikar.locales.LocaleManager;
+import co.aikar.locales.MessageKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This isn't public yet, still WIP - API will break
@@ -38,17 +38,16 @@ import java.util.Objects;
 @Deprecated
 public class Locales {
 
-    private Locale defaultLocale = Locale.ENGLISH;
     private final CommandManager manager;
-    private final Map<Locale, LanguageTable> tables = Maps.newHashMap();
+    private final LocaleManager<CommandIssuer> localeManager;
 
     Locales(CommandManager manager) {
         this.manager = manager;
+        this.localeManager = LocaleManager.create(manager::getIssuerLocale);
         this.initializeSystemMessages();
     }
 
     private void initializeSystemMessages() {
-        LanguageTable table = getTable(Locale.ENGLISH);
         //table.addMessage(MessageKey.FOO, "bar");
     }
 
@@ -58,31 +57,23 @@ public class Locales {
      * @return Previous default locale
      */
     public Locale setDefaultLocale(Locale locale) {
-        Locale prev = this.defaultLocale;
-        this.defaultLocale = locale;
-        return prev;
+        return localeManager.setDefaultLocale(locale);
     }
 
     public Locale getDefaultLocale() {
-        return defaultLocale;
+        return localeManager.getDefaultLocale();
     }
 
     public void addMessages(Locale locale, @NotNull Map<MessageKey, String> messages) {
-        getTable(locale).addMessages(messages);
+        localeManager.addMessages(locale, messages);
     }
 
     public String addMessage(Locale locale, MessageKey key, String message) {
-        return getTable(locale).addMessage(key, message);
+        return localeManager.addMessage(locale, key, message);
     }
 
-    public String getMessage(Locale locale, MessageKey key) {
-        String message = getTable(locale).getMessage(key);
-        if (message == null && !Objects.equals(locale, defaultLocale)) {
-            message = getTable(defaultLocale).getMessage(key);
-        }
-        if (message == null && !Objects.equals(Locale.ENGLISH, defaultLocale) && !Objects.equals(Locale.ENGLISH, locale)) {
-            message = getTable(Locale.ENGLISH).getMessage(key);
-        }
+    public String getMessage(CommandIssuer issuer, MessageKey key) {
+        String message = localeManager.getMessage(issuer, key);
         if (message == null) {
             manager.log(LogLevel.ERROR, "Missing Language Key: " + key);
             message = "<MISSING_LANGUAGE_KEY:" + key + ">";
@@ -90,8 +81,5 @@ public class Locales {
         return message;
     }
 
-    public LanguageTable getTable(Locale locale) {
-        return tables.computeIfAbsent(locale, LanguageTable::new);
-    }
 
 }
