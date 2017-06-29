@@ -51,6 +51,11 @@ public class SpongeCommandIssuer implements CommandIssuer {
     }
 
     @Override
+    public CommandManager getManager() {
+        return manager;
+    }
+
+    @Override
     public void sendMessage(MessageType type, String message) {
         message = format(manager, type, message);
         this.source.sendMessage(TextSerializers.LEGACY_FORMATTING_CODE.deserialize(message));

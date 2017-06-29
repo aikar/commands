@@ -44,6 +44,11 @@ public class BungeeCommandIssuer implements CommandIssuer{
     }
 
     @Override
+    public CommandManager getManager() {
+        return manager;
+    }
+
+    @Override
     public boolean isPlayer() {
         return sender instanceof ProxiedPlayer;
     }

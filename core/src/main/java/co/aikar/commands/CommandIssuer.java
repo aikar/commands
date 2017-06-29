@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKey;
+
 public interface CommandIssuer {
     /**
      * Gets the issuer in the platforms native object
@@ -30,6 +32,8 @@ public interface CommandIssuer {
      * @return
      */
     <T> T getIssuer();
+
+    CommandManager getManager();
 
     /**
      * Is this issue a player, or server/console sender
@@ -52,7 +56,12 @@ public interface CommandIssuer {
      */
     boolean hasPermission(String permission);
 
+    default void sendMessage(MessageType type, MessageKey key, String... replacements) {
+        getManager().sendMessage(this, type, key, replacements);
+    }
+
     void sendMessage(MessageType type, String message);
+
     default String format(CommandManager manager, MessageType type,  String message) {
         MessageFormatter formatter = manager.formatters.get(type);
         if (formatter != null) {

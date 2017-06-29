@@ -23,42 +23,8 @@
 
 package co.aikar.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import co.aikar.locales.MessageKey;
 
-public class BukkitCommandIssuer implements CommandIssuer {
-    private final BukkitCommandManager manager;
-    private final CommandSender sender;
-
-    BukkitCommandIssuer(BukkitCommandManager manager, CommandSender sender) {
-        this.manager = manager;
-        this.sender = sender;
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return sender instanceof Player;
-    }
-
-    @Override
-    public <T> T getIssuer() {
-        //noinspection unchecked
-        return (T) sender;
-    }
-
-    @Override
-    public CommandManager getManager() {
-        return manager;
-    }
-
-    @Override
-    public void sendMessage(MessageType type, String message) {
-        sender.sendMessage(ACFBukkitUtil.color(format(manager, type, message)));
-    }
-
-    @Override
-    public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
-    }
+public class MessageKeys  {
+    public static final MessageKey KEY = MessageKey.of("");
 }
