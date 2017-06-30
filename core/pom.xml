@@ -85,5 +85,10 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/../languages/core/</directory>
+            </resource>
+        </resources>
     </build>
 </project>

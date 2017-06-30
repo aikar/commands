@@ -56,6 +56,27 @@ public interface CommandIssuer {
      */
     boolean hasPermission(String permission);
 
+    default void sendError(MessageKeyProvider key, String... replacements) {
+        sendMessage(MessageType.ERROR, key.getMessageKey(), replacements);
+    }
+    default void sendSyntax(MessageKeyProvider key, String... replacements) {
+        sendMessage(MessageType.SYNTAX, key.getMessageKey(), replacements);
+    }
+    default void sendInfo(MessageKeyProvider key, String... replacements) {
+        sendMessage(MessageType.INFO, key.getMessageKey(), replacements);
+    }
+    default void sendError(MessageKey key, String... replacements) {
+        sendMessage(MessageType.ERROR, key, replacements);
+    }
+    default void sendSyntax(MessageKey key, String... replacements) {
+        sendMessage(MessageType.SYNTAX, key, replacements);
+    }
+    default void sendInfo(MessageKey key, String... replacements) {
+        sendMessage(MessageType.INFO, key, replacements);
+    }
+    default void sendMessage(MessageType type, MessageKeyProvider key, String... replacements) {
+        sendMessage(type, key.getMessageKey(), replacements);
+    }
     default void sendMessage(MessageType type, MessageKey key, String... replacements) {
         getManager().sendMessage(this, type, key, replacements);
     }

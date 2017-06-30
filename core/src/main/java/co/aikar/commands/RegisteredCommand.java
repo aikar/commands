@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext>> {
+public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
     final BaseCommand scope;
     public final String command;
     private final Method method;
@@ -153,10 +153,13 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             e = (Exception) e.getCause();
         }
         if (e instanceof InvalidCommandArgument) {
-            if (e.getMessage() != null && !e.getMessage().isEmpty()) {
+            InvalidCommandArgument ica = (InvalidCommandArgument) e;
+            if (ica.key != null) {
+                sender.sendMessage(MessageType.ERROR, ica.key, ica.replacements);
+            } else if (e.getMessage() != null && !e.getMessage().isEmpty()) {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PREFIX, "{message}", e.getMessage());
             }
-            if (((InvalidCommandArgument) e).showSyntax) {
+            if (ica.showSyntax) {
                 scope.showSyntax(sender, this);
             }
         } else {
@@ -221,7 +224,8 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 }
 
                 if (!possible.contains(arg.toLowerCase())) {
-                    throw new InvalidCommandArgument("Must be one of: " + ACFUtil.join(possible, ", "));
+                    throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,
+                            "{valid}", ACFUtil.join(possible, ", "));
                 }
             }
             passedArgs.put(parameterName, resolver.getContext(context));

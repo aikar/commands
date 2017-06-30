@@ -27,7 +27,6 @@ import co.aikar.locales.MessageKey;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -151,6 +150,9 @@ abstract class CommandManager {
         return result;
     }
 
+    protected void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
+        sendMessage(issuerArg, type, key.getMessageKey(), replacements);
+    }
     protected void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
         CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
         String message = getLocales().getMessage(issuer, key);
@@ -161,7 +163,9 @@ abstract class CommandManager {
         if (formatter != null) {
             message = formatter.format(message);
         }
-        issuer.sendMessageInternal(message);
+        for (String msg : ACFPatterns.NEWLINE.split(message)) {
+            issuer.sendMessageInternal(msg);
+        }
     }
 
 

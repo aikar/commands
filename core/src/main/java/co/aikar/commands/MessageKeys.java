@@ -25,13 +25,26 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
 
+/**
+ * Enum Name = MessageKey in lowercase
+ */
 @SuppressWarnings("WeakerAccess")
-public class MessageKeys {
-    public static final MessageKey PERMISSION_DENIED = MessageKey.of("permission_denied");
-    public static final MessageKey ERROR_GENERIC_LOGGED = MessageKey.of("error_generic_logged");
-    public static final MessageKey UNKNOWN_COMMAND = MessageKey.of("unknown_command");
-    public static final MessageKey INVALID_SYNTAX = MessageKey.of("invalid_syntax");
-    public static final MessageKey ERROR_PREFIX = MessageKey.of("error_prefix");
-    public static final MessageKey ERROR_PERFORMING_COMMAND = MessageKey.of("error_performing_command");
-    public static final MessageKey INFO_MESSAGE = MessageKey.of("info_message");
+public enum MessageKeys implements MessageKeyProvider {
+    PERMISSION_DENIED,
+    ERROR_GENERIC_LOGGED,
+    UNKNOWN_COMMAND,
+    INVALID_SYNTAX,
+    ERROR_PREFIX,
+    ERROR_PERFORMING_COMMAND,
+    INFO_MESSAGE,
+    PLEASE_SPECIFY_ONE_OF,
+    MUST_BE_A_NUMBER,
+    MUST_BE_MIN_LENGTH,
+    MUST_BE_MAX_LENGTH,
+    NOT_ALLOWED_ON_CONSOLE, COULD_NOT_FIND_PLAYER;
+
+    private final MessageKey key = MessageKey.of(this.name().toLowerCase());
+    public MessageKey getMessageKey() {
+        return key;
+    }
 }

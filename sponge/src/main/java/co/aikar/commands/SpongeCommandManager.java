@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
@@ -49,6 +50,7 @@ public class SpongeCommandManager extends CommandManager {
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
+        this.locales.addMessageBundle("acf-minecraft", Locale.ENGLISH);
         this.commandTiming = Timings.of(plugin, "Commands");
 
         this.formatters.put(MessageType.ERROR, new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
@@ -117,7 +119,7 @@ public class SpongeCommandManager extends CommandManager {
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         //noinspection unchecked
-        return (R) new SpongeCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+        return (R) new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
     }
 
     @Override

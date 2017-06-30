@@ -37,16 +37,16 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class CommandExecutionContext <T extends CommandExecutionContext> {
+public class CommandExecutionContext <T extends CommandExecutionContext, I extends CommandIssuer> {
     private final RegisteredCommand cmd;
     private final Parameter param;
-    protected final CommandIssuer issuer;
+    protected final I issuer;
     private final List<String> args;
     private final int index;
     private final Map<String, Object> passedArgs;
     private final Map<String, String> flags;
 
-    CommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandIssuer sender, List<String> args,
+    CommandExecutionContext(RegisteredCommand cmd, Parameter param, I sender, List<String> args,
                                    int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
         this.param = param;
@@ -157,7 +157,7 @@ public class CommandExecutionContext <T extends CommandExecutionContext> {
         return this.param;
     }
 
-    public CommandIssuer getIssuer() {
+    public I getIssuer() {
         return this.issuer;
     }
 

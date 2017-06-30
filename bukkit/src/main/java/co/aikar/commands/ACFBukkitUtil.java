@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKey;
 import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,6 +61,12 @@ public class ACFBukkitUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static void sendMsg(CommandIssuer issuer, MessageKey key, String... replacements) {
+        sendMsg(issuer, MessageType.INFO, key, replacements);
+    }
+    public static void sendMsg(CommandIssuer issuer, MessageType type, MessageKey key, String... replacements) {
+        issuer.sendMessage(type, key, replacements);
+    }
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         for (String msg : ACFPatterns.NEWLINE.split(message)) {
@@ -232,6 +239,14 @@ public class ACFBukkitUtil {
         return loc1.getWorld() == loc2.getWorld() && loc1.distance(loc2) <= dist;
     }
 
+    /**
+     * Please move to the CommandIssuer version
+     * @param requester
+     * @param origName
+     * @deprecated
+     * @return
+     */
+    @Deprecated
     public static Player findPlayerSmart(CommandSender requester, String origName) {
         if (origName == null) {
             return null;
@@ -278,8 +293,60 @@ public class ACFBukkitUtil {
                 Player player = Iterables.getOnlyElement(confirmList);
                 sendMsg(requester,
                         "&cWarning: " + player.getDisplayName() + "&c is vanished. Do not blow their cover!\n" +
-                                "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
-                                "&bEx: &e/g " + player.getName() + ":confirm");
+                        "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
+                        "&bEx: &e/g " + player.getName() + ":confirm");
+                return null;
+            }
+        }
+
+        return matches.get(0);
+    }
+    public static Player findPlayerSmart(CommandIssuer issuer, String origName) {
+        CommandSender requester = issuer.getIssuer();
+        if (origName == null) {
+            return null;
+        }
+        String name = ACFUtil.replace(origName, ":confirm", "");
+        if (name.length() < 3) {
+            issuer.sendError(BukkitMessageKeys.USERNAME_TOO_SHORT);
+            return null;
+        }
+        if (!isValidName(name)) {
+            issuer.sendError(BukkitMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+            return null;
+        }
+
+        List<Player> matches = Bukkit.getServer().matchPlayer(name);
+        List<Player> confirmList = new ArrayList<>();
+
+        // Remove confirmList players from smart matching.
+        Iterator<Player> iter = matches.iterator();
+        while (iter.hasNext()) {
+            Player player = iter.next();
+            if (requester instanceof Player && !((Player) requester).canSee(player)) {
+                if (requester.hasPermission("acf.seevanish")) {
+                    if (!origName.endsWith(":confirm")) {
+                        confirmList.add(player);
+                        iter.remove();
+                    }
+                } else {
+                    iter.remove();
+                }
+            }
+        }
+
+        if (matches.size() > 1 || confirmList.size() > 1) {
+            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
+            return null;
+        }
+
+        if (matches.isEmpty()) {
+            if (confirmList.isEmpty()) {
+                requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
+                return null;
+            } else {
+                Player player = Iterables.getOnlyElement(confirmList);
+                issuer.sendMessage(MessageType.INFO, BukkitMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }
         }

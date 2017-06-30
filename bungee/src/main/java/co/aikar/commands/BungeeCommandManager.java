@@ -33,6 +33,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,7 @@ public class BungeeCommandManager extends CommandManager {
 
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
+        this.locales.addMessageBundle("acf-minecraft", Locale.ENGLISH);
         this.formatters.put(MessageType.ERROR, new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
@@ -112,7 +114,7 @@ public class BungeeCommandManager extends CommandManager {
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         //noinspection unchecked
-        return (R) new BungeeCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+        return (R) new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);
     }
 
     @Override

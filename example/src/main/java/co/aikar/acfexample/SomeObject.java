@@ -25,6 +25,7 @@ package co.aikar.acfexample;
 
 import co.aikar.commands.BukkitCommandExecutionContext;
 import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.MessageKeys;
 import co.aikar.commands.contexts.ContextResolver;
 
 public abstract class SomeObject {
@@ -41,9 +42,6 @@ public abstract class SomeObject {
     public static ContextResolver<SomeObject, BukkitCommandExecutionContext> getContextResolver() {
         return (c) -> {
             String first = c.popFirstArg();
-            if (first == null) {
-                throw new InvalidCommandArgument("Must supply a number");
-            }
             if ("1".equals(first)) {
                 return new Test1();
             } else if ("2".equals(first)) {
@@ -52,7 +50,7 @@ public abstract class SomeObject {
                 try {
                     return new TestOther(Integer.parseInt(first));
                 } catch (NumberFormatException ignored) {
-                    throw new InvalidCommandArgument("Must be a valid number");
+                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
                 }
             }
         };

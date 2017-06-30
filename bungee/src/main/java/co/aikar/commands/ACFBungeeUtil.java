@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKey;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -38,6 +39,12 @@ public class ACFBungeeUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static void sendMsg(CommandIssuer issuer, MessageKey key, String... replacements) {
+        sendMsg(issuer, MessageType.INFO, key, replacements);
+    }
+    public static void sendMsg(CommandIssuer issuer, MessageType type, MessageKey key, String... replacements) {
+        issuer.sendMessage(type, key, replacements);
+    }
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         for (String msg : ACFPatterns.NEWLINE.split(message)) {

@@ -23,19 +23,8 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.CommandSender;
+import co.aikar.locales.MessageKey;
 
-import java.lang.reflect.Parameter;
-import java.util.List;
-import java.util.Map;
-
-public class BungeeCommandExecutionContext extends CommandExecutionContext<BungeeCommandExecutionContext, BungeeCommandIssuer> {
-
-    BungeeCommandExecutionContext(RegisteredCommand cmd, Parameter param, BungeeCommandIssuer sender, List<String> args, int index, Map<String, Object> passedArgs) {
-        super(cmd, param, sender, args, index, passedArgs);
-    }
-
-    public CommandSender getSender() {
-        return this.issuer.getIssuer();
-    }
+public interface MessageKeyProvider {
+    MessageKey getMessageKey();
 }

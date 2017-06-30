@@ -24,10 +24,11 @@
 package co.aikar.commands.contexts;
 
 import co.aikar.commands.CommandExecutionContext;
+import co.aikar.commands.CommandIssuer;
 
 /**
  * A context resolver that will never consume input, and only resolves using the context of the issuer of the command
  * @param <T>
  * @param <C>
  */
-public interface IssuerOnlyContextResolver<T, C extends CommandExecutionContext<?>> extends ContextResolver <T, C> {}
+public interface IssuerOnlyContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver <T, C> {}

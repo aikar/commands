@@ -47,7 +47,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     public BukkitCommandContexts(BukkitCommandManager manager) {
         super(manager);
 
-        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getSender(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
         registerContext(OnlinePlayer[].class, (c) ->  {
             CommandSender sender = c.getSender();
             final String input = c.popFirstArg();
@@ -59,7 +59,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 split = Pattern.compile(Pattern.quote(splitter));
             }
             for (String lookup : split.split(input)) {
-                OnlinePlayer player = getOnlinePlayer(sender, lookup, allowMissing);
+                OnlinePlayer player = getOnlinePlayer(c.getIssuer(), lookup, allowMissing);
                 if (player != null) {
                     players.add(player);
                 }
@@ -80,7 +80,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 world = ((Entity) c.getSender()).getWorld();
             }
             if (world == null) {
-                throw new InvalidCommandArgument("Invalid World");
+                throw new InvalidCommandArgument(BukkitMessageKeys.INVALID_WORLD);
             }
             return world;
         });
@@ -88,11 +88,11 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         registerSenderAwareContext(Player.class, (c) -> {
             Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
             if (player == null && !c.hasAnnotation(Optional.class)) {
-                throw new InvalidCommandArgument("Requires a player to run this command", false);
+                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
             PlayerInventory inventory = player != null ? player.getInventory() : null;
             if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
-                throw new InvalidCommandArgument("You must be holding an item in your main hand.", false);
+                throw new InvalidCommandArgument(BukkitMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
             }
             return player;
         });
@@ -113,9 +113,9 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             if (match == null) {
                 String valid = colors
                         .map(color -> ChatColor.YELLOW + ACFUtil.simplifyString(color.name()))
-                        .collect(Collectors.joining("&c, "));
+                        .collect(Collectors.joining("<c2>,</c2> "));
 
-                throw new InvalidCommandArgument("Please specify one of: " + valid);
+                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }
             return match;
         });
@@ -132,13 +132,14 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     }
 
     @Nullable
-    OnlinePlayer getOnlinePlayer(CommandSender sender, String lookup, boolean allowMissing) throws InvalidCommandArgument {
-        Player player = ACFBukkitUtil.findPlayerSmart(sender, lookup);
+    OnlinePlayer getOnlinePlayer(BukkitCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
+        CommandSender sender = issuer.getIssuer();
+        Player player = ACFBukkitUtil.findPlayerSmart(issuer, lookup);
         if (player == null) {
             if (allowMissing) {
                 return null;
             }
-            ACFBukkitUtil.sendMsg(sender, "&cCould not find a player by the name " + lookup);
+            this.manager.sendMessage(sender, MessageType.ERROR, MessageKeys.COULD_NOT_FIND_PLAYER, "{search}", lookup);
             throw new InvalidCommandArgument(false);
         }
         return new OnlinePlayer(player);

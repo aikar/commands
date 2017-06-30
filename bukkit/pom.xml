@@ -86,5 +86,10 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/../languages/minecraft/</directory>
+            </resource>
+        </resources>
     </build>
 </project>

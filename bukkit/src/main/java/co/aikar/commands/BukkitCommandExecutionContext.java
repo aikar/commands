@@ -29,8 +29,8 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-public class BukkitCommandExecutionContext extends CommandExecutionContext<BukkitCommandExecutionContext> {
-    BukkitCommandExecutionContext(RegisteredCommand cmd, Parameter param, CommandIssuer sender, List<String> args,
+public class BukkitCommandExecutionContext extends CommandExecutionContext<BukkitCommandExecutionContext, BukkitCommandIssuer> {
+    BukkitCommandExecutionContext(RegisteredCommand cmd, Parameter param, BukkitCommandIssuer sender, List<String> args,
                                   int index, Map<String, Object> passedArgs) {
         super(cmd, param, sender, args, index, passedArgs);
     }

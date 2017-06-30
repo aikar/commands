@@ -65,6 +65,7 @@ public class BukkitCommandManager extends CommandManager {
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
+        this.locales.addMessageBundle("acf-minecraft", Locale.ENGLISH);
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
         CommandMap commandMap = null;
@@ -193,7 +194,8 @@ public class BukkitCommandManager extends CommandManager {
 
     @Override
     public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return (R) new BukkitCommandExecutionContext(command, parameter, sender, args, i, passedArgs);
+        //noinspection unchecked
+        return (R) new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);
     }
 
     @Override

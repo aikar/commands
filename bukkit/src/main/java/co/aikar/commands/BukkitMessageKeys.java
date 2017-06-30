@@ -23,19 +23,15 @@
 
 package co.aikar.commands;
 
-import net.md_5.bungee.api.CommandSender;
+import co.aikar.locales.MessageKey;
 
-import java.lang.reflect.Parameter;
-import java.util.List;
-import java.util.Map;
+public enum BukkitMessageKeys implements MessageKeyProvider {
+    INVALID_WORLD,
+    YOU_MUST_BE_HOLDING_ITEM,
+    PLAYER_IS_VANISHED_CONFIRM, USERNAME_TOO_SHORT, IS_NOT_A_VALID_NAME;
 
-public class BungeeCommandExecutionContext extends CommandExecutionContext<BungeeCommandExecutionContext, BungeeCommandIssuer> {
-
-    BungeeCommandExecutionContext(RegisteredCommand cmd, Parameter param, BungeeCommandIssuer sender, List<String> args, int index, Map<String, Object> passedArgs) {
-        super(cmd, param, sender, args, index, passedArgs);
-    }
-
-    public CommandSender getSender() {
-        return this.issuer.getIssuer();
+    private final MessageKey key = MessageKey.of(this.name().toLowerCase());
+    public MessageKey getMessageKey() {
+        return key;
     }
 }

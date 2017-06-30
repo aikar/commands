@@ -23,19 +23,52 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKey;
+
 public class InvalidCommandArgument extends Exception {
-    public boolean showSyntax = true;
+    final boolean showSyntax;
+    final MessageKey key;
+    final String[] replacements;
+
     public InvalidCommandArgument() {
-        this(null);
+        this((String) null, true);
     }
     public InvalidCommandArgument(boolean showSyntax) {
         this(null, showSyntax);
     }
-    public InvalidCommandArgument(String message) {
-        this(message, true);
+    public InvalidCommandArgument(MessageKeyProvider key, String... replacements) {
+        this(key.getMessageKey(), replacements);
     }
+    public InvalidCommandArgument(MessageKey key, String... replacements) {
+        this(key, true, replacements);
+    }
+    public InvalidCommandArgument(MessageKeyProvider key, boolean showSyntax, String... replacements) {
+        this(key.getMessageKey(), showSyntax, replacements);
+    }
+    public InvalidCommandArgument(MessageKey key, boolean showSyntax, String... replacements) {
+        super(key.getKey(), null, false, false);
+        this.showSyntax = showSyntax;
+        this.key = key;
+        this.replacements = replacements;
+    }
+
+    /**
+     * Please move to a MessageKey
+     * @deprecated
+     */
+    @Deprecated
+    public InvalidCommandArgument(String message) {
+     this(message, true);
+    }
+    /**
+     * Please move to a MessageKey
+     * @deprecated
+     */
+    @Deprecated
     public InvalidCommandArgument(String message, boolean showSyntax) {
         super(message, null, false, false);
         this.showSyntax = showSyntax;
+        this.replacements = null;
+        this.key = null;
     }
 }

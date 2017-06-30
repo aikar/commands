@@ -29,14 +29,13 @@ import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
-import co.aikar.commands.contexts.SenderAwareContextResolver;
 import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class CommandContexts <R extends CommandExecutionContext<?>> {
+public class CommandContexts <R extends CommandExecutionContext<?, ? extends CommandIssuer>> {
     protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
     protected final CommandManager manager;
 
@@ -46,14 +45,14 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
             } catch (NumberFormatException e) {
-                throw new InvalidCommandArgument("Must be a number");
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
         registerContext(Long.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).longValue();
             } catch (NumberFormatException e) {
-                throw new InvalidCommandArgument("Must be a number");
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
 
         });
@@ -61,21 +60,21 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).floatValue();
             } catch (NumberFormatException e) {
-                throw new InvalidCommandArgument("Must be a number");
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
         registerContext(Double.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).doubleValue();
             } catch (NumberFormatException e) {
-                throw new InvalidCommandArgument("Must be a number");
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
         registerContext(Number.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
             } catch (NumberFormatException e) {
-                throw new InvalidCommandArgument("Must be a number");
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
         registerContext(Boolean.class, (c) -> {
@@ -99,12 +98,12 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
             Integer maxLen = c.getFlagValue("maxlen", (Integer) null);
             if (minLen != null) {
                 if (ret.length() < minLen) {
-                    throw new InvalidCommandArgument("Must be at least " + minLen + " characters long");
+                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MIN_LENGTH, "{min}", String.valueOf(minLen));
                 }
             }
             if (maxLen != null) {
                 if (ret.length() > maxLen) {
-                    throw new InvalidCommandArgument("Must be less " + maxLen + " characters long");
+                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(maxLen));
                 }
             }
 
@@ -142,7 +141,7 @@ public class CommandContexts <R extends CommandExecutionContext<?>> {
             Enum<?> match = ACFUtil.simpleMatch(enumCls, first);
             if (match == null) {
                 List<String> names = ACFUtil.enumNames(enumCls);
-                throw new InvalidCommandArgument("Please specify one of: " + ACFUtil.join(names));
+                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", ACFUtil.join(names));
             }
             return match;
         });

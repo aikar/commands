@@ -60,4 +60,11 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/../languages/minecraft/</directory>
+            </resource>
+        </resources>
+    </build>
 </project>

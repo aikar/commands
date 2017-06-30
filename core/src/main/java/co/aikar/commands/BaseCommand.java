@@ -200,7 +200,7 @@ public abstract class BaseCommand {
                         if (parameters.length == 1) {
                             subCommand = (BaseCommand) declaredConstructor.newInstance(this);
                         } else {
-                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining(", ")) + ")");
+                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
                         }
                     }
                     if (subCommand != null) {

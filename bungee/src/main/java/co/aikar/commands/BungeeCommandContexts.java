@@ -44,7 +44,8 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
                 if (c.hasAnnotation(Optional.class)) {
                     return null;
                 }
-                ACFBungeeUtil.sendMsg(c.getSender(), "§cCould not find a player by the name " + playercheck);
+                c.getIssuer().sendMessage(MessageType.ERROR, MessageKeys.COULD_NOT_FIND_PLAYER,
+                        "{search}", playercheck);
                 throw new InvalidCommandArgument(false);
             }
             return new OnlineProxiedPlayer(proxiedPlayer);
@@ -53,7 +54,7 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
         registerSenderAwareContext(ProxiedPlayer.class, (c) -> {
             ProxiedPlayer proxiedPlayer = c.getSender() instanceof ProxiedPlayer ? (ProxiedPlayer) c.getSender() : null;
             if (proxiedPlayer == null && !c.hasAnnotation(Optional.class)) {
-                throw new InvalidCommandArgument("Requires a player to run this command", false);
+                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
             return proxiedPlayer;
         });
@@ -74,9 +75,9 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
             if (match == null) {
                 String valid = colors
                         .map(color -> ChatColor.YELLOW + ACFUtil.simplifyString(color.name()))
-                        .collect(Collectors.joining("&c, "));
+                        .collect(Collectors.joining("<c2>,</c2> "));
 
-                throw new InvalidCommandArgument("Please specify one of: " + valid);
+                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }
             return match;
         });
