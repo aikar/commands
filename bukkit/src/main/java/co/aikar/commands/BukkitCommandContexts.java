@@ -49,8 +49,8 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
 
         registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
         registerContext(OnlinePlayer[].class, (c) ->  {
-            CommandSender sender = c.getSender();
-            final String input = c.popFirstArg();
+            BukkitCommandIssuer issuer = c.getIssuer();
+            final String search = c.popFirstArg();
             boolean allowMissing = c.hasFlag("allowmissing");
             Set<OnlinePlayer> players = new HashSet<>();
             Pattern split = ACFPatterns.COMMA;
@@ -58,14 +58,16 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             if (splitter != null) {
                 split = Pattern.compile(Pattern.quote(splitter));
             }
-            for (String lookup : split.split(input)) {
-                OnlinePlayer player = getOnlinePlayer(c.getIssuer(), lookup, allowMissing);
+            for (String lookup : split.split(search)) {
+                OnlinePlayer player = getOnlinePlayer(issuer, lookup, allowMissing);
                 if (player != null) {
                     players.add(player);
                 }
             }
             if (players.isEmpty() && !c.hasFlag("allowempty")) {
-                ACFBukkitUtil.sendMsg(sender, "&cCould not find any players by " + input);
+                issuer.sendError(BukkitMessageKeys.NO_PLAYER_FOUND_SERVER,
+                        "{search}", search);
+
                 throw new InvalidCommandArgument(false);
             }
             return players.toArray(new OnlinePlayer[players.size()]);
@@ -112,8 +114,8 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);
             if (match == null) {
                 String valid = colors
-                        .map(color -> ChatColor.YELLOW + ACFUtil.simplifyString(color.name()))
-                        .collect(Collectors.joining("<c2>,</c2> "));
+                        .map(color -> "<c2>" + ACFUtil.simplifyString(color.name()) + "</c2>")
+                        .collect(Collectors.joining("<c1>,</c1> "));
 
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }

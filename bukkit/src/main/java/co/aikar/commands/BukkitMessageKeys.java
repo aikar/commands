@@ -28,7 +28,13 @@ import co.aikar.locales.MessageKey;
 public enum BukkitMessageKeys implements MessageKeyProvider {
     INVALID_WORLD,
     YOU_MUST_BE_HOLDING_ITEM,
-    PLAYER_IS_VANISHED_CONFIRM, USERNAME_TOO_SHORT, IS_NOT_A_VALID_NAME;
+    PLAYER_IS_VANISHED_CONFIRM,
+    USERNAME_TOO_SHORT,
+    IS_NOT_A_VALID_NAME,
+    MULTIPLE_PLAYERS_MATCH,
+    NO_PLAYER_FOUND_SERVER,
+    NO_PLAYER_FOUND
+    ;
 
     private final MessageKey key = MessageKey.of(this.name().toLowerCase());
     public MessageKey getMessageKey() {

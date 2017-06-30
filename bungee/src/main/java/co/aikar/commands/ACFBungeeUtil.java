@@ -32,6 +32,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ACFBungeeUtil {
 
@@ -39,12 +40,11 @@ public class ACFBungeeUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static void sendMsg(CommandIssuer issuer, MessageKey key, String... replacements) {
-        sendMsg(issuer, MessageType.INFO, key, replacements);
-    }
-    public static void sendMsg(CommandIssuer issuer, MessageType type, MessageKey key, String... replacements) {
-        issuer.sendMessage(type, key, replacements);
-    }
+    /**
+     * Move to Message Keys on the CommandIssuer
+     * @deprecated
+     */
+    @Deprecated
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         for (String msg : ACFPatterns.NEWLINE.split(message)) {
@@ -110,8 +110,43 @@ public class ACFBungeeUtil {
     }
 
 
-    public static ProxiedPlayer findPlayerSmart(CommandSender requester, String origName) {
-        String name = ACFUtil.replace(origName, ":confirm", "");
+    public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {
+        CommandSender requester = issuer.getIssuer();
+        String name = ACFUtil.replace(search, ":confirm", "");
+        if (name.length() < 3) {
+            issuer.sendError(BungeeMessageKeys.USERNAME_TOO_SHORT);
+            return null;
+        }
+        if (!isValidName(name)) {
+            issuer.sendError(BungeeMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+            return null;
+        }
+
+        List<ProxiedPlayer> matches = new ArrayList<>(ProxyServer.getInstance().matchPlayer(name));
+
+        if (matches.size() > 1) {
+            String allMatches = matches.stream().map(ProxiedPlayer::getName).collect(Collectors.joining(", "));
+            issuer.sendError(BungeeMessageKeys.MULTIPLE_PLAYERS_MATCH,
+                    "{search}", name, "{all}", allMatches);
+            return null;
+        }
+
+        if (matches.isEmpty()) {
+            issuer.sendError(BungeeMessageKeys.NO_PLAYER_FOUND_SERVER,
+                    "{search}", name);
+            return null;
+        }
+
+        return matches.get(0);
+    }
+
+    /**
+     * Please move to the CommandIssuer version
+     * @deprecated
+     */
+    @Deprecated
+    public static ProxiedPlayer findPlayerSmart(CommandSender requester, String search) {
+        String name = ACFUtil.replace(search, ":confirm", "");
         if (name.length() < 3) {
             requester.sendMessage("§cUsername too short, must be at least three characters");
             return null;

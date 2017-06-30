@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.MessageKey;
 import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ACFBukkitUtil {
 
@@ -61,12 +61,11 @@ public class ACFBukkitUtil {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static void sendMsg(CommandIssuer issuer, MessageKey key, String... replacements) {
-        sendMsg(issuer, MessageType.INFO, key, replacements);
-    }
-    public static void sendMsg(CommandIssuer issuer, MessageType type, MessageKey key, String... replacements) {
-        issuer.sendMessage(type, key, replacements);
-    }
+    /**
+     * Move to Message Keys on the CommandIssuer
+     * @deprecated
+     */
+    @Deprecated
     public static void sendMsg(CommandSender player, String message) {
         message = color(message);
         for (String msg : ACFPatterns.NEWLINE.split(message)) {
@@ -241,17 +240,14 @@ public class ACFBukkitUtil {
 
     /**
      * Please move to the CommandIssuer version
-     * @param requester
-     * @param origName
      * @deprecated
-     * @return
      */
     @Deprecated
-    public static Player findPlayerSmart(CommandSender requester, String origName) {
-        if (origName == null) {
+    public static Player findPlayerSmart(CommandSender requester, String search) {
+        if (search == null) {
             return null;
         }
-        String name = ACFUtil.replace(origName, ":confirm", "");
+        String name = ACFUtil.replace(search, ":confirm", "");
         if (name.length() < 3) {
             requester.sendMessage("§cUsername too short, must be at least three characters");
             return null;
@@ -265,20 +261,7 @@ public class ACFBukkitUtil {
         List<Player> confirmList = new ArrayList<>();
 
         // Remove confirmList players from smart matching.
-        Iterator<Player> iter = matches.iterator();
-        while (iter.hasNext()) {
-            Player player = iter.next();
-            if (requester instanceof Player && !((Player) requester).canSee(player)) {
-                if (requester.hasPermission("acf.seevanish")) {
-                    if (!origName.endsWith(":confirm")) {
-                        confirmList.add(player);
-                        iter.remove();
-                    }
-                } else {
-                    iter.remove();
-                }
-            }
-        }
+        findMatches(search, requester, matches, confirmList);
 
         if (matches.size() > 1 || confirmList.size() > 1) {
             requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
@@ -301,12 +284,12 @@ public class ACFBukkitUtil {
 
         return matches.get(0);
     }
-    public static Player findPlayerSmart(CommandIssuer issuer, String origName) {
+    public static Player findPlayerSmart(CommandIssuer issuer, String search) {
         CommandSender requester = issuer.getIssuer();
-        if (origName == null) {
+        if (search == null) {
             return null;
         }
-        String name = ACFUtil.replace(origName, ":confirm", "");
+        String name = ACFUtil.replace(search, ":confirm", "");
         if (name.length() < 3) {
             issuer.sendError(BukkitMessageKeys.USERNAME_TOO_SHORT);
             return null;
@@ -318,14 +301,39 @@ public class ACFBukkitUtil {
 
         List<Player> matches = Bukkit.getServer().matchPlayer(name);
         List<Player> confirmList = new ArrayList<>();
+        findMatches(search, requester, matches, confirmList);
 
-        // Remove confirmList players from smart matching.
+
+        if (matches.size() > 1 || confirmList.size() > 1) {
+            String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));
+            issuer.sendError(BukkitMessageKeys.MULTIPLE_PLAYERS_MATCH,
+                    "{search}", name, "{all}", allMatches);
+            return null;
+        }
+
+        if (matches.isEmpty()) {
+            if (confirmList.isEmpty()) {
+                issuer.sendError(BukkitMessageKeys.NO_PLAYER_FOUND_SERVER,
+                        "{search}", name);
+                return null;
+            } else {
+                Player player = Iterables.getOnlyElement(confirmList);
+                issuer.sendInfo(BukkitMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
+                return null;
+            }
+        }
+
+        return matches.get(0);
+    }
+
+    private static void findMatches(String search, CommandSender requester, List<Player> matches, List<Player> confirmList) {
+        // Remove vanished players from smart matching.
         Iterator<Player> iter = matches.iterator();
         while (iter.hasNext()) {
             Player player = iter.next();
             if (requester instanceof Player && !((Player) requester).canSee(player)) {
                 if (requester.hasPermission("acf.seevanish")) {
-                    if (!origName.endsWith(":confirm")) {
+                    if (!search.endsWith(":confirm")) {
                         confirmList.add(player);
                         iter.remove();
                     }
@@ -334,24 +342,6 @@ public class ACFBukkitUtil {
                 }
             }
         }
-
-        if (matches.size() > 1 || confirmList.size() > 1) {
-            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
-            return null;
-        }
-
-        if (matches.isEmpty()) {
-            if (confirmList.isEmpty()) {
-                requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
-                return null;
-            } else {
-                Player player = Iterables.getOnlyElement(confirmList);
-                issuer.sendMessage(MessageType.INFO, BukkitMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
-                return null;
-            }
-        }
-
-        return matches.get(0);
     }
 
 

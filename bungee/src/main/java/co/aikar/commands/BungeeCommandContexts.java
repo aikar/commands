@@ -58,6 +58,7 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
             }
             return proxiedPlayer;
         });
+
         registerContext(ChatColor.class, c -> {
             String first = c.popFirstArg();
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
@@ -74,8 +75,8 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
             ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);
             if (match == null) {
                 String valid = colors
-                        .map(color -> ChatColor.YELLOW + ACFUtil.simplifyString(color.name()))
-                        .collect(Collectors.joining("<c2>,</c2> "));
+                        .map(color -> "<c2>" + ACFUtil.simplifyString(color.name()) + "</c2>")
+                        .collect(Collectors.joining("<c1>,</c1> "));
 
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }
