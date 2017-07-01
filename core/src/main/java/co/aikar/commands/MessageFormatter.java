@@ -30,7 +30,6 @@ import java.util.regex.Matcher;
  * Handles formatting Messages and managing colors
  * @param <C> The platform specific color object
  */
-@Deprecated
 public abstract class MessageFormatter <C> {
 
     private final List<C> colors = new ArrayList<>();

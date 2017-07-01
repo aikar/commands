@@ -27,15 +27,13 @@ import co.aikar.locales.MessageKey;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
 abstract class CommandManager {
 
+    static ThreadLocal<Stack<CommandManager>> currentCommandManager = ThreadLocal.withInitial(Stack::new);
+    static ThreadLocal<Stack<CommandIssuer>> currentCommandIssuer = ThreadLocal.withInitial(Stack::new);
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected Locales locales = new Locales(this);
@@ -51,6 +49,22 @@ abstract class CommandManager {
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
         formatters.put(MessageType.ERROR, plain);
+    }
+
+    public static CommandIssuer getCurrentCommandIssuer() {
+        Stack<CommandIssuer> commandIssuers = currentCommandIssuer.get();
+        if (commandIssuers == null) {
+            return null;
+        }
+        return commandIssuers.peek();
+    }
+
+    public static CommandManager getCurrentCommandManager() {
+        Stack<CommandManager> commandManagers = currentCommandManager.get();
+        if (commandManagers == null) {
+            return null;
+        }
+        return commandManagers.peek();
     }
 
     /**

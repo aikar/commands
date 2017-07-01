@@ -40,16 +40,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -313,39 +304,67 @@ public abstract class BaseCommand {
     }
 
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
-        if (!this.hasPermission(issuer)) {
-            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-            return;
-        }
         commandLabel = commandLabel.toLowerCase();
+        try {
+            preCommandOperation(issuer, commandLabel, args);
+            if (!this.hasPermission(issuer)) {
+                issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
+                return;
+            }
+
+            if (args.length == 0) {
+                if (checkPrecommand(issuer, args)) {
+                    return;
+                }
+                executeSubcommand(DEFAULT, issuer);
+                return;
+            }
+
+            CommandSearch cmd = findSubCommand(args);
+            if (cmd != null) {
+                execSubcommand = cmd.getCheckSub();
+                final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
+                if (checkPrecommand(issuer, execargs)) {
+                    return;
+                }
+                executeCommand(issuer, execargs, cmd.cmd);
+                return;
+            }
+
+            if (!executeSubcommand(UNKNOWN, issuer, args)) {
+                help(issuer, args);
+            }
+        } finally {
+            postCommandOperation();
+        }
+    }
+
+    private void postCommandOperation() {
+        Stack<CommandManager> commandManagers = CommandManager.currentCommandManager.get();
+        Stack<CommandIssuer> commandIssuers = CommandManager.currentCommandIssuer.get();
+        commandManagers.pop();
+        commandIssuers.pop();
+        execSubcommand = null;
+        execLabel = null;
+        origArgs = new String[]{};
+    }
+
+    private void preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args) {
+        Stack<CommandManager> commandManagers = CommandManager.currentCommandManager.get();
+        Stack<CommandIssuer> commandIssuers = CommandManager.currentCommandIssuer.get();
+        commandManagers.push(this.manager);
+        commandIssuers.push(issuer);
 
         execSubcommand = null;
         execLabel = commandLabel;
         origArgs = args;
+    }
 
-        if (args.length == 0) {
-            if (checkPrecommand(issuer, args)) {
-                return;
-            }
-            executeSubcommand(DEFAULT, issuer);
-            return;
-        }
-
-        CommandSearch cmd = findSubCommand(args);
-        if (cmd != null) {
-            execSubcommand = cmd.getCheckSub();
-            final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
-            if (checkPrecommand(issuer, execargs)) {
-                return;
-            }
-            executeCommand(issuer, execargs, cmd.cmd);
-            return;
-        }
-
-        if (!executeSubcommand(UNKNOWN, issuer, args)) {
-            help(issuer, args);
-        }
-        return;
+    private CommandIssuer getCurrentCommandIssuer() {
+        return CommandManager.getCurrentCommandIssuer();
+    }
+    private CommandManager getCurrentCommandManager() {
+        return CommandManager.getCurrentCommandManager();
     }
 
     private CommandSearch findSubCommand(String[] args) {
@@ -404,34 +423,39 @@ public abstract class BaseCommand {
         throws IllegalArgumentException {
 
         commandLabel = commandLabel.toLowerCase();
+        try {
+            preCommandOperation(issuer, commandLabel, args);
 
-        final CommandSearch search = findSubCommand(args, true);
+            final CommandSearch search = findSubCommand(args, true);
 
-        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
+            String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
 
-        final List<String> cmds = new ArrayList<>();
+            final List<String> cmds = new ArrayList<>();
 
-        if (search != null) {
-            cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
-        } else if (subCommands.get(UNKNOWN).size() == 1) {
-            cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel));
-        }
-
-        for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
-            final String key = entry.getKey();
-            if (key.startsWith(argString) && !UNKNOWN.equals(key) && !DEFAULT.equals(key)) {
-                final RegisteredCommand value = entry.getValue();
-                if (!value.hasPermission(issuer)) {
-                    continue;
-                }
-                String prefCommand = value.prefSubCommand;
-
-                final String[] psplit = ACFPatterns.SPACE.split(prefCommand);
-                cmds.add(psplit[args.length - 1]);
+            if (search != null) {
+                cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
+            } else if (subCommands.get(UNKNOWN).size() == 1) {
+                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel));
             }
-        }
 
-        return filterTabComplete(args[args.length-1], cmds);
+            for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
+                final String key = entry.getKey();
+                if (key.startsWith(argString) && !UNKNOWN.equals(key) && !DEFAULT.equals(key)) {
+                    final RegisteredCommand value = entry.getValue();
+                    if (!value.hasPermission(issuer)) {
+                        continue;
+                    }
+                    String prefCommand = value.prefSubCommand;
+
+                    final String[] psplit = ACFPatterns.SPACE.split(prefCommand);
+                    cmds.add(psplit[args.length - 1]);
+                }
+            }
+
+            return filterTabComplete(args[args.length - 1], cmds);
+        } finally {
+            postCommandOperation();
+        }
     }
 
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel) {
