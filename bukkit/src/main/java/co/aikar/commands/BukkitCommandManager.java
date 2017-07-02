@@ -65,7 +65,8 @@ public class BukkitCommandManager extends CommandManager {
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        this.locales.addMessageBundle("acf-minecraft", Locale.ENGLISH);
+        String pluginName = "acf-" + plugin.getDescription().getName();
+        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
         CommandMap commandMap = null;

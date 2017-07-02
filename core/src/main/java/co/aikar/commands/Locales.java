@@ -40,11 +40,16 @@ public class Locales {
     Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
-        this.localeManager.addMessageBundle("acf-core", Locale.ENGLISH);
+        this.localeManager.addMessageBundles("acf-core");
     }
 
     public Locale getDefaultLocale() {
         return this.localeManager.getDefaultLocale();
+    }
+
+
+    public void addMessageBundles(String... bundleNames) {
+        this.localeManager.addMessageBundles(bundleNames);
     }
 
     public void addMessageBundle(String bundleName, Locale locale) {
@@ -67,6 +72,5 @@ public class Locales {
         }
         return message;
     }
-
 
 }

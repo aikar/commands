@@ -41,14 +41,14 @@ import java.util.logging.Logger;
 public class BungeeCommandManager extends CommandManager {
 
     protected final Plugin plugin;
-    protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
     protected BungeeCommandContexts contexts;
     protected BungeeCommandCompletions completions;
 
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        this.locales.addMessageBundle("acf-minecraft", Locale.ENGLISH);
+        String pluginName = "acf-" + plugin.getDescription().getName();
+        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
         this.formatters.put(MessageType.ERROR, new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));

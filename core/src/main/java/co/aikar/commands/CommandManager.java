@@ -30,7 +30,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
-abstract class CommandManager {
+public abstract class CommandManager {
 
     static ThreadLocal<Stack<CommandManager>> currentCommandManager = ThreadLocal.withInitial(Stack::new);
     static ThreadLocal<Stack<CommandIssuer>> currentCommandIssuer = ThreadLocal.withInitial(Stack::new);
