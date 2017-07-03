@@ -34,13 +34,16 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class Locales {
 
+    private static final Locale[] CORE_LANGUAGES = new Locale[]{
+            Locale.ENGLISH
+    };
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
 
     Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
-        this.localeManager.addMessageBundles("acf-core");
+        this.localeManager.addMessageBundle("acf-core", CORE_LANGUAGES);
     }
 
     public Locale getDefaultLocale() {
@@ -49,7 +52,9 @@ public class Locales {
 
 
     public void addMessageBundles(String... bundleNames) {
-        this.localeManager.addMessageBundles(bundleNames);
+        for (String bundleName : bundleNames) {
+            this.localeManager.addMessageBundle(bundleName, CORE_LANGUAGES);
+        }
     }
 
     public void addMessageBundle(String bundleName, Locale locale) {
