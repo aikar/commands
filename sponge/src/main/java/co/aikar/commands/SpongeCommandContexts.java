@@ -30,6 +30,10 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
 
@@ -51,7 +55,30 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             }*/
             return player;
         });
+        registerContext(OnlinePlayer[].class, (c) ->  {
+            SpongeCommandIssuer issuer = c.getIssuer();
+            final String search = c.popFirstArg();
+            boolean allowMissing = c.hasFlag("allowmissing");
+            Set<OnlinePlayer> players = new HashSet<>();
+            Pattern split = ACFPatterns.COMMA;
+            String splitter = c.getFlagValue("splitter", (String) null);
+            if (splitter != null) {
+                split = Pattern.compile(Pattern.quote(splitter));
+            }
+            for (String lookup : split.split(search)) {
+                OnlinePlayer player = getOnlinePlayer(issuer, lookup, allowMissing);
+                if (player != null) {
+                    players.add(player);
+                }
+            }
+            if (players.isEmpty() && !c.hasFlag("allowempty")) {
+                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
+                        "{search}", search);
 
+                throw new InvalidCommandArgument(false);
+            }
+            return players.toArray(new OnlinePlayer[players.size()]);
+        });
     }
 
     @Nullable
