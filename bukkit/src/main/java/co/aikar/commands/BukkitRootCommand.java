@@ -76,12 +76,12 @@ public class BukkitRootCommand extends Command implements RootCommand {
             BaseCommand subHandler = this.subCommands.get(checkSub);
             if (subHandler != null) {
                 subHandler.execute(sender, commandLabel, args);
-                return false;
+                return true;
             }
         }
 
         this.defCommand.execute(sender, commandLabel, args);
-        return false;
+        return true;
     }
 
     public void addChild(BaseCommand command) {

@@ -67,6 +67,7 @@ public abstract class BaseCommand {
     String permission;
 
     private ExceptionHandler exceptionHandler = null;
+    CommandOperationContext lastCommandOperationContext;
 
     public BaseCommand() {}
     public BaseCommand(String cmd) {
@@ -340,30 +341,26 @@ public abstract class BaseCommand {
     }
 
     private void postCommandOperation() {
-        Stack<CommandManager> commandManagers = CommandManager.currentCommandManager.get();
-        Stack<CommandIssuer> commandIssuers = CommandManager.currentCommandIssuer.get();
-        commandManagers.pop();
-        commandIssuers.pop();
+        CommandManager.commandOperationContext.get().pop();
         execSubcommand = null;
         execLabel = null;
         origArgs = new String[]{};
     }
 
     private void preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args) {
-        Stack<CommandManager> commandManagers = CommandManager.currentCommandManager.get();
-        Stack<CommandIssuer> commandIssuers = CommandManager.currentCommandIssuer.get();
-        commandManagers.push(this.manager);
-        commandIssuers.push(issuer);
-
+        Stack<CommandOperationContext> contexts = CommandManager.commandOperationContext.get();
+        CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args);
+        contexts.push(context);
+        lastCommandOperationContext = context;
         execSubcommand = null;
         execLabel = commandLabel;
         origArgs = args;
     }
 
-    private CommandIssuer getCurrentCommandIssuer() {
+    public CommandIssuer getCurrentCommandIssuer() {
         return CommandManager.getCurrentCommandIssuer();
     }
-    private CommandManager getCurrentCommandManager() {
+    public CommandManager getCurrentCommandManager() {
         return CommandManager.getCurrentCommandManager();
     }
 

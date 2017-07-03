@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -62,37 +63,34 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
-    public CommandResult process(CommandSource source, String arguments) throws CommandException {
+    public CommandResult process(@NotNull CommandSource source, @NotNull String arguments) throws CommandException {
         String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
-        if(this.execute(new SpongeCommandIssuer(manager, source), this.name, args)) {
-            return CommandResult.success();
-        }
-        return CommandResult.empty();
+        return this.execute(new SpongeCommandIssuer(manager, source), this.name, args);
     }
 
     @Override
-    public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> location) throws CommandException {
+    public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
         String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
         return tabComplete(new SpongeCommandIssuer(manager, source), this.name, args);
     }
 
     @Override
-    public boolean testPermission(CommandSource source) {
+    public boolean testPermission(@NotNull CommandSource source) {
         return this.defCommand.hasPermission(source);
     }
 
     @Override
-    public Optional<Text> getShortDescription(CommandSource source) {
+    public Optional<Text> getShortDescription(@NotNull CommandSource source) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Text> getHelp(CommandSource source) {
+    public Optional<Text> getHelp(@NotNull CommandSource source) {
         return Optional.empty();
     }
 
     @Override
-    public Text getUsage(CommandSource source) {
+    public Text getUsage(@NotNull CommandSource source) {
         return Text.of();
     }
 
@@ -102,18 +100,19 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
         return new ArrayList<>(completions);
     }
 
-    private boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
+    private CommandResult execute(CommandIssuer sender, String commandLabel, String[] args) {
+        BaseCommand cmd = this.defCommand;
         for (int i = args.length; i >= 0; i--) {
             String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
             BaseCommand subHandler = this.subCommands.get(checkSub);
             if (subHandler != null) {
-                subHandler.execute(sender, commandLabel, args);
-                return false;
+                cmd = subHandler;
+                break;
             }
         }
 
-        this.defCommand.execute(sender, commandLabel, args);
-        return false;
+        cmd.execute(sender, commandLabel, args);
+        return ((SpongeCommandOperationContext) cmd.lastCommandOperationContext).getResult();
     }
 
     public void addChild(BaseCommand command) {

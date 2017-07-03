@@ -153,4 +153,15 @@ public class SpongeCommandManager extends CommandManager {
                 }
         }
     }
+
+    @Override
+    public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
+        return new SpongeCommandOperationContext(
+                this,
+                issuer,
+                command,
+                commandLabel,
+                args
+        );
+    }
 }

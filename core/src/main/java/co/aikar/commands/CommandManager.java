@@ -32,8 +32,10 @@ import java.util.*;
 @SuppressWarnings("WeakerAccess")
 public abstract class CommandManager {
 
-    static ThreadLocal<Stack<CommandManager>> currentCommandManager = ThreadLocal.withInitial(Stack::new);
-    static ThreadLocal<Stack<CommandIssuer>> currentCommandIssuer = ThreadLocal.withInitial(Stack::new);
+    /**
+     * This is a stack incase a command calls a command
+     */
+    static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(Stack::new);
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected Locales locales = new Locales(this);
@@ -51,20 +53,18 @@ public abstract class CommandManager {
         formatters.put(MessageType.ERROR, plain);
     }
 
+    public static CommandOperationContext getCurrentCommandOperationContext() {
+        return commandOperationContext.get().peek();
+    }
+
     public static CommandIssuer getCurrentCommandIssuer() {
-        Stack<CommandIssuer> commandIssuers = currentCommandIssuer.get();
-        if (commandIssuers == null) {
-            return null;
-        }
-        return commandIssuers.peek();
+        CommandOperationContext context = commandOperationContext.get().peek();
+        return context != null ? context.getCommandIssuer() : null;
     }
 
     public static CommandManager getCurrentCommandManager() {
-        Stack<CommandManager> commandManagers = currentCommandManager.get();
-        if (commandManagers == null) {
-            return null;
-        }
-        return commandManagers.peek();
+        CommandOperationContext context = commandOperationContext.get().peek();
+        return context != null ? context.getCommandManager() : null;
     }
 
     /**
@@ -185,5 +185,15 @@ public abstract class CommandManager {
 
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
+    }
+
+    public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
+        return new CommandOperationContext(
+                this,
+                issuer,
+                command,
+                commandLabel,
+                args
+        );
     }
 }

@@ -23,14 +23,42 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.contexts.CommandResultSupplier;
+/**
+ * Holds information about the currently executing command on this thread
+ */
+public class CommandOperationContext {
 
-@SuppressWarnings("WeakerAccess")
-public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
+    private final CommandManager manager;
+    private final CommandIssuer issuer;
+    private final BaseCommand command;
+    private final String commandLabel;
+    private final String[] args;
 
-    public SpongeCommandContexts(final SpongeCommandManager manager) {
-        super(manager);
+    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args) {
+        this.manager = manager;
+        this.issuer = issuer;
+        this.command = command;
+        this.commandLabel = commandLabel;
+        this.args = args;
+    }
 
-        registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
+    public CommandManager getCommandManager() {
+        return manager;
+    }
+
+    public CommandIssuer getCommandIssuer() {
+        return issuer;
+    }
+
+    public BaseCommand getCommand() {
+        return command;
+    }
+
+    public String getCommandLabel() {
+        return commandLabel;
+    }
+
+    public String[] getArgs() {
+        return args;
     }
 }
