@@ -27,8 +27,10 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,6 +80,20 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 throw new InvalidCommandArgument(false);
             }
             return players.toArray(new OnlinePlayer[players.size()]);
+        });
+        registerIssuerAwareContext(World.class, (c) -> {
+            String firstArg = c.getFirstArg();
+            java.util.Optional<World> world = firstArg != null ? Sponge.getServer().getWorld(firstArg) : java.util.Optional.empty();
+            if (world.isPresent()) {
+                c.popFirstArg();
+            }
+            if (!world.isPresent() && c.getSource() instanceof Player) {
+                world = java.util.Optional.of(((Player) c.getSource()).getWorld());
+            }
+            if (!world.isPresent()) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
+            }
+            return world.get();
         });
     }
 
