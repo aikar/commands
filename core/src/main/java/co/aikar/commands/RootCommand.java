@@ -23,7 +23,28 @@
 
 package co.aikar.commands;
 
+import java.util.List;
+import java.util.Map;
+
 interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
+
+    String getCommandName();
+    default void addChildShared(List<BaseCommand> children, Map<String, BaseCommand> subCommands, BaseCommand command) {
+        command.subCommands.keySet().forEach(key -> {
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
+                return;
+            }
+            BaseCommand regged = subCommands.get(key);
+            if (regged != null) {
+                this.getManager().log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getCommandName() + " - but it is already defined in " + regged.getName());
+                this.getManager().log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
+                return;
+            }
+            subCommands.put(key, command);
+        });
+
+        children.add(command);
+    }
 }

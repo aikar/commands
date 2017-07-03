@@ -89,13 +89,13 @@ public class SpongeCommandManager extends CommandManager {
         command.onRegister(this);
 
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String key = entry.getKey().toLowerCase();
-            SpongeRootCommand value = (SpongeRootCommand) entry.getValue();
-            if (!value.isRegistered) {
-                Sponge.getCommandManager().register(this.plugin, value, value.name);
+            String commandName = entry.getKey().toLowerCase();
+            SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();
+            if (!spongeCommand.isRegistered) {
+                Sponge.getCommandManager().register(this.plugin, spongeCommand, commandName);
             }
-            value.isRegistered = true;
-            registeredCommands.put(key, value);
+            spongeCommand.isRegistered = true;
+            registeredCommands.put(commandName, spongeCommand);
         }
     }
 

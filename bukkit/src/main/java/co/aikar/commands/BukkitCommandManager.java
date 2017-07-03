@@ -133,13 +133,13 @@ public class BukkitCommandManager extends CommandManager {
         final String plugin = this.plugin.getName().toLowerCase();
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String key = entry.getKey().toLowerCase();
-            BukkitRootCommand value = (BukkitRootCommand) entry.getValue();
-            if (!value.isRegistered) {
-                commandMap.register(key, plugin, value);
+            String commandName = entry.getKey().toLowerCase();
+            BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();
+            if (!bukkitCommand.isRegistered) {
+                commandMap.register(commandName, plugin, bukkitCommand);
             }
-            value.isRegistered = true;
-            registeredCommands.put(key, value);
+            bukkitCommand.isRegistered = true;
+            registeredCommands.put(commandName, bukkitCommand);
         }
     }
 

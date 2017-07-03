@@ -57,6 +57,11 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
+    public String getCommandName() {
+        return name;
+    }
+
+    @Override
     public CommandResult process(CommandSource source, String arguments) throws CommandException {
         if(this.execute(new SpongeCommandIssuer(manager, source), this.name, arguments.split(" "))) {
             return CommandResult.success();
@@ -112,23 +117,8 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
             this.defCommand = command;
-            //this.setDescription(command.getDescription());
-            //this.setUsage(command.getUsage());
-            //this.setAliases(command.getAliases());
         }
-        command.subCommands.keySet().forEach(key -> {
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
-                return;
-            }
-            BaseCommand regged = this.subCommands.get(key);
-            if (regged != null) {
-                this.manager.log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + this.name + " - but it is already defined in " + regged.getName());
-                this.manager.log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
-            }
-            this.subCommands.put(key, command);
-        });
-        this.children.add(command);
+        addChildShared(this.children, this.subCommands, command);
     }
 
     @Override

@@ -50,6 +50,11 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
+    public String getCommandName() {
+        return name;
+    }
+
+    @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         return tabComplete(new BukkitCommandIssuer(manager, sender), alias, args);
     }
@@ -86,19 +91,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
             //this.setDescription(command.getDescription());
             //this.setUsage(command.getUsage());
         }
-        command.subCommands.keySet().forEach(key -> {
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
-                return;
-            }
-            BaseCommand regged = this.subCommands.get(key);
-            if (regged != null) {
-                this.manager.log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getName() + " - but it is already defined in " + regged.getName());
-                this.manager.log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
-            }
-            this.subCommands.put(key, command);
-        });
-        this.children.add(command);
+        addChildShared(this.children, this.subCommands, command);
     }
 
     @Override

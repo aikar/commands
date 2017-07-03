@@ -37,7 +37,6 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     private BaseCommand defCommand;
     private Map<String, BaseCommand> subCommands = new HashMap<>();
     private List<BaseCommand> children = new ArrayList<>();
-    private String permission;
     boolean isRegistered = false;
 
     BungeeRootCommand(BungeeCommandManager manager, String name) {
@@ -47,27 +46,17 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     }
 
     @Override
+    public String getCommandName() {
+        return name;
+    }
+
+    @Override
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
             this.defCommand = command;
-            this.permission = command.permission;
-            //this.setPermissionMessage(command.permissionMessage);
-            //this.setDescription(command.getDescription());
-            //this.setUsage(command.getUsage());
+
         }
-        command.subCommands.keySet().forEach(key -> {
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
-                return;
-            }
-            BaseCommand regged = this.subCommands.get(key);
-            if (regged != null) {
-                this.manager.log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getName() + " - but it is already defined in " + regged.getName());
-                this.manager.log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
-            }
-            this.subCommands.put(key, command);
-        });
-        this.children.add(command);
+        this.addChildShared(this.children, this.subCommands, command);
     }
 
     @Override
