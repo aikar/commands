@@ -143,6 +143,17 @@ public class BukkitCommandManager extends CommandManager {
         }
     }
 
+    public void unregisterCommand(BaseCommand command) {
+        command.onRegister(this);
+        for (RootCommand rootcommand : command.registeredCommands.values()) {
+            BukkitRootCommand bukkitCommand = (BukkitRootCommand) rootcommand;
+            if (bukkitCommand.isRegistered) {
+                unregisterCommand(bukkitCommand);
+            }
+            bukkitCommand.isRegistered = false;
+        }
+    }
+
     public void unregisterCommand(BukkitRootCommand command) {
         final String plugin = this.plugin.getName().toLowerCase();
         command.unregister(commandMap);
