@@ -72,7 +72,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             }
             return players.toArray(new OnlinePlayer[players.size()]);
         });
-        registerSenderAwareContext(World.class, (c) -> {
+        registerIssuerAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();
             World world = firstArg != null ? Bukkit.getWorld(firstArg) : null;
             if (world != null) {
@@ -86,8 +86,8 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             }
             return world;
         });
-        registerSenderAwareContext(CommandSender.class, BukkitCommandExecutionContext::getSender);
-        registerSenderAwareContext(Player.class, (c) -> {
+        registerIssuerAwareContext(CommandSender.class, BukkitCommandExecutionContext::getSender);
+        registerIssuerAwareContext(Player.class, (c) -> {
             Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
             if (player == null && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
@@ -137,6 +137,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     OnlinePlayer getOnlinePlayer(BukkitCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
         CommandSender sender = issuer.getIssuer();
         Player player = ACFBukkitUtil.findPlayerSmart(issuer, lookup);
+        //noinspection Duplicates
         if (player == null) {
             if (allowMissing) {
                 return null;

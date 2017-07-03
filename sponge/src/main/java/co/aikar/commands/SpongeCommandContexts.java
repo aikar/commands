@@ -39,6 +39,18 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
         registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
 
+        registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);
+        registerIssuerAwareContext(Player.class, (c) -> {
+            Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;
+            if (player == null && !c.hasAnnotation(Optional.class)) {
+                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
+            }
+            /*PlayerInventory inventory = player != null ? player.getInventory() : null;
+            if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
+            }*/
+            return player;
+        });
 
     }
 
