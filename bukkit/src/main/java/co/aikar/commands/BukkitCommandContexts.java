@@ -65,7 +65,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 }
             }
             if (players.isEmpty() && !c.hasFlag("allowempty")) {
-                issuer.sendError(BukkitMessageKeys.NO_PLAYER_FOUND_SERVER,
+                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
                         "{search}", search);
 
                 throw new InvalidCommandArgument(false);
@@ -82,7 +82,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 world = ((Entity) c.getSender()).getWorld();
             }
             if (world == null) {
-                throw new InvalidCommandArgument(BukkitMessageKeys.INVALID_WORLD);
+                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
             }
             return world;
         });
@@ -94,7 +94,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             }
             PlayerInventory inventory = player != null ? player.getInventory() : null;
             if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
-                throw new InvalidCommandArgument(BukkitMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
+                throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
             }
             return player;
         });

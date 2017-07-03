@@ -21,23 +21,40 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.contexts;
 
-import co.aikar.locales.MessageKey;
+import org.spongepowered.api.entity.living.player.Player;
 
-public enum BukkitMessageKeys implements MessageKeyProvider {
-    INVALID_WORLD,
-    YOU_MUST_BE_HOLDING_ITEM,
-    PLAYER_IS_VANISHED_CONFIRM,
-    USERNAME_TOO_SHORT,
-    IS_NOT_A_VALID_NAME,
-    MULTIPLE_PLAYERS_MATCH,
-    NO_PLAYER_FOUND_SERVER,
-    NO_PLAYER_FOUND
-    ;
+import java.util.Objects;
 
-    private final MessageKey key = MessageKey.of(this.name().toLowerCase());
-    public MessageKey getMessageKey() {
-        return key;
+public class OnlinePlayer {
+    public final Player player;
+
+    public OnlinePlayer(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OnlinePlayer that = (OnlinePlayer) o;
+        return Objects.equals(player, that.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player);
+    }
+
+    @Override
+    public String toString() {
+        return "OnlinePlayer{" +
+                "player=" + player +
+                '}';
     }
 }

@@ -291,11 +291,11 @@ public class ACFBukkitUtil {
         }
         String name = ACFUtil.replace(search, ":confirm", "");
         if (name.length() < 3) {
-            issuer.sendError(BukkitMessageKeys.USERNAME_TOO_SHORT);
+            issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);
             return null;
         }
         if (!isValidName(name)) {
-            issuer.sendError(BukkitMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
             return null;
         }
 
@@ -306,19 +306,20 @@ public class ACFBukkitUtil {
 
         if (matches.size() > 1 || confirmList.size() > 1) {
             String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));
-            issuer.sendError(BukkitMessageKeys.MULTIPLE_PLAYERS_MATCH,
+            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,
                     "{search}", name, "{all}", allMatches);
             return null;
         }
 
+        //noinspection Duplicates
         if (matches.isEmpty()) {
             if (confirmList.isEmpty()) {
-                issuer.sendError(BukkitMessageKeys.NO_PLAYER_FOUND_SERVER,
+                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
                         "{search}", name);
                 return null;
             } else {
                 Player player = Iterables.getOnlyElement(confirmList);
-                issuer.sendInfo(BukkitMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
+                issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }
         }
@@ -329,6 +330,7 @@ public class ACFBukkitUtil {
     private static void findMatches(String search, CommandSender requester, List<Player> matches, List<Player> confirmList) {
         // Remove vanished players from smart matching.
         Iterator<Player> iter = matches.iterator();
+        //noinspection Duplicates
         while (iter.hasNext()) {
             Player player = iter.next();
             if (requester instanceof Player && !((Player) requester).canSee(player)) {

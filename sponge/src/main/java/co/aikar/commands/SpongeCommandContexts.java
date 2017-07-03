@@ -23,7 +23,12 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.CommandResultSupplier;
+import co.aikar.commands.contexts.OnlinePlayer;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.living.player.Player;
 
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
@@ -32,5 +37,23 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         super(manager);
 
         registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+
+
+    }
+
+    @Nullable
+    OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
+        CommandSource sender = issuer.getIssuer();
+        Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);
+        //noinspection Duplicates
+        if (player == null) {
+            if (allowMissing) {
+                return null;
+            }
+            this.manager.sendMessage(sender, MessageType.ERROR, MessageKeys.COULD_NOT_FIND_PLAYER, "{search}", lookup);
+            throw new InvalidCommandArgument(false);
+        }
+        return new OnlinePlayer(player);
     }
 }

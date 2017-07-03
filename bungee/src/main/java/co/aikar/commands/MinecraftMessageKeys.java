@@ -2,7 +2,7 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
 
-public enum BungeeMessageKeys implements MessageKeyProvider {
+public enum MinecraftMessageKeys implements MessageKeyProvider {
     USERNAME_TOO_SHORT,
     IS_NOT_A_VALID_NAME,
     MULTIPLE_PLAYERS_MATCH,

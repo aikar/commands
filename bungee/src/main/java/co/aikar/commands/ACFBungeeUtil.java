@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.MessageKey;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -114,11 +113,11 @@ public class ACFBungeeUtil {
         CommandSender requester = issuer.getIssuer();
         String name = ACFUtil.replace(search, ":confirm", "");
         if (name.length() < 3) {
-            issuer.sendError(BungeeMessageKeys.USERNAME_TOO_SHORT);
+            issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);
             return null;
         }
         if (!isValidName(name)) {
-            issuer.sendError(BungeeMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
             return null;
         }
 
@@ -126,13 +125,13 @@ public class ACFBungeeUtil {
 
         if (matches.size() > 1) {
             String allMatches = matches.stream().map(ProxiedPlayer::getName).collect(Collectors.joining(", "));
-            issuer.sendError(BungeeMessageKeys.MULTIPLE_PLAYERS_MATCH,
+            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,
                     "{search}", name, "{all}", allMatches);
             return null;
         }
 
         if (matches.isEmpty()) {
-            issuer.sendError(BungeeMessageKeys.NO_PLAYER_FOUND_SERVER,
+            issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
                     "{search}", name);
             return null;
         }
