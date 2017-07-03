@@ -42,8 +42,8 @@ public class Locales {
 
     Locales(CommandManager manager) {
         this.manager = manager;
-        this.localeManager = LocaleManager.create(manager::getIssuerLocale);
-        this.localeManager.addMessageBundle("acf-core", CORE_LANGUAGES);
+        this.localeManager = LocaleManager.create(manager.getClass(), manager::getIssuerLocale);
+        this.localeManager.addMessageBundles("acf-core");
     }
 
     public Locale getDefaultLocale() {
@@ -53,7 +53,7 @@ public class Locales {
 
     public void addMessageBundles(String... bundleNames) {
         for (String bundleName : bundleNames) {
-            this.localeManager.addMessageBundle(bundleName, CORE_LANGUAGES);
+            this.localeManager.addMessageBundles(bundleName);
         }
     }
 
@@ -72,8 +72,8 @@ public class Locales {
     public String getMessage(CommandIssuer issuer, MessageKey key) {
         String message = this.localeManager.getMessage(issuer, key);
         if (message == null) {
-            manager.log(LogLevel.ERROR, "Missing Language Key: " + key);
-            message = "<MISSING_LANGUAGE_KEY:" + key + ">";
+            manager.log(LogLevel.ERROR, "Missing Language Key: " + key.getKey());
+            message = "<MISSING_LANGUAGE_KEY:" + key.getKey() + ">";
         }
         return message;
     }
