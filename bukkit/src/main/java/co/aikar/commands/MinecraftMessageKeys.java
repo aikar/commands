@@ -36,7 +36,7 @@ public enum MinecraftMessageKeys implements MessageKeyProvider {
     NO_PLAYER_FOUND
     ;
 
-    private final MessageKey key = MessageKey.of(this.name().toLowerCase());
+    private final MessageKey key = MessageKey.of("acf-minecraft." + this.name().toLowerCase());
     public MessageKey getMessageKey() {
         return key;
     }

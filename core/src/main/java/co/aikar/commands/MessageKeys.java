@@ -26,7 +26,7 @@ package co.aikar.commands;
 import co.aikar.locales.MessageKey;
 
 /**
- * Enum Name = MessageKey in lowercase
+ * Enum Name = MessageKey in lowercase prefixed with acf-core.
  */
 @SuppressWarnings("WeakerAccess")
 public enum MessageKeys implements MessageKeyProvider {
@@ -41,9 +41,10 @@ public enum MessageKeys implements MessageKeyProvider {
     MUST_BE_A_NUMBER,
     MUST_BE_MIN_LENGTH,
     MUST_BE_MAX_LENGTH,
-    NOT_ALLOWED_ON_CONSOLE, COULD_NOT_FIND_PLAYER;
+    NOT_ALLOWED_ON_CONSOLE,
+    COULD_NOT_FIND_PLAYER;
 
-    private final MessageKey key = MessageKey.of(this.name().toLowerCase());
+    private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
     public MessageKey getMessageKey() {
         return key;
     }
