@@ -36,6 +36,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-resolver:4.1.12.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.sf.trove4j:trove4j:3.0.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:15.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations:15.0" level="project" />
   </component>
 </module>
