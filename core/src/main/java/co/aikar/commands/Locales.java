@@ -43,7 +43,7 @@ public class Locales {
     Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager.getClass(), manager::getIssuerLocale);
-        this.localeManager.addMessageBundles("acf-core");
+        this.localeManager.addMessageBundle("acf-core", CORE_LANGUAGES);
     }
 
     public Locale getDefaultLocale() {
@@ -53,7 +53,7 @@ public class Locales {
 
     public void addMessageBundles(String... bundleNames) {
         for (String bundleName : bundleNames) {
-            this.localeManager.addMessageBundles(bundleName);
+            this.localeManager.addMessageBundle(bundleName, CORE_LANGUAGES);
         }
     }
 
