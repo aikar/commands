@@ -43,6 +43,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
+        registerCompletion("nothing", c -> ImmutableList.of());
         registerCompletion("range", (c) -> {
             String config = c.getConfig();
             if (config == null) {
