@@ -69,7 +69,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     }
 
     @NotNull
-    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args) {
+    List<String> of(CommandOperationContext commandOperationContext, RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args) {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];

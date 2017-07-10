@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import java.lang.annotation.Annotation;
+
 /**
  * Holds information about the currently executing command on this thread
  */
@@ -33,6 +35,7 @@ public class CommandOperationContext {
     private final BaseCommand command;
     private final String commandLabel;
     private final String[] args;
+    private RegisteredCommand registeredCommand;
 
     CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args) {
         this.manager = manager;
@@ -61,4 +64,21 @@ public class CommandOperationContext {
     public String[] getArgs() {
         return args;
     }
+
+    public void setRegisteredCommand(RegisteredCommand registeredCommand) {
+        this.registeredCommand = registeredCommand;
+    }
+
+    public RegisteredCommand getRegisteredCommand() {
+        return registeredCommand;
+    }
+
+    public <T extends Annotation> T getAnnotation(Class<T> anno) {
+        return registeredCommand.method.getAnnotation(anno);
+    }
+
+    public boolean hasAnnotation(Class<? extends Annotation> anno) {
+        return getAnnotation(anno) != null;
+    }
+
 }

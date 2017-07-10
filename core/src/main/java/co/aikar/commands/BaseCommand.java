@@ -307,17 +307,10 @@ public abstract class BaseCommand {
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
         commandLabel = commandLabel.toLowerCase();
         try {
-            preCommandOperation(issuer, commandLabel, args);
-            if (!this.hasPermission(issuer)) {
-                issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-                return;
-            }
+            CommandOperationContext commandContext = preCommandOperation(issuer, commandLabel, args);
 
             if (args.length == 0) {
-                if (checkPrecommand(issuer, args)) {
-                    return;
-                }
-                executeSubcommand(DEFAULT, issuer);
+                executeSubcommand(commandContext, DEFAULT, issuer);
                 return;
             }
 
@@ -325,14 +318,11 @@ public abstract class BaseCommand {
             if (cmd != null) {
                 execSubcommand = cmd.getCheckSub();
                 final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
-                if (checkPrecommand(issuer, execargs)) {
-                    return;
-                }
-                executeCommand(issuer, execargs, cmd.cmd);
+                executeCommand(commandContext, issuer, execargs, cmd.cmd);
                 return;
             }
 
-            if (!executeSubcommand(UNKNOWN, issuer, args)) {
+            if (!executeSubcommand(commandContext, UNKNOWN, issuer, args)) {
                 help(issuer, args);
             }
         } finally {
@@ -347,7 +337,7 @@ public abstract class BaseCommand {
         origArgs = new String[]{};
     }
 
-    private void preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args) {
+    private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args) {
         Stack<CommandOperationContext> contexts = CommandManager.commandOperationContext.get();
         CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args);
         contexts.push(context);
@@ -355,6 +345,7 @@ public abstract class BaseCommand {
         execSubcommand = null;
         execLabel = commandLabel;
         origArgs = args;
+        return context;
     }
 
     public CommandIssuer getCurrentCommandIssuer() {
@@ -403,8 +394,13 @@ public abstract class BaseCommand {
         return null;
     }
 
-    private static void executeCommand(CommandIssuer issuer, String[] args, RegisteredCommand cmd) {
+    private void executeCommand(CommandOperationContext commandOperationContext,
+                                CommandIssuer issuer, String[] args, RegisteredCommand cmd) {
         if (cmd.hasPermission(issuer)) {
+            commandOperationContext.setRegisteredCommand(cmd);
+            if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {
+                return;
+            }
             List<String> sargs = Lists.newArrayList(args);
             cmd.invoke(issuer, sargs);
         } else {
@@ -421,7 +417,7 @@ public abstract class BaseCommand {
 
         commandLabel = commandLabel.toLowerCase();
         try {
-            preCommandOperation(issuer, commandLabel, args);
+            CommandOperationContext commandOperationContext = preCommandOperation(issuer, commandLabel, args);
 
             final CommandSearch search = findSubCommand(args, true);
 
@@ -430,9 +426,9 @@ public abstract class BaseCommand {
             final List<String> cmds = new ArrayList<>();
 
             if (search != null) {
-                cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
+                cmds.addAll(completeCommand(commandOperationContext, issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel));
             } else if (subCommands.get(UNKNOWN).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel));
+                cmds.addAll(completeCommand(commandOperationContext, issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel));
             }
 
             for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
@@ -455,7 +451,7 @@ public abstract class BaseCommand {
         }
     }
 
-    private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel) {
+    private List<String> completeCommand(CommandOperationContext commandOperationContext, CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel) {
         if (!cmd.hasPermission(issuer) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
                 || cmd.complete == null) {
             return ImmutableList.of();
@@ -463,7 +459,7 @@ public abstract class BaseCommand {
 
         String[] completions = ACFPatterns.SPACE.split(cmd.complete);
 
-        List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, completions, args);
+        List<String> cmds = manager.getCommandCompletions().of(commandOperationContext, cmd, issuer, completions, args);
         return filterTabComplete(args[args.length-1], cmds);
     }
 
@@ -475,7 +471,7 @@ public abstract class BaseCommand {
     }
 
 
-    private boolean executeSubcommand(String subcommand, CommandIssuer issuer, String... args) {
+    private boolean executeSubcommand(CommandOperationContext commandContext, String subcommand, CommandIssuer issuer, String... args) {
         final Set<RegisteredCommand> defs = subCommands.get(subcommand);
         RegisteredCommand def = null;
         if (!defs.isEmpty()) {
@@ -483,21 +479,36 @@ public abstract class BaseCommand {
                 def = defs.iterator().next();
             }
             if (def != null) {
-                executeCommand(issuer, args, def);
+                executeCommand(commandContext, issuer, args, def);
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkPrecommand(CommandIssuer issuer, String[] args) {
-        if (this.preCommandHandler != null) {
+    private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {
+        Method pre = this.preCommandHandler;
+        if (pre != null) {
             try {
-                if (this.preCommandHandler.getParameterCount() == 1) {
-                    return (boolean) preCommandHandler.invoke(this, new Object[]{ issuer.getIssuer() });
-                } else {
-                    return (boolean) preCommandHandler.invoke(this, issuer.getIssuer(), args);
+                Class<?>[] types = pre.getParameterTypes();
+                Object[] parameters = new Object[pre.getParameterCount()];
+                for (int i = 0; i < parameters.length; i++) {
+                    Class<?> type = types[i];
+                    Object issuerObject = issuer.getIssuer();
+                    if (manager.isCommandIssuer(type) && type.isAssignableFrom(issuerObject.getClass())) {
+                        parameters[i] = issuerObject;
+                    } else if (CommandIssuer.class.isAssignableFrom(type)) {
+                        parameters[i] = issuer;
+                    } else if (RegisteredCommand.class.isAssignableFrom(type)) {
+                        parameters[i] = cmd;
+                    } else if (String[].class.isAssignableFrom((type))) {
+                        parameters[i] = args;
+                    } else {
+                        parameters[i] = null;
+                    }
                 }
+
+                return (boolean) pre.invoke(this, parameters);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);
             }

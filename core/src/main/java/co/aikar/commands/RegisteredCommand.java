@@ -49,8 +49,8 @@ import java.util.stream.Collectors;
 
 public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
     final BaseCommand scope;
-    public final String command;
-    private final Method method;
+    final String command;
+    final Method method;
     final String prefSubCommand;
     final Parameter[] parameters;
     final ContextResolver<?, R>[] resolvers;
