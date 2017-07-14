@@ -26,7 +26,6 @@ package co.aikar.commands;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
-import sun.reflect.generics.scope.Scope;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -84,10 +83,9 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     @NotNull
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args) {
         completion = manager.getCommandReplacements().replace(completion);
-        final int argIndex = args.length - 1;
 
-        String input = args[argIndex];
         List<String> allCompletions = Lists.newArrayList();
+        String input = args.length > 0 ? args[args.length - 1] : "";
 
         for (String value : ACFPatterns.PIPE.split(completion)) {
             String[] complete = ACFPatterns.COLONEQUALS.split(value, 2);
