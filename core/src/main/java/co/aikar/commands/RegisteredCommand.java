@@ -248,4 +248,8 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     public String getSyntaxText() {
         return syntaxText;
     }
+
+    public String getCommand() {
+        return command;
+    }
 }
