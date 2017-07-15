@@ -164,10 +164,10 @@ public abstract class CommandManager {
         return result;
     }
 
-    protected void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
+    public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(issuerArg, type, key.getMessageKey(), replacements);
     }
-    protected void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
+    public void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
         CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
         String message = getLocales().getMessage(issuer, key);
         if (replacements.length > 0) {
