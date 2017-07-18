@@ -24,6 +24,8 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
+import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -38,9 +40,10 @@ public abstract class CommandManager {
     static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(Stack::new);
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
-    protected Locales locales = new Locales(this);
     protected ExceptionHandler defaultExceptionHandler = null;
+    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH);
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
+    protected MessageFormatter defaultFormatter;
     {
         MessageFormatter plain = new MessageFormatter<Object>() {
             @Override
@@ -48,6 +51,7 @@ public abstract class CommandManager {
                 return message;
             }
         };
+        defaultFormatter = plain;
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
         formatters.put(MessageType.ERROR, plain);
@@ -93,6 +97,12 @@ public abstract class CommandManager {
 
     public abstract RootCommand createRootCommand(String cmd);
 
+    /**
+     * Returns a Locales Manager to add and modify language tables for your commands.
+     * @return
+     */
+    public abstract Locales getLocales();
+
     public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
@@ -114,14 +124,6 @@ public abstract class CommandManager {
      */
     public CommandReplacements getCommandReplacements() {
         return replacements;
-    }
-
-    /**
-     * Returns a Locales Manager to add and modify language tables for your commands.
-     * @return
-     */
-    Locales getLocales() {
-        return locales;
     }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
@@ -167,21 +169,22 @@ public abstract class CommandManager {
     public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(issuerArg, type, key.getMessageKey(), replacements);
     }
+
     public void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
         CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
         String message = getLocales().getMessage(issuer, key);
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
-        MessageFormatter formatter = formatters.get(type);
+        MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);
         if (formatter != null) {
             message = formatter.format(message);
         }
+
         for (String msg : ACFPatterns.NEWLINE.split(message)) {
             issuer.sendMessageInternal(msg);
         }
     }
-
 
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
@@ -195,5 +198,25 @@ public abstract class CommandManager {
                 commandLabel,
                 args
         );
+    }
+
+    /**
+     * Gets a list of all currently supported languages for this manager.
+     * These locales will be automatically loaded from
+     * @return
+     */
+    public Set<Locale> getSupportedLanguages() {
+        return supportedLanguages;
+    }
+
+    /**
+     * Adds a new locale to the list of automatic Locales to load Message Bundles for.
+     * All bundles loaded under the previous supported languages will now automatically load for this new locale too.
+     *
+     * @param locale
+     */
+    public void addSupportedLanguage(Locale locale) {
+        supportedLanguages.add(locale);
+        getLocales().loadMissingBundles();
     }
 }

@@ -44,18 +44,38 @@ public class BungeeCommandManager extends CommandManager {
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
     protected BungeeCommandContexts contexts;
     protected BungeeCommandCompletions completions;
+    protected BungeeLocales locales;
 
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        String pluginName = "acf-" + plugin.getDescription().getName();
-        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
-        this.formatters.put(MessageType.ERROR, new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
+        getLocales(); // auto load locales
     }
 
     public Plugin getPlugin() {
         return this.plugin;
+    }
+
+    public BungeeMessageFormatter setFormat(MessageType type, BungeeMessageFormatter formatter) {
+        return (BungeeMessageFormatter) formatters.put(type, formatter);
+    }
+
+    public BungeeMessageFormatter getFormat(MessageType type) {
+        return (BungeeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
+    }
+
+    public void setFormat(MessageType type, ChatColor... colors) {
+        BungeeMessageFormatter format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
+        }
+    }
+
+    public void setFormat(MessageType type, int i, ChatColor color) {
+        BungeeMessageFormatter format = getFormat(type);
+        format.setColor(i, color);
     }
 
     @Override
@@ -73,6 +93,16 @@ public class BungeeCommandManager extends CommandManager {
         }
         return completions;
     }
+
+    @Override
+    public BungeeLocales getLocales() {
+        if (this.locales == null) {
+            this.locales = new BungeeLocales(this);
+            this.locales.loadLanguages();
+        }
+        return locales;
+    }
+
 
     @Override
     public void registerCommand(BaseCommand command) {

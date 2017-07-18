@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.lang.reflect.Method;
@@ -46,16 +47,42 @@ public class SpongeCommandManager extends CommandManager {
     protected SpongeCommandContexts contexts;
     protected SpongeCommandCompletions completions;
     private Timing commandTiming;
+    protected SpongeLocales locales;
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
         String pluginName = "acf-" + plugin.getName();
-        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
         this.commandTiming = Timings.of(plugin, "Commands");
 
-        this.formatters.put(MessageType.ERROR, new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
         this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));
         this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
+        getLocales(); // auto load locales
+    }
+
+    public PluginContainer getPlugin() {
+        return plugin;
+    }
+
+    public SpongeMessageFormatter setFormat(MessageType type, SpongeMessageFormatter formatter) {
+        return (SpongeMessageFormatter) formatters.put(type, formatter);
+    }
+
+    public SpongeMessageFormatter getFormat(MessageType type) {
+        return (SpongeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
+    }
+
+    public void setFormat(MessageType type, TextColor... colors) {
+        SpongeMessageFormatter format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
+        }
+    }
+
+    public void setFormat(MessageType type, int i, TextColor color) {
+        SpongeMessageFormatter format = getFormat(type);
+        format.setColor(i, color);
     }
 
     @Override
@@ -77,6 +104,15 @@ public class SpongeCommandManager extends CommandManager {
             this.completions = new SpongeCommandCompletions(this);
         }
         return completions;
+    }
+
+    @Override
+    public SpongeLocales getLocales() {
+        if (this.locales == null) {
+            this.locales = new SpongeLocales(this);
+            this.locales.loadLanguages();
+        }
+        return locales;
     }
 
     @Override

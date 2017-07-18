@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 
 public interface CommandIssuer {
     /**

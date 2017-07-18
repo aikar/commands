@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 
 /**
  * Enum Name = MessageKey in lowercase prefixed with acf-core.
