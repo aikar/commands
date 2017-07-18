@@ -167,7 +167,7 @@ public abstract class CommandManager {
         return result;
     }
 
-    public MessageFormatter setFormat(MessageType type,  MessageFormatter formatter) {
+    public MessageFormatter setFormat(MessageType type, MessageFormatter formatter) {
         return formatters.put(type, formatter);
     }
 

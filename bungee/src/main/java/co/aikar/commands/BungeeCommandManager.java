@@ -57,6 +57,17 @@ public class BungeeCommandManager extends CommandManager {
         return this.plugin;
     }
 
+    public void setFormat(MessageType type, ChatColor... colors) {
+        MessageFormatter format = getFormat(type);
+        if (format instanceof BungeeMessageFormatter) {
+            for (int i = 0; i < colors.length; i++) {
+                ((BungeeMessageFormatter) format).setColor(i, colors[i]);
+            }
+        } else {
+            setFormat(type, new BungeeMessageFormatter(colors));
+        }
+    }
+
     @Override
     public synchronized CommandContexts<BungeeCommandExecutionContext> getCommandContexts() {
         if (this.contexts == null) {

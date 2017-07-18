@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.lang.reflect.Method;
@@ -57,6 +58,21 @@ public class SpongeCommandManager extends CommandManager {
         this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
         this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));
         this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
+    }
+
+    public PluginContainer getPlugin() {
+        return plugin;
+    }
+
+    public void setFormat(MessageType type, TextColor... colors) {
+        MessageFormatter format = getFormat(type);
+        if (format instanceof SpongeMessageFormatter) {
+            for (int i = 0; i < colors.length; i++) {
+                ((SpongeMessageFormatter) format).setColor(i, colors[i]);
+            }
+        } else {
+            setFormat(type, new SpongeMessageFormatter(colors));
+        }
     }
 
     @Override

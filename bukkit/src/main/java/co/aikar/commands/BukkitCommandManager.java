@@ -101,6 +101,17 @@ public class BukkitCommandManager extends CommandManager {
         return this.plugin;
     }
 
+    public void setFormat(MessageType type, ChatColor... colors) {
+        MessageFormatter format = getFormat(type);
+        if (format instanceof BukkitMessageFormatter) {
+            for (int i = 0; i < colors.length; i++) {
+                ((BukkitMessageFormatter) format).setColor(i, colors[i]);
+            }
+        } else {
+            setFormat(type, new BukkitMessageFormatter(colors));
+        }
+    }
+
     @Override
     public boolean isCommandIssuer(Class<?> type) {
         return CommandSender.class.isAssignableFrom(type);
