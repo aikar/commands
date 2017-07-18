@@ -30,7 +30,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
@@ -38,13 +37,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +67,15 @@ public class BukkitCommandManager extends CommandManager {
         this.plugin = plugin;
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
+        this.commandMap = hookCommandMap();
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
+        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
+        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
+        getLocales(); // auto load locales
+    }
+
+    @NotNull private CommandMap hookCommandMap() {
         CommandMap commandMap = null;
         try {
             Server server = Bukkit.getServer();
@@ -79,7 +87,8 @@ public class BukkitCommandManager extends CommandManager {
                 this.log(LogLevel.ERROR, "We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");
                 this.log(LogLevel.ERROR, "We can not guarantee things are going to work.");
                 Field cmField = server.getClass().getDeclaredField("commandMap");
-                cmField.set(server, commandMap = new ProxyCommandMap(commandMap));
+                commandMap = new ProxyCommandMap(this, commandMap);
+                cmField.set(server, commandMap);
                 this.log(LogLevel.INFO, "Injected Proxy Command Map... good luck...");
             }
             Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
@@ -90,12 +99,7 @@ public class BukkitCommandManager extends CommandManager {
             this.log(LogLevel.ERROR, "Failed to get Command Map. ACF will not function.");
             ACFUtil.sneaky(e);
         }
-        this.commandMap = commandMap;
-        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
-        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
-        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
-        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
-        getLocales(); // auto load locales
+        return commandMap;
     }
 
     public Plugin getPlugin() {
@@ -259,81 +263,6 @@ public class BukkitCommandManager extends CommandManager {
         if (throwable != null) {
             for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
                 logger.log(logLevel, LogLevel.LOG_PREFIX + line);
-            }
-        }
-    }
-
-    class ProxyCommandMap extends SimpleCommandMap {
-
-        CommandMap proxied;
-
-        ProxyCommandMap(CommandMap proxied) {
-            super(Bukkit.getServer());
-            this.proxied = proxied;
-        }
-
-        @Override
-        public void registerAll(String fallbackPrefix, List<Command> commands) {
-            proxied.registerAll(fallbackPrefix, commands);
-        }
-
-        @Override
-        public boolean register(String label, String fallbackPrefix, Command command) {
-            if (isOurCommand(command)) {
-                return super.register(label, fallbackPrefix, command);
-            } else {
-                return proxied.register(label, fallbackPrefix, command);
-            }
-        }
-
-        boolean isOurCommand(String cmdLine) {
-            String[] args = ACFPatterns.SPACE.split(cmdLine);
-            return args.length != 0 && isOurCommand(knownCommands.get(args[0].toLowerCase(Locale.ENGLISH)));
-
-        }
-        boolean isOurCommand(Command command) {
-            return command instanceof RootCommand && ((RootCommand) command).getManager() == BukkitCommandManager.this;
-        }
-
-        @Override
-        public boolean register(String fallbackPrefix, Command command) {
-            if (isOurCommand(command)) {
-                return super.register(fallbackPrefix, command);
-            } else {
-                return proxied.register(fallbackPrefix, command);
-            }
-        }
-
-        @Override
-        public boolean dispatch(CommandSender sender, String cmdLine) throws CommandException {
-            if (isOurCommand(cmdLine)) {
-                return super.dispatch(sender, cmdLine);
-            } else {
-                return proxied.dispatch(sender, cmdLine);
-            }
-        }
-
-        @Override
-        public void clearCommands() {
-            super.clearCommands();;
-            proxied.clearCommands();
-        }
-
-        @Override
-        public Command getCommand(String name) {
-            if (isOurCommand(name)) {
-                return super.getCommand(name);
-            } else {
-                return proxied.getCommand(name);
-            }
-        }
-
-        @Override
-        public List<String> tabComplete(CommandSender sender, String cmdLine) throws IllegalArgumentException {
-            if (isOurCommand(cmdLine)) {
-                return super.tabComplete(sender, cmdLine);
-            } else {
-                return proxied.tabComplete(sender, cmdLine);
             }
         }
     }
