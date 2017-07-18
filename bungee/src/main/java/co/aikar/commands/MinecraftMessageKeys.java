@@ -1,6 +1,7 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 
 public enum MinecraftMessageKeys implements MessageKeyProvider {
     USERNAME_TOO_SHORT,

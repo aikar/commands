@@ -23,9 +23,10 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.LanguageTable;
 import co.aikar.locales.LocaleManager;
 import co.aikar.locales.MessageKey;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -34,12 +35,9 @@ import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class Locales {
-
-    private static final Locale[] CORE_LANGUAGES = new Locale[]{
-            Locale.ENGLISH
-    };
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
+    private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
 
     Locales(CommandManager manager) {
         this.manager = manager;
@@ -51,14 +49,30 @@ public class Locales {
     }
 
 
+    /**
+     * Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.
+     */
+    public void loadMissingBundles() {
+        for (Locale locale : manager.getSupportedLanguages()) {
+            for (String bundleName : loadedBundles.keys()) {
+                addMessageBundle(bundleName, locale);
+            }
+        }
+    }
+
     public void addMessageBundles(String... bundleNames) {
         for (String bundleName : bundleNames) {
-            this.localeManager.addMessageBundle(bundleName, CORE_LANGUAGES);
+            for (Locale locale : manager.getSupportedLanguages()) {
+                addMessageBundle(bundleName, locale);
+            }
         }
     }
 
     public void addMessageBundle(String bundleName, Locale locale) {
-        this.localeManager.addMessageBundle(bundleName, locale);
+        if (!loadedBundles.containsEntry(bundleName, locale)) {
+            loadedBundles.put(bundleName, locale);
+            this.localeManager.addMessageBundle(bundleName, locale);
+        }
     }
 
     public void addMessageStrings(Locale locale, @NotNull Map<String, String> messages) {

@@ -24,6 +24,8 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
+import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -39,6 +41,7 @@ public abstract class CommandManager {
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
+    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH);
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
     {
         MessageFormatter plain = new MessageFormatter<Object>() {
@@ -165,6 +168,7 @@ public abstract class CommandManager {
     public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(issuerArg, type, key.getMessageKey(), replacements);
     }
+
     public void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
         CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
         String message = getLocales().getMessage(issuer, key);
@@ -180,7 +184,6 @@ public abstract class CommandManager {
         }
     }
 
-
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
     }
@@ -193,5 +196,25 @@ public abstract class CommandManager {
                 commandLabel,
                 args
         );
+    }
+
+    /**
+     * Gets a list of all currently supported languages for this manager.
+     * These locales will be automatically loaded from
+     * @return
+     */
+    public Set<Locale> getSupportedLanguages() {
+        return supportedLanguages;
+    }
+
+    /**
+     * Adds a new locale to the list of automatic Locales to load Message Bundles for.
+     * All bundles loaded under the previous supported languages will now automatically load for this new locale too.
+     *
+     * @param locale
+     */
+    public void addSupportedLanguage(Locale locale) {
+        supportedLanguages.add(locale);
+        getLocales().loadMissingBundles();
     }
 }
