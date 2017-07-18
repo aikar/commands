@@ -23,12 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.PreCommand;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.UnknownHandler;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -41,6 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -114,7 +110,12 @@ public abstract class BaseCommand {
         }
         this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
 
-        this.description = this.commandName + " commands";
+        Description descAnn = self.getAnnotation(Description.class);
+        if(descAnn != null && !descAnn.value().isEmpty()){
+            this.description = descAnn.value();
+        } else {
+            this.description = this.commandName + " commands";
+        }
         this.usageMessage = "/" + this.commandName;
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);

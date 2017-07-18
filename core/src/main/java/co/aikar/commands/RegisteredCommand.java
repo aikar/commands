@@ -23,13 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
@@ -55,6 +49,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     final Parameter[] parameters;
     final ContextResolver<?, R>[] resolvers;
     final String syntaxText;
+    final String helpText;
 
     private final String permission;
     final String complete;
@@ -74,6 +69,9 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
         this.complete = completionAnno != null ? scope.manager.getCommandReplacements().replace(completionAnno.value()) : null;
         this.parameters = method.getParameters();
+
+        Description descriptionAnno = method.getAnnotation(Description.class);
+        this.helpText = descriptionAnno != null? descriptionAnno.value() : null;
         //noinspection unchecked
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
