@@ -103,4 +103,8 @@ public class BukkitRootCommand extends Command implements RootCommand {
     public Map<String, BaseCommand> getSubCommands() {
         return this.subCommands;
     }
+
+    BaseCommand getDefCommand(){
+        return defCommand;
+    }
 }

@@ -51,4 +51,8 @@ public class ForwardingCommand extends BaseCommand {
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
         command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
+
+    BaseCommand getCommand(){
+        return command;
+    }
 }

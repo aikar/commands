@@ -26,6 +26,7 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
+import com.google.common.collect.SetMultimap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -42,7 +43,10 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -276,25 +280,22 @@ public class BukkitCommandManager extends CommandManager {
 
     @Override
     List<String> getHelp(String command) {
-        BukkitRootCommand cmd = this.registeredCommands.get(command);
-        Map<String, BaseCommand> cmds = cmd.getSubCommands();
-        HashSet<String> helpSet = new HashSet<>();
-        for(Map.Entry<String, BaseCommand> e : cmds.entrySet()){
-            e.getValue().subCommands.entries().forEach(a -> {
-                StringBuilder builder = new StringBuilder();
-                builder.append("/");
-                builder.append(command);
-                builder.append(" ").append(a.getKey());
-                builder.append(" ").append(a.getValue().syntaxText.trim());
-                if(a.getValue().helpText != null){
-                    builder.append(" - ").append(a.getValue().helpText);
-                }
-                helpSet.add(builder.toString());
-            });
+        BukkitRootCommand cmd = (BukkitRootCommand) obtainRootCommand(command);
+        BaseCommand defCommand = cmd.getDefCommand();
+        if (defCommand instanceof ForwardingCommand) {
+            command = defCommand.commandName;
+            ForwardingCommand fwdCmd = (ForwardingCommand) defCommand;
+            defCommand = fwdCmd.getCommand();
         }
+        SetMultimap<String, RegisteredCommand> cmds = defCommand.subCommands;
         List<String> help = new ArrayList<>();
-        help.addAll(helpSet);
-        Collections.sort(help);
+        String finalCommand = command;
+        cmds.entries().forEach(e -> {
+            if (e.getKey().equals("__default"))
+                return;
+            help.add("/" + finalCommand + " " + e.getKey() + " " + e.getValue().syntaxText + (
+                    (e.getValue().helpText != null && !e.getValue().helpText.isEmpty())?" - " + e.getValue().helpText: ""));
+        });
         return help;
     }
 }
