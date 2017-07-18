@@ -52,7 +52,6 @@ public abstract class CommandManager {
             }
         };
         defaultFormatter = plain;
-        getLocales().addMessageBundles("acf-core");
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
         formatters.put(MessageType.ERROR, plain);

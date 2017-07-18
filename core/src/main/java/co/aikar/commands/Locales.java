@@ -44,10 +44,13 @@ public class Locales {
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
     }
 
+    public void loadLanguages() {
+        addMessageBundles("acf-core");
+    }
+
     public Locale getDefaultLocale() {
         return this.localeManager.getDefaultLocale();
     }
-
 
     /**
      * Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.

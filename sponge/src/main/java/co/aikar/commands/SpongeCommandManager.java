@@ -100,6 +100,7 @@ public class SpongeCommandManager extends CommandManager {
     public SpongeLocales getLocales() {
         if (this.locales == null) {
             this.locales = new SpongeLocales(this);
+            this.locales.loadLanguages();
         }
         return locales;
     }

@@ -138,6 +138,7 @@ public class BukkitCommandManager extends CommandManager {
     public BukkitLocales getLocales() {
         if (this.locales == null) {
             this.locales = new BukkitLocales(this);
+            this.locales.loadLanguages();
         }
         return locales;
     }

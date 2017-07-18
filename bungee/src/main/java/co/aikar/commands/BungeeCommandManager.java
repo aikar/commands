@@ -88,6 +88,7 @@ public class BungeeCommandManager extends CommandManager {
     public BungeeLocales getLocales() {
         if (this.locales == null) {
             this.locales = new BungeeLocales(this);
+            this.locales.loadLanguages();
         }
         return locales;
     }
