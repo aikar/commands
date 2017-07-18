@@ -95,6 +95,7 @@ public class BukkitCommandManager extends CommandManager {
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
+        getLocales(); // auto load locales
     }
 
     public Plugin getPlugin() {
