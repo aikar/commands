@@ -39,7 +39,7 @@ public class Locales {
     private final LocaleManager<CommandIssuer> localeManager;
     private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
 
-    Locales(CommandManager manager) {
+    public Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
     }

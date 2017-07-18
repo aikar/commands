@@ -102,7 +102,7 @@ public abstract class CommandManager {
      * Returns a Locales Manager to add and modify language tables for your commands.
      * @return
      */
-    abstract Locales getLocales();
+    public abstract Locales getLocales();
 
     public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 

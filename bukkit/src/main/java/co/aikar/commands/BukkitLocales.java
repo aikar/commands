@@ -36,7 +36,7 @@ import java.util.Locale;
 public class BukkitLocales extends Locales {
     private final BukkitCommandManager manager;
 
-    BukkitLocales(BukkitCommandManager manager) {
+    public BukkitLocales(BukkitCommandManager manager) {
         super(manager);
         this.manager = manager;
         String pluginName = "acf-" + manager.plugin.getDescription().getName();

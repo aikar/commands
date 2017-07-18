@@ -97,7 +97,7 @@ public class SpongeCommandManager extends CommandManager {
     }
 
     @Override
-    SpongeLocales getLocales() {
+    public SpongeLocales getLocales() {
         if (this.locales == null) {
             this.locales = new SpongeLocales(this);
         }

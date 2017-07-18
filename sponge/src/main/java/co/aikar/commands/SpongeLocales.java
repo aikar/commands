@@ -1,7 +1,7 @@
 package co.aikar.commands;
 
 public class SpongeLocales extends Locales{
-    SpongeLocales(SpongeCommandManager manager) {
+    public SpongeLocales(SpongeCommandManager manager) {
         super(manager);
     }
 }

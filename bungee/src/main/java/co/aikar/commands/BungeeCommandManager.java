@@ -85,7 +85,7 @@ public class BungeeCommandManager extends CommandManager {
     }
 
     @Override
-    BungeeLocales getLocales() {
+    public BungeeLocales getLocales() {
         if (this.locales == null) {
             this.locales = new BungeeLocales(this);
         }

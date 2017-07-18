@@ -135,7 +135,7 @@ public class BukkitCommandManager extends CommandManager {
 
 
     @Override
-    BukkitLocales getLocales() {
+    public BukkitLocales getLocales() {
         if (this.locales == null) {
             this.locales = new BukkitLocales(this);
         }
