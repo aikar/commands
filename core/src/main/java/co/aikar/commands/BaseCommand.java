@@ -517,6 +517,10 @@ public abstract class BaseCommand {
         return false;
     }
 
+    List<String> getHelp(){
+       return manager.getHelp(this.getExecCommandLabel());
+    }
+
     public void help(Object issuer, String[] args) {
         help(manager.getCommandIssuer(issuer), args);
     }

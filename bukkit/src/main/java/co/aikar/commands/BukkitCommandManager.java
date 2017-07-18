@@ -42,9 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -274,5 +272,29 @@ public class BukkitCommandManager extends CommandManager {
                 logger.log(logLevel, LogLevel.LOG_PREFIX + line);
             }
         }
+    }
+
+    @Override
+    List<String> getHelp(String command) {
+        BukkitRootCommand cmd = this.registeredCommands.get(command);
+        Map<String, BaseCommand> cmds = cmd.getSubCommands();
+        HashSet<String> helpSet = new HashSet<>();
+        for(Map.Entry<String, BaseCommand> e : cmds.entrySet()){
+            e.getValue().subCommands.entries().forEach(a -> {
+                StringBuilder builder = new StringBuilder();
+                builder.append("/");
+                builder.append(command);
+                builder.append(" ").append(a.getKey());
+                builder.append(" ").append(a.getValue().syntaxText.trim());
+                if(a.getValue().helpText != null){
+                    builder.append(" - ").append(a.getValue().helpText);
+                }
+                helpSet.add(builder.toString());
+            });
+        }
+        List<String> help = new ArrayList<>();
+        help.addAll(helpSet);
+        Collections.sort(help);
+        return help;
     }
 }

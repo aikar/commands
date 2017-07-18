@@ -23,12 +23,17 @@
 
 package co.aikar.commands;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
+
+    default Map<String, BaseCommand> getSubCommands(){
+        return new HashMap<>(0);
+    }
 
     String getCommandName();
     default void addChildShared(List<BaseCommand> children, Map<String, BaseCommand> subCommands, BaseCommand command) {

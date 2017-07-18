@@ -83,6 +83,10 @@ public abstract class CommandManager {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
+    List<String> getHelp(String command){
+        return new ArrayList<>(0);
+    }
+
     /**
      * Registers a command with ACF
      *
