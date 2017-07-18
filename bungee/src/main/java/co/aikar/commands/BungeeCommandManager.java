@@ -48,7 +48,7 @@ public class BungeeCommandManager extends CommandManager {
 
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        this.formatters.put(MessageType.ERROR, new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
     }

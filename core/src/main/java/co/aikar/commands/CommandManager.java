@@ -43,6 +43,7 @@ public abstract class CommandManager {
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH);
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
+    protected MessageFormatter defaultFormatter;
     {
         MessageFormatter plain = new MessageFormatter<Object>() {
             @Override
@@ -50,6 +51,7 @@ public abstract class CommandManager {
                 return message;
             }
         };
+        defaultFormatter = plain;
         getLocales().addMessageBundles("acf-core");
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
@@ -165,6 +167,14 @@ public abstract class CommandManager {
         return result;
     }
 
+    public MessageFormatter getDefaultFormatter() {
+        return defaultFormatter;
+    }
+
+    public void setDefaultFormatter(MessageFormatter defaultFormatter) {
+        this.defaultFormatter = defaultFormatter;
+    }
+
     public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(issuerArg, type, key.getMessageKey(), replacements);
     }
@@ -175,10 +185,11 @@ public abstract class CommandManager {
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
-        MessageFormatter formatter = formatters.get(type);
+        MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);
         if (formatter != null) {
             message = formatter.format(message);
         }
+
         for (String msg : ACFPatterns.NEWLINE.split(message)) {
             issuer.sendMessageInternal(msg);
         }
