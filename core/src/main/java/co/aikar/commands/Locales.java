@@ -28,6 +28,7 @@ import co.aikar.locales.LocaleManager;
 import co.aikar.locales.MessageKey;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -60,6 +61,11 @@ public class Locales {
         this.localeManager.addMessageBundle(bundleName, locale);
     }
 
+    public void addMessageStrings(Locale locale, @NotNull Map<String, String> messages) {
+        Map<MessageKey, String> map = new HashMap<>(messages.size());
+        messages.forEach((key, value) -> map.put(MessageKey.of(key), value));
+        addMessages(locale, map);
+    }
     public void addMessages(Locale locale, @NotNull Map<MessageKey, String> messages) {
         this.localeManager.addMessages(locale, messages);
     }
