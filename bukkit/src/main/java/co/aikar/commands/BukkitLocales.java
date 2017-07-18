@@ -43,6 +43,7 @@ public class BukkitLocales extends Locales {
 
     @Override
     public void loadLanguages() {
+        super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getDescription().getName();
         addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
     }

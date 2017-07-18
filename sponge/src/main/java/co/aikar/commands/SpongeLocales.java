@@ -10,6 +10,7 @@ public class SpongeLocales extends Locales{
 
     @Override
     public void loadLanguages() {
+        super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getName();
         addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
     }
