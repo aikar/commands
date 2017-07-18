@@ -58,15 +58,24 @@ public class BungeeCommandManager extends CommandManager {
         return this.plugin;
     }
 
+    public BungeeMessageFormatter setFormat(MessageType type, BungeeMessageFormatter formatter) {
+        return (BungeeMessageFormatter) formatters.put(type, formatter);
+    }
+
+    public BungeeMessageFormatter getFormat(MessageType type) {
+        return (BungeeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
+    }
+
     public void setFormat(MessageType type, ChatColor... colors) {
-        MessageFormatter format = getFormat(type);
-        if (format instanceof BungeeMessageFormatter) {
-            for (int i = 0; i < colors.length; i++) {
-                ((BungeeMessageFormatter) format).setColor(i, colors[i]);
-            }
-        } else {
-            setFormat(type, new BungeeMessageFormatter(colors));
+        BungeeMessageFormatter format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
         }
+    }
+
+    public void setFormat(MessageType type, int i, ChatColor color) {
+        BungeeMessageFormatter format = getFormat(type);
+        format.setColor(i, color);
     }
 
     @Override

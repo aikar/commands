@@ -166,22 +166,6 @@ public abstract class CommandManager {
         return result;
     }
 
-    public MessageFormatter setFormat(MessageType type, MessageFormatter formatter) {
-        return formatters.put(type, formatter);
-    }
-
-    public MessageFormatter getFormat(MessageType type) {
-        return formatters.get(type);
-    }
-
-    public MessageFormatter getDefaultFormatter() {
-        return defaultFormatter;
-    }
-
-    public void setDefaultFormatter(MessageFormatter defaultFormatter) {
-        this.defaultFormatter = defaultFormatter;
-    }
-
     public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(issuerArg, type, key.getMessageKey(), replacements);
     }

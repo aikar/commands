@@ -106,15 +106,24 @@ public class BukkitCommandManager extends CommandManager {
         return this.plugin;
     }
 
+    public BukkitMessageFormatter setFormat(MessageType type, BukkitMessageFormatter formatter) {
+        return (BukkitMessageFormatter) formatters.put(type, formatter);
+    }
+
+    public BukkitMessageFormatter getFormat(MessageType type) {
+        return (BukkitMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
+    }
+
     public void setFormat(MessageType type, ChatColor... colors) {
-        MessageFormatter format = getFormat(type);
-        if (format instanceof BukkitMessageFormatter) {
-            for (int i = 0; i < colors.length; i++) {
-                ((BukkitMessageFormatter) format).setColor(i, colors[i]);
-            }
-        } else {
-            setFormat(type, new BukkitMessageFormatter(colors));
+        BukkitMessageFormatter format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
         }
+    }
+
+    public void setFormat(MessageType type, int i, ChatColor color) {
+        BukkitMessageFormatter format = getFormat(type);
+        format.setColor(i, color);
     }
 
     @Override

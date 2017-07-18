@@ -65,15 +65,24 @@ public class SpongeCommandManager extends CommandManager {
         return plugin;
     }
 
+    public SpongeMessageFormatter setFormat(MessageType type, SpongeMessageFormatter formatter) {
+        return (SpongeMessageFormatter) formatters.put(type, formatter);
+    }
+
+    public SpongeMessageFormatter getFormat(MessageType type) {
+        return (SpongeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
+    }
+
     public void setFormat(MessageType type, TextColor... colors) {
-        MessageFormatter format = getFormat(type);
-        if (format instanceof SpongeMessageFormatter) {
-            for (int i = 0; i < colors.length; i++) {
-                ((SpongeMessageFormatter) format).setColor(i, colors[i]);
-            }
-        } else {
-            setFormat(type, new SpongeMessageFormatter(colors));
+        SpongeMessageFormatter format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
         }
+    }
+
+    public void setFormat(MessageType type, int i, TextColor color) {
+        SpongeMessageFormatter format = getFormat(type);
+        format.setColor(i, color);
     }
 
     @Override
