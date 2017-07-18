@@ -46,11 +46,12 @@ public class SpongeCommandManager extends CommandManager {
     protected SpongeCommandContexts contexts;
     protected SpongeCommandCompletions completions;
     private Timing commandTiming;
+    protected SpongeLocales locales;
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
         String pluginName = "acf-" + plugin.getName();
-        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
         this.commandTiming = Timings.of(plugin, "Commands");
 
         this.formatters.put(MessageType.ERROR, new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
@@ -77,6 +78,14 @@ public class SpongeCommandManager extends CommandManager {
             this.completions = new SpongeCommandCompletions(this);
         }
         return completions;
+    }
+
+    @Override
+    SpongeLocales getLocales() {
+        if (this.locales == null) {
+            this.locales = new SpongeLocales(this);
+        }
+        return locales;
     }
 
     @Override

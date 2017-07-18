@@ -61,12 +61,11 @@ public class BukkitCommandManager extends CommandManager {
     protected BukkitCommandContexts contexts;
     protected BukkitCommandCompletions completions;
     MCTiming commandTiming;
+    protected BukkitLocales locales;
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        String pluginName = "acf-" + plugin.getDescription().getName();
-        this.locales.addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
         CommandMap commandMap = null;
@@ -122,6 +121,16 @@ public class BukkitCommandManager extends CommandManager {
         }
         return completions;
     }
+
+
+    @Override
+    BukkitLocales getLocales() {
+        if (this.locales == null) {
+            this.locales = new BukkitLocales(this);
+        }
+        return locales;
+    }
+
 
     @Override
     public boolean hasRegisteredCommands() {

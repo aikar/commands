@@ -38,7 +38,6 @@ public abstract class CommandManager {
     static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(Stack::new);
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
-    protected Locales locales = new Locales(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
     {
@@ -93,6 +92,12 @@ public abstract class CommandManager {
 
     public abstract RootCommand createRootCommand(String cmd);
 
+    /**
+     * Returns a Locales Manager to add and modify language tables for your commands.
+     * @return
+     */
+    abstract Locales getLocales();
+
     public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
@@ -114,14 +119,6 @@ public abstract class CommandManager {
      */
     public CommandReplacements getCommandReplacements() {
         return replacements;
-    }
-
-    /**
-     * Returns a Locales Manager to add and modify language tables for your commands.
-     * @return
-     */
-    Locales getLocales() {
-        return locales;
     }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
