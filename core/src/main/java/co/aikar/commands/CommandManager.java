@@ -47,6 +47,7 @@ public abstract class CommandManager {
                 return message;
             }
         };
+        getLocales().addMessageBundles("acf-core");
         formatters.put(MessageType.INFO, plain);
         formatters.put(MessageType.SYNTAX, plain);
         formatters.put(MessageType.ERROR, plain);

@@ -42,8 +42,7 @@ public class Locales {
 
     Locales(CommandManager manager) {
         this.manager = manager;
-        this.localeManager = LocaleManager.create(manager.getClass(), manager::getIssuerLocale);
-        this.localeManager.addMessageBundle("acf-core", CORE_LANGUAGES);
+        this.localeManager = LocaleManager.create(manager::getIssuerLocale);
     }
 
     public Locale getDefaultLocale() {
