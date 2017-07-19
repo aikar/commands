@@ -76,6 +76,6 @@ public class CommandReplacements {
             text = entry.getKey().matcher(text).replaceAll(entry.getValue());
         }
 
-        return text;
+        return manager.getLocales().replaceI18NStrings(text);
     }
 }

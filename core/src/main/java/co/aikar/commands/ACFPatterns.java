@@ -45,6 +45,7 @@ final class ACFPatterns {
     public static final Pattern NON_PRINTABLE_CHARACTERS = Pattern.compile("[^\\x20-\\x7F]");
     public static final Pattern EQUALS = Pattern.compile("=");
     public static final Pattern FORMATTER = Pattern.compile("<c(?<color>\\d+)>(?<msg>.+?)</c\\1>", Pattern.CASE_INSENSITIVE);
+    public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
 
 
 

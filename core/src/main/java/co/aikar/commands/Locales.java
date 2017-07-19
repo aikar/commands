@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 @SuppressWarnings("WeakerAccess")
 public class Locales {
@@ -100,4 +101,24 @@ public class Locales {
         return message;
     }
 
+    public String replaceI18NStrings(String message) {
+        if (message == null) {
+            return null;
+        }
+        Matcher matcher = ACFPatterns.I18N_STRING.matcher(message);
+        if (!matcher.matches()) {
+            return message;
+        }
+
+        CommandIssuer issuer = CommandManager.getCurrentCommandIssuer();
+
+        matcher.reset();
+        StringBuffer sb = new StringBuffer(message.length());
+        while (matcher.find()) {
+            MessageKey key = MessageKey.of(matcher.group("key"));
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(getMessage(issuer, key)));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
 }
