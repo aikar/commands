@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandManager extends CommandManager {
+public class SpongeCommandManager extends CommandManager<CommandSource, SpongeMessageFormatter> {
 
     protected final PluginContainer plugin;
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();

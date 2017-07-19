@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BungeeCommandManager extends CommandManager {
+public class BungeeCommandManager extends CommandManager<CommandSender, BungeeMessageFormatter> {
 
     protected final Plugin plugin;
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();

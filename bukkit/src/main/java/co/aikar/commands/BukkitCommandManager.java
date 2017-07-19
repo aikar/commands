@@ -49,7 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandManager extends CommandManager {
+public class BukkitCommandManager extends CommandManager<CommandSender, BukkitMessageFormatter> {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;

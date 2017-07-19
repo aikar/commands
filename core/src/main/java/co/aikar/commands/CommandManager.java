@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.Sets;
 
@@ -32,7 +31,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager {
+public abstract class CommandManager <I, F extends MessageFormatter<?>> {
 
     /**
      * This is a stack incase a command calls a command
@@ -42,20 +41,8 @@ public abstract class CommandManager {
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH);
-    protected Map<MessageType, MessageFormatter> formatters = new IdentityHashMap<>();
-    protected MessageFormatter defaultFormatter;
-    {
-        MessageFormatter plain = new MessageFormatter<Object>() {
-            @Override
-            String format(Object color, String message) {
-                return message;
-            }
-        };
-        defaultFormatter = plain;
-        formatters.put(MessageType.INFO, plain);
-        formatters.put(MessageType.SYNTAX, plain);
-        formatters.put(MessageType.ERROR, plain);
-    }
+    protected Map<MessageType, F> formatters = new IdentityHashMap<>();
+    protected F defaultFormatter;
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
@@ -93,6 +80,7 @@ public abstract class CommandManager {
     public abstract boolean hasRegisteredCommands();
     public abstract boolean isCommandIssuer(Class<?> type);
 
+    // TODO: Change this to I if we make a breaking change
     public abstract CommandIssuer getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
@@ -166,13 +154,12 @@ public abstract class CommandManager {
         return result;
     }
 
-    public void sendMessage(Object issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
-        sendMessage(issuerArg, type, key.getMessageKey(), replacements);
+    public void sendMessage(I issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
+        sendMessage(getCommandIssuer(issuerArg), type, key, replacements);
     }
 
-    public void sendMessage(Object issuerArg, MessageType type, MessageKey key, String... replacements) {
-        CommandIssuer issuer = issuerArg instanceof CommandIssuer ? (CommandIssuer) issuerArg : getCommandIssuer(issuerArg);
-        String message = getLocales().getMessage(issuer, key);
+    public void sendMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
+        String message = getLocales().getMessage(issuer, key.getMessageKey());
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
