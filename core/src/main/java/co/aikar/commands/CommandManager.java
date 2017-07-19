@@ -83,8 +83,8 @@ public abstract class CommandManager {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
-    List<String> getHelp(String command){
-        return new ArrayList<>(0);
+    CommandHelp getHelp(String command){
+        throw new IllegalStateException("Not implemented yet.");
     }
 
     /**
@@ -193,6 +193,7 @@ public abstract class CommandManager {
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
     }
+
 
     public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
         return new CommandOperationContext(

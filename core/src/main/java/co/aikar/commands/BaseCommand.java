@@ -110,12 +110,7 @@ public abstract class BaseCommand {
         }
         this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
 
-        Description descAnn = self.getAnnotation(Description.class);
-        if(descAnn != null && !descAnn.value().isEmpty()){
-            this.description = descAnn.value();
-        } else {
-            this.description = this.commandName + " commands";
-        }
+        this.description = this.commandName + " commands";
         this.usageMessage = "/" + this.commandName;
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);
@@ -517,7 +512,7 @@ public abstract class BaseCommand {
         return false;
     }
 
-    List<String> getHelp(){
+    CommandHelp getCommandHelp(){
        return manager.getHelp(this.getExecCommandLabel());
     }
 

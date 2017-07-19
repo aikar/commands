@@ -104,7 +104,8 @@ public class BukkitRootCommand extends Command implements RootCommand {
         return this.subCommands;
     }
 
-    BaseCommand getDefCommand(){
+    @Override
+    public BaseCommand getDefCommand(){
         return defCommand;
     }
 }

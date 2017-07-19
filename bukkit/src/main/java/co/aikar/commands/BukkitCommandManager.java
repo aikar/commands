@@ -26,7 +26,6 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
-import com.google.common.collect.SetMultimap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -43,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,23 +277,11 @@ public class BukkitCommandManager extends CommandManager {
     }
 
     @Override
-    List<String> getHelp(String command) {
-        BukkitRootCommand cmd = (BukkitRootCommand) obtainRootCommand(command);
+    CommandHelp getHelp(String command) {
+        RootCommand cmd = obtainRootCommand(command);
         BaseCommand defCommand = cmd.getDefCommand();
-        if (defCommand instanceof ForwardingCommand) {
-            command = defCommand.commandName;
-            ForwardingCommand fwdCmd = (ForwardingCommand) defCommand;
-            defCommand = fwdCmd.getCommand();
-        }
-        SetMultimap<String, RegisteredCommand> cmds = defCommand.subCommands;
-        List<String> help = new ArrayList<>();
-        String finalCommand = command;
-        cmds.entries().forEach(e -> {
-            if (e.getKey().equals("__default"))
-                return;
-            help.add("/" + finalCommand + " " + e.getKey() + " " + e.getValue().syntaxText + (
-                    (e.getValue().helpText != null && !e.getValue().helpText.isEmpty())?" - " + e.getValue().helpText: ""));
-        });
-        return help;
+        if (defCommand == null)
+            return null;
+        return new BukkitCommandHelp(this, defCommand);
     }
 }

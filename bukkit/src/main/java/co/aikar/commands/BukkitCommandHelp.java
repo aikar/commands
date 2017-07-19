@@ -23,37 +23,19 @@
 
 package co.aikar.commands;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-interface RootCommand {
-    void addChild(BaseCommand command);
-    CommandManager getManager();
+public class BukkitCommandHelp extends CommandHelp {
 
-    default Map<String, BaseCommand> getSubCommands(){
-        return new HashMap<>(0);
+    protected BukkitCommandHelp(CommandManager manager, BaseCommand cmd) {
+        super(manager, cmd);
     }
 
-    String getCommandName();
-    default void addChildShared(List<BaseCommand> children, Map<String, BaseCommand> subCommands, BaseCommand command) {
-        command.subCommands.keySet().forEach(key -> {
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
-                return;
-            }
-            BaseCommand regged = subCommands.get(key);
-            if (regged != null) {
-                this.getManager().log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getCommandName() + " - but it is already defined in " + regged.getName());
-                this.getManager().log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
-            }
-            subCommands.put(key, command);
-        });
-
-        children.add(command);
-    }
-
-    default BaseCommand getDefCommand(){
-        return null;
+    @Override
+    void renderHelp(CommandIssuer issuer) {
+        List<String> rendered = new ArrayList<>();
+        getCommandHelp().forEach(h -> rendered.add("/" + h.getCommand() + " " + h.getSyntax() + ((h.getHelpText() != null && !h.getHelpText().isEmpty() ? " - " + h.getHelpText() : ""))));
+        rendered.forEach(issuer::sendMessage);
     }
 }
