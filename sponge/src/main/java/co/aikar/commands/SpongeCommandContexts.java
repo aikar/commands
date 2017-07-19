@@ -30,11 +30,17 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.format.TextStyle;
 import org.spongepowered.api.world.World;
 
+import javax.swing.plaf.ActionMapUIResource;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
@@ -44,6 +50,42 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
 
         registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
         registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+        registerContext(TextColor.class, c -> {
+            String first = c.popFirstArg();
+            Stream<TextColor> colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();
+            String filter = c.getFlagValue("filter", (String)null);
+            if(filter != null) {
+                filter = ACFUtil.simplifyString(filter);
+                String finalFilter = filter;
+                colours = colours.filter(colour -> finalFilter.equals(ACFUtil.simplifyString(colour.getName())));
+            }
+            Stream<TextColor> finalColours = colours;
+            TextColor match = Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
+                String valid = finalColours
+                        .map(colour -> "<c2>" + ACFUtil.simplifyString(colour.getName()) + "</c2>")
+                        .collect(Collectors.joining("<c1>,</c1> "));
+                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, valid);
+            });
+            return match;
+        });
+        registerContext(TextStyle.Base.class, c -> {
+            String first = c.popFirstArg();
+            Stream<TextStyle.Base> styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();
+            String filter = c.getFlagValue("filter", (String)null);
+            if(filter != null) {
+                filter = ACFUtil.simplifyString(filter);
+                String finalFilter = filter;
+                styles = styles.filter(style -> finalFilter.equals(ACFUtil.simplifyString(style.getName())));
+            }
+            Stream<TextStyle.Base> finalStyles = styles;
+            TextStyle.Base match = Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
+                String valid = finalStyles
+                        .map(style -> "<c2>" + ACFUtil.simplifyString(style.getName()) + "</c2>")
+                        .collect(Collectors.joining("<c1>,</c1> "));
+                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, valid);
+            });
+            return match;
+        });
 
         registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(Player.class, (c) -> {
