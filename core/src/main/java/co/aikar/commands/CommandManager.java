@@ -36,7 +36,14 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     /**
      * This is a stack incase a command calls a command
      */
-    static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(Stack::new);
+    static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(() -> {
+        return new Stack<CommandOperationContext>() {
+            @Override
+            public synchronized CommandOperationContext peek() {
+                return super.size() == 0 ? null : super.peek();
+            }
+        };
+    });
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
