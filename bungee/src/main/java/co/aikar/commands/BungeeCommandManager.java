@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BungeeCommandManager extends CommandManager<CommandSender, BungeeMessageFormatter> {
+public class BungeeCommandManager extends CommandManager<CommandSender, ChatColor, BungeeMessageFormatter> {
 
     protected final Plugin plugin;
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
@@ -56,26 +56,6 @@ public class BungeeCommandManager extends CommandManager<CommandSender, BungeeMe
 
     public Plugin getPlugin() {
         return this.plugin;
-    }
-
-    public BungeeMessageFormatter setFormat(MessageType type, BungeeMessageFormatter formatter) {
-        return (BungeeMessageFormatter) formatters.put(type, formatter);
-    }
-
-    public BungeeMessageFormatter getFormat(MessageType type) {
-        return (BungeeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
-    }
-
-    public void setFormat(MessageType type, ChatColor... colors) {
-        BungeeMessageFormatter format = getFormat(type);
-        for (int i = 0; i < colors.length; i++) {
-            format.setColor(i, colors[i]);
-        }
-    }
-
-    public void setFormat(MessageType type, int i, ChatColor color) {
-        BungeeMessageFormatter format = getFormat(type);
-        format.setColor(i, color);
     }
 
     @Override

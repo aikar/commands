@@ -31,7 +31,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager <I, F extends MessageFormatter<?>> {
+public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
 
     /**
      * This is a stack incase a command calls a command
@@ -56,6 +56,34 @@ public abstract class CommandManager <I, F extends MessageFormatter<?>> {
     public static CommandManager getCurrentCommandManager() {
         CommandOperationContext context = commandOperationContext.get().peek();
         return context != null ? context.getCommandManager() : null;
+    }
+
+    public F setFormat(MessageType type, F formatter) {
+        return formatters.put(type, formatter);
+    }
+
+    public F getFormat(MessageType type) {
+        return formatters.getOrDefault(type, defaultFormatter);
+    }
+
+    public void setFormat(MessageType type, FT... colors) {
+        F format = getFormat(type);
+        for (int i = 0; i < colors.length; i++) {
+            format.setColor(i, colors[i]);
+        }
+    }
+
+    public void setFormat(MessageType type, int i, FT color) {
+        F format = getFormat(type);
+        format.setColor(i, color);
+    }
+
+    public F getDefaultFormatter() {
+        return defaultFormatter;
+    }
+
+    public void setDefaultFormatter(F defaultFormatter) {
+        this.defaultFormatter = defaultFormatter;
     }
 
     /**

@@ -49,7 +49,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandManager extends CommandManager<CommandSender, BukkitMessageFormatter> {
+public class BukkitCommandManager extends CommandManager<CommandSender, ChatColor, BukkitMessageFormatter> {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
@@ -104,26 +104,6 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitMe
 
     public Plugin getPlugin() {
         return this.plugin;
-    }
-
-    public BukkitMessageFormatter setFormat(MessageType type, BukkitMessageFormatter formatter) {
-        return (BukkitMessageFormatter) formatters.put(type, formatter);
-    }
-
-    public BukkitMessageFormatter getFormat(MessageType type) {
-        return (BukkitMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
-    }
-
-    public void setFormat(MessageType type, ChatColor... colors) {
-        BukkitMessageFormatter format = getFormat(type);
-        for (int i = 0; i < colors.length; i++) {
-            format.setColor(i, colors[i]);
-        }
-    }
-
-    public void setFormat(MessageType type, int i, ChatColor color) {
-        BukkitMessageFormatter format = getFormat(type);
-        format.setColor(i, color);
     }
 
     @Override

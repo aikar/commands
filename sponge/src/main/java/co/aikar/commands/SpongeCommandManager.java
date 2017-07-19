@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandManager extends CommandManager<CommandSource, SpongeMessageFormatter> {
+public class SpongeCommandManager extends CommandManager<CommandSource, TextColor, SpongeMessageFormatter> {
 
     protected final PluginContainer plugin;
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
@@ -63,26 +63,6 @@ public class SpongeCommandManager extends CommandManager<CommandSource, SpongeMe
 
     public PluginContainer getPlugin() {
         return plugin;
-    }
-
-    public SpongeMessageFormatter setFormat(MessageType type, SpongeMessageFormatter formatter) {
-        return (SpongeMessageFormatter) formatters.put(type, formatter);
-    }
-
-    public SpongeMessageFormatter getFormat(MessageType type) {
-        return (SpongeMessageFormatter) formatters.getOrDefault(type, defaultFormatter);
-    }
-
-    public void setFormat(MessageType type, TextColor... colors) {
-        SpongeMessageFormatter format = getFormat(type);
-        for (int i = 0; i < colors.length; i++) {
-            format.setColor(i, colors[i]);
-        }
-    }
-
-    public void setFormat(MessageType type, int i, TextColor color) {
-        SpongeMessageFormatter format = getFormat(type);
-        format.setColor(i, color);
     }
 
     @Override

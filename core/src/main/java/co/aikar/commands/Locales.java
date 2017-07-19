@@ -35,7 +35,7 @@ import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class Locales {
-    private final CommandManager<?, ?> manager;
+    private final CommandManager<?, ?, ?> manager;
     private final LocaleManager<CommandIssuer> localeManager;
     private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
 
