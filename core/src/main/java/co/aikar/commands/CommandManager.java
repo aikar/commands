@@ -191,6 +191,9 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
         }
+
+        message = getCommandReplacements().replace(message);
+
         MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);
         if (formatter != null) {
             message = formatter.format(message);
