@@ -64,7 +64,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 String valid = finalColours
                         .map(colour -> "<c2>" + ACFUtil.simplifyString(colour.getName()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
-                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, valid);
+                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
             return match;
         });
@@ -82,7 +82,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 String valid = finalStyles
                         .map(style -> "<c2>" + ACFUtil.simplifyString(style.getName()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
-                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, valid);
+                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
             return match;
         });
