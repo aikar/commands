@@ -27,6 +27,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Objects;
+
 public class BungeeCommandIssuer implements CommandIssuer{
     private final BungeeCommandManager manager;
     private final CommandSender sender;
@@ -61,5 +63,19 @@ public class BungeeCommandIssuer implements CommandIssuer{
     @Override
     public boolean hasPermission(String name) {
         return sender.hasPermission(name);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BungeeCommandIssuer that = (BungeeCommandIssuer) o;
+        return Objects.equals(sender, that.sender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender);
     }
 }

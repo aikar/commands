@@ -27,6 +27,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class BukkitCommandIssuer implements CommandIssuer {
     private final BukkitCommandManager manager;
     private final CommandSender sender;
@@ -60,5 +62,18 @@ public class BukkitCommandIssuer implements CommandIssuer {
     @Override
     public boolean hasPermission(String name) {
         return sender.hasPermission(name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BukkitCommandIssuer that = (BukkitCommandIssuer) o;
+        return Objects.equals(sender, that.sender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender);
     }
 }

@@ -29,6 +29,8 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
+import java.util.Objects;
+
 public class SpongeCommandIssuer implements CommandIssuer {
 
     private final SpongeCommandManager manager;
@@ -63,5 +65,19 @@ public class SpongeCommandIssuer implements CommandIssuer {
     @Override
     public boolean hasPermission(final String permission) {
         return this.source.hasPermission(permission);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SpongeCommandIssuer that = (SpongeCommandIssuer) o;
+        return Objects.equals(source, that.source);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(source);
     }
 }
