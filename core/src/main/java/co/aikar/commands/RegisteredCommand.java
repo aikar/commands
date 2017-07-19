@@ -111,11 +111,9 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 ));
             }
         }
-        if (syntaxStr != null) {
-            this.syntaxText = manager.getCommandReplacements().replace(syntaxStr.value());
-        } else {
-            this.syntaxText = manager.getCommandReplacements().replace(syntaxB.toString());
-        }
+        String syntaxText = syntaxB.toString();
+        this.syntaxText = manager.getCommandReplacements().replace(syntaxStr != null ?
+                ACFUtil.replace(syntaxStr.value(), "@syntax", syntaxText) : syntaxText);
         this.requiredResolvers = requiredResolvers;
         this.optionalResolvers = optionalResolvers;
     }
