@@ -150,10 +150,20 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
             String commandName = entry.getKey().toLowerCase();
             BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();
             if (!bukkitCommand.isRegistered) {
-                if(force) {
-                    if(knownCommands.containsKey(commandName)) {
-                        commandMap.getCommand(commandName).unregister(commandMap);
-                        knownCommands.remove(commandName);
+                if (force && knownCommands.containsKey(commandName)) {
+                    Command oldCommand = commandMap.getCommand(commandName);
+                    knownCommands.remove(commandName);
+                    for (Map.Entry<String, Command> ce : knownCommands.entrySet()) {
+                        String key = ce.getKey();
+                        Command value = ce.getValue();
+                        if (key.contains(":") && oldCommand.equals(value)) {
+                            String[] split = ACFPatterns.COLON.split(key, 2);
+                            if (split.length > 1) {
+                                oldCommand.unregister(commandMap);
+                                oldCommand.setLabel(split[0] + ":" + command.getName());
+                                oldCommand.register(commandMap);
+                            }
+                        }
                     }
                 }
                 commandMap.register(commandName, plugin, bukkitCommand);
