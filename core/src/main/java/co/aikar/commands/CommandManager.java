@@ -47,7 +47,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
-    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH);
+    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locale.ENGLISH, Locale.GERMAN);
     protected Map<MessageType, F> formatters = new IdentityHashMap<>();
     protected F defaultFormatter;
 
