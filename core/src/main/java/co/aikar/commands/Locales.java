@@ -53,6 +53,10 @@ public class Locales {
         return this.localeManager.getDefaultLocale();
     }
 
+    public Locale setDefaultLocale(Locale locale) {
+        return this.localeManager.setDefaultLocale(locale);
+    }
+
     /**
      * Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.
      */
