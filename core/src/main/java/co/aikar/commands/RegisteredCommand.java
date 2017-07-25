@@ -208,7 +208,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             }
             final Values values = parameter.getAnnotation(Values.class);
             if (values != null) {
-                String arg = args.get(0);
+                String arg = !args.isEmpty() ? args.get(0) : "";
 
                 final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
