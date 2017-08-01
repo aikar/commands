@@ -39,7 +39,7 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
         super(manager);
         registerContext(OnlineProxiedPlayer.class, (c) -> {
             final String playercheck = c.popFirstArg();
-            ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getSender(), playercheck);
+            ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), playercheck);
             if (proxiedPlayer == null) {
                 if (c.hasAnnotation(Optional.class)) {
                     return null;
@@ -50,8 +50,8 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
             }
             return new OnlineProxiedPlayer(proxiedPlayer);
         });
-        registerSenderAwareContext(CommandSender.class, BungeeCommandExecutionContext::getSender);
-        registerSenderAwareContext(ProxiedPlayer.class, (c) -> {
+        registerIssuerAwareContext(CommandSender.class, BungeeCommandExecutionContext::getSender);
+        registerIssuerAwareContext(ProxiedPlayer.class, (c) -> {
             ProxiedPlayer proxiedPlayer = c.getSender() instanceof ProxiedPlayer ? (ProxiedPlayer) c.getSender() : null;
             if (proxiedPlayer == null && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
