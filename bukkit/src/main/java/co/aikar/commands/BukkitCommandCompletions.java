@@ -26,6 +26,7 @@ package co.aikar.commands;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -62,6 +63,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
 
             return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
+        registerCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
         registerCompletion("worlds", c -> (
             Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
