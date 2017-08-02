@@ -164,13 +164,9 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             Double z = ACFUtil.parseDouble(relZ ? split[2].substring(1) : split[2]);
 
             if (sourceLoc != null) {
-                if (relX) {
+                if (relX || relY || relZ) {
                     x += sourceLoc.getX();
-                }
-                if (relX) {
                     y += sourceLoc.getY();
-                }
-                if (relZ) {
                     z += sourceLoc.getZ();
                 }
             } else if (relX || relY || relZ) {
