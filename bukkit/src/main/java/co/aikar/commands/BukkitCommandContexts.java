@@ -150,26 +150,22 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             } else {
                 throw new InvalidCommandArgument(true);
             }
-            split = ACFPatterns.COMMA.split(rest);
+
+            boolean rel = rest.startsWith("~");
+            split = ACFPatterns.COMMA.split(rel ? rest.substring(1) : rest);
             if (split.length < 3) {
                 throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_XYZ);
             }
 
-            boolean relX = split[0].startsWith("~");
-            boolean relY = split[1].startsWith("~");
-            boolean relZ = split[2].startsWith("~");
+            Double x = ACFUtil.parseDouble(split[0]);
+            Double y = ACFUtil.parseDouble(split[1]);
+            Double z = ACFUtil.parseDouble(split[2]);
 
-            Double x = ACFUtil.parseDouble(relX ? split[0].substring(1) : split[0]);
-            Double y = ACFUtil.parseDouble(relY ? split[1].substring(1) : split[1]);
-            Double z = ACFUtil.parseDouble(relZ ? split[2].substring(1) : split[2]);
-
-            if (sourceLoc != null) {
-                if (relX || relY || relZ) {
-                    x += sourceLoc.getX();
-                    y += sourceLoc.getY();
-                    z += sourceLoc.getZ();
-                }
-            } else if (relX || relY || relZ) {
+            if (sourceLoc != null && rel) {
+                x += sourceLoc.getX();
+                y += sourceLoc.getY();
+                z += sourceLoc.getZ();
+            } else if (rel) {
                 throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_CONSOLE_NOT_RELATIVE);
             }
 
