@@ -27,7 +27,9 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -120,6 +122,81 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }
             return match;
+        });
+        registerContext(Location.class, c -> {
+            String input = c.popFirstArg();
+            CommandSender sender = c.getSender();
+            String[] split = ACFPatterns.COLON.split(input, 2);
+            if (split.length == 0) {
+                throw new InvalidCommandArgument(true);
+            }
+            if (split.length < 2 && !(sender instanceof Player) && !(sender instanceof BlockCommandSender)) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_WORLD);
+            }
+            final String world;
+            final String rest;
+            Location sourceLoc = null;
+            if (split.length == 2) {
+                world = split[0];
+                rest = split[1];
+            } else if (sender instanceof Player) {
+                sourceLoc = ((Player) sender).getLocation();
+                world = sourceLoc.getWorld().getName();
+                rest = split[0];
+            } else if (sender instanceof BlockCommandSender) {
+                sourceLoc = ((BlockCommandSender) sender).getBlock().getLocation();
+                world = sourceLoc.getWorld().getName();
+                rest = split[0];
+            } else {
+                throw new InvalidCommandArgument(true);
+            }
+            split = ACFPatterns.COMMA.split(rest);
+            if (split.length < 3) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_XYZ);
+            }
+
+            boolean relX = split[0].startsWith("~");
+            boolean relY = split[1].startsWith("~");
+            boolean relZ = split[2].startsWith("~");
+
+            Double x = ACFUtil.parseDouble(relX ? split[0].substring(1) : split[0]);
+            Double y = ACFUtil.parseDouble(relY ? split[1].substring(1) : split[1]);
+            Double z = ACFUtil.parseDouble(relZ ? split[2].substring(1) : split[2]);
+
+            if (sourceLoc != null) {
+                if (relX) {
+                    x += sourceLoc.getX();
+                }
+                if (relX) {
+                    y += sourceLoc.getY();
+                }
+                if (relZ) {
+                    z += sourceLoc.getZ();
+                }
+            } else if (relX || relY || relZ) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_CONSOLE_NOT_RELATIVE);
+            }
+
+            if (x == null || y == null || z == null) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_XYZ);
+            }
+
+            World worldObj = Bukkit.getWorld(world);
+            if (worldObj == null) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
+            }
+
+            if (split.length >= 5) {
+                Float yaw = ACFUtil.parseFloat(split[3]);
+                Float pitch = ACFUtil.parseFloat(split[4]);
+
+                if (pitch == null || yaw == null) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_XYZ);
+                }
+                return new Location(worldObj, x, y, z, yaw, pitch);
+            } else {
+                return new Location(worldObj, x, y, z);
+            }
         });
         Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?.*?\\)");
         Matcher matcher = versionPattern.matcher(Bukkit.getVersion());
