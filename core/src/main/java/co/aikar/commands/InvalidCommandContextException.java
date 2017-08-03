@@ -23,8 +23,8 @@
 
 package co.aikar.commands;
 
-public class InvalidCommandContext extends RuntimeException {
-    InvalidCommandContext(String message) {
+public class InvalidCommandContextException extends RuntimeException {
+    InvalidCommandContextException(String message) {
         super(message);
     }
 }

@@ -105,7 +105,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                     }
                 }
             } else {
-                ACFUtil.sneaky(new InvalidCommandContext(
+                ACFUtil.sneaky(new InvalidCommandContextException(
                     "Parameter " + type.getSimpleName() + " of " + this.command + " has no applicable context resolver"
                 ));
             }
