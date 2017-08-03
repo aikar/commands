@@ -41,7 +41,6 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,8 +105,8 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                     }
                 }
             } else {
-                ACFUtil.sneaky(new InvalidParameterException(
-                    "Parameter " + type.getSimpleName() + " of " + this.command + " has no resolver"
+                ACFUtil.sneaky(new InvalidCommandContext(
+                    "Parameter " + type.getSimpleName() + " of " + this.command + " has no applicable context resolver"
                 ));
             }
         }
