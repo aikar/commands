@@ -141,14 +141,12 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
 
     @Nullable
     OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
-        CommandSource sender = issuer.getIssuer();
         Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);
         //noinspection Duplicates
         if (player == null) {
             if (allowMissing) {
                 return null;
             }
-            this.manager.sendMessage(sender, MessageType.ERROR, MessageKeys.COULD_NOT_FIND_PLAYER, "{search}", lookup);
             throw new InvalidCommandArgument(false);
         }
         return new OnlinePlayer(player);

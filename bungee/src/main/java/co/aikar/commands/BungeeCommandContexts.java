@@ -38,14 +38,11 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
     BungeeCommandContexts(CommandManager manager) {
         super(manager);
         registerContext(OnlineProxiedPlayer.class, (c) -> {
-            final String playercheck = c.popFirstArg();
-            ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), playercheck);
+            ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), c.popFirstArg());
             if (proxiedPlayer == null) {
                 if (c.hasAnnotation(Optional.class)) {
                     return null;
                 }
-                c.getIssuer().sendMessage(MessageType.ERROR, MessageKeys.COULD_NOT_FIND_PLAYER,
-                        "{search}", playercheck);
                 throw new InvalidCommandArgument(false);
             }
             return new OnlineProxiedPlayer(proxiedPlayer);
