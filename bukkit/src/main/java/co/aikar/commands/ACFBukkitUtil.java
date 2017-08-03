@@ -242,48 +242,14 @@ public class ACFBukkitUtil {
      * Please move to the CommandIssuer version
      * @deprecated
      */
-    @Deprecated
     public static Player findPlayerSmart(CommandSender requester, String search) {
-        if (search == null) {
-            return null;
+        CommandManager manager = CommandManager.getCurrentCommandManager();
+        if (manager != null) {
+            return findPlayerSmart(manager.getCommandIssuer(requester), search);
         }
-        String name = ACFUtil.replace(search, ":confirm", "");
-        if (name.length() < 3) {
-            requester.sendMessage("§cUsername too short, must be at least three characters");
-            return null;
-        }
-        if (!isValidName(name)) {
-            requester.sendMessage("§c'" + name + "' is not a valid username");
-            return null;
-        }
-
-        List<Player> matches = Bukkit.getServer().matchPlayer(name);
-        List<Player> confirmList = new ArrayList<>();
-
-        // Remove confirmList players from smart matching.
-        findMatches(search, requester, matches, confirmList);
-
-        if (matches.size() > 1 || confirmList.size() > 1) {
-            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
-            return null;
-        }
-
-        if (matches.isEmpty()) {
-            if (confirmList.isEmpty()) {
-                requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
-                return null;
-            } else {
-                Player player = Iterables.getOnlyElement(confirmList);
-                sendMsg(requester,
-                        "&cWarning: " + player.getDisplayName() + "&c is vanished. Do not blow their cover!\n" +
-                        "&cTo confirm your action, add &f:confirm&c to the end of their name. \n" +
-                        "&bEx: &e/g " + player.getName() + ":confirm");
-                return null;
-            }
-        }
-
-        return matches.get(0);
+        throw new IllegalStateException("You may not use the ACFBukkitUtil#findPlayerSmart(CommandSender) async to the command execution.");
     }
+
     public static Player findPlayerSmart(CommandIssuer issuer, String search) {
         CommandSender requester = issuer.getIssuer();
         if (search == null) {

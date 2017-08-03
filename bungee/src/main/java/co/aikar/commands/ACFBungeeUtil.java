@@ -143,31 +143,12 @@ public class ACFBungeeUtil {
      * Please move to the CommandIssuer version
      * @deprecated
      */
-    @Deprecated
     public static ProxiedPlayer findPlayerSmart(CommandSender requester, String search) {
-        String name = ACFUtil.replace(search, ":confirm", "");
-        if (name.length() < 3) {
-            requester.sendMessage("§cUsername too short, must be at least three characters");
-            return null;
+        CommandManager manager = CommandManager.getCurrentCommandManager();
+        if (manager != null) {
+            return findPlayerSmart(manager.getCommandIssuer(requester), search);
         }
-        if (!isValidName(name)) {
-            requester.sendMessage("§c'" + name + "' is not a valid username");
-            return null;
-        }
-
-        List<ProxiedPlayer> matches = new ArrayList<>(ProxyServer.getInstance().matchPlayer(name));
-
-        if (matches.size() > 1) {
-            requester.sendMessage("§cMultiple players matched '" + name + "', please be more specific");
-            return null;
-        }
-
-        if (matches.isEmpty()) {
-            requester.sendMessage("§cNo player matching '" + name + "' is connected to this server");
-            return null;
-        }
-
-        return matches.get(0);
+        throw new IllegalStateException("You may not use the ACFBungeeUtil#findPlayerSmart(CommandSender) async to the command execution.");
     }
 
     public static boolean isValidName(String name) {
