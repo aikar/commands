@@ -21,38 +21,13 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.annotation;
 
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import java.util.List;
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Description {
 
-public class ForwardingCommand extends BaseCommand {
-    private final BaseCommand command;
-    private final String[] baseArgs;
-
-    ForwardingCommand(BaseCommand command, String[] baseArgs) {
-        this.commandName = command.commandName;
-        this.command = command;
-        this.baseArgs = baseArgs;
-    }
-
-    @Override
-    public boolean hasPermission(CommandIssuer sender) {
-        return command.hasPermission(sender);
-    }
-
-    @Override
-    public List<String> tabComplete(CommandIssuer issuer, String alias, String[] args) throws IllegalArgumentException {
-        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
-    }
-
-    @Override
-    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
-        command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
-    }
-
-    BaseCommand getCommand(){
-        return command;
-    }
+    String value();
 }

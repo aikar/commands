@@ -23,12 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.PreCommand;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.UnknownHandler;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -41,6 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -514,6 +510,10 @@ public abstract class BaseCommand {
             }
         }
         return false;
+    }
+
+    CommandHelp getCommandHelp(){
+       return manager.getHelp(this.getExecCommandLabel());
     }
 
     public void help(Object issuer, String[] args) {
