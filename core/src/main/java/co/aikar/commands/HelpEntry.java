@@ -23,36 +23,24 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+public class HelpEntry {
 
-import java.util.List;
+    private final RegisteredCommand command;
 
-public class ForwardingCommand extends BaseCommand {
-    private final BaseCommand command;
-    private final String[] baseArgs;
-
-    ForwardingCommand(BaseCommand command, String[] baseArgs) {
-        this.commandName = command.commandName;
+    public HelpEntry(RegisteredCommand command) {
         this.command = command;
-        this.baseArgs = baseArgs;
     }
 
-    @Override
-    public boolean hasPermission(CommandIssuer sender) {
-        return command.hasPermission(sender);
+
+    public String getCommand(){
+        return this.command.getCommand();
     }
 
-    @Override
-    public List<String> tabComplete(CommandIssuer issuer, String alias, String[] args) throws IllegalArgumentException {
-        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
+    public String getSyntax(){
+        return this.command.getSyntaxText();
     }
 
-    @Override
-    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
-        command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
-    }
-
-    BaseCommand getCommand(){
-        return command;
+    public String getHelpText(){
+        return this.command.helpText;
     }
 }

@@ -106,6 +106,10 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
+    CommandHelp getHelp(String command){
+        throw new IllegalStateException("Not implemented yet.");
+    }
+
     /**
      * Registers a command with ACF
      *
@@ -215,6 +219,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     public Locale getIssuerLocale(CommandIssuer issuer) {
         return getLocales().getDefaultLocale();
     }
+
 
     public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
         return new CommandOperationContext(

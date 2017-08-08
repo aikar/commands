@@ -98,4 +98,14 @@ public class BukkitRootCommand extends Command implements RootCommand {
     public CommandManager getManager() {
         return manager;
     }
+
+    @Override
+    public Map<String, BaseCommand> getSubCommands() {
+        return this.subCommands;
+    }
+
+    @Override
+    public BaseCommand getDefCommand(){
+        return defCommand;
+    }
 }

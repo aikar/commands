@@ -23,37 +23,41 @@
 
 package co.aikar.commands;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.SetMultimap;
 
-interface RootCommand {
-    void addChild(BaseCommand command);
-    CommandManager getManager();
+import java.util.*;
 
-    default Map<String, BaseCommand> getSubCommands(){
-        return new HashMap<>(0);
+public abstract class CommandHelp {
+    private BaseCommand command;
+
+    protected CommandHelp(CommandManager manager, BaseCommand command) {
+        this.command = command;
     }
 
-    String getCommandName();
-    default void addChildShared(List<BaseCommand> children, Map<String, BaseCommand> subCommands, BaseCommand command) {
-        command.subCommands.keySet().forEach(key -> {
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
+    abstract void renderHelp(CommandIssuer issuer);
+
+
+    Collection<HelpEntry> getCommandHelp() {
+        SetMultimap<String, RegisteredCommand> subCommands = command.subCommands;
+        Set<HelpEntry> help = new HashSet<>();
+        List<String> used = new ArrayList<>();
+        subCommands.entries().forEach(e -> {
+            if(e.getKey().equals("__default") || e.getKey().equals("__unknown")){
                 return;
             }
-            BaseCommand regged = subCommands.get(key);
-            if (regged != null) {
-                this.getManager().log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getCommandName() + " - but it is already defined in " + regged.getName());
-                this.getManager().log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
+            RegisteredCommand regCommand = e.getValue();
+            if(!used.contains(regCommand.getCommand())) {
+                help.add(new HelpEntry(regCommand));
+                used.add(regCommand.getCommand());
+
             }
-            subCommands.put(key, command);
         });
-
-        children.add(command);
+        return help;
     }
 
-    default BaseCommand getDefCommand(){
-        return null;
+    public BaseCommand getCommand() {
+        return command;
     }
+
+
 }
