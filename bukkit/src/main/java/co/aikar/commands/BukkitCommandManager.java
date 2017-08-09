@@ -267,11 +267,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
     }
 
     @Override
-    CommandHelp getHelp(String command) {
-        RootCommand cmd = obtainRootCommand(command);
-        BaseCommand defCommand = cmd.getDefCommand();
-        if (defCommand == null)
-            return null;
-        return new BukkitCommandHelp(this, defCommand);
+    public CommandHelp generateCommandHelp(BaseCommand command) {
+        return new CommandHelp(this, command, getCurrentCommandOperationContext());
     }
 }

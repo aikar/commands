@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class BukkitRootCommand extends Command implements RootCommand {
@@ -39,7 +40,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
     private final BukkitCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
-    private Map<String, BaseCommand> subCommands = new HashMap<>();
+    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -73,9 +74,9 @@ public class BukkitRootCommand extends Command implements RootCommand {
     private boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
         for (int i = args.length; i >= 0; i--) {
             String checkSub = StringUtils.join(args, " ", 0, i).toLowerCase();
-            BaseCommand subHandler = this.subCommands.get(checkSub);
-            if (subHandler != null) {
-                subHandler.execute(sender, commandLabel, args);
+            Set<RegisteredCommand> registeredCommands = this.subCommands.get(checkSub);
+            if (!registeredCommands.isEmpty()) {
+                registeredCommands.iterator().next().scope.execute(sender, commandLabel, args);
                 return true;
             }
         }
@@ -100,7 +101,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
-    public Map<String, BaseCommand> getSubCommands() {
+    public SetMultimap<String, RegisteredCommand> getSubCommands() {
         return this.subCommands;
     }
 

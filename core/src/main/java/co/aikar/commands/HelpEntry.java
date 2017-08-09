@@ -33,11 +33,11 @@ public class HelpEntry {
 
 
     public String getCommand(){
-        return this.command.getCommand();
+        return "/" + this.command.command;
     }
 
-    public String getSyntax(){
-        return this.command.getSyntaxText();
+    public String getParameterSyntax(){
+        return this.command.syntaxText;
     }
 
     public String getHelpText(){

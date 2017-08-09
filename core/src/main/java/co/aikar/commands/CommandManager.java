@@ -106,9 +106,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
-    CommandHelp getHelp(String command){
-        throw new IllegalStateException("Not implemented yet.");
-    }
+    public abstract CommandHelp generateCommandHelp(BaseCommand command);
 
     /**
      * Registers a command with ACF

@@ -23,31 +23,35 @@
 
 package co.aikar.commands;
 
-import java.util.HashMap;
+import com.google.common.collect.SetMultimap;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
 
-    default Map<String, BaseCommand> getSubCommands(){
-        return new HashMap<>(0);
-    }
+    SetMultimap<String, RegisteredCommand> getSubCommands();
 
     String getCommandName();
-    default void addChildShared(List<BaseCommand> children, Map<String, BaseCommand> subCommands, BaseCommand command) {
-        command.subCommands.keySet().forEach(key -> {
+    default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
+        command.subCommands.entries().forEach(e -> {
+            String key = e.getKey();
+            RegisteredCommand registeredCommand = e.getValue();
             if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.UNKNOWN)) {
                 return;
             }
-            BaseCommand regged = subCommands.get(key);
-            if (regged != null) {
-                this.getManager().log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getCommandName() + " - but it is already defined in " + regged.getName());
-                this.getManager().log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
-                return;
+            Set<RegisteredCommand> registered = subCommands.get(key);
+            if (!registered.isEmpty()) {
+                BaseCommand prevBase = registered.iterator().next().scope;
+                if (prevBase != registeredCommand.scope) {
+                    this.getManager().log(LogLevel.ERROR, "ACF Error: " + command.getName() + " registered subcommand " + key + " for root command " + getCommandName() + " - but it is already defined in " + prevBase.getName());
+                    this.getManager().log(LogLevel.ERROR, "2 subcommands of the same prefix may not be spread over 2 different classes. Ignoring this.");
+                    return;
+                }
             }
-            subCommands.put(key, command);
+            subCommands.put(key, registeredCommand);
         });
 
         children.add(command);

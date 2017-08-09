@@ -27,37 +27,58 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.*;
 
-public abstract class CommandHelp {
-    private BaseCommand command;
+public class CommandHelp {
+    private final CommandManager manager;
+    private final List<HelpEntry> helpEntries;
+    private final CommandOperationContext currentContext;
 
-    protected CommandHelp(CommandManager manager, BaseCommand command) {
-        this.command = command;
+    protected CommandHelp(CommandManager manager, BaseCommand command, CommandOperationContext currentContext) {
+        this.manager = manager;
+        this.currentContext = currentContext;
+
+        List<HelpEntry> entries = new ArrayList<>();
+        for (RootCommand root : command.registeredCommands.values()) {
+            SetMultimap<String, RegisteredCommand> subCommands = root.getSubCommands();
+            subCommands.entries().forEach(e -> {
+                if (e.getKey().equals("__default") || e.getKey().equals("__unknown")){
+                    return;
+                }
+                RegisteredCommand regCommand = e.getValue();
+                entries.add(new HelpEntry(regCommand));
+
+            });
+        }
+
+        this.helpEntries = entries;
     }
 
-    abstract void renderHelp(CommandIssuer issuer);
+    public CommandManager getManager() {
+        return manager;
+    }
 
+    public void showHelp() {
+        showHelp(currentContext.getCommandIssuer());
+    }
 
-    Collection<HelpEntry> getCommandHelp() {
-        SetMultimap<String, RegisteredCommand> subCommands = command.subCommands;
-        Set<HelpEntry> help = new HashSet<>();
-        List<String> used = new ArrayList<>();
-        subCommands.entries().forEach(e -> {
-            if(e.getKey().equals("__default") || e.getKey().equals("__unknown")){
-                return;
-            }
-            RegisteredCommand regCommand = e.getValue();
-            if(!used.contains(regCommand.getCommand())) {
-                help.add(new HelpEntry(regCommand));
-                used.add(regCommand.getCommand());
-
-            }
+    public void showHelp(CommandIssuer issuer) {
+        getHelpEntries().forEach(h -> {
+            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_FORMAT,
+                    //{command} {parameters} {seperator} {helptext}
+                    "{command}", h.getCommand(),
+                    "{parameters}", h.getParameterSyntax(),
+                    "{seperator}", h.getHelpText().isEmpty() ? "" : " - ",
+                    "{helptext}", h.getHelpText()
+            );
         });
-        return help;
-    }
 
-    public BaseCommand getCommand() {
-        return command;
     }
 
 
+    public List<HelpEntry> getHelpEntries() {
+        return helpEntries;
+    }
+
+    public CommandOperationContext getCurrentContext() {
+        return currentContext;
+    }
 }

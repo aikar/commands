@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.locales.LocaleManager;
 import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import org.jetbrains.annotations.NotNull;
@@ -130,11 +131,12 @@ public class Locales {
         return this.localeManager.addMessage(locale, key, message);
     }
 
-    public String getMessage(CommandIssuer issuer, MessageKey key) {
-        String message = this.localeManager.getMessage(issuer, key);
+    public String getMessage(CommandIssuer issuer, MessageKeyProvider key) {
+        final MessageKey msgKey = key.getMessageKey();
+        String message = this.localeManager.getMessage(issuer, msgKey);
         if (message == null) {
-            manager.log(LogLevel.ERROR, "Missing Language Key: " + key.getKey());
-            message = "<MISSING_LANGUAGE_KEY:" + key.getKey() + ">";
+            manager.log(LogLevel.ERROR, "Missing Language Key: " + msgKey.getKey());
+            message = "<MISSING_LANGUAGE_KEY:" + msgKey.getKey() + ">";
         }
         return message;
     }
