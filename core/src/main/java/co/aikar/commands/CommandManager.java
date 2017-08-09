@@ -108,18 +108,25 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp generateCommandHelp(@NotNull String command) {
+        verifyUnstableAPI("help");
         CommandOperationContext context = getCurrentCommandOperationContext();
         if (context == null) {
             throw new IllegalStateException("This method can only be called as part of a command execution.");
         }
         return generateCommandHelp(context.getCommandIssuer(), command);
     }
+
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp generateCommandHelp(CommandIssuer issuer, @NotNull String command) {
+        verifyUnstableAPI("help");
         return generateCommandHelp(issuer, obtainRootCommand(ACFPatterns.SPACE.split(command, 2)[0]));
     }
 
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp generateCommandHelp() {
+        verifyUnstableAPI("help");
         CommandOperationContext context = getCurrentCommandOperationContext();
         if (context == null) {
             throw new IllegalStateException("This method can only be called as part of a command execution.");
@@ -128,7 +135,9 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
         return generateCommandHelp(context.getCommandIssuer(), this.obtainRootCommand(commandLabel));
     }
 
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp generateCommandHelp(CommandIssuer issuer, RootCommand rootCommand) {
+        verifyUnstableAPI("help");
         return new CommandHelp(this, rootCommand, issuer);
     }
 

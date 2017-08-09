@@ -512,10 +512,12 @@ public abstract class BaseCommand {
         return false;
     }
 
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp getCommandHelp() {
        return manager.generateCommandHelp();
     }
 
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public void showCommandHelp() {
         getCommandHelp().showHelp();
     }

@@ -27,7 +27,7 @@ public class HelpEntry {
 
     private final RegisteredCommand command;
 
-    public HelpEntry(RegisteredCommand command) {
+    HelpEntry(RegisteredCommand command) {
         this.command = command;
     }
 
