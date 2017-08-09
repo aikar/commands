@@ -40,7 +40,7 @@ public class HelpEntry {
         return this.command.syntaxText;
     }
 
-    public String getHelpText(){
+    public String getDescription(){
         return this.command.helpText;
     }
 }

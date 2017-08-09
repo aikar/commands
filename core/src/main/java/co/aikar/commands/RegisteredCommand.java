@@ -70,7 +70,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         this.parameters = method.getParameters();
 
         Description descriptionAnno = method.getAnnotation(Description.class);
-        this.helpText = descriptionAnno != null? descriptionAnno.value() : null;
+        this.helpText = descriptionAnno != null ? descriptionAnno.value() : "";
         //noinspection unchecked
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);

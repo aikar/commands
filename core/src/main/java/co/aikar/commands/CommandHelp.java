@@ -60,11 +60,11 @@ public class CommandHelp {
 
     public void showHelp(CommandIssuer issuer) {
         getHelpEntries().forEach(e -> issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_FORMAT,
-                //{command} {parameters} {seperator} {helptext}
+                //{command} {parameters} {seperator} {description}
                 "{command}", e.getCommand(),
                 "{parameters}", e.getParameterSyntax(),
-                "{seperator}", e.getHelpText().isEmpty() ? "" : " - ",
-                "{helptext}", e.getHelpText()
+                "{seperator}", e.getDescription().isEmpty() ? "" : " - ",
+                "{description}", e.getDescription()
         ));
     }
 
