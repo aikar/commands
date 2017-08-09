@@ -220,6 +220,14 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     }
 
     public void sendMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
+        String message = formatMessage(issuer, type, key, replacements);
+
+        for (String msg : ACFPatterns.NEWLINE.split(message)) {
+            issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+        }
+    }
+
+    public String formatMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
         String message = getLocales().getMessage(issuer, key.getMessageKey());
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
@@ -231,10 +239,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
         if (formatter != null) {
             message = formatter.format(message);
         }
-
-        for (String msg : ACFPatterns.NEWLINE.split(message)) {
-            issuer.sendMessageInternal(msg);
-        }
+        return message;
     }
 
     public Locale getIssuerLocale(CommandIssuer issuer) {

@@ -23,7 +23,9 @@
 
 package co.aikar.commands;
 
+import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.SetMultimap;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -38,14 +40,16 @@ public class CommandHelp {
         this.issuer = issuer;
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
+        Set<RegisteredCommand> seen = new HashSet<>();
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
             if (key.equals("__default") || key.equals("__unknown")){
                 return;
             }
             RegisteredCommand regCommand = e.getValue();
-            if (regCommand.hasPermission(issuer)) {
+            if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
                 this.helpEntries.add(new HelpEntry(regCommand));
+                seen.add(regCommand);
             }
         });
     }
@@ -55,17 +59,36 @@ public class CommandHelp {
     }
 
     public void showHelp() {
-        showHelp(issuer);
+        showHelp(issuer, MessageKeys.HELP_FORMAT);
     }
 
     public void showHelp(CommandIssuer issuer) {
-        getHelpEntries().forEach(e -> issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_FORMAT,
-                //{command} {parameters} {seperator} {description}
+        showHelp(issuer, MessageKeys.HELP_FORMAT);
+    }
+
+    public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
+        getHelpEntries().forEach(e -> {
+            String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
+            for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
+                issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+            }
+        });
+    }
+
+    /**
+     * Override this to control replacements
+     * @param e
+     * @return
+     */
+    @NotNull
+    public String[] getFormatReplacements(HelpEntry e) {
+        //{command} {parameters} {seperator} {description}
+        return new String[] {
                 "{command}", e.getCommand(),
                 "{parameters}", e.getParameterSyntax(),
-                "{seperator}", e.getDescription().isEmpty() ? "" : " - ",
+                "{seperator}", e.getDescription().isEmpty() ? "" : "-",
                 "{description}", e.getDescription()
-        ));
+        };
     }
 
     public List<HelpEntry> getHelpEntries() {

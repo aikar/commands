@@ -71,7 +71,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
         this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
-        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.GREEN, ChatColor.YELLOW));
+        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
         getLocales(); // auto load locales
     }
