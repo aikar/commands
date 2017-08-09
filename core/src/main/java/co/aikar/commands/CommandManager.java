@@ -52,6 +52,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH);
     protected Map<MessageType, F> formatters = new IdentityHashMap<>();
     protected F defaultFormatter;
+    private Set<String> unstableAPIs = Sets.newHashSet();
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
@@ -275,5 +276,19 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     public void addSupportedLanguage(Locale locale) {
         supportedLanguages.add(locale);
         getLocales().loadMissingBundles();
+    }
+
+    /**
+     * @deprecated Use this with caution! If you enable and use Unstable API's, your next compile using ACF
+     * may require you to update your implementation to those unstable API's
+     */
+    @Deprecated
+    public void enableUnstableAPI(String api) {
+        unstableAPIs.add(api);
+    }
+    void verifyUnstableAPI(String api) {
+        if (!unstableAPIs.contains(api)) {
+            throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");
+        }
     }
 }
