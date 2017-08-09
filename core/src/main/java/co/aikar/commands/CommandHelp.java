@@ -27,29 +27,27 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class CommandHelp {
     private final CommandManager manager;
-    private final List<HelpEntry> helpEntries;
-    private final CommandOperationContext currentContext;
+    private final CommandIssuer issuer;
+    private final List<HelpEntry> helpEntries = new ArrayList<>();
 
-    protected CommandHelp(CommandManager manager, BaseCommand command, CommandOperationContext currentContext) {
+    public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
         this.manager = manager;
-        this.currentContext = currentContext;
+        this.issuer = issuer;
 
-        List<HelpEntry> entries = new ArrayList<>();
-        for (RootCommand root : command.registeredCommands.values()) {
-            SetMultimap<String, RegisteredCommand> subCommands = root.getSubCommands();
-            subCommands.entries().forEach(e -> {
-                if (e.getKey().equals("__default") || e.getKey().equals("__unknown")){
-                    return;
-                }
-                RegisteredCommand regCommand = e.getValue();
-                entries.add(new HelpEntry(regCommand));
-
-            });
-        }
-
-        this.helpEntries = entries;
+        SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
+        subCommands.entries().forEach(e -> {
+            String key = e.getKey();
+            if (key.equals("__default") || key.equals("__unknown")){
+                return;
+            }
+            RegisteredCommand regCommand = e.getValue();
+            if (regCommand.hasPermission(issuer)) {
+                this.helpEntries.add(new HelpEntry(regCommand));
+            }
+        });
     }
 
     public CommandManager getManager() {
@@ -57,28 +55,20 @@ public class CommandHelp {
     }
 
     public void showHelp() {
-        showHelp(currentContext.getCommandIssuer());
+        showHelp(issuer);
     }
 
     public void showHelp(CommandIssuer issuer) {
-        getHelpEntries().forEach(h -> {
-            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_FORMAT,
-                    //{command} {parameters} {seperator} {helptext}
-                    "{command}", h.getCommand(),
-                    "{parameters}", h.getParameterSyntax(),
-                    "{seperator}", h.getHelpText().isEmpty() ? "" : " - ",
-                    "{helptext}", h.getHelpText()
-            );
-        });
-
+        getHelpEntries().forEach(e -> issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_FORMAT,
+                //{command} {parameters} {seperator} {helptext}
+                "{command}", e.getCommand(),
+                "{parameters}", e.getParameterSyntax(),
+                "{seperator}", e.getHelpText().isEmpty() ? "" : " - ",
+                "{helptext}", e.getHelpText()
+        ));
     }
-
 
     public List<HelpEntry> getHelpEntries() {
         return helpEntries;
-    }
-
-    public CommandOperationContext getCurrentContext() {
-        return currentContext;
     }
 }

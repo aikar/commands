@@ -23,7 +23,8 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -35,7 +36,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     private final BungeeCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
-    private Map<String, BaseCommand> subCommands = new HashMap<>();
+    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -65,26 +66,18 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        execute(new BungeeCommandIssuer(manager, sender), getName(), args);
+    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+        return subCommands;
     }
 
-    private void execute(CommandIssuer sender, String commandLabel, String[] args) {
-        for (int i = args.length; i >= 0; i--) {
-            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
-            BaseCommand subHandler = this.subCommands.get(checkSub);
-            if (subHandler != null) {
-                subHandler.execute(sender, commandLabel, args);
-                return;
-            }
-        }
-
-        this.defCommand.execute(sender, commandLabel, args);
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        execute(manager.getCommandIssuer(sender), getName(), args);
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-        return onTabComplete(new BungeeCommandIssuer(manager, commandSender), getName(), strings);
+        return onTabComplete(manager.getCommandIssuer(commandSender), getName(), strings);
     }
 
     private List<String> onTabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {

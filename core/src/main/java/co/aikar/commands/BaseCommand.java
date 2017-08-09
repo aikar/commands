@@ -512,8 +512,8 @@ public abstract class BaseCommand {
         return false;
     }
 
-    public CommandHelp getCommandHelp(){
-       return manager.generateCommandHelp(this);
+    public CommandHelp getCommandHelp() {
+       return manager.generateCommandHelp();
     }
 
     public void help(Object issuer, String[] args) {

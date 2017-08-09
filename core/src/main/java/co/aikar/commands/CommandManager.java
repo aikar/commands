@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.Sets;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -106,7 +107,29 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
-    public abstract CommandHelp generateCommandHelp(BaseCommand command);
+    public CommandHelp generateCommandHelp(@NotNull String command) {
+        CommandOperationContext context = getCurrentCommandOperationContext();
+        if (context == null) {
+            throw new IllegalStateException("This method can only be called as part of a command execution.");
+        }
+        return generateCommandHelp(context.getCommandIssuer(), command);
+    }
+    public CommandHelp generateCommandHelp(CommandIssuer issuer, @NotNull String command) {
+        return generateCommandHelp(issuer, obtainRootCommand(ACFPatterns.SPACE.split(command, 2)[0]));
+    }
+
+    public CommandHelp generateCommandHelp() {
+        CommandOperationContext context = getCurrentCommandOperationContext();
+        if (context == null) {
+            throw new IllegalStateException("This method can only be called as part of a command execution.");
+        }
+        String commandLabel = context.getCommandLabel();
+        return generateCommandHelp(context.getCommandIssuer(), this.obtainRootCommand(commandLabel));
+    }
+
+    public CommandHelp generateCommandHelp(CommandIssuer issuer, RootCommand rootCommand) {
+        return new CommandHelp(this, rootCommand, issuer);
+    }
 
     /**
      * Registers a command with ACF

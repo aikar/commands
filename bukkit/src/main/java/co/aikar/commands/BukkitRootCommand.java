@@ -25,12 +25,10 @@ package co.aikar.commands;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,12 +55,13 @@ public class BukkitRootCommand extends Command implements RootCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return tabComplete(new BukkitCommandIssuer(manager, sender), alias, args);
+        return tabComplete(manager.getCommandIssuer(sender), alias, args);
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        return execute(new BukkitCommandIssuer(manager, sender), commandLabel, args);
+        execute(manager.getCommandIssuer(sender), commandLabel, args);
+        return true;
     }
 
     private List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
@@ -71,19 +70,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
         return new ArrayList<>(completions);
     }
 
-    private boolean execute(CommandIssuer sender, String commandLabel, String[] args) {
-        for (int i = args.length; i >= 0; i--) {
-            String checkSub = StringUtils.join(args, " ", 0, i).toLowerCase();
-            Set<RegisteredCommand> registeredCommands = this.subCommands.get(checkSub);
-            if (!registeredCommands.isEmpty()) {
-                registeredCommands.iterator().next().scope.execute(sender, commandLabel, args);
-                return true;
-            }
-        }
 
-        this.defCommand.execute(sender, commandLabel, args);
-        return true;
-    }
 
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {

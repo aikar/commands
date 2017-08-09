@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.SetMultimap;
 
 import java.util.List;
@@ -55,6 +56,21 @@ interface RootCommand {
         });
 
         children.add(command);
+    }
+
+    default BaseCommand execute(CommandIssuer sender, String commandLabel, String[] args) {
+        BaseCommand command = getDefCommand();
+        for (int i = args.length; i >= 0; i--) {
+            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
+            Set<RegisteredCommand> registeredCommands = getSubCommands().get(checkSub);
+            if (!registeredCommands.isEmpty()) {
+                command = registeredCommands.iterator().next().scope;
+                break;
+            }
+        }
+
+        command.execute(sender, commandLabel, args);
+        return command;
     }
 
     default BaseCommand getDefCommand(){

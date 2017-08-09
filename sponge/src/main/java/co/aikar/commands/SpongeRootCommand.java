@@ -23,7 +23,8 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -34,10 +35,8 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,9 +45,9 @@ import javax.annotation.Nullable;
 public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     private final SpongeCommandManager manager;
-    final String name;
+    private final String name;
     private BaseCommand defCommand;
-    private Map<String, BaseCommand> subCommands = new HashMap<>();
+    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -65,13 +64,13 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     @Override
     public CommandResult process(@NotNull CommandSource source, @NotNull String arguments) throws CommandException {
         String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
-        return this.execute(new SpongeCommandIssuer(manager, source), this.name, args);
+        return this.executeSponge(manager.getCommandIssuer(source), this.name, args);
     }
 
     @Override
     public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
         String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
-        return tabComplete(new SpongeCommandIssuer(manager, source), this.name, args);
+        return tabComplete(manager.getCommandIssuer(source), this.name, args);
     }
 
     @Override
@@ -100,18 +99,8 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
         return new ArrayList<>(completions);
     }
 
-    private CommandResult execute(CommandIssuer sender, String commandLabel, String[] args) {
-        BaseCommand cmd = this.defCommand;
-        for (int i = args.length; i >= 0; i--) {
-            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
-            BaseCommand subHandler = this.subCommands.get(checkSub);
-            if (subHandler != null) {
-                cmd = subHandler;
-                break;
-            }
-        }
-
-        cmd.execute(sender, commandLabel, args);
+    private CommandResult executeSponge(CommandIssuer sender, String commandLabel, String[] args) {
+        BaseCommand cmd = execute(sender, commandLabel, args);
         return ((SpongeCommandOperationContext) cmd.lastCommandOperationContext).getResult();
     }
 
@@ -125,5 +114,10 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     @Override
     public CommandManager getManager() {
         return manager;
+    }
+
+    @Override
+    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+        return subCommands;
     }
 }

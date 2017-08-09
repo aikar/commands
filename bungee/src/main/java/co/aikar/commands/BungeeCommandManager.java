@@ -51,6 +51,7 @@ public class BungeeCommandManager extends CommandManager<CommandSender, ChatColo
         this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
+        this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.GREEN, ChatColor.YELLOW));
         getLocales(); // auto load locales
     }
 
