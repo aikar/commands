@@ -28,6 +28,7 @@ import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -97,7 +98,7 @@ public class Locales {
      */
     public void loadMissingBundles() {
         for (Locale locale : manager.getSupportedLanguages()) {
-            for (String bundleName : loadedBundles.keys()) {
+            for (String bundleName : Sets.newHashSet(loadedBundles.keys())) {
                 addMessageBundle(bundleName, locale);
             }
         }
