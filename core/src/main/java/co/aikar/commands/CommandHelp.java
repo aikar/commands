@@ -28,12 +28,15 @@ import com.google.common.collect.SetMultimap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHelp {
     private final CommandManager manager;
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
+    private int page;
+    private List<String> search;
 
     public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
         this.manager = manager;
@@ -46,12 +49,30 @@ public class CommandHelp {
             if (key.equals("__default") || key.equals("__unknown")){
                 return;
             }
+
             RegisteredCommand regCommand = e.getValue();
             if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
                 this.helpEntries.add(new HelpEntry(regCommand));
                 seen.add(regCommand);
             }
         });
+    }
+
+    private boolean matchesSearch(HelpEntry help) {
+        if (this.search == null) {
+            return true;
+        }
+        final RegisteredCommand cmd = help.getRegisteredCommand();
+
+        for (String word : this.search) {
+            Pattern pattern = Pattern.compile(Pattern.quote(word));
+            if (pattern.matcher(cmd.command).matches()) {
+                return true;
+            } else if (pattern.matcher(help.getDescription()).matches()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public CommandManager getManager() {
@@ -68,6 +89,9 @@ public class CommandHelp {
 
     public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
         getHelpEntries().forEach(e -> {
+            if (!matchesSearch(e)) {
+                return;
+            }
             String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
             for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
                 issuer.sendMessageInternal(ACFUtil.rtrim(msg));
@@ -93,5 +117,13 @@ public class CommandHelp {
 
     public List<HelpEntry> getHelpEntries() {
         return helpEntries;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setSearch(List<String> search) {
+        this.search = search;
     }
 }

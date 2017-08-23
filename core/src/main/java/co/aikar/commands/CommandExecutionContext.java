@@ -176,4 +176,11 @@ public class CommandExecutionContext <T extends CommandExecutionContext, I exten
     public Map<String, String> getFlags() {
         return this.flags;
     }
+
+    public String joinArgs() {
+        return ACFUtil.join(args, " ");
+    }
+    public String joinArgs(String sep) {
+        return ACFUtil.join(args, sep);
+    }
 }

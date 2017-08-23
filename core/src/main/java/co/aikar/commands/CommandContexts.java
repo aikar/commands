@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
+import co.aikar.commands.contexts.OptionalContextResolver;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -145,6 +146,24 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             }
             return match;
         });
+        registerOptionalContext(CommandHelp.class, (c) -> {
+            String first = c.getFirstArg();
+            int page = 1;
+            List<String> search = null;
+            if (first != null && ACFUtil.isInteger(first)) {
+                c.popFirstArg();
+                page = ACFUtil.parseInt(first);
+                if (!c.getArgs().isEmpty()) {
+                    search = c.getArgs();
+                }
+            } else if (first != null && !c.getArgs().isEmpty()) {
+                search = c.getArgs();
+            }
+            CommandHelp commandHelp = manager.generateCommandHelp();
+            commandHelp.setPage(page);
+            commandHelp.setSearch(search);
+            return commandHelp;
+        });
     }
 
     /**
@@ -172,6 +191,14 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
      * issuer of the command, so it will not appear in syntax strings.
      */
     public <T> void registerIssuerOnlyContext(Class<T> context, IssuerOnlyContextResolver<T, R> supplier) {
+        contextMap.put(context, supplier);
+    }
+
+    /**
+     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always
+     * call {@link CommandExecutionContext#popFirstArg()}
+     */
+    public <T> void registerOptionalContext(Class<T> context, OptionalContextResolver<T, R> supplier) {
         contextMap.put(context, supplier);
     }
 

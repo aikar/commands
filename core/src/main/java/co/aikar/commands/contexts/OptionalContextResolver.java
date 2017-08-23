@@ -21,30 +21,12 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.contexts;
 
-public class HelpEntry {
+import co.aikar.commands.CommandExecutionContext;
+import co.aikar.commands.CommandIssuer;
 
-    private final RegisteredCommand command;
-
-    HelpEntry(RegisteredCommand command) {
-        this.command = command;
-    }
-
-    RegisteredCommand getRegisteredCommand() {
-        return this.command;
-    }
-
-
-    public String getCommand(){
-        return "/" + this.command.command;
-    }
-
-    public String getParameterSyntax(){
-        return this.command.syntaxText;
-    }
-
-    public String getDescription(){
-        return this.command.helpText;
-    }
-}
+/**
+ * Context Resolver that can accept null input
+ */
+public interface OptionalContextResolver <T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver <T, C> {}
