@@ -148,15 +148,22 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         });
         registerOptionalContext(CommandHelp.class, (c) -> {
             String first = c.getFirstArg();
+            String last = c.getLastArg();
             int page = 1;
             List<String> search = null;
-            if (first != null && ACFUtil.isInteger(first)) {
+            if (last != null && ACFUtil.isInteger(last)) {
+                c.popLastArg();
+                page = ACFUtil.parseInt(last);
+                if (!c.getArgs().isEmpty()) {
+                    search = c.getArgs();
+                }
+            } else if (first != null && ACFUtil.isInteger(first)) {
                 c.popFirstArg();
                 page = ACFUtil.parseInt(first);
                 if (!c.getArgs().isEmpty()) {
                     search = c.getArgs();
                 }
-            } else if (first != null && !c.getArgs().isEmpty()) {
+            } else if (!c.getArgs().isEmpty()) {
                 search = c.getArgs();
             }
             CommandHelp commandHelp = manager.generateCommandHelp();

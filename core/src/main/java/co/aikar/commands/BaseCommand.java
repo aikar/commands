@@ -255,6 +255,7 @@ public abstract class BaseCommand {
         for (String subcmd : cmdList) {
             subCommands.put(subcmd, cmd);
         }
+        cmd.addSubcommands(cmdList);
 
         if (aliasNames != null) {
             for (String name : aliasNames) {

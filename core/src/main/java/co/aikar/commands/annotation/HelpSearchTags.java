@@ -21,52 +21,12 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.annotation;
 
-import co.aikar.commands.annotation.HelpSearchTags;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class HelpEntry {
-
-    private final RegisteredCommand command;
-    private final String searchTags;
-    private int searchScore = 1;
-
-    HelpEntry(RegisteredCommand command) {
-        this.command = command;
-        HelpSearchTags tagsAnno = command.method.getAnnotation(HelpSearchTags.class);
-        this.searchTags = tagsAnno != null ? tagsAnno.value() : null;
-    }
-
-    RegisteredCommand getRegisteredCommand() {
-        return this.command;
-    }
-
-
-    public String getCommand(){
-        return "/" + this.command.command;
-    }
-
-    public String getParameterSyntax(){
-        return this.command.syntaxText;
-    }
-
-    public String getDescription(){
-        return this.command.helpText;
-    }
-
-    public void setSearchScore(int searchScore) {
-        this.searchScore = searchScore;
-    }
-
-    public boolean shouldShow() {
-        return this.searchScore > 0;
-    }
-
-    public int getSearchScore() {
-        return searchScore;
-    }
-
-    public String getSearchTags() {
-        return searchTags;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface HelpSearchTags {
+    String value();
 }

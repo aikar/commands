@@ -44,7 +44,8 @@ public enum MessageKeys implements MessageKeyProvider {
     MUST_BE_MAX_LENGTH,
     NOT_ALLOWED_ON_CONSOLE,
     COULD_NOT_FIND_PLAYER,
-    HELP_FORMAT;
+    HELP_FORMAT,
+    NO_COMMAND_MATCHED_SEARCH;
 
     private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
     public MessageKey getMessageKey() {

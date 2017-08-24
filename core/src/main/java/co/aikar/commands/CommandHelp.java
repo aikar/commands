@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHelp {
@@ -58,21 +59,38 @@ public class CommandHelp {
         });
     }
 
-    private boolean matchesSearch(HelpEntry help) {
-        if (this.search == null) {
-            return true;
+    @UnstableAPI // Not sure on this one yet even when API becomes unstable
+    protected void updateSearchScore(HelpEntry help) {
+        if (this.search == null || this.search.isEmpty()) {
+            help.setSearchScore(1);
+            return;
         }
-        final RegisteredCommand cmd = help.getRegisteredCommand();
+        final RegisteredCommand<?> cmd = help.getRegisteredCommand();
 
+        int searchScore = 0;
         for (String word : this.search) {
-            Pattern pattern = Pattern.compile(Pattern.quote(word));
-            if (pattern.matcher(cmd.command).matches()) {
-                return true;
-            } else if (pattern.matcher(help.getDescription()).matches()) {
-                return true;
+            Pattern pattern = Pattern.compile(".*" + Pattern.quote(word) + ".*", Pattern.CASE_INSENSITIVE);
+            for (String subCmd : cmd.registeredSubcommands) {
+                Pattern subCmdPattern = Pattern.compile(".*" + Pattern.quote(subCmd) + ".*", Pattern.CASE_INSENSITIVE);
+                if (pattern.matcher(subCmd).matches()) {
+                    searchScore += 3;
+                } else if (subCmdPattern.matcher(word).matches()) {
+                    searchScore++;
+                }
+            }
+
+
+            if (pattern.matcher(help.getDescription()).matches()) {
+                searchScore += 2;
+            }
+            if (pattern.matcher(help.getParameterSyntax()).matches()) {
+                searchScore++;
+            }
+            if (help.getSearchTags() != null && pattern.matcher(help.getSearchTags()).matches()) {
+                searchScore += 2;
             }
         }
-        return false;
+        help.setSearchScore(searchScore);
     }
 
     public CommandManager getManager() {
@@ -88,15 +106,21 @@ public class CommandHelp {
     }
 
     public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
-        getHelpEntries().forEach(e -> {
-            if (!matchesSearch(e)) {
-                return;
-            }
+        Iterator<HelpEntry> results = getHelpEntries().stream()
+                .filter(HelpEntry::shouldShow)
+                .sorted(Comparator.comparingInt(helpEntry -> helpEntry.getSearchScore() * -1)).iterator();
+        if (!results.hasNext()) {
+            issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));
+            results = getHelpEntries().iterator();
+        }
+
+        while (results.hasNext()) {
+            HelpEntry e = results.next();
             String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
             for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
                 issuer.sendMessageInternal(ACFUtil.rtrim(msg));
             }
-        });
+        }
     }
 
     /**
@@ -125,5 +149,6 @@ public class CommandHelp {
 
     public void setSearch(List<String> search) {
         this.search = search;
+        getHelpEntries().forEach(this::updateSearchScore);
     }
 }

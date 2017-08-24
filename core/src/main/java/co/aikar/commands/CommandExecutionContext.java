@@ -70,8 +70,16 @@ public class CommandExecutionContext <T extends CommandExecutionContext, I exten
         return !args.isEmpty() ? args.remove(0) : null;
     }
 
+    public String popLastArg() {
+        return !args.isEmpty() ? args.remove(args.size() - 1) : null;
+    }
+
     public String getFirstArg() {
         return !args.isEmpty() ? args.get(0) : null;
+    }
+
+    public String getLastArg() {
+        return !args.isEmpty() ? args.get(args.size() - 1) : null;
     }
 
     public boolean isLastArg() {

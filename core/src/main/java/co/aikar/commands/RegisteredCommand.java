@@ -27,6 +27,7 @@ import co.aikar.commands.annotation.*;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
+import co.aikar.commands.contexts.OptionalContextResolver;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -35,6 +36,8 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +57,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     final String complete;
     final int requiredResolvers;
     final int optionalResolvers;
+    final List<String> registeredSubcommands = new ArrayList<>();
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -116,13 +120,14 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     }
 
     private boolean isOptionalResolver(ContextResolver<?, R> resolver, Parameter parameter) {
-        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver
+        return isOptionalResolver(resolver)
                 || parameter.getAnnotation(Optional.class) != null
                 || parameter.getAnnotation(Default.class) != null;
     }
 
-    private boolean isSenderAwareResolver(ContextResolver<?, R> resolver) {
-        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver;
+    private boolean isOptionalResolver(ContextResolver<?, R> resolver) {
+        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver
+                || resolver instanceof OptionalContextResolver;
     }
 
     void invoke(CommandIssuer sender, List<String> args) {
@@ -195,7 +200,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 if (allowOptional && def != null) {
                     args.add(scope.manager.getCommandReplacements().replace(def.value()));
                 } else if (allowOptional && opt != null) {
-                    passedArgs.put(parameterName, isSenderAwareResolver(resolver) ? resolver.getContext(context) : null);
+                    passedArgs.put(parameterName, isOptionalResolver(resolver) ? resolver.getContext(context) : null);
                     //noinspection UnnecessaryContinue
                     continue;
                 } else if (!isOptionalResolver) {
@@ -246,5 +251,12 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
 
     public String getCommand() {
         return command;
+    }
+
+    public void addSubcommand(String cmd) {
+        this.registeredSubcommands.add(cmd);
+    }
+    public void addSubcommands(Collection<String> cmd) {
+        this.registeredSubcommands.addAll(cmd);
     }
 }
