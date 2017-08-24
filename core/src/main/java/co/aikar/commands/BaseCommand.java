@@ -125,15 +125,16 @@ public abstract class BaseCommand {
             String sublist = null;
             String sub = getSubcommandValue(method);
             final Default def = method.getAnnotation(Default.class);
+            final HelpCommand helpCommand = method.getAnnotation(HelpCommand.class);
 
             final CommandAlias commandAliases = method.getAnnotation(CommandAlias.class);
 
-            if (def != null) {
+            if (def != null || helpCommand != null) {
                 if (!foundDefault) {
                     registerSubcommand(method, DEFAULT);
                     foundDefault = true;
                 } else {
-                    ACFUtil.sneaky(new IllegalStateException("Multiple @Default commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                    ACFUtil.sneaky(new IllegalStateException("Multiple @Default/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             }
 
@@ -141,17 +142,18 @@ public abstract class BaseCommand {
                 sublist = sub;
             } else if (commandAliases != null) {
                 sublist = commandAliases.value();
+            } else if (helpCommand != null) {
+                sublist = helpCommand.value();
             }
-
 
             UnknownHandler unknown    = method.getAnnotation(UnknownHandler.class);
             PreCommand     preCommand = method.getAnnotation(PreCommand.class);
-            if (unknown != null) {
+            if (unknown != null || helpCommand != null) {
                 if (!foundUnknown) {
                     registerSubcommand(method, UNKNOWN);
                     foundUnknown = true;
                 } else {
-                    ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
+                    ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
             } else if (preCommand != null) {
                 if (this.preCommandHandler == null) {
