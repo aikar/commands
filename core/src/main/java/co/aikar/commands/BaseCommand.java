@@ -129,10 +129,12 @@ public abstract class BaseCommand {
 
             final CommandAlias commandAliases = method.getAnnotation(CommandAlias.class);
 
-            if (def != null || helpCommand != null) {
+            if (def != null || (!foundDefault && helpCommand != null)) {
                 if (!foundDefault) {
                     registerSubcommand(method, DEFAULT);
-                    foundDefault = true;
+                    if (def != null) {
+                        foundDefault = true;
+                    }
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @Default/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -148,10 +150,12 @@ public abstract class BaseCommand {
 
             UnknownHandler unknown    = method.getAnnotation(UnknownHandler.class);
             PreCommand     preCommand = method.getAnnotation(PreCommand.class);
-            if (unknown != null || helpCommand != null) {
+            if (unknown != null || (!foundUnknown && helpCommand != null)) {
                 if (!foundUnknown) {
                     registerSubcommand(method, UNKNOWN);
-                    foundUnknown = true;
+                    if (unknown != null) {
+                        foundUnknown = true;
+                    }
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
