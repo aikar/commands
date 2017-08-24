@@ -309,16 +309,18 @@ public abstract class BaseCommand {
         try {
             CommandOperationContext commandContext = preCommandOperation(issuer, commandLabel, args);
 
-            if (args.length == 0) {
-                executeSubcommand(commandContext, DEFAULT, issuer);
-                return;
+            if (args.length > 0) {
+                CommandSearch cmd = findSubCommand(args);
+                if (cmd != null) {
+                    execSubcommand = cmd.getCheckSub();
+                    final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
+                    executeCommand(commandContext, issuer, execargs, cmd.cmd);
+                    return;
+                }
             }
 
-            CommandSearch cmd = findSubCommand(args);
-            if (cmd != null) {
-                execSubcommand = cmd.getCheckSub();
-                final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
-                executeCommand(commandContext, issuer, execargs, cmd.cmd);
+            if (subCommands.get(DEFAULT) != null) {
+                executeSubcommand(commandContext, DEFAULT, issuer, args);
                 return;
             }
 
