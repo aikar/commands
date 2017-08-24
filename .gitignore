@@ -9,6 +9,8 @@
 .idea/libraries
 .idea/uiDesigner.xml
 .idea/kotlinc.xml
+.idea/modules.xml
+**/*.iml
 
 
 # Package Files #
