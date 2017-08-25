@@ -96,6 +96,9 @@ Dinosaurs have been dead for a long time, so get off it before you start to smel
 
 [Download Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
+# JavaDocs
+You may find JavaDocs for ACF Core [here](http://aikar.github.io/commands)
+
 ## Contributing
 See Issues section. 
 
