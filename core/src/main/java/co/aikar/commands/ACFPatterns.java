@@ -24,8 +24,11 @@
 package co.aikar.commands;
 
 import com.google.common.collect.Maps;
+import net.jodah.expiringmap.ExpirationPolicy;
+import net.jodah.expiringmap.ExpiringMap;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
@@ -51,7 +54,12 @@ final class ACFPatterns {
 
     private ACFPatterns() {}
     @SuppressWarnings("Convert2MethodRef")
-    static final Map<String, Pattern> patternCache = Maps.newHashMap();
+    static final Map<String, Pattern> patternCache = ExpiringMap.builder()
+            .maxSize(200)
+            .expiration(1, TimeUnit.HOURS)
+            .expirationPolicy(ExpirationPolicy.ACCESSED)
+            .build();
+
     public static Pattern getPattern(String pattern) {
         return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
     }
