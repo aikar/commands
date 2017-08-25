@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> */<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.lang.annotation.Annotation;<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>/**<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * Holds information about the currently executing command on this thread<a name="line.29"></a>
+<span class="sourceLineNo">030</span> */<a name="line.30"></a>
+<span class="sourceLineNo">031</span>public class CommandOperationContext {<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>    private final CommandManager manager;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    private final CommandIssuer issuer;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>    private final BaseCommand command;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    private final String commandLabel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    private final String[] args;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    private RegisteredCommand registeredCommand;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args) {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        this.manager = manager;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        this.issuer = issuer;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        this.command = command;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        this.commandLabel = commandLabel;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        this.args = args;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    }<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>    public CommandManager getCommandManager() {<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        return manager;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    }<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    public CommandIssuer getCommandIssuer() {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        return issuer;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    }<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>    public BaseCommand getCommand() {<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        return command;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    }<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public String getCommandLabel() {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        return commandLabel;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    }<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>    public String[] getArgs() {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        return args;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    }<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public void setRegisteredCommand(RegisteredCommand registeredCommand) {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        this.registeredCommand = registeredCommand;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>    public RegisteredCommand getRegisteredCommand() {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        return registeredCommand;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public &lt;T extends Annotation&gt; T getAnnotation(Class&lt;T&gt; anno) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        return registeredCommand.method.getAnnotation(anno);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>    public boolean hasAnnotation(Class&lt;? extends Annotation&gt; anno) {<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        return getAnnotation(anno) != null;<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    }<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>}<a name="line.84"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

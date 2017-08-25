@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> */<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import co.aikar.locales.LocaleManager;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import co.aikar.locales.MessageKey;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import co.aikar.locales.MessageKeyProvider;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.google.common.collect.HashMultimap;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.google.common.collect.SetMultimap;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.google.common.collect.Sets;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.jetbrains.annotations.NotNull;<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.HashMap;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.util.Locale;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.util.Map;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.regex.Matcher;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>@SuppressWarnings("WeakerAccess")<a name="line.39"></a>
+<span class="sourceLineNo">040</span>public class Locales {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    // Locales for reference since Locale doesn't have as many, add our own here for ease of use.<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    public static final Locale ENGLISH = Locale.ENGLISH;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    public static final Locale GERMAN = Locale.GERMAN;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    public static final Locale FRENCH = Locale.FRENCH;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>    public static final Locale JAPANESE = Locale.JAPANESE;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    public static final Locale ITALIAN = Locale.ITALIAN;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    public static final Locale KOREAN = Locale.KOREAN;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    public static final Locale CHINESE = Locale.CHINESE;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    public static final Locale SIMPLIFIED_CHINESE = Locale.SIMPLIFIED_CHINESE;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    public static final Locale TRADITIONAL_CHINESE = Locale.TRADITIONAL_CHINESE;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    public static final Locale SPANISH = new Locale("es");<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    public static final Locale DUTCH = new Locale("nl");<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    public static final Locale DANISH = new Locale("da");<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public static final Locale CZECH = new Locale("cs");<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    public static final Locale GREEK = new Locale("el");<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    public static final Locale LATIN = new Locale("la");<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    public static final Locale BULGARIAN = new Locale("bg");<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    public static final Locale AFRIKAANS = new Locale("af");<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    public static final Locale HINDI = new Locale("hi");<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public static final Locale HEBREW = new Locale("he");<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    public static final Locale POLISH = new Locale("pl");<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    public static final Locale PORTUGUESE = new Locale("pt");<a name="line.62"></a>
+<span class="sourceLineNo">063</span>    public static final Locale FINNISH = new Locale("fi");<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    public static final Locale SWEDISH = new Locale("sv");<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    public static final Locale RUSSIAN = new Locale("ru");<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    public static final Locale ROMANIAN = new Locale("ro");<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    public static final Locale VIETNAMESE = new Locale("vi");<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public static final Locale THAI = new Locale("th");<a name="line.68"></a>
+<span class="sourceLineNo">069</span>    public static final Locale TURKISH = new Locale("tr");<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    public static final Locale UKRANIAN = new Locale("uk");<a name="line.70"></a>
+<span class="sourceLineNo">071</span>    public static final Locale ARABIC = new Locale("ar");<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    public static final Locale WELSH = new Locale("cy");<a name="line.72"></a>
+<span class="sourceLineNo">073</span><a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>    private final CommandManager&lt;?, ?, ?&gt; manager;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    private final LocaleManager&lt;CommandIssuer&gt; localeManager;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    private final SetMultimap&lt;String, Locale&gt; loadedBundles = HashMultimap.create();<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    public Locales(CommandManager manager) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        this.manager = manager;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        this.localeManager = LocaleManager.create(manager::getIssuerLocale);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    }<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>    public void loadLanguages() {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        addMessageBundles("acf-core");<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    }<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>    public Locale getDefaultLocale() {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        return this.localeManager.getDefaultLocale();<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>    public Locale setDefaultLocale(Locale locale) {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        return this.localeManager.setDefaultLocale(locale);<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    }<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>    /**<a name="line.96"></a>
+<span class="sourceLineNo">097</span>     * Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     */<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    public void loadMissingBundles() {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        for (Locale locale : manager.getSupportedLanguages()) {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>            for (String bundleName : Sets.newHashSet(loadedBundles.keys())) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                addMessageBundle(bundleName, locale);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>            }<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        }<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    }<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    public void addMessageBundles(String... bundleNames) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        for (String bundleName : bundleNames) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            for (Locale locale : manager.getSupportedLanguages()) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                addMessageBundle(bundleName, locale);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            }<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    }<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>    public void addMessageBundle(String bundleName, Locale locale) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        if (!loadedBundles.containsEntry(bundleName, locale)) {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            loadedBundles.put(bundleName, locale);<a name="line.117"></a>
+<span class="sourceLineNo">118</span>            this.localeManager.addMessageBundle(bundleName, locale);<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        }<a name="line.119"></a>
+<span class="sourceLineNo">120</span>    }<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>    public void addMessageStrings(Locale locale, @NotNull Map&lt;String, String&gt; messages) {<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        Map&lt;MessageKey, String&gt; map = new HashMap&lt;&gt;(messages.size());<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        messages.forEach((key, value) -&gt; map.put(MessageKey.of(key), value));<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        addMessages(locale, map);<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    }<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    public void addMessages(Locale locale, @NotNull Map&lt;MessageKey, String&gt; messages) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        this.localeManager.addMessages(locale, messages);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    }<a name="line.129"></a>
+<span class="sourceLineNo">130</span><a name="line.130"></a>
+<span class="sourceLineNo">131</span>    public String addMessage(Locale locale, MessageKey key, String message) {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        return this.localeManager.addMessage(locale, key, message);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span><a name="line.134"></a>
+<span class="sourceLineNo">135</span>    public String getMessage(CommandIssuer issuer, MessageKeyProvider key) {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        final MessageKey msgKey = key.getMessageKey();<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        String message = this.localeManager.getMessage(issuer, msgKey);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        if (message == null) {<a name="line.138"></a>
+<span class="sourceLineNo">139</span>            manager.log(LogLevel.ERROR, "Missing Language Key: " + msgKey.getKey());<a name="line.139"></a>
+<span class="sourceLineNo">140</span>            message = "&lt;MISSING_LANGUAGE_KEY:" + msgKey.getKey() + "&gt;";<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        }<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        return message;<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    }<a name="line.143"></a>
+<span class="sourceLineNo">144</span><a name="line.144"></a>
+<span class="sourceLineNo">145</span>    public String replaceI18NStrings(String message) {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        if (message == null) {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>            return null;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        }<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        Matcher matcher = ACFPatterns.I18N_STRING.matcher(message);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        if (!matcher.matches()) {<a name="line.150"></a>
+<span class="sourceLineNo">151</span>            return message;<a name="line.151"></a>
+<span class="sourceLineNo">152</span>        }<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>        CommandIssuer issuer = CommandManager.getCurrentCommandIssuer();<a name="line.154"></a>
+<span class="sourceLineNo">155</span><a name="line.155"></a>
+<span class="sourceLineNo">156</span>        matcher.reset();<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        StringBuffer sb = new StringBuffer(message.length());<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        while (matcher.find()) {<a name="line.158"></a>
+<span class="sourceLineNo">159</span>            MessageKey key = MessageKey.of(matcher.group("key"));<a name="line.159"></a>
+<span class="sourceLineNo">160</span>            matcher.appendReplacement(sb, Matcher.quoteReplacement(getMessage(issuer, key)));<a name="line.160"></a>
+<span class="sourceLineNo">161</span>        }<a name="line.161"></a>
+<span class="sourceLineNo">162</span>        matcher.appendTail(sb);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>        return sb.toString();<a name="line.163"></a>
+<span class="sourceLineNo">164</span>    }<a name="line.164"></a>
+<span class="sourceLineNo">165</span>}<a name="line.165"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
