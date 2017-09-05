@@ -85,4 +85,9 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
         this.children.forEach(child -> completions.addAll(child.tabComplete(sender, alias, args)));
         return new ArrayList<>(completions);
     }
+
+    @Override
+    public BaseCommand getDefCommand() {
+        return defCommand;
+    }
 }
