@@ -29,7 +29,10 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class BungeeRootCommand extends Command implements RootCommand, TabExecutor {
 
@@ -84,5 +87,10 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
         Set<String> completions = new HashSet<>();
         this.children.forEach(child -> completions.addAll(child.tabComplete(sender, alias, args)));
         return new ArrayList<>(completions);
+    }
+
+    @Override
+    public BaseCommand getDefCommand() {
+        return defCommand;
     }
 }
