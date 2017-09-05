@@ -28,13 +28,11 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,6 +94,28 @@ public class BungeeCommandManager extends CommandManager<CommandSender, ChatColo
             }
             bungeeCommand.isRegistered = true;
             registeredCommands.put(commandName, bungeeCommand);
+        }
+    }
+
+    public void unregisterCommand(BaseCommand command) {
+        for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
+            String commandName = entry.getKey().toLowerCase();
+            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
+            if (bungeeCommand.isRegistered) {
+                unregisterCommand(bungeeCommand);
+            }
+            bungeeCommand.isRegistered = false;
+            registeredCommands.remove(commandName);
+        }
+    }
+
+    public void unregisterCommand(BungeeRootCommand command) {
+        this.plugin.getProxy().getPluginManager().unregisterCommand(command);
+    }
+
+    public void unregisterCommands() {
+        for (Map.Entry<String, BungeeRootCommand> entry : registeredCommands.entrySet()) {
+            unregisterCommand(entry.getValue());
         }
     }
 
