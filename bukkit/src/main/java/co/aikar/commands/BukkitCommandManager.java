@@ -182,13 +182,19 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
     public void unregisterCommand(BaseCommand command) {
         for (RootCommand rootcommand : command.registeredCommands.values()) {
             BukkitRootCommand bukkitCommand = (BukkitRootCommand) rootcommand;
-            if (bukkitCommand.isRegistered) {
+            bukkitCommand.getSubCommands().values().removeAll(command.subCommands.values());
+            if (bukkitCommand.isRegistered && bukkitCommand.getSubCommands().isEmpty()) {
                 unregisterCommand(bukkitCommand);
+                bukkitCommand.isRegistered = false;
             }
-            bukkitCommand.isRegistered = false;
         }
     }
 
+    /**
+     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
+     * @param command
+     */
+    @Deprecated
     public void unregisterCommand(BukkitRootCommand command) {
         final String plugin = this.plugin.getName().toLowerCase();
         command.unregister(commandMap);
@@ -204,6 +210,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
         for (Map.Entry<String, BukkitRootCommand> entry : registeredCommands.entrySet()) {
             unregisterCommand(entry.getValue());
         }
+        this.registeredCommands.clear();
     }
 
     private class ACFBukkitListener implements Listener {

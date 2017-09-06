@@ -101,11 +101,12 @@ public class BungeeCommandManager extends CommandManager<CommandSender, ChatColo
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String commandName = entry.getKey().toLowerCase();
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
-            if (bungeeCommand.isRegistered) {
+            bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());
+            if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered)  {
                 unregisterCommand(bungeeCommand);
+                bungeeCommand.isRegistered = false;
+                registeredCommands.remove(commandName);
             }
-            bungeeCommand.isRegistered = false;
-            registeredCommands.remove(commandName);
         }
     }
 
