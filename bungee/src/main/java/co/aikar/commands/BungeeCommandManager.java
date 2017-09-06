@@ -103,6 +103,7 @@ public class BungeeCommandManager extends CommandManager<CommandSender, ChatColo
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
             if (bungeeCommand.isRegistered) {
                 unregisterCommand(bungeeCommand);
+                bungeeCommand.getSubCommands().clear();
             }
             bungeeCommand.isRegistered = false;
             registeredCommands.remove(commandName);
