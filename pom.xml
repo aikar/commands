@@ -107,7 +107,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
                 <configuration>
-                    <destDir>../docs</destDir>
+                    <destDir>../docs/${project.artifactId}/</destDir>
                     <quiet>true</quiet>
                     <notimestamp>true</notimestamp>
                     <linksource>true</linksource>

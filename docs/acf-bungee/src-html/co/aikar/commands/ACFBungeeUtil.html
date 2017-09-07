@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> */<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import net.md_5.bungee.api.ChatColor;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import net.md_5.bungee.api.CommandSender;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import net.md_5.bungee.api.ProxyServer;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import net.md_5.bungee.api.connection.ProxiedPlayer;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.ArrayList;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.util.List;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.regex.Pattern;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.stream.Collectors;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>public class ACFBungeeUtil {<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>    public static String color(String message) {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        return ChatColor.translateAlternateColorCodes('&amp;', message);<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    }<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>    /**<a name="line.42"></a>
+<span class="sourceLineNo">043</span>     * Move to Message Keys on the CommandIssuer<a name="line.43"></a>
+<span class="sourceLineNo">044</span>     * @deprecated<a name="line.44"></a>
+<span class="sourceLineNo">045</span>     */<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    @Deprecated<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    public static void sendMsg(CommandSender player, String message) {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        message = color(message);<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        for (String msg : ACFPatterns.NEWLINE.split(message)) {<a name="line.49"></a>
+<span class="sourceLineNo">050</span>            player.sendMessage(msg);<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        }<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    }<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public static String removeColors(String msg) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        return ChatColor.stripColor(color(msg));<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    }<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>    public static String replaceChatString(String message, String replace, String with) {<a name="line.58"></a>
+<span class="sourceLineNo">059</span>        return replaceChatString(message, Pattern.compile(Pattern.quote(replace), Pattern.CASE_INSENSITIVE), with);<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    }<a name="line.60"></a>
+<span class="sourceLineNo">061</span><a name="line.61"></a>
+<span class="sourceLineNo">062</span>    public static String replaceChatString(String message, Pattern replace, String with) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        final String[] split = replace.split(message + "1");<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>        if (split.length &lt; 2) {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>            return replace.matcher(message).replaceAll(with);<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        message = split[0];<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>        for (int i = 1; i &lt; split.length; i++) {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>            final String prev = getLastColors(message);<a name="line.71"></a>
+<span class="sourceLineNo">072</span>            message += with + prev + split[i];<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        }<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        return message.substring(0, message.length() - 1);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    }<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>    //Imported from org.bukkit.ChatColor<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    public static final char COLOR_CHAR = '\u00A7';<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>    public static String getLastColors(String input) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        String result = "";<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        int length = input.length();<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>        // Search backwards from the end as it is faster<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        for (int index = length - 1; index &gt; -1; index--) {<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            char section = input.charAt(index);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>            if (section == COLOR_CHAR &amp;&amp; index &lt; length - 1) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                char c = input.charAt(index + 1);<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                ChatColor color = ChatColor.getByChar(c);<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>                if (color != null) {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                    result = color.toString() + result;<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>                    // Once we find a color or reset we can stop searching<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                    if (isChatColorAColor(color) || color.equals(ChatColor.RESET)) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                        break;<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                    }<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                }<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            }<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        return result;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    }<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>    public static boolean isChatColorAColor(ChatColor chatColor) {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        return chatColor != ChatColor.MAGIC &amp;&amp; chatColor != ChatColor.BOLD<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                &amp;&amp; chatColor != ChatColor.STRIKETHROUGH &amp;&amp; chatColor != ChatColor.UNDERLINE<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                &amp;&amp; chatColor != ChatColor.ITALIC;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    }<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span><a name="line.111"></a>
+<span class="sourceLineNo">112</span>    public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        CommandSender requester = issuer.getIssuer();<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        String name = ACFUtil.replace(search, ":confirm", "");<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        if (name.length() &lt; 3) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            return null;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        if (!isValidName(name)) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>            return null;<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        }<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>        List&lt;ProxiedPlayer&gt; matches = new ArrayList&lt;&gt;(ProxyServer.getInstance().matchPlayer(name));<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>        if (matches.size() &gt; 1) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>            String allMatches = matches.stream().map(ProxiedPlayer::getName).collect(Collectors.joining(", "));<a name="line.127"></a>
+<span class="sourceLineNo">128</span>            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                    "{search}", name, "{all}", allMatches);<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            return null;<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        }<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>        if (matches.isEmpty()) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>            issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                    "{search}", name);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>            return null;<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        }<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>        return matches.get(0);<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    }<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>    /**<a name="line.142"></a>
+<span class="sourceLineNo">143</span>     * Please move to the CommandIssuer version<a name="line.143"></a>
+<span class="sourceLineNo">144</span>     * @deprecated<a name="line.144"></a>
+<span class="sourceLineNo">145</span>     */<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    public static ProxiedPlayer findPlayerSmart(CommandSender requester, String search) {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        CommandManager manager = CommandManager.getCurrentCommandManager();<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        if (manager != null) {<a name="line.148"></a>
+<span class="sourceLineNo">149</span>            return findPlayerSmart(manager.getCommandIssuer(requester), search);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
+<span class="sourceLineNo">151</span>        throw new IllegalStateException("You may not use the ACFBungeeUtil#findPlayerSmart(CommandSender) async to the command execution.");<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    }<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>    public static boolean isValidName(String name) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        return name != null &amp;&amp; !name.isEmpty() &amp;&amp; ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    public static &lt;T&gt; T validate(T object, String message, Object... values) {<a name="line.158"></a>
+<span class="sourceLineNo">159</span>        if (object == null) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>            throw new NullPointerException(String.format(message, values));<a name="line.160"></a>
+<span class="sourceLineNo">161</span>        }<a name="line.161"></a>
+<span class="sourceLineNo">162</span>        return object;<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    }<a name="line.163"></a>
+<span class="sourceLineNo">164</span><a name="line.164"></a>
+<span class="sourceLineNo">165</span><a name="line.165"></a>
+<span class="sourceLineNo">166</span>}<a name="line.166"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
