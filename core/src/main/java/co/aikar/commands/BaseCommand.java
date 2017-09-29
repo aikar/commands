@@ -324,7 +324,9 @@ public abstract class BaseCommand {
             }
 
 
-            if (subCommands.get(UNKNOWN) != null) {
+            if (subCommands.get(DEFAULT) != null && args.length == 0) {
+                executeSubcommand(commandContext, DEFAULT, issuer, args);
+            } else if (subCommands.get(UNKNOWN) != null) {
                 if (!executeSubcommand(commandContext, UNKNOWN, issuer, args)) {
                     help(issuer, args);
                 }
