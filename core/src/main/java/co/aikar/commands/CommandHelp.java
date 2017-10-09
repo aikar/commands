@@ -130,11 +130,11 @@ public class CommandHelp {
      */
     @NotNull
     public String[] getFormatReplacements(HelpEntry e) {
-        //{command} {parameters} {seperator} {description}
+        //{command} {parameters} {separator} {description}
         return new String[] {
                 "{command}", e.getCommand(),
                 "{parameters}", e.getParameterSyntax(),
-                "{seperator}", e.getDescription().isEmpty() ? "" : "-",
+                "{separator}", e.getDescription().isEmpty() ? "" : "-",
                 "{description}", e.getDescription()
         };
     }

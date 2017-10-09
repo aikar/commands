@@ -15,6 +15,7 @@
         <module name="acf-paper" />
         <module name="acf-sponge" />
         <module name="commands" />
+        <module name="example-plugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,6 +28,7 @@
       <module name="acf-parent" target="1.8" />
       <module name="acf-sponge" target="1.8" />
       <module name="commands" target="1.8" />
+      <module name="example-plugin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
