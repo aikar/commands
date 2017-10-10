@@ -37,6 +37,7 @@ public class CommandHelp {
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
     private int page;
+    private int perPage = 15;
     private List<String> search;
 
     public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
@@ -113,9 +114,19 @@ public class CommandHelp {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));
             results = getHelpEntries().iterator();
         }
+        int min = (this.page-1) * this.perPage; // TODO: per page configurable?
+        int max = min + this.perPage;
+        int i = 0;
 
         while (results.hasNext()) {
             HelpEntry e = results.next();
+            if (i >= max) {
+                break;
+            }
+            if (i++ < min) {
+                continue;
+            }
+
             String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
             for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
                 issuer.sendMessageInternal(ACFUtil.rtrim(msg));
@@ -143,8 +154,9 @@ public class CommandHelp {
         return helpEntries;
     }
 
-    public void setPage(int page) {
+    public void setPage(int page, int perPage) {
         this.page = page;
+        this.perPage = 15;
     }
 
     public void setSearch(List<String> search) {

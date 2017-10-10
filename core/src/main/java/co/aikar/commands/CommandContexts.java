@@ -167,7 +167,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 search = c.getArgs();
             }
             CommandHelp commandHelp = manager.generateCommandHelp();
-            commandHelp.setPage(page);
+            commandHelp.setPage(page, 15);
             commandHelp.setSearch(search);
             return commandHelp;
         });
