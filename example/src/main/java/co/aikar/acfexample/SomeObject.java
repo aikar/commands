@@ -39,6 +39,9 @@ public abstract class SomeObject {
         return this.thisValue;
     }
 
+    // Dynamically returns up to 3 different objects based on the users input.
+    // A command signature using SomeObject doesn't care about all this logic, its defined once
+    // And it knows it will receive SomeObject
     public static ContextResolver<SomeObject, BukkitCommandExecutionContext> getContextResolver() {
         return (c) -> {
             String first = c.popFirstArg();
@@ -50,6 +53,7 @@ public abstract class SomeObject {
                 try {
                     return new TestOther(Integer.parseInt(first));
                 } catch (NumberFormatException ignored) {
+                    // User didn't type a number, show error!
                     throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
                 }
             }

@@ -40,30 +40,53 @@ public final class ACFExample extends JavaPlugin {
     }
 
     private void registerCommands() {
+        // 1: Create Command Manager for your respective platform
         commandManager = new BukkitCommandManager(this);
-        commandManager.getCommandReplacements().addReplacements("test", "foobar", "%foo", "barbaz");
+
+        // 2: Setup some replacement values that may be used inside of the annotations dynamically.
+        commandManager.getCommandReplacements().addReplacements(
+                // key - value
+                "test", "foobar",
+                // key - demonstrate that % is ignored  - value
+                "%foo",                                  "barbaz");
+        // Another replacement for piped values
         commandManager.getCommandReplacements().addReplacement("testcmd", "test4|foobar|barbaz");
-        commandManager.getCommandContexts().registerContext(SomeObject.class, SomeObject.getContextResolver());
+
+        // 3: Register Custom Command Contexts
+        commandManager.getCommandContexts().registerContext(
+                /* The class of the object to resolve*/
+                SomeObject.class,
+                /* A resolver method - Placed the resolver in its own class for organizational purposes */
+                SomeObject.getContextResolver());
+
+        // 4: Register Command Completions - this will be accessible with @CommandCompletion("@test")
         commandManager.getCommandCompletions().registerCompletion("test", c -> (
             Lists.newArrayList("foo", "bar", "baz")
         ));
 
+        // 5: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
                 return true; // mark as handeled, default message will not be send to sender
         }));
+        // 5: Register an additional command. This one happens to share the same CommandAlias as the previous command
+        // This means it simply registers additional sub commands under the same command, but organized into separate
+        // Classes (Maybe different permission sets)
         commandManager.registerCommand(new SomeCommand_ExtraSubs());
 
+        // 6: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             getLogger().warning("Error occured while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
     }
 
+    // Typical Bukkit Plugin Scaffolding
     public static ACFExample getPlugin() {
         return plugin;
     }
 
+    // A way to access your command manager from other files if you do not use a Dependency Injection approach
     public static BukkitCommandManager getCommandManager() {
         return commandManager;
     }
