@@ -15,7 +15,12 @@ It is labeled Beta as the framework is growing fast and gaining new features, an
 
 Please be prepared to keep up with changes, but I try to keep them as least disruptful as possible.
 
-See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and using it.
+## Documentation / Using ACF
+
+[Documentation Wiki](https://github.com/aikar/commands/wiki) - All of ACF's documentation is currently on the GitHub Wiki. 
+Please review every page to learn about each feature.
+
+See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and getting started.
 
 ## Targeted Platforms / Current Version
 
@@ -36,6 +41,9 @@ Any bump in version implies an API break. See [CHANGELOG](CHANGELOG.md) for info
 Every change that should not cause any API break will be deployed over the current version.
 
 ## Example
+For a complete example Bukkit Plugin that demonstrates most ACF Features, see [ACFExample](https://github.com/aikar/commands/tree/master/example/src/main/java/co/aikar/acfexample)
+
+But a rough overview of the style/syntax in a realistic use case (this is EMC code):
 ```java
 @CommandAlias("res|residence|resadmin")
 public class ResidenceCommand extends BaseCommand {
