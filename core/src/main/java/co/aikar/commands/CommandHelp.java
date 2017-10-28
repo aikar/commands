@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHelp {
@@ -37,12 +36,13 @@ public class CommandHelp {
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
     private int page;
-    private int perPage = 15;
+    private int perPage;
     private List<String> search;
 
     public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
         this.manager = manager;
         this.issuer = issuer;
+        this.perPage = manager.defaultHelpPerPage;
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
@@ -107,16 +107,23 @@ public class CommandHelp {
     }
 
     public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
-        Iterator<HelpEntry> results = getHelpEntries().stream()
+        List<HelpEntry> helpEntries = getHelpEntries();
+        Iterator<HelpEntry> results = helpEntries.stream()
                 .filter(HelpEntry::shouldShow)
                 .sorted(Comparator.comparingInt(helpEntry -> helpEntry.getSearchScore() * -1)).iterator();
         if (!results.hasNext()) {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));
-            results = getHelpEntries().iterator();
+            helpEntries = getHelpEntries();
+            results = helpEntries.iterator();
         }
+        int totalResults = helpEntries.size();
         int min = (this.page-1) * this.perPage; // TODO: per page configurable?
         int max = min + this.perPage;
         int i = 0;
+        if (min >= totalResults) {
+            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_NO_RESULTS);
+            return;
+        }
 
         while (results.hasNext()) {
             HelpEntry e = results.next();
@@ -131,6 +138,13 @@ public class CommandHelp {
             for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
                 issuer.sendMessageInternal(ACFUtil.rtrim(msg));
             }
+        }
+        if (min > 0 || results.hasNext()) {
+            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
+                    "{page}", "" + this.page,
+                    "{totalpages}", ""+ (int)Math.ceil((float)totalResults / (float)this.perPage),
+                    "{results}", "" + totalResults
+            );
         }
     }
 
@@ -154,9 +168,17 @@ public class CommandHelp {
         return helpEntries;
     }
 
-    public void setPage(int page, int perPage) {
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
+    }
+
+    public void setPage(int page) {
         this.page = page;
-        this.perPage = 15;
+    }
+
+    public void setPage(int page, int perPage) {
+        this.setPage(page);
+        this.setPerPage(perPage);
     }
 
     public void setSearch(List<String> search) {

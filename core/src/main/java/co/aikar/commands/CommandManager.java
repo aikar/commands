@@ -52,6 +52,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
     protected Map<MessageType, F> formatters = new IdentityHashMap<>();
     protected F defaultFormatter;
+    protected int defaultHelpPerPage = 10;
     private Set<String> unstableAPIs = Sets.newHashSet();
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
@@ -139,6 +140,18 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     public CommandHelp generateCommandHelp(CommandIssuer issuer, RootCommand rootCommand) {
         verifyUnstableAPI("help");
         return new CommandHelp(this, rootCommand, issuer);
+    }
+
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public int getDefaultHelpPerPage() {
+        verifyUnstableAPI("help");
+        return defaultHelpPerPage;
+    }
+
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public void setDefaultHelpPerPage(int defaultHelpPerPage) {
+        verifyUnstableAPI("help");
+        this.defaultHelpPerPage = defaultHelpPerPage;
     }
 
     /**

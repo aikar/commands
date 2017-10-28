@@ -167,7 +167,11 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 search = c.getArgs();
             }
             CommandHelp commandHelp = manager.generateCommandHelp();
-            commandHelp.setPage(page, 15);
+            commandHelp.setPage(page);
+            Integer perPage = c.getFlagValue("perpage", (Integer) null);
+            if (perPage != null) {
+                commandHelp.setPerPage(perPage);
+            }
             commandHelp.setSearch(search);
             return commandHelp;
         });
