@@ -479,19 +479,25 @@ public abstract class BaseCommand {
                    .collect(Collectors.toList());
     }
 
+    RegisteredCommand getSubcommand(String subcommand) {
+        return getSubcommand(subcommand, false);
+    }
+
+    RegisteredCommand getSubcommand(String subcommand, boolean requireOne) {
+        final Set<RegisteredCommand> commands = subCommands.get(subcommand);
+        if (!commands.isEmpty() && (!requireOne || commands.size() == 1)) {
+            return commands.iterator().next();
+        }
+        return null;
+    }
 
     private boolean executeSubcommand(CommandOperationContext commandContext, String subcommand, CommandIssuer issuer, String... args) {
-        final Set<RegisteredCommand> defs = subCommands.get(subcommand);
-        RegisteredCommand def = null;
-        if (!defs.isEmpty()) {
-            if (defs.size() == 1) {
-                def = defs.iterator().next();
-            }
-            if (def != null) {
-                executeCommand(commandContext, issuer, args, def);
-                return true;
-            }
+        final RegisteredCommand cmd = this.getSubcommand(subcommand);
+        if (cmd != null) {
+            executeCommand(commandContext, issuer, args, cmd);
+            return true;
         }
+
         return false;
     }
 
@@ -574,6 +580,10 @@ public abstract class BaseCommand {
     public BaseCommand setExceptionHandler(ExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
         return this;
+    }
+
+    public RegisteredCommand getDefaultRegisteredCommand() {
+        return this.getSubcommand(DEFAULT);
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

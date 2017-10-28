@@ -73,6 +73,14 @@ interface RootCommand {
         return command;
     }
 
+    default RegisteredCommand getDefaultRegisteredCommand() {
+        BaseCommand defCommand = this.getDefCommand();
+        if (defCommand != null) {
+            return defCommand.getDefaultRegisteredCommand();
+        }
+        return null;
+    }
+
     default BaseCommand getDefCommand(){
         return null;
     }

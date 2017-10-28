@@ -96,4 +96,16 @@ public class BukkitRootCommand extends Command implements RootCommand {
     public BaseCommand getDefCommand(){
         return defCommand;
     }
+
+    @Override
+    public String getDescription() {
+        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
+        return cmd != null ? cmd.helpText : null;
+    }
+
+    @Override
+    public String getUsage() {
+        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
+        return cmd != null ? cmd.syntaxText : null;
+    }
 }
