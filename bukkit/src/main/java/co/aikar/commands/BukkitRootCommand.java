@@ -23,8 +23,11 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Syntax;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+import jdk.nashorn.internal.ir.ReturnNode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -100,12 +103,32 @@ public class BukkitRootCommand extends Command implements RootCommand {
     @Override
     public String getDescription() {
         final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
-        return cmd != null ? cmd.helpText : null;
+        if (cmd != null) {
+            return cmd.helpText;
+        }
+        BaseCommand defCommand = getDefCommand();
+        if (defCommand != null) {
+            Description descAnno = defCommand.getClass().getAnnotation(Description.class);
+            if (descAnno != null) {
+                return descAnno.value();
+            }
+        }
+        return "";
     }
 
     @Override
     public String getUsage() {
         final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
-        return cmd != null ? cmd.syntaxText : null;
+        if (cmd != null) {
+            return cmd.syntaxText;
+        }
+        BaseCommand defCommand = getDefCommand();
+        if (defCommand != null) {
+            Syntax syntaxAnno = defCommand.getClass().getAnnotation(Syntax.class);
+            if (syntaxAnno != null) {
+                return syntaxAnno.value();
+            }
+        }
+        return "";
     }
 }
