@@ -38,7 +38,7 @@ public class CommandReplacements {
 
     CommandReplacements(CommandManager manager) {
         this.manager = manager;
-        addReplacement("truthy", "true|false|yes|no|1|0|on|off");
+        addReplacement("truthy", "true|false|yes|no|1|0|on|off|t|f");
     }
 
     public void addReplacements(String... replacements) {
