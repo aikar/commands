@@ -34,11 +34,12 @@ import java.util.regex.Pattern;
 public class CommandReplacements {
 
     private final CommandManager manager;
+    private final Map<String, Map.Entry<Pattern, String>> replacements = new LinkedHashMap<>();
 
     CommandReplacements(CommandManager manager) {
         this.manager = manager;
+        addReplacement("truthy", "true|false|yes|no|1|0|on|off");
     }
-    private final Map<String, Map.Entry<Pattern, String>> replacements = new LinkedHashMap<>();
 
     public void addReplacements(String... replacements) {
         if (replacements.length == 0 || replacements.length % 2 != 0) {
