@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class CommandReplacements {
 
     CommandReplacements(CommandManager manager) {
         this.manager = manager;
-        addReplacement("truthy", "true|false|yes|no|1|0|on|off|t|f");
+        addReplacement0("truthy", "true|false|yes|no|1|0|on|off|t|f");
     }
 
     public void addReplacements(String... replacements) {
@@ -56,6 +58,11 @@ public class CommandReplacements {
             this.manager.log(LogLevel.ERROR, "This is not allowed, and this replacement (" + key + ") will not work for any previously registered command.");
         }
 
+        return addReplacement0(key, val);
+    }
+
+    @Nullable
+    private String addReplacement0(String key, String val) {
         key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase()).replaceAll("");
         Pattern pattern = Pattern.compile("%" + Pattern.quote(key) + "\\b", Pattern.CASE_INSENSITIVE);
 
@@ -68,6 +75,7 @@ public class CommandReplacements {
 
         return null;
     }
+
     public String replace(String text) {
         if (text == null) {
             return null;
