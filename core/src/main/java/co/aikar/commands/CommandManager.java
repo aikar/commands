@@ -46,7 +46,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
         };
     });
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
-    protected CommandReplacements replacements = new CommandReplacements(this);
+    protected final CommandReplacements replacements;
     protected ExceptionHandler defaultExceptionHandler = null;
    
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
@@ -54,6 +54,12 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     protected F defaultFormatter;
     protected int defaultHelpPerPage = 10;
     private Set<String> unstableAPIs = Sets.newHashSet();
+
+
+    public CommandManager() {
+        // Need to do here due to constructor order, to ensure registeredCommands is initialized.
+        replacements = new CommandReplacements(this);
+    }
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
