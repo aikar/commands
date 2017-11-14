@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":18,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -159,7 +159,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>default co.aikar.commands.BaseCommand</code></td>
+<td class="colFirst"><code>co.aikar.commands.BaseCommand</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getDefCommand--">getDefCommand</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
@@ -333,13 +333,22 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.107">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 </li>
 </ul>
+<a name="getDefCommand--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDefCommand</h4>
+<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.115">getDefCommand</a>()</pre>
+</li>
+</ul>
 <a name="getManager--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.115">getManager</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.120">getManager</a>()</pre>
 </li>
 </ul>
 <a name="getSubCommands--">
@@ -348,7 +357,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubCommands</h4>
-<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.120">getSubCommands</a>()</pre>
+<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.125">getSubCommands</a>()</pre>
 </li>
 </ul>
 <a name="addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">
@@ -376,19 +385,10 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <a name="getDefaultRegisteredCommand--">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>getDefaultRegisteredCommand</h4>
 <pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDefaultRegisteredCommand</a>()</pre>
-</li>
-</ul>
-<a name="getDefCommand--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>getDefCommand</h4>
-<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDefCommand</a>()</pre>
 </li>
 </ul>
 </li>

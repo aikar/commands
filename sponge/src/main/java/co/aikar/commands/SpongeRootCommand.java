@@ -112,6 +112,11 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
+    public BaseCommand getDefCommand(){
+        return defCommand;
+    }
+
+    @Override
     public CommandManager getManager() {
         return manager;
     }
