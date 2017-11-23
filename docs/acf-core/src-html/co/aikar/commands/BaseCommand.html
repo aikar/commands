@@ -128,7 +128,7 @@
 <span class="sourceLineNo">120</span><a name="line.120"></a>
 <span class="sourceLineNo">121</span>        boolean foundDefault = false;<a name="line.121"></a>
 <span class="sourceLineNo">122</span>        boolean foundUnknown = false;<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        for (Method method : self.getDeclaredMethods()) {<a name="line.123"></a>
+<span class="sourceLineNo">123</span>        for (Method method : self.getMethods()) {<a name="line.123"></a>
 <span class="sourceLineNo">124</span>            method.setAccessible(true);<a name="line.124"></a>
 <span class="sourceLineNo">125</span>            String sublist = null;<a name="line.125"></a>
 <span class="sourceLineNo">126</span>            String sub = getSubcommandValue(method);<a name="line.126"></a>
@@ -174,7 +174,7 @@
 <span class="sourceLineNo">166</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.166"></a>
 <span class="sourceLineNo">167</span>                }<a name="line.167"></a>
 <span class="sourceLineNo">168</span>            }<a name="line.168"></a>
-<span class="sourceLineNo">169</span>            if (sublist != null) {<a name="line.169"></a>
+<span class="sourceLineNo">169</span>            if (Objects.equals(method.getDeclaringClass(), this.getClass()) &amp;&amp; sublist != null) {<a name="line.169"></a>
 <span class="sourceLineNo">170</span>                registerSubcommand(method, sublist);<a name="line.170"></a>
 <span class="sourceLineNo">171</span>            }<a name="line.171"></a>
 <span class="sourceLineNo">172</span>        }<a name="line.172"></a>
