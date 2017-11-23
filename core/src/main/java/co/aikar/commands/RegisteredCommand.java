@@ -28,6 +28,7 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -43,6 +44,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final String command;
@@ -237,8 +239,28 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) && scope.hasPermission(issuer);
     }
 
+
+    /**
+     * @see #getPermissions()
+     * @deprecated
+     */
+    @Deprecated
     public String getPermission() {
-        return permission;
+        if (this.permission == null || this.permission.isEmpty()) {
+            return null;
+        }
+        return ACFPatterns.COMMA.split(this.permission)[0];
+    }
+
+    public Set<String> getPermissions() {
+        if (this.permission == null || this.permission.isEmpty()) {
+            return ImmutableSet.of();
+        }
+        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+    }
+
+    public boolean requiresPermission(String permission) {
+        return getPermissions().contains(permission);
     }
 
     public String getPrefSubCommand() {
