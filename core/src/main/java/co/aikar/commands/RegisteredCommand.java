@@ -241,7 +241,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
 
 
     /**
-     * @see #getPermissions()
+     * @see #getRequiredPermissions()
      * @deprecated
      */
     @Deprecated
@@ -252,7 +252,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    public Set<String> getPermissions() {
+    public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
             return ImmutableSet.of();
         }
@@ -260,7 +260,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     }
 
     public boolean requiresPermission(String permission) {
-        return getPermissions().contains(permission);
+        return getRequiredPermissions().contains(permission) || scope.requiresPermission(permission);
     }
 
     public String getPrefSubCommand() {

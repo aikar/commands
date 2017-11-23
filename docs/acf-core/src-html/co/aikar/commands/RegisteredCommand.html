@@ -249,7 +249,7 @@
 <span class="sourceLineNo">241</span><a name="line.241"></a>
 <span class="sourceLineNo">242</span><a name="line.242"></a>
 <span class="sourceLineNo">243</span>    /**<a name="line.243"></a>
-<span class="sourceLineNo">244</span>     * @see #getPermissions()<a name="line.244"></a>
+<span class="sourceLineNo">244</span>     * @see #getRequiredPermissions()<a name="line.244"></a>
 <span class="sourceLineNo">245</span>     * @deprecated<a name="line.245"></a>
 <span class="sourceLineNo">246</span>     */<a name="line.246"></a>
 <span class="sourceLineNo">247</span>    @Deprecated<a name="line.247"></a>
@@ -260,7 +260,7 @@
 <span class="sourceLineNo">252</span>        return ACFPatterns.COMMA.split(this.permission)[0];<a name="line.252"></a>
 <span class="sourceLineNo">253</span>    }<a name="line.253"></a>
 <span class="sourceLineNo">254</span><a name="line.254"></a>
-<span class="sourceLineNo">255</span>    public Set&lt;String&gt; getPermissions() {<a name="line.255"></a>
+<span class="sourceLineNo">255</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.255"></a>
 <span class="sourceLineNo">256</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.256"></a>
 <span class="sourceLineNo">257</span>            return ImmutableSet.of();<a name="line.257"></a>
 <span class="sourceLineNo">258</span>        }<a name="line.258"></a>
@@ -268,7 +268,7 @@
 <span class="sourceLineNo">260</span>    }<a name="line.260"></a>
 <span class="sourceLineNo">261</span><a name="line.261"></a>
 <span class="sourceLineNo">262</span>    public boolean requiresPermission(String permission) {<a name="line.262"></a>
-<span class="sourceLineNo">263</span>        return getPermissions().contains(permission);<a name="line.263"></a>
+<span class="sourceLineNo">263</span>        return getRequiredPermissions().contains(permission) || scope.requiresPermission(permission);<a name="line.263"></a>
 <span class="sourceLineNo">264</span>    }<a name="line.264"></a>
 <span class="sourceLineNo">265</span><a name="line.265"></a>
 <span class="sourceLineNo">266</span>    public String getPrefSubCommand() {<a name="line.266"></a>

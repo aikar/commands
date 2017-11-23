@@ -25,11 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.SetMultimap;
+import com.google.common.collect.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -567,6 +563,18 @@ public abstract class BaseCommand {
 
     public boolean hasPermission(CommandIssuer issuer) {
         return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) && (parentCommand == null || parentCommand.hasPermission(issuer)));
+    }
+
+
+    public Set<String> getRequiredPermissions() {
+        if (this.permission == null || this.permission.isEmpty()) {
+            return ImmutableSet.of();
+        }
+        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+    }
+
+    public boolean requiresPermission(String permission) {
+        return getRequiredPermissions().contains(permission) || this.parentCommand != null && parentCommand.requiresPermission(permission);
     }
 
     public String getName() {
