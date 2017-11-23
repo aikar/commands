@@ -199,7 +199,15 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
-        return permission == null || permission.isEmpty() || issuer.hasPermission(permission);
+        if (permission == null || permission.isEmpty()) {
+            return true;
+        }
+        for (String perm : ACFPatterns.COMMA.split(permission)) {
+            if (!perm.isEmpty() && !issuer.hasPermission(perm)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public synchronized RootCommand obtainRootCommand(String cmd) {
