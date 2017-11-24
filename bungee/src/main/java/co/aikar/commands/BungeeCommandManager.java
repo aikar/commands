@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BungeeCommandManager extends CommandManager<CommandSender, ChatColor, BungeeMessageFormatter> {
+public class BungeeCommandManager extends CommandManager<CommandSender, BungeeCommandIssuer, ChatColor, BungeeMessageFormatter> {
 
     protected final Plugin plugin;
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
@@ -131,7 +131,7 @@ public class BungeeCommandManager extends CommandManager<CommandSender, ChatColo
     }
 
     @Override
-    public CommandIssuer getCommandIssuer(Object issuer) {
+    public BungeeCommandIssuer getCommandIssuer(Object issuer) {
         if (!(issuer instanceof CommandSender)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }

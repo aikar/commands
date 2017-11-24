@@ -24,15 +24,22 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKeyProvider;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
+public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends MessageFormatter<FT>> {
 
     /**
      * This is a stack incase a command calls a command
@@ -48,11 +55,14 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
-   
+
+
+    protected List<IssuerLocaleChangedCallback<AI>> localeChangedCallbacks = Lists.newArrayList();
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
     protected Map<MessageType, F> formatters = new IdentityHashMap<>();
     protected F defaultFormatter;
     protected int defaultHelpPerPage = 10;
+
     private Set<String> unstableAPIs = Sets.newHashSet();
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
@@ -165,7 +175,7 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
     public abstract boolean isCommandIssuer(Class<?> type);
 
     // TODO: Change this to I if we make a breaking change
-    public abstract CommandIssuer getCommandIssuer(Object issuer);
+    public abstract AI getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
 
@@ -271,6 +281,20 @@ public abstract class CommandManager <I, FT, F extends MessageFormatter<FT>> {
             message = formatter.format(message);
         }
         return message;
+    }
+
+    public void onLocaleChange(IssuerLocaleChangedCallback<AI> onChange) {
+        localeChangedCallbacks.add(onChange);
+    }
+
+    public void notifyLocaleChange(AI issuer, Locale oldLocale, Locale newLocale) {
+        localeChangedCallbacks.forEach(cb -> {
+            try {
+                cb.onIssuerLocaleChange(issuer, oldLocale, newLocale);
+            } catch (Exception e) {
+                this.log(LogLevel.ERROR, "Error in notifyLocaleChange", e);
+            }
+        });
     }
 
     public Locale getIssuerLocale(CommandIssuer issuer) {

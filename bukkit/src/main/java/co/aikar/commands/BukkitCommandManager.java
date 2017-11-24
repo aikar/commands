@@ -26,6 +26,7 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
+import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -33,10 +34,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -44,23 +49,29 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandManager extends CommandManager<CommandSender, ChatColor, BukkitMessageFormatter> {
+public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCommandIssuer, ChatColor, BukkitMessageFormatter> {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
     private final TimingManager timingManager;
+    private final BukkitTask localeTask;
     protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
     protected BukkitCommandCompletions completions;
     MCTiming commandTiming;
     protected BukkitLocales locales;
+    private boolean cantReadLocale = false;
+    protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
@@ -74,6 +85,12 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
         this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
         getLocales(); // auto load locales
+        this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            if (cantReadLocale) {
+                return;
+            }
+            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
+        }, 5, 5);
     }
 
     @NotNull private CommandMap hookCommandMap() {
@@ -213,6 +230,49 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
         this.registeredCommands.clear();
     }
 
+
+    private Field getEntityField(Player player) throws NoSuchFieldException {
+        Class cls = player.getClass();
+        while (cls != Object.class) {
+            if (cls.getName().endsWith("CraftEntity")) {
+                Field field = cls.getDeclaredField("entity");
+                field.setAccessible(true);
+                return field;
+            }
+            cls = cls.getSuperclass();
+        }
+        return null;
+    }
+
+    private void readPlayerLocale(Player player) {
+        if (!player.isOnline() || cantReadLocale) {
+            return;
+        }
+        try {
+            Field entityField = getEntityField(player);
+            if (entityField == null) {
+                return;
+            }
+            Object nmsPlayer = entityField.get(player);
+            if (nmsPlayer != null) {
+                Field localeField = nmsPlayer.getClass().getField("locale");
+                Object localeString = localeField.get(nmsPlayer);
+                if (localeString != null && localeString instanceof String) {
+                    String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
+                    Locale locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
+                    Locale prev = issuersLocale.put(player.getUniqueId(), locale);
+                    if (!Objects.equals(locale, prev)) {
+                        this.notifyLocaleChange(getCommandIssuer(player), prev, locale);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            cantReadLocale = true;
+            this.localeTask.cancel();
+            this.log(LogLevel.INFO, "Can't read players locale, you will be unable to automatically detect players language. Only Bukkit 1.7+ is supported for this.", e);
+        }
+    }
+
     private class ACFBukkitListener implements Listener {
         private final Plugin plugin;
 
@@ -227,6 +287,17 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
             }
             unregisterCommands();
         }
+        @EventHandler
+        public void onPlayerJoin(PlayerJoinEvent event) {
+            Player player = event.getPlayer();
+            readPlayerLocale(player);
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> readPlayerLocale(player), 20);
+        }
+
+        @EventHandler
+        public void onPlayerJoin(PlayerQuitEvent event) {
+            issuersLocale.remove(event.getPlayer().getUniqueId());
+        }
     }
 
     public TimingManager getTimings() {
@@ -239,7 +310,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
     }
 
     @Override
-    public CommandIssuer getCommandIssuer(Object issuer) {
+    public BukkitCommandIssuer getCommandIssuer(Object issuer) {
         if (!(issuer instanceof CommandSender)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
@@ -272,5 +343,15 @@ public class BukkitCommandManager extends CommandManager<CommandSender, ChatColo
                 logger.log(logLevel, LogLevel.LOG_PREFIX + line);
             }
         }
+    }
+
+    @Override
+    public Locale getIssuerLocale(CommandIssuer issuer) {
+        UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();
+        Locale locale = issuersLocale.get(uniqueId);
+        if (locale != null) {
+            return locale;
+        }
+        return super.getIssuerLocale(issuer);
     }
 }

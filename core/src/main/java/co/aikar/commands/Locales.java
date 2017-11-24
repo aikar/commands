@@ -72,7 +72,7 @@ public class Locales {
     public static final Locale WELSH = new Locale("cy");
 
 
-    private final CommandManager<?, ?, ?> manager;
+    private final CommandManager<?, ?, ?, ?> manager;
     private final LocaleManager<CommandIssuer> localeManager;
     private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
 

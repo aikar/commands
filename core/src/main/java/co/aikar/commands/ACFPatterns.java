@@ -37,6 +37,7 @@ final class ACFPatterns {
     public static final Pattern PERCENTAGE = Pattern.compile("%", Pattern.LITERAL);
     public static final Pattern NEWLINE = Pattern.compile("\n");
     public static final Pattern DASH = Pattern.compile("-");
+    public static final Pattern UNDERSCORE = Pattern.compile("_");
     public static final Pattern SPACE = Pattern.compile(" ");
     public static final Pattern SEMICOLON = Pattern.compile(";");
     public static final Pattern COLON = Pattern.compile(":");

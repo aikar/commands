@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandManager extends CommandManager<CommandSource, TextColor, SpongeMessageFormatter> {
+public class SpongeCommandManager extends CommandManager<CommandSource, SpongeCommandIssuer, TextColor, SpongeMessageFormatter> {
 
     protected final PluginContainer plugin;
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
@@ -126,7 +126,7 @@ public class SpongeCommandManager extends CommandManager<CommandSource, TextColo
     }
 
     @Override
-    public CommandIssuer getCommandIssuer(Object issuer) {
+    public SpongeCommandIssuer getCommandIssuer(Object issuer) {
         if (!(issuer instanceof CommandSource)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
