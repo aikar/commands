@@ -226,7 +226,7 @@
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands"><span class="typeNameLink">CommandIssuer</span></a> - Interface in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandManager</span></a>&lt;<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">I</a>,<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>,<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a> extends <a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;&gt; - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
+<dt><a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandManager</span></a>&lt;<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">I</a>,<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">AI</a> extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>,<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a> extends <a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;&gt; - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#CommandManager--">CommandManager()</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
@@ -823,6 +823,8 @@
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts"><span class="typeNameLink">IssuerAwareContextResolver</span></a>&lt;<a href="co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="type parameter in IssuerAwareContextResolver">T</a>,<a href="co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="type parameter in IssuerAwareContextResolver">C</a> extends <a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt; - Interface in <a href="co/aikar/commands/contexts/package-summary.html">co.aikar.commands.contexts</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="co/aikar/commands/IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands"><span class="typeNameLink">IssuerLocaleChangedCallback</span></a>&lt;<a href="co/aikar/commands/IssuerLocaleChangedCallback.html" title="type parameter in IssuerLocaleChangedCallback">I</a> extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt; - Interface in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/contexts/IssuerOnlyContextResolver.html" title="interface in co.aikar.commands.contexts"><span class="typeNameLink">IssuerOnlyContextResolver</span></a>&lt;<a href="co/aikar/commands/contexts/IssuerOnlyContextResolver.html" title="type parameter in IssuerOnlyContextResolver">T</a>,<a href="co/aikar/commands/contexts/IssuerOnlyContextResolver.html" title="type parameter in IssuerOnlyContextResolver">C</a> extends <a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt; - Interface in <a href="co/aikar/commands/contexts/package-summary.html">co.aikar.commands.contexts</a></dt>
 <dd>
 <div class="block">A context resolver that will never consume input, and only resolves using the context of the issuer of the command</div>
@@ -1000,6 +1002,8 @@
 <dd>
 <div class="block">Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#localeChangedCallbacks">localeChangedCallbacks</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands"><span class="typeNameLink">Locales</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#Locales-co.aikar.commands.CommandManager-">Locales(CommandManager)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
@@ -1040,6 +1044,8 @@
 <dl>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#normalize-java.lang.String-">normalize(String)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#notifyLocaleChange-AI-java.util.Locale-java.util.Locale-">notifyLocaleChange(AI, Locale, Locale)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#nullDefault-java.lang.Object-java.lang.Object-">nullDefault(Object, Object)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -1049,6 +1055,10 @@
 <h2 class="title">O</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#obtainRootCommand-java.lang.String-">obtainRootCommand(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/IssuerLocaleChangedCallback.html#onIssuerLocaleChange-I-java.util.Locale-java.util.Locale-">onIssuerLocaleChange(I, Locale, Locale)</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands">IssuerLocaleChangedCallback</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#onLocaleChange-co.aikar.commands.IssuerLocaleChangedCallback-">onLocaleChange(IssuerLocaleChangedCallback&lt;AI&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Optional.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Optional</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
 <dd>&nbsp;</dd>

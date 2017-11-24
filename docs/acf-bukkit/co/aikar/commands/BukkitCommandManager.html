@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":42,"i17":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":42,"i18":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</li>
+<li>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</li>
 <li>
 <ul class="inheritance">
 <li>co.aikar.commands.BukkitCommandManager</li>
@@ -114,8 +114,8 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.52">BukkitCommandManager</a>
-extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</pre>
+<pre>public class <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.55">BukkitCommandManager</a>
+extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</pre>
 </li>
 </ul>
 </div>
@@ -143,18 +143,22 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#contexts">contexts</a></span></code>&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#issuersLocale">issuersLocale</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,org.bukkit.command.Command&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#knownCommands">knownCommands</a></span></code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected <a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#locales">locales</a></span></code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>protected org.bukkit.plugin.Plugin</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#plugin">plugin</a></span></code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#registeredCommands">registeredCommands</a></span></code>&nbsp;</td>
 </tr>
@@ -164,7 +168,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, replacements, rootCommands, supportedLanguages</code></li>
+<code>defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages</code></li>
 </ul>
 </li>
 </ul>
@@ -234,49 +238,53 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getCommandContexts--">getCommandContexts</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>co.aikar.commands.CommandIssuer</code></td>
+<td class="colFirst"><code><a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getCommandIssuer-java.lang.Object-">getCommandIssuer</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getIssuerLocale-co.aikar.commands.CommandIssuer-">getIssuerLocale</a></span>(co.aikar.commands.CommandIssuer&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getLocales--">getLocales</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>org.bukkit.plugin.Plugin</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getPlugin--">getPlugin</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>co.aikar.timings.lib.TimingManager</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#getTimings--">getTimings</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#hasRegisteredCommands--">hasRegisteredCommands</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#isCommandIssuer-java.lang.Class-">isCommandIssuer</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#log-co.aikar.commands.LogLevel-java.lang.String-java.lang.Throwable-">log</a></span>(co.aikar.commands.LogLevel&nbsp;level,
    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;throwable)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#registerCommand-co.aikar.commands.BaseCommand-">registerCommand</a></span>(co.aikar.commands.BaseCommand&nbsp;command)</code>&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#registerCommand-co.aikar.commands.BaseCommand-boolean-">registerCommand</a></span>(co.aikar.commands.BaseCommand&nbsp;command,
                boolean&nbsp;force)</code>&nbsp;</td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommand-co.aikar.commands.BaseCommand-">unregisterCommand</a></span>(co.aikar.commands.BaseCommand&nbsp;command)</code>&nbsp;</td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommand-co.aikar.commands.BukkitRootCommand-">unregisterCommand</a></span>(<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&nbsp;command)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -284,7 +292,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 </div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommands--">unregisterCommands</a></span>()</code>&nbsp;</td>
 </tr>
@@ -294,7 +302,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>addSupportedLanguage, createCommandOperationContext, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getIssuerLocale, getSupportedLanguages, handleUncaughtException, hasPermission, log, obtainRootCommand, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat</code></li>
+<code>addSupportedLanguage, createCommandOperationContext, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -323,7 +331,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>plugin</h4>
-<pre>protected final&nbsp;org.bukkit.plugin.Plugin <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.55">plugin</a></pre>
+<pre>protected final&nbsp;org.bukkit.plugin.Plugin <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.58">plugin</a></pre>
 </li>
 </ul>
 <a name="knownCommands">
@@ -332,7 +340,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>knownCommands</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,org.bukkit.command.Command&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.58">knownCommands</a></pre>
+<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,org.bukkit.command.Command&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.62">knownCommands</a></pre>
 </li>
 </ul>
 <a name="registeredCommands">
@@ -341,7 +349,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>registeredCommands</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.59">registeredCommands</a></pre>
+<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.63">registeredCommands</a></pre>
 </li>
 </ul>
 <a name="contexts">
@@ -350,7 +358,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>contexts</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandContexts.html" title="class in co.aikar.commands">BukkitCommandContexts</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.60">contexts</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandContexts.html" title="class in co.aikar.commands">BukkitCommandContexts</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.64">contexts</a></pre>
 </li>
 </ul>
 <a name="completions">
@@ -359,16 +367,25 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>completions</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandCompletions.html" title="class in co.aikar.commands">BukkitCommandCompletions</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.61">completions</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandCompletions.html" title="class in co.aikar.commands">BukkitCommandCompletions</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.65">completions</a></pre>
 </li>
 </ul>
 <a name="locales">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>locales</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.63">locales</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.67">locales</a></pre>
+</li>
+</ul>
+<a name="issuersLocale">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>issuersLocale</h4>
+<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.69">issuersLocale</a></pre>
 </li>
 </ul>
 </li>
@@ -385,7 +402,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockListLast">
 <li class="blockList">
 <h4>BukkitCommandManager</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.66">BukkitCommandManager</a>(org.bukkit.plugin.Plugin&nbsp;plugin)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.72">BukkitCommandManager</a>(org.bukkit.plugin.Plugin&nbsp;plugin)</pre>
 </li>
 </ul>
 </li>
@@ -402,7 +419,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>getPlugin</h4>
-<pre>public&nbsp;org.bukkit.plugin.Plugin&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.106">getPlugin</a>()</pre>
+<pre>public&nbsp;org.bukkit.plugin.Plugin&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.118">getPlugin</a>()</pre>
 </li>
 </ul>
 <a name="isCommandIssuer-java.lang.Class-">
@@ -411,10 +428,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>isCommandIssuer</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.111">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.123">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>isCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>isCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -424,10 +441,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandContexts</h4>
-<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;<a href="../../../co/aikar/commands/BukkitCommandExecutionContext.html" title="class in co.aikar.commands">BukkitCommandExecutionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.116">getCommandContexts</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;<a href="../../../co/aikar/commands/BukkitCommandExecutionContext.html" title="class in co.aikar.commands">BukkitCommandExecutionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.128">getCommandContexts</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getCommandContexts</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>getCommandContexts</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -437,10 +454,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandCompletions</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;<a href="../../../co/aikar/commands/BukkitCommandCompletionContext.html" title="class in co.aikar.commands">BukkitCommandCompletionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.124">getCommandCompletions</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;<a href="../../../co/aikar/commands/BukkitCommandCompletionContext.html" title="class in co.aikar.commands">BukkitCommandCompletionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.136">getCommandCompletions</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getCommandCompletions</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>getCommandCompletions</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -450,10 +467,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>getLocales</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.133">getLocales</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.145">getLocales</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getLocales</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>getLocales</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -463,10 +480,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>hasRegisteredCommands</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.143">hasRegisteredCommands</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.155">hasRegisteredCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>hasRegisteredCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>hasRegisteredCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -476,7 +493,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>registerCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.147">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.159">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
                             boolean&nbsp;force)</pre>
 </li>
 </ul>
@@ -486,10 +503,10 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>registerCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.178">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.190">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>registerCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>registerCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -499,7 +516,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.182">unregisterCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.194">unregisterCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 </li>
 </ul>
 <a name="unregisterCommand-co.aikar.commands.BukkitRootCommand-">
@@ -509,7 +526,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org
 <li class="blockList">
 <h4>unregisterCommand</h4>
 <pre><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.198">unregisterCommand</a>(<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&nbsp;command)</pre>
+public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.210">unregisterCommand</a>(<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&nbsp;command)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use unregisterCommand(BaseCommand) - this will be visibility reduced later.</span></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -523,7 +540,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommands</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.209">unregisterCommands</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.221">unregisterCommands</a>()</pre>
 </li>
 </ul>
 <a name="getTimings--">
@@ -532,7 +549,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>getTimings</h4>
-<pre>public&nbsp;co.aikar.timings.lib.TimingManager&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.232">getTimings</a>()</pre>
+<pre>public&nbsp;co.aikar.timings.lib.TimingManager&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.298">getTimings</a>()</pre>
 </li>
 </ul>
 <a name="createRootCommand-java.lang.String-">
@@ -541,10 +558,10 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>createRootCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.237">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
+<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.303">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>createRootCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>createRootCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -554,10 +571,10 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandIssuer</h4>
-<pre>public&nbsp;co.aikar.commands.CommandIssuer&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.242">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.308">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>getCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -567,7 +584,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>createCommandContext</h4>
-<pre>public&nbsp;&lt;R extends co.aikar.commands.CommandExecutionContext&gt;&nbsp;R&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.250">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre>public&nbsp;&lt;R extends co.aikar.commands.CommandExecutionContext&gt;&nbsp;R&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.316">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                                                     <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html?is-external=true" title="class or interface in java.lang.reflect">Parameter</a>&nbsp;parameter,
                                                                                     co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                                     <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;args,
@@ -575,7 +592,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
                                                                                     <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&gt;&nbsp;passedArgs)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>createCommandContext</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>createCommandContext</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -585,14 +602,14 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>createCompletionContext</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.256">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.322">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                                           co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;input,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;config,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>createCompletionContext</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>createCompletionContext</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -602,28 +619,41 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="blockList">
 <li class="blockList">
 <h4>createRegisteredCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.261">createRegisteredCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
+<pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.327">createRegisteredCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmdName,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html?is-external=true" title="class or interface in java.lang.reflect">Method</a>&nbsp;method,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;prefSubCommand)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>createRegisteredCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>createRegisteredCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
 <a name="log-co.aikar.commands.LogLevel-java.lang.String-java.lang.Throwable-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>log</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.266">log</a>(co.aikar.commands.LogLevel&nbsp;level,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.332">log</a>(co.aikar.commands.LogLevel&nbsp;level,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;throwable)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>log</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+<dd><code>log</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getIssuerLocale-co.aikar.commands.CommandIssuer-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getIssuerLocale</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.344">getIssuerLocale</a>(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>getIssuerLocale</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
