@@ -112,7 +112,6 @@
                     <notimestamp>true</notimestamp>
                     <linksource>true</linksource>
                     <nohelp>true</nohelp>
-                    <show>public</show>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
                 <executions>
