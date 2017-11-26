@@ -347,7 +347,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
 
     @Override
     public Locale getIssuerLocale(CommandIssuer issuer) {
-        if (issuer.getIssuer() instanceof Player) {
+        if (usingPerIssuerLocale() && issuer.getIssuer() instanceof Player) {
             UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();
             Locale locale = issuersLocale.get(uniqueId);
             if (locale != null) {

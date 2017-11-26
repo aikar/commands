@@ -56,7 +56,7 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected ExceptionHandler defaultExceptionHandler = null;
 
-
+    protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<AI>> localeChangedCallbacks = Lists.newArrayList();
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
     protected Map<MessageType, F> formatters = new IdentityHashMap<>();
@@ -184,6 +184,16 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
      * @return
      */
     public abstract Locales getLocales();
+
+    public boolean usingPerIssuerLocale() {
+        return usePerIssuerLocale;
+    }
+
+    public boolean usePerIssuerLocale(boolean setting) {
+        boolean old = usePerIssuerLocale;
+        usePerIssuerLocale = setting;
+        return old;
+    }
 
     public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
