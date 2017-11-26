@@ -64,6 +64,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
     private final CommandMap commandMap;
     private final TimingManager timingManager;
     private final BukkitTask localeTask;
+    private final Logger logger;
     protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
@@ -76,6 +77,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
+        this.logger = Logger.getLogger(this.plugin.getName());
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
         this.commandMap = hookCommandMap();
@@ -335,7 +337,6 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
 
     @Override
     public void log(LogLevel level, String message, Throwable throwable) {
-        Logger logger = this.plugin.getLogger();
         Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;
         logger.log(logLevel, LogLevel.LOG_PREFIX + message);
         if (throwable != null) {

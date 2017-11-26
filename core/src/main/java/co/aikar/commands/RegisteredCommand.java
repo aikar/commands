@@ -60,9 +60,11 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     final int requiredResolvers;
     final int optionalResolvers;
     final List<String> registeredSubcommands = new ArrayList<>();
+    private final CommandManager<?, ?, ?, ?> manager;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
+        this.manager = this.scope.manager;
         if ("__unknown".equals(prefSubCommand) || "__default".equals(prefSubCommand)) {
             prefSubCommand = "";
         }
@@ -80,8 +82,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         //noinspection unchecked
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
-        final CommandManager manager = scope.manager;
-        final CommandContexts commandContexts = manager.getCommandContexts();
+        final CommandContexts commandContexts = this.manager.getCommandContexts();
 
         int requiredResolvers = 0;
         int optionalResolvers = 0;
@@ -115,7 +116,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             }
         }
         String syntaxText = syntaxB.toString();
-        this.syntaxText = manager.getCommandReplacements().replace(syntaxStr != null ?
+        this.syntaxText = this.manager.getCommandReplacements().replace(syntaxStr != null ?
                 ACFUtil.replace(syntaxStr.value(), "@syntax", syntaxText) : syntaxText);
         this.requiredResolvers = requiredResolvers;
         this.optionalResolvers = optionalResolvers;
@@ -155,21 +156,25 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             e = (Exception) e.getCause();
         }
         if (e instanceof InvalidCommandArgument) {
-            InvalidCommandArgument ica = (InvalidCommandArgument) e;
-            if (ica.key != null) {
-                sender.sendMessage(MessageType.ERROR, ica.key, ica.replacements);
+            InvalidCommandArgument invalidCommandArg = (InvalidCommandArgument) e;
+            if (invalidCommandArg.key != null) {
+                sender.sendMessage(MessageType.ERROR, invalidCommandArg.key, invalidCommandArg.replacements);
             } else if (e.getMessage() != null && !e.getMessage().isEmpty()) {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PREFIX, "{message}", e.getMessage());
             }
-            if (ica.showSyntax) {
+            if (invalidCommandArg.showSyntax) {
                 scope.showSyntax(sender, this);
             }
         } else {
-            boolean handeled = this.scope.manager.handleUncaughtException(scope, this, sender, args, e);
-            if(!handeled){
-                sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);
+            try {
+                if (!this.manager.handleUncaughtException(scope, this, sender, args, e)) {
+                    sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);
+                }
+                this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
+            } catch (Exception e2) {
+                this.manager.log(LogLevel.ERROR, "Exception in handleException for command: " + command + " " + ACFUtil.join(args), e);
+                this.manager.log(LogLevel.ERROR, "Exception triggered by exception handler:", e2);
             }
-            this.scope.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
         }
     }
 
@@ -191,7 +196,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             final Class<?> type = parameter.getType();
             //noinspection unchecked
             final ContextResolver<?, R> resolver = resolvers[i];
-            R context = this.scope.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            R context = this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
             boolean isOptionalResolver = isOptionalResolver(resolver, parameter);
             if (!isOptionalResolver) {
                 remainingRequired--;
@@ -217,7 +222,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
                 for (String s : split) {
-                    List<String> check = this.scope.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs);
+                    List<String> check = this.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs);
                     if (!check.isEmpty()) {
                         possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
                     } else {
