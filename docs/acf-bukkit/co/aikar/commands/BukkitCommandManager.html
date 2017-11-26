@@ -44,7 +44,6 @@ var activeTableTab = "activeTableTab";
 <li><a href="package-tree.html">Tree</a></li>
 <li><a href="../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../index-all.html">Index</a></li>
-<li><a href="../../../help-doc.html">Help</a></li>
 </ul>
 </div>
 <div class="subNav">
@@ -75,13 +74,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -122,56 +121,6 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a 
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="../../../co/aikar/commands/BukkitCommandCompletions.html" title="class in co.aikar.commands">BukkitCommandCompletions</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#completions">completions</a></span></code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected <a href="../../../co/aikar/commands/BukkitCommandContexts.html" title="class in co.aikar.commands">BukkitCommandContexts</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#contexts">contexts</a></span></code>&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#issuersLocale">issuersLocale</a></span></code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,org.bukkit.command.Command&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#knownCommands">knownCommands</a></span></code>&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#locales">locales</a></span></code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>protected org.bukkit.plugin.Plugin</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#plugin">plugin</a></span></code>&nbsp;</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#registeredCommands">registeredCommands</a></span></code>&nbsp;</td>
-</tr>
-</table>
-<ul class="blockList">
-<li class="blockList"><a name="fields.inherited.from.class.co.aikar.commands.CommandManager">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages</code></li>
-</ul>
-</li>
-</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -302,14 +251,14 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a 
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>addSupportedLanguage, createCommandOperationContext, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat</code></li>
+<code>addSupportedLanguage, createCommandOperationContext, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getSupportedLanguages, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
-<code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
+<code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -319,77 +268,6 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a 
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="plugin">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>plugin</h4>
-<pre>protected final&nbsp;org.bukkit.plugin.Plugin <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.63">plugin</a></pre>
-</li>
-</ul>
-<a name="knownCommands">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>knownCommands</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,org.bukkit.command.Command&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.67">knownCommands</a></pre>
-</li>
-</ul>
-<a name="registeredCommands">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>registeredCommands</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.68">registeredCommands</a></pre>
-</li>
-</ul>
-<a name="contexts">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>contexts</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandContexts.html" title="class in co.aikar.commands">BukkitCommandContexts</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.69">contexts</a></pre>
-</li>
-</ul>
-<a name="completions">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>completions</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitCommandCompletions.html" title="class in co.aikar.commands">BukkitCommandCompletions</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.70">completions</a></pre>
-</li>
-</ul>
-<a name="locales">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>locales</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/BukkitLocales.html" title="class in co.aikar.commands">BukkitLocales</a> <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.72">locales</a></pre>
-</li>
-</ul>
-<a name="issuersLocale">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>issuersLocale</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&gt; <a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.74">issuersLocale</a></pre>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -680,7 +558,6 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <li><a href="package-tree.html">Tree</a></li>
 <li><a href="../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../index-all.html">Index</a></li>
-<li><a href="../../../help-doc.html">Help</a></li>
 </ul>
 </div>
 <div class="subNav">
@@ -711,13 +588,13 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

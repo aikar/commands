@@ -355,14 +355,16 @@
 <span class="sourceLineNo">347</span><a name="line.347"></a>
 <span class="sourceLineNo">348</span>    @Override<a name="line.348"></a>
 <span class="sourceLineNo">349</span>    public Locale getIssuerLocale(CommandIssuer issuer) {<a name="line.349"></a>
-<span class="sourceLineNo">350</span>        UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();<a name="line.350"></a>
-<span class="sourceLineNo">351</span>        Locale locale = issuersLocale.get(uniqueId);<a name="line.351"></a>
-<span class="sourceLineNo">352</span>        if (locale != null) {<a name="line.352"></a>
-<span class="sourceLineNo">353</span>            return locale;<a name="line.353"></a>
-<span class="sourceLineNo">354</span>        }<a name="line.354"></a>
-<span class="sourceLineNo">355</span>        return super.getIssuerLocale(issuer);<a name="line.355"></a>
-<span class="sourceLineNo">356</span>    }<a name="line.356"></a>
-<span class="sourceLineNo">357</span>}<a name="line.357"></a>
+<span class="sourceLineNo">350</span>        if (issuer.getIssuer() instanceof Player) {<a name="line.350"></a>
+<span class="sourceLineNo">351</span>            UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();<a name="line.351"></a>
+<span class="sourceLineNo">352</span>            Locale locale = issuersLocale.get(uniqueId);<a name="line.352"></a>
+<span class="sourceLineNo">353</span>            if (locale != null) {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>                return locale;<a name="line.354"></a>
+<span class="sourceLineNo">355</span>            }<a name="line.355"></a>
+<span class="sourceLineNo">356</span>        }<a name="line.356"></a>
+<span class="sourceLineNo">357</span>        return super.getIssuerLocale(issuer);<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    }<a name="line.358"></a>
+<span class="sourceLineNo">359</span>}<a name="line.359"></a>
 
 
 
