@@ -111,13 +111,15 @@
                     <quiet>true</quiet>
                     <notimestamp>true</notimestamp>
                     <linksource>true</linksource>
+                    <nohelp>true</nohelp>
+                    <show>public</show>
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>javadoc</goal>
                         </goals>
                     </execution>
                 </executions>
