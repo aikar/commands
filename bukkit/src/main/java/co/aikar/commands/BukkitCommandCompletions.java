@@ -43,12 +43,12 @@ import java.util.stream.Stream;
 public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCompletionContext> {
     public BukkitCommandCompletions(BukkitCommandManager manager) {
         super(manager);
-        registerCompletion("mobs", c -> {
+        registerAsyncCompletion("mobs", c -> {
             final Stream<String> normal = Stream.of(EntityType.values())
                     .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
         });
-        registerCompletion("chatcolors", c -> {
+        registerAsyncCompletion("chatcolors", c -> {
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
             if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
@@ -63,7 +63,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
 
             return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
         });
-        registerCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
+        registerAsyncCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
         registerCompletion("worlds", c -> (
             Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));

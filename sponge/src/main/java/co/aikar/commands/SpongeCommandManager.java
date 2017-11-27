@@ -172,13 +172,14 @@ public class SpongeCommandManager extends CommandManager<CommandSource, SpongeCo
     }
 
     @Override
-    public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
+    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
         return new SpongeCommandOperationContext(
                 this,
                 issuer,
                 command,
                 commandLabel,
-                args
+                args,
+                isAsync
         );
     }
 }

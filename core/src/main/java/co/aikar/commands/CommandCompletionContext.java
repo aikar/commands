@@ -124,4 +124,8 @@ public class CommandCompletionContext {
     public String getConfig() {
         return config;
     }
+
+    public boolean isAsync() {
+        return CommandManager.getCurrentCommandOperationContext().isAsync();
+    }
 }

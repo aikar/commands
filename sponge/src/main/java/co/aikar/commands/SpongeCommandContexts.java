@@ -31,11 +31,9 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyle;
 import org.spongepowered.api.world.World;
 
-import javax.swing.plaf.ActionMapUIResource;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;

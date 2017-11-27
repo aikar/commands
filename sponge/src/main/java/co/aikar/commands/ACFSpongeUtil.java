@@ -1,7 +1,6 @@
 package co.aikar.commands;
 
 import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;

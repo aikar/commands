@@ -132,7 +132,7 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
     /** @deprecated Unstable API */ @Deprecated @UnstableAPI
     public CommandHelp generateCommandHelp(CommandIssuer issuer, @NotNull String command) {
         verifyUnstableAPI("help");
-        return generateCommandHelp(issuer, obtainRootCommand(ACFPatterns.SPACE.split(command, 2)[0]));
+        return generateCommandHelp(issuer, obtainRootCommand(command));
     }
 
     /** @deprecated Unstable API */ @Deprecated @UnstableAPI
@@ -230,8 +230,16 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return true;
     }
 
-    public synchronized RootCommand obtainRootCommand(String cmd) {
-        return rootCommands.computeIfAbsent(cmd.toLowerCase(), this::createRootCommand);
+    BaseCommand getBaseCommand(String commandLabel, @NotNull String[] args) {
+        RootCommand rootCommand = obtainRootCommand(commandLabel);
+        if (rootCommand == null) {
+            return null;
+        }
+        return rootCommand.getBaseCommand(args);
+    }
+
+    public synchronized RootCommand obtainRootCommand(@NotNull String cmd) {
+        return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0], this::createRootCommand);
     }
 
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
@@ -311,14 +319,14 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return getLocales().getDefaultLocale();
     }
 
-
-    public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {
+    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
         return new CommandOperationContext(
                 this,
                 issuer,
                 command,
                 commandLabel,
-                args
+                args,
+                isAsync
         );
     }
 

@@ -27,14 +27,11 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Syntax;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import jdk.nashorn.internal.ir.ReturnNode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class BukkitRootCommand extends Command implements RootCommand {
 
@@ -58,7 +55,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return tabComplete(manager.getCommandIssuer(sender), alias, args);
+        return getTabCompletions(manager.getCommandIssuer(sender), alias, args);
     }
 
     @Override
@@ -66,14 +63,6 @@ public class BukkitRootCommand extends Command implements RootCommand {
         execute(manager.getCommandIssuer(sender), commandLabel, args);
         return true;
     }
-
-    private List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
-        Set<String> completions = new HashSet<>();
-        this.children.forEach(child -> completions.addAll(child.tabComplete(sender, alias, args)));
-        return new ArrayList<>(completions);
-    }
-
-
 
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
@@ -93,6 +82,11 @@ public class BukkitRootCommand extends Command implements RootCommand {
     @Override
     public SetMultimap<String, RegisteredCommand> getSubCommands() {
         return this.subCommands;
+    }
+
+    @Override
+    public List<BaseCommand> getChildren() {
+        return children;
     }
 
     @Override

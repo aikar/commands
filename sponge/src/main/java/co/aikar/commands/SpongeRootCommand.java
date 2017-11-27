@@ -34,13 +34,10 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.annotation.Nullable;
 
 public class SpongeRootCommand implements CommandCallable, RootCommand {
 
@@ -70,7 +67,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     @Override
     public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
         String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
-        return tabComplete(manager.getCommandIssuer(source), this.name, args);
+        return getTabCompletions(manager.getCommandIssuer(source), this.name, args);
     }
 
     @Override
@@ -91,12 +88,6 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     @Override
     public Text getUsage(@NotNull CommandSource source) {
         return Text.of();
-    }
-
-    private List<String> tabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
-        Set<String> completions = new HashSet<>();
-        this.children.forEach(child -> completions.addAll(child.tabComplete(sender, alias, args)));
-        return new ArrayList<>(completions);
     }
 
     private CommandResult executeSponge(CommandIssuer sender, String commandLabel, String[] args) {
@@ -124,5 +115,10 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     @Override
     public SetMultimap<String, RegisteredCommand> getSubCommands() {
         return subCommands;
+    }
+
+    @Override
+    public List<BaseCommand> getChildren() {
+        return children;
     }
 }

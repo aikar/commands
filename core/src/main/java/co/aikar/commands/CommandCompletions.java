@@ -42,8 +42,8 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
-        registerCompletion("nothing", c -> ImmutableList.of());
-        registerCompletion("range", (c) -> {
+        registerAsyncCompletion("nothing", c -> ImmutableList.of());
+        registerAsyncCompletion("range", (c) -> {
             String config = c.getConfig();
             if (config == null) {
                 return ImmutableList.of();
@@ -60,15 +60,19 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        registerCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
+        registerAsyncCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
     }
 
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
+    public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
+        return this.completionMap.put("@" + id.toLowerCase(), handler);
+    }
+
     @NotNull
-    List<String> of(CommandOperationContext commandOperationContext, RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args) {
+    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args, boolean isAsync) {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
@@ -77,11 +81,10 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             return ImmutableList.of(input);
         }
 
-        return getCompletionValues(command, sender, completion, args);
+        return getCompletionValues(command, sender, completion, args, isAsync);
     }
 
-    @NotNull
-    List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args) {
+    List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
         completion = manager.getCommandReplacements().replace(completion);
 
         List<String> allCompletions = Lists.newArrayList();
@@ -91,6 +94,10 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             String[] complete = ACFPatterns.COLONEQUALS.split(value, 2);
             CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
             if (handler != null) {
+                if (isAsync && !(handler instanceof AsyncCommandCompletionHandler)) {
+                    ACFUtil.sneaky(new SyncCompletionRequired());
+                    return null;
+                }
                 String config = complete.length == 1 ? null : complete[1];
                 CommandCompletionContext context = manager.createCompletionContext(command, sender, input, config, args);
 
@@ -123,5 +130,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     public interface CommandCompletionHandler <C extends CommandCompletionContext> {
         Collection<String> getCompletions(C context) throws InvalidCommandArgument;
     }
+    public interface AsyncCommandCompletionHandler <C extends CommandCompletionContext> extends  CommandCompletionHandler <C> {}
+    public static class SyncCompletionRequired extends Exception {}
 
 }

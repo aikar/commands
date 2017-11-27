@@ -39,7 +39,7 @@ public class BungeeCommandCompletions extends CommandCompletions<BungeeCommandCo
 
     public BungeeCommandCompletions(CommandManager manager) {
         super(manager);
-        registerCompletion("chatcolors", c -> {
+        registerAsyncCompletion("chatcolors", c -> {
             Stream<ChatColor> colors = Stream.of(ChatColor.values());
             if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);

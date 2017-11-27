@@ -26,6 +26,8 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.SetMultimap;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +36,7 @@ interface RootCommand {
     CommandManager getManager();
 
     SetMultimap<String, RegisteredCommand> getSubCommands();
+    List<BaseCommand> getChildren();
 
     String getCommandName();
     default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
@@ -59,6 +62,13 @@ interface RootCommand {
     }
 
     default BaseCommand execute(CommandIssuer sender, String commandLabel, String[] args) {
+        BaseCommand command = getBaseCommand(args);
+
+        command.execute(sender, commandLabel, args);
+        return command;
+    }
+
+    default BaseCommand getBaseCommand(String[] args) {
         BaseCommand command = getDefCommand();
         for (int i = args.length; i >= 0; i--) {
             String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
@@ -68,10 +78,18 @@ interface RootCommand {
                 break;
             }
         }
-
-        command.execute(sender, commandLabel, args);
         return command;
     }
+
+    default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
+        Set<String> completions = new HashSet<>();
+        getChildren().forEach(child -> {
+            completions.addAll(child.tabComplete(sender, alias, args));
+            completions.addAll(child.getCommandsForCompletion(sender, args));
+        });
+        return new ArrayList<>(completions);
+    }
+
 
     default RegisteredCommand getDefaultRegisteredCommand() {
         BaseCommand defCommand = this.getDefCommand();

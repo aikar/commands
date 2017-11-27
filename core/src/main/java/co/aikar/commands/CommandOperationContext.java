@@ -35,14 +35,16 @@ public class CommandOperationContext {
     private final BaseCommand command;
     private final String commandLabel;
     private final String[] args;
+    private final boolean isAsync;
     private RegisteredCommand registeredCommand;
 
-    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args) {
+    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
         this.manager = manager;
         this.issuer = issuer;
         this.command = command;
         this.commandLabel = commandLabel;
         this.args = args;
+        this.isAsync = isAsync;
     }
 
     public CommandManager getCommandManager() {
@@ -63,6 +65,10 @@ public class CommandOperationContext {
 
     public String[] getArgs() {
         return args;
+    }
+
+    public boolean isAsync() {
+        return isAsync;
     }
 
     public void setRegisteredCommand(RegisteredCommand registeredCommand) {

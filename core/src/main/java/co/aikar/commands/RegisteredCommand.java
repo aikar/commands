@@ -23,7 +23,14 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
@@ -188,6 +195,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
         int remainingRequired = requiredResolvers;
+        CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
@@ -222,7 +230,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
                 final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
                 for (String s : split) {
-                    List<String> check = this.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs);
+                    List<String> check = this.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
                         possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
                     } else {

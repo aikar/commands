@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("WeakerAccess")
@@ -32,6 +31,12 @@ public class PaperCommandManager extends BukkitCommandManager {
     // If we get anything Paper specific
     public PaperCommandManager(Plugin plugin) {
         super(plugin);
+        try {
+            Class.forName("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent");
+            plugin.getServer().getPluginManager().registerEvents(new PaperAsyncTabCompleteHandler(this), plugin);
+        } catch (ClassNotFoundException ignored) {
+            // Ignored
+        }
     }
 
     @Override

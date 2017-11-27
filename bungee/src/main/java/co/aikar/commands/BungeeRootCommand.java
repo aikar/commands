@@ -29,10 +29,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.List;
 
 public class BungeeRootCommand extends Command implements RootCommand, TabExecutor {
 
@@ -74,19 +72,18 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     }
 
     @Override
+    public List<BaseCommand> getChildren() {
+        return children;
+    }
+
+    @Override
     public void execute(CommandSender sender, String[] args) {
         execute(manager.getCommandIssuer(sender), getName(), args);
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-        return onTabComplete(manager.getCommandIssuer(commandSender), getName(), strings);
-    }
-
-    private List<String> onTabComplete(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
-        Set<String> completions = new HashSet<>();
-        this.children.forEach(child -> completions.addAll(child.tabComplete(sender, alias, args)));
-        return new ArrayList<>(completions);
+        return getTabCompletions(manager.getCommandIssuer(commandSender), getName(), strings);
     }
 
     @Override

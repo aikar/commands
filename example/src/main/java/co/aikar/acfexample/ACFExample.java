@@ -60,7 +60,7 @@ public final class ACFExample extends JavaPlugin {
                 SomeObject.getContextResolver());
 
         // 4: Register Command Completions - this will be accessible with @CommandCompletion("@test")
-        commandManager.getCommandCompletions().registerCompletion("test", c -> (
+        commandManager.getCommandCompletions().registerAsyncCompletion("test", c -> (
             Lists.newArrayList("foo", "bar", "baz")
         ));
 

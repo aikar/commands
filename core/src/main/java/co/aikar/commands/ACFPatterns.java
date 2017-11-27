@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Maps;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 
