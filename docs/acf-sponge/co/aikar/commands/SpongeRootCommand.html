@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var methods = {"i0":10,"i1":18,"i2":18,"i3":18,"i4":10,"i5":10,"i6":18,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":18,"i14":10,"i15":10,"i16":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -112,7 +112,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.45">SpongeRootCommand</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.42">SpongeRootCommand</a>
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
 implements org.spongepowered.api.command.CommandCallable</pre>
 </li>
@@ -150,49 +150,63 @@ implements org.spongepowered.api.command.CommandCallable</pre>
        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>default co.aikar.commands.BaseCommand</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getBaseCommand-java.lang.String:A-">getBaseCommand</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg0)</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getChildren--">getChildren</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getCommandName--">getCommandName</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>default co.aikar.commands.RegisteredCommand</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>co.aikar.commands.BaseCommand</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getDefCommand--">getDefCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getHelp-org.spongepowered.api.command.CommandSource-">getHelp</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>co.aikar.commands.CommandManager</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getShortDescription-org.spongepowered.api.command.CommandSource-">getShortDescription</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>com.google.common.collect.SetMultimap&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getSubCommands--">getSubCommands</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getSuggestions-org.spongepowered.api.command.CommandSource-java.lang.String-org.spongepowered.api.world.Location-">getSuggestions</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source,
               @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arguments,
               org.spongepowered.api.world.Location&lt;org.spongepowered.api.world.World&gt;&nbsp;location)</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>default <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">getTabCompletions</a></span>(co.aikar.commands.CommandIssuer&nbsp;arg0,
+                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
+                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</code>&nbsp;</td>
+</tr>
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>org.spongepowered.api.text.Text</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#getUsage-org.spongepowered.api.command.CommandSource-">getUsage</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>org.spongepowered.api.command.CommandResult</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#process-org.spongepowered.api.command.CommandSource-java.lang.String-">process</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source,
        @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arguments)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeRootCommand.html#testPermission-org.spongepowered.api.command.CommandSource-">testPermission</a></span>(@NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</code>&nbsp;</td>
 </tr>
@@ -224,7 +238,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandName</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.60">getCommandName</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.57">getCommandName</a>()</pre>
 </li>
 </ul>
 <a name="process-org.spongepowered.api.command.CommandSource-java.lang.String-">
@@ -233,7 +247,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>process</h4>
-<pre>public&nbsp;org.spongepowered.api.command.CommandResult&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.65">process</a>(@NotNull
+<pre>public&nbsp;org.spongepowered.api.command.CommandResult&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.62">process</a>(@NotNull
                                                            @NotNull org.spongepowered.api.command.CommandSource&nbsp;source,
                                                            @NotNull
                                                            @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arguments)
@@ -252,7 +266,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSuggestions</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.71">getSuggestions</a>(@NotNull
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.68">getSuggestions</a>(@NotNull
                                    @NotNull org.spongepowered.api.command.CommandSource&nbsp;source,
                                    @NotNull
                                    @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arguments,
@@ -273,7 +287,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>testPermission</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.77">testPermission</a>(@NotNull
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.74">testPermission</a>(@NotNull
                               @NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -287,7 +301,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getShortDescription</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.82">getShortDescription</a>(@NotNull
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.79">getShortDescription</a>(@NotNull
                                                                      @NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -301,7 +315,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getHelp</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.87">getHelp</a>(@NotNull
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Optional.html?is-external=true" title="class or interface in java.util">Optional</a>&lt;org.spongepowered.api.text.Text&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.84">getHelp</a>(@NotNull
                                                          @NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -315,7 +329,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getUsage</h4>
-<pre>public&nbsp;org.spongepowered.api.text.Text&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.92">getUsage</a>(@NotNull
+<pre>public&nbsp;org.spongepowered.api.text.Text&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.89">getUsage</a>(@NotNull
                                                 @NotNull org.spongepowered.api.command.CommandSource&nbsp;source)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -329,7 +343,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addChild</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.107">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.98">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 </li>
 </ul>
 <a name="getDefCommand--">
@@ -338,7 +352,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefCommand</h4>
-<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.115">getDefCommand</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.106">getDefCommand</a>()</pre>
 </li>
 </ul>
 <a name="getManager--">
@@ -347,7 +361,7 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.120">getManager</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.111">getManager</a>()</pre>
 </li>
 </ul>
 <a name="getSubCommands--">
@@ -356,7 +370,16 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubCommands</h4>
-<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.125">getSubCommands</a>()</pre>
+<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.116">getSubCommands</a>()</pre>
+</li>
+</ul>
+<a name="getChildren--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getChildren</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeRootCommand.html#line.121">getChildren</a>()</pre>
 </li>
 </ul>
 <a name="addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">
@@ -379,6 +402,31 @@ implements org.spongepowered.api.command.CommandCallable</pre>
 <pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">execute</a>(co.aikar.commands.CommandIssuer&nbsp;arg0,
                                              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
                                              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</pre>
+</li>
+</ul>
+<a name="getBaseCommand-java.lang.String:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getBaseCommand</h4>
+<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getBaseCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg0)</pre>
+</li>
+</ul>
+<a name="getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTabCompletions</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getTabCompletions</a>(co.aikar.commands.CommandIssuer&nbsp;arg0,
+                                      <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
+                                      <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)
+                               throws <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code></dd>
+</dl>
 </li>
 </ul>
 <a name="getDefaultRegisteredCommand--">

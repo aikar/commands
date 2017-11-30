@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10};
+var methods = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -49,7 +49,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/CommandCompletions.html" target="_top">Frames</a></li>
@@ -130,7 +130,15 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static interface&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="type parameter in CommandCompletions.AsyncCommandCompletionHandler">C</a> extends <a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>&gt;</span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static interface&nbsp;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="type parameter in CommandCompletions.CommandCompletionHandler">C</a> extends <a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>&gt;</span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.SyncCompletionRequired.html" title="class in co.aikar.commands">CommandCompletions.SyncCompletionRequired</a></span></code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -165,6 +173,11 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">registerAsyncCompletion</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                       <a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerCompletion-java.lang.String-co.aikar.commands.CommandCompletions.CommandCompletionHandler-">registerCompletion</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
                   <a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>&nbsp;</td>
@@ -211,11 +224,21 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <a name="registerCompletion-java.lang.String-co.aikar.commands.CommandCompletions.CommandCompletionHandler-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>registerCompletion</h4>
 <pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.66">registerCompletion</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
                                                                       <a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</pre>
+</li>
+</ul>
+<a name="registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>registerAsyncCompletion</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.70">registerAsyncCompletion</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                                           <a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</pre>
 </li>
 </ul>
 </li>
@@ -246,7 +269,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/CommandCompletions.html" target="_top">Frames</a></li>

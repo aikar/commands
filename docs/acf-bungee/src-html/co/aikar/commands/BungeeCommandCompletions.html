@@ -47,7 +47,7 @@
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span>    public BungeeCommandCompletions(CommandManager manager) {<a name="line.40"></a>
 <span class="sourceLineNo">041</span>        super(manager);<a name="line.41"></a>
-<span class="sourceLineNo">042</span>        registerCompletion("chatcolors", c -&gt; {<a name="line.42"></a>
+<span class="sourceLineNo">042</span>        registerAsyncCompletion("chatcolors", c -&gt; {<a name="line.42"></a>
 <span class="sourceLineNo">043</span>            Stream&lt;ChatColor&gt; colors = Stream.of(ChatColor.values());<a name="line.43"></a>
 <span class="sourceLineNo">044</span>            if (c.hasConfig("colorsonly")) {<a name="line.44"></a>
 <span class="sourceLineNo">045</span>                colors = colors.filter(color -&gt; color.ordinal() &lt;= 0xF);<a name="line.45"></a>

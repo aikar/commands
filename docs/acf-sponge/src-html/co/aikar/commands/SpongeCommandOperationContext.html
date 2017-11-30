@@ -12,8 +12,8 @@
 <span class="sourceLineNo">004</span><a name="line.4"></a>
 <span class="sourceLineNo">005</span>public class SpongeCommandOperationContext extends CommandOperationContext {<a name="line.5"></a>
 <span class="sourceLineNo">006</span>    private CommandResult result = CommandResult.success();<a name="line.6"></a>
-<span class="sourceLineNo">007</span>    SpongeCommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args) {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>        super(manager, issuer, command, commandLabel, args);<a name="line.8"></a>
+<span class="sourceLineNo">007</span>    SpongeCommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {<a name="line.7"></a>
+<span class="sourceLineNo">008</span>        super(manager, issuer, command, commandLabel, args, isAsync);<a name="line.8"></a>
 <span class="sourceLineNo">009</span>    }<a name="line.9"></a>
 <span class="sourceLineNo">010</span><a name="line.10"></a>
 <span class="sourceLineNo">011</span>    public CommandResult getResult() {<a name="line.11"></a>

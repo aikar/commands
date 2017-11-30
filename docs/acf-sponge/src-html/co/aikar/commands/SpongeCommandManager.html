@@ -180,16 +180,17 @@
 <span class="sourceLineNo">172</span>    }<a name="line.172"></a>
 <span class="sourceLineNo">173</span><a name="line.173"></a>
 <span class="sourceLineNo">174</span>    @Override<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    public CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.175"></a>
+<span class="sourceLineNo">175</span>    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.175"></a>
 <span class="sourceLineNo">176</span>        return new SpongeCommandOperationContext(<a name="line.176"></a>
 <span class="sourceLineNo">177</span>                this,<a name="line.177"></a>
 <span class="sourceLineNo">178</span>                issuer,<a name="line.178"></a>
 <span class="sourceLineNo">179</span>                command,<a name="line.179"></a>
 <span class="sourceLineNo">180</span>                commandLabel,<a name="line.180"></a>
-<span class="sourceLineNo">181</span>                args<a name="line.181"></a>
-<span class="sourceLineNo">182</span>        );<a name="line.182"></a>
-<span class="sourceLineNo">183</span>    }<a name="line.183"></a>
-<span class="sourceLineNo">184</span>}<a name="line.184"></a>
+<span class="sourceLineNo">181</span>                args,<a name="line.181"></a>
+<span class="sourceLineNo">182</span>                isAsync<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        );<a name="line.183"></a>
+<span class="sourceLineNo">184</span>    }<a name="line.184"></a>
+<span class="sourceLineNo">185</span>}<a name="line.185"></a>
 
 
 

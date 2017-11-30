@@ -39,127 +39,125 @@
 <span class="sourceLineNo">031</span>import org.spongepowered.api.command.CommandSource;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import org.spongepowered.api.entity.living.player.Player;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import org.spongepowered.api.text.format.TextColor;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.spongepowered.api.text.format.TextColors;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.spongepowered.api.text.format.TextStyle;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.spongepowered.api.world.World;<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>import javax.swing.plaf.ActionMapUIResource;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import java.util.HashSet;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import java.util.Set;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import java.util.regex.Pattern;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import java.util.stream.Collectors;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import java.util.stream.Stream;<a name="line.43"></a>
-<span class="sourceLineNo">044</span><a name="line.44"></a>
-<span class="sourceLineNo">045</span>@SuppressWarnings("WeakerAccess")<a name="line.45"></a>
-<span class="sourceLineNo">046</span>public class SpongeCommandContexts extends CommandContexts&lt;SpongeCommandExecutionContext&gt; {<a name="line.46"></a>
-<span class="sourceLineNo">047</span><a name="line.47"></a>
-<span class="sourceLineNo">048</span>    public SpongeCommandContexts(final SpongeCommandManager manager) {<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        super(manager);<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>        registerIssuerOnlyContext(CommandResultSupplier.class, c -&gt; new CommandResultSupplier());<a name="line.51"></a>
-<span class="sourceLineNo">052</span>        registerContext(OnlinePlayer.class, c -&gt; getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));<a name="line.52"></a>
-<span class="sourceLineNo">053</span>        registerContext(TextColor.class, c -&gt; {<a name="line.53"></a>
-<span class="sourceLineNo">054</span>            String first = c.popFirstArg();<a name="line.54"></a>
-<span class="sourceLineNo">055</span>            Stream&lt;TextColor&gt; colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();<a name="line.55"></a>
-<span class="sourceLineNo">056</span>            String filter = c.getFlagValue("filter", (String)null);<a name="line.56"></a>
-<span class="sourceLineNo">057</span>            if(filter != null) {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>                filter = ACFUtil.simplifyString(filter);<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                String finalFilter = filter;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>                colours = colours.filter(colour -&gt; finalFilter.equals(ACFUtil.simplifyString(colour.getName())));<a name="line.60"></a>
-<span class="sourceLineNo">061</span>            }<a name="line.61"></a>
-<span class="sourceLineNo">062</span>            Stream&lt;TextColor&gt; finalColours = colours;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>            TextColor match = Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -&gt; {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                String valid = finalColours<a name="line.64"></a>
-<span class="sourceLineNo">065</span>                        .map(colour -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(colour.getName()) + "&lt;/c2&gt;")<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));<a name="line.66"></a>
-<span class="sourceLineNo">067</span>                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);<a name="line.67"></a>
-<span class="sourceLineNo">068</span>            });<a name="line.68"></a>
-<span class="sourceLineNo">069</span>            return match;<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        });<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        registerContext(TextStyle.Base.class, c -&gt; {<a name="line.71"></a>
-<span class="sourceLineNo">072</span>            String first = c.popFirstArg();<a name="line.72"></a>
-<span class="sourceLineNo">073</span>            Stream&lt;TextStyle.Base&gt; styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();<a name="line.73"></a>
-<span class="sourceLineNo">074</span>            String filter = c.getFlagValue("filter", (String)null);<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            if(filter != null) {<a name="line.75"></a>
-<span class="sourceLineNo">076</span>                filter = ACFUtil.simplifyString(filter);<a name="line.76"></a>
-<span class="sourceLineNo">077</span>                String finalFilter = filter;<a name="line.77"></a>
-<span class="sourceLineNo">078</span>                styles = styles.filter(style -&gt; finalFilter.equals(ACFUtil.simplifyString(style.getName())));<a name="line.78"></a>
-<span class="sourceLineNo">079</span>            }<a name="line.79"></a>
-<span class="sourceLineNo">080</span>            Stream&lt;TextStyle.Base&gt; finalStyles = styles;<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            TextStyle.Base match = Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -&gt; {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>                String valid = finalStyles<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                        .map(style -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(style.getName()) + "&lt;/c2&gt;")<a name="line.83"></a>
-<span class="sourceLineNo">084</span>                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));<a name="line.84"></a>
-<span class="sourceLineNo">085</span>                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);<a name="line.85"></a>
-<span class="sourceLineNo">086</span>            });<a name="line.86"></a>
-<span class="sourceLineNo">087</span>            return match;<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        });<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>        registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        registerIssuerAwareContext(Player.class, (c) -&gt; {<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>            if (player == null &amp;&amp; !c.hasAnnotation(Optional.class)) {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);<a name="line.94"></a>
-<span class="sourceLineNo">095</span>            }<a name="line.95"></a>
-<span class="sourceLineNo">096</span>            /*PlayerInventory inventory = player != null ? player.getInventory() : null;<a name="line.96"></a>
-<span class="sourceLineNo">097</span>            if (inventory != null &amp;&amp; c.hasFlag("itemheld") &amp;&amp; !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);<a name="line.98"></a>
-<span class="sourceLineNo">099</span>            }*/<a name="line.99"></a>
-<span class="sourceLineNo">100</span>            return player;<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        });<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        registerContext(OnlinePlayer[].class, (c) -&gt;  {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>            SpongeCommandIssuer issuer = c.getIssuer();<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            final String search = c.popFirstArg();<a name="line.104"></a>
-<span class="sourceLineNo">105</span>            boolean allowMissing = c.hasFlag("allowmissing");<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            Set&lt;OnlinePlayer&gt; players = new HashSet&lt;&gt;();<a name="line.106"></a>
-<span class="sourceLineNo">107</span>            Pattern split = ACFPatterns.COMMA;<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            String splitter = c.getFlagValue("splitter", (String) null);<a name="line.108"></a>
-<span class="sourceLineNo">109</span>            if (splitter != null) {<a name="line.109"></a>
-<span class="sourceLineNo">110</span>                split = Pattern.compile(Pattern.quote(splitter));<a name="line.110"></a>
-<span class="sourceLineNo">111</span>            }<a name="line.111"></a>
-<span class="sourceLineNo">112</span>            for (String lookup : split.split(search)) {<a name="line.112"></a>
-<span class="sourceLineNo">113</span>                OnlinePlayer player = getOnlinePlayer(issuer, lookup, allowMissing);<a name="line.113"></a>
-<span class="sourceLineNo">114</span>                if (player != null) {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>                    players.add(player);<a name="line.115"></a>
-<span class="sourceLineNo">116</span>                }<a name="line.116"></a>
-<span class="sourceLineNo">117</span>            }<a name="line.117"></a>
-<span class="sourceLineNo">118</span>            if (players.isEmpty() &amp;&amp; !c.hasFlag("allowempty")) {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                        "{search}", search);<a name="line.120"></a>
-<span class="sourceLineNo">121</span><a name="line.121"></a>
-<span class="sourceLineNo">122</span>                throw new InvalidCommandArgument(false);<a name="line.122"></a>
-<span class="sourceLineNo">123</span>            }<a name="line.123"></a>
-<span class="sourceLineNo">124</span>            return players.toArray(new OnlinePlayer[players.size()]);<a name="line.124"></a>
-<span class="sourceLineNo">125</span>        });<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        registerIssuerAwareContext(World.class, (c) -&gt; {<a name="line.126"></a>
-<span class="sourceLineNo">127</span>            String firstArg = c.getFirstArg();<a name="line.127"></a>
-<span class="sourceLineNo">128</span>            java.util.Optional&lt;World&gt; world = firstArg != null ? Sponge.getServer().getWorld(firstArg) : java.util.Optional.empty();<a name="line.128"></a>
-<span class="sourceLineNo">129</span>            if (world.isPresent()) {<a name="line.129"></a>
-<span class="sourceLineNo">130</span>                c.popFirstArg();<a name="line.130"></a>
-<span class="sourceLineNo">131</span>            }<a name="line.131"></a>
-<span class="sourceLineNo">132</span>            if (!world.isPresent() &amp;&amp; c.getSource() instanceof Player) {<a name="line.132"></a>
-<span class="sourceLineNo">133</span>                world = java.util.Optional.of(((Player) c.getSource()).getWorld());<a name="line.133"></a>
-<span class="sourceLineNo">134</span>            }<a name="line.134"></a>
-<span class="sourceLineNo">135</span>            if (!world.isPresent()) {<a name="line.135"></a>
-<span class="sourceLineNo">136</span>                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);<a name="line.136"></a>
-<span class="sourceLineNo">137</span>            }<a name="line.137"></a>
-<span class="sourceLineNo">138</span>            return world.get();<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        });<a name="line.139"></a>
-<span class="sourceLineNo">140</span>    }<a name="line.140"></a>
-<span class="sourceLineNo">141</span><a name="line.141"></a>
-<span class="sourceLineNo">142</span>    @Nullable<a name="line.142"></a>
-<span class="sourceLineNo">143</span>    OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>        Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);<a name="line.144"></a>
-<span class="sourceLineNo">145</span>        //noinspection Duplicates<a name="line.145"></a>
-<span class="sourceLineNo">146</span>        if (player == null) {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>            if (allowMissing) {<a name="line.147"></a>
-<span class="sourceLineNo">148</span>                return null;<a name="line.148"></a>
-<span class="sourceLineNo">149</span>            }<a name="line.149"></a>
-<span class="sourceLineNo">150</span>            throw new InvalidCommandArgument(false);<a name="line.150"></a>
-<span class="sourceLineNo">151</span>        }<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        return new OnlinePlayer(player);<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    }<a name="line.153"></a>
-<span class="sourceLineNo">154</span>}<a name="line.154"></a>
+<span class="sourceLineNo">034</span>import org.spongepowered.api.text.format.TextStyle;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.spongepowered.api.world.World;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.HashSet;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.util.Set;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import java.util.regex.Pattern;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import java.util.stream.Collectors;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import java.util.stream.Stream;<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span>@SuppressWarnings("WeakerAccess")<a name="line.43"></a>
+<span class="sourceLineNo">044</span>public class SpongeCommandContexts extends CommandContexts&lt;SpongeCommandExecutionContext&gt; {<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>    public SpongeCommandContexts(final SpongeCommandManager manager) {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        super(manager);<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>        registerIssuerOnlyContext(CommandResultSupplier.class, c -&gt; new CommandResultSupplier());<a name="line.49"></a>
+<span class="sourceLineNo">050</span>        registerContext(OnlinePlayer.class, c -&gt; getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        registerContext(TextColor.class, c -&gt; {<a name="line.51"></a>
+<span class="sourceLineNo">052</span>            String first = c.popFirstArg();<a name="line.52"></a>
+<span class="sourceLineNo">053</span>            Stream&lt;TextColor&gt; colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();<a name="line.53"></a>
+<span class="sourceLineNo">054</span>            String filter = c.getFlagValue("filter", (String)null);<a name="line.54"></a>
+<span class="sourceLineNo">055</span>            if(filter != null) {<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                filter = ACFUtil.simplifyString(filter);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                String finalFilter = filter;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                colours = colours.filter(colour -&gt; finalFilter.equals(ACFUtil.simplifyString(colour.getName())));<a name="line.58"></a>
+<span class="sourceLineNo">059</span>            }<a name="line.59"></a>
+<span class="sourceLineNo">060</span>            Stream&lt;TextColor&gt; finalColours = colours;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>            TextColor match = Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -&gt; {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                String valid = finalColours<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                        .map(colour -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(colour.getName()) + "&lt;/c2&gt;")<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);<a name="line.65"></a>
+<span class="sourceLineNo">066</span>            });<a name="line.66"></a>
+<span class="sourceLineNo">067</span>            return match;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        });<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        registerContext(TextStyle.Base.class, c -&gt; {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>            String first = c.popFirstArg();<a name="line.70"></a>
+<span class="sourceLineNo">071</span>            Stream&lt;TextStyle.Base&gt; styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();<a name="line.71"></a>
+<span class="sourceLineNo">072</span>            String filter = c.getFlagValue("filter", (String)null);<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            if(filter != null) {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                filter = ACFUtil.simplifyString(filter);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                String finalFilter = filter;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                styles = styles.filter(style -&gt; finalFilter.equals(ACFUtil.simplifyString(style.getName())));<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            }<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            Stream&lt;TextStyle.Base&gt; finalStyles = styles;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            TextStyle.Base match = Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -&gt; {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                String valid = finalStyles<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                        .map(style -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(style.getName()) + "&lt;/c2&gt;")<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>            });<a name="line.84"></a>
+<span class="sourceLineNo">085</span>            return match;<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        });<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>        registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        registerIssuerAwareContext(Player.class, (c) -&gt; {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;<a name="line.90"></a>
+<span class="sourceLineNo">091</span>            if (player == null &amp;&amp; !c.hasAnnotation(Optional.class)) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>            }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            /*PlayerInventory inventory = player != null ? player.getInventory() : null;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>            if (inventory != null &amp;&amp; c.hasFlag("itemheld") &amp;&amp; !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            }*/<a name="line.97"></a>
+<span class="sourceLineNo">098</span>            return player;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        });<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        registerContext(OnlinePlayer[].class, (c) -&gt;  {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>            SpongeCommandIssuer issuer = c.getIssuer();<a name="line.101"></a>
+<span class="sourceLineNo">102</span>            final String search = c.popFirstArg();<a name="line.102"></a>
+<span class="sourceLineNo">103</span>            boolean allowMissing = c.hasFlag("allowmissing");<a name="line.103"></a>
+<span class="sourceLineNo">104</span>            Set&lt;OnlinePlayer&gt; players = new HashSet&lt;&gt;();<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            Pattern split = ACFPatterns.COMMA;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>            String splitter = c.getFlagValue("splitter", (String) null);<a name="line.106"></a>
+<span class="sourceLineNo">107</span>            if (splitter != null) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                split = Pattern.compile(Pattern.quote(splitter));<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            for (String lookup : split.split(search)) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                OnlinePlayer player = getOnlinePlayer(issuer, lookup, allowMissing);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                if (player != null) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                    players.add(player);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                }<a name="line.114"></a>
+<span class="sourceLineNo">115</span>            }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            if (players.isEmpty() &amp;&amp; !c.hasFlag("allowempty")) {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                        "{search}", search);<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>                throw new InvalidCommandArgument(false);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>            }<a name="line.121"></a>
+<span class="sourceLineNo">122</span>            return players.toArray(new OnlinePlayer[players.size()]);<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        });<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        registerIssuerAwareContext(World.class, (c) -&gt; {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            String firstArg = c.getFirstArg();<a name="line.125"></a>
+<span class="sourceLineNo">126</span>            java.util.Optional&lt;World&gt; world = firstArg != null ? Sponge.getServer().getWorld(firstArg) : java.util.Optional.empty();<a name="line.126"></a>
+<span class="sourceLineNo">127</span>            if (world.isPresent()) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                c.popFirstArg();<a name="line.128"></a>
+<span class="sourceLineNo">129</span>            }<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            if (!world.isPresent() &amp;&amp; c.getSource() instanceof Player) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                world = java.util.Optional.of(((Player) c.getSource()).getWorld());<a name="line.131"></a>
+<span class="sourceLineNo">132</span>            }<a name="line.132"></a>
+<span class="sourceLineNo">133</span>            if (!world.isPresent()) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);<a name="line.134"></a>
+<span class="sourceLineNo">135</span>            }<a name="line.135"></a>
+<span class="sourceLineNo">136</span>            return world.get();<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        });<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    }<a name="line.138"></a>
+<span class="sourceLineNo">139</span><a name="line.139"></a>
+<span class="sourceLineNo">140</span>    @Nullable<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        //noinspection Duplicates<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        if (player == null) {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>            if (allowMissing) {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>                return null;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>            }<a name="line.147"></a>
+<span class="sourceLineNo">148</span>            throw new InvalidCommandArgument(false);<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        }<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        return new OnlinePlayer(player);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    }<a name="line.151"></a>
+<span class="sourceLineNo">152</span>}<a name="line.152"></a>
 
 
 

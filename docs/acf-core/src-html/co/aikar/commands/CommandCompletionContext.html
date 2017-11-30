@@ -132,7 +132,11 @@
 <span class="sourceLineNo">124</span>    public String getConfig() {<a name="line.124"></a>
 <span class="sourceLineNo">125</span>        return config;<a name="line.125"></a>
 <span class="sourceLineNo">126</span>    }<a name="line.126"></a>
-<span class="sourceLineNo">127</span>}<a name="line.127"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>    public boolean isAsync() {<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        return CommandManager.getCurrentCommandOperationContext().isAsync();<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>}<a name="line.131"></a>
 
 
 
