@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ACF (Core + Bukkit)" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="ACF (Core + Bukkit + Paper)" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -17,12 +17,13 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/bukkit" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/paper" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
     <method>
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/core/pom.xml" goal="install" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/bukkit/pom.xml" goal="install" />
     </method>
   </configuration>
 </component>

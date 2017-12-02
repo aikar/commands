@@ -81,6 +81,7 @@ public abstract class BaseCommand {
 
     private ExceptionHandler exceptionHandler = null;
     CommandOperationContext lastCommandOperationContext;
+    private String parentSubcommand;
 
     public BaseCommand() {}
     public BaseCommand(String cmd) {
@@ -129,6 +130,7 @@ public abstract class BaseCommand {
 
         this.description = this.commandName + " commands";
         this.usageMessage = "/" + this.commandName;
+        this.parentSubcommand = getParentSubcommand(this.getClass());
 
         final CommandPermission perm = self.getAnnotation(CommandPermission.class);
         if (perm != null) {
@@ -137,16 +139,19 @@ public abstract class BaseCommand {
 
         boolean foundDefault = false;
         boolean foundUnknown = false;
+        boolean isParentEmpty = parentSubcommand.isEmpty();
         for (Method method : self.getMethods()) {
             method.setAccessible(true);
             String sublist = null;
             String sub = getSubcommandValue(method);
             final Default def = method.getAnnotation(Default.class);
             final HelpCommand helpCommand = method.getAnnotation(HelpCommand.class);
-
             final CommandAlias commandAliases = method.getAnnotation(CommandAlias.class);
 
-            if (def != null || (!foundDefault && helpCommand != null)) {
+            if (!isParentEmpty && def != null) {
+                sub = parentSubcommand;
+            }
+            if (isParentEmpty && (def != null || (!foundDefault && helpCommand != null))) {
                 if (!foundDefault) {
                     registerSubcommand(method, DEFAULT);
                     if (def != null) {
@@ -236,9 +241,13 @@ public abstract class BaseCommand {
         if (sub == null) {
             return null;
         }
-        List<String> subList = new ArrayList<>();
-        subList.add(sub.value());
         Class<?> clazz = method.getDeclaringClass();
+        String parent = getParentSubcommand(clazz);
+        return parent == null || parent.isEmpty() ? sub.value() : parent + " " + sub.value();
+    }
+
+    private String getParentSubcommand(Class<?> clazz) {
+        List<String> subList = new ArrayList<>();
         while (clazz != null) {
             Subcommand classSub = clazz.getAnnotation(Subcommand.class);
             if (classSub != null) {
