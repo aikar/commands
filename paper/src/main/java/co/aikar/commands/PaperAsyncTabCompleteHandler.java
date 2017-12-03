@@ -42,7 +42,7 @@ class PaperAsyncTabCompleteHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onAsyncTabComplete(AsyncTabCompleteEvent event) {
         String buffer = event.getBuffer();
-        if (!event.isCommand() && !buffer.startsWith("/")) {
+        if (!event.isCommand() && !buffer.startsWith("/") || buffer.indexOf(' ') == -1) {
             return;
         }
         try {
