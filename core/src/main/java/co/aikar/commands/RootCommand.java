@@ -81,10 +81,16 @@ interface RootCommand {
         return command;
     }
 
-    default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args) throws IllegalArgumentException {
+    default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args) {
+        return getTabCompletions(sender, alias, args, false);
+    }
+
+    default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly) {
         Set<String> completions = new HashSet<>();
         getChildren().forEach(child -> {
-            completions.addAll(child.tabComplete(sender, alias, args));
+            if (!commandsOnly) {
+                completions.addAll(child.tabComplete(sender, alias, args));
+            }
             completions.addAll(child.getCommandsForCompletion(sender, args));
         });
         return new ArrayList<>(completions);

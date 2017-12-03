@@ -81,13 +81,12 @@ class PaperAsyncTabCompleteHandler implements Listener {
         if (commandLabel.startsWith("/")) {
             commandLabel = commandLabel.substring(1);
         }
-        args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
+        RootCommand rootCommand = this.manager.getRootCommand(commandLabel);
 
-        BaseCommand cmd = this.manager.getBaseCommand(commandLabel, args);
-        if (cmd != null) {
+        if (rootCommand != null) {
+            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
-            List<String> commandsForCompletion = cmd.getCommandsForCompletion(issuer, args);
-            event.getCompletions().addAll(commandsForCompletion);
+            event.getCompletions().addAll(rootCommand.getTabCompletions(issuer, commandLabel, args, true));
         }
     }
 }

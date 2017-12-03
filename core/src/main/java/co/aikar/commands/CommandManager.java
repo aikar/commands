@@ -238,6 +238,10 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return rootCommand.getBaseCommand(args);
     }
 
+    public synchronized RootCommand getRootCommand(@NotNull String cmd) {
+        return rootCommands.get(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0]);
+    }
+
     public synchronized RootCommand obtainRootCommand(@NotNull String cmd) {
         return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0], this::createRootCommand);
     }
