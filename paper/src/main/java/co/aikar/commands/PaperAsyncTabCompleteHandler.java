@@ -63,7 +63,7 @@ class PaperAsyncTabCompleteHandler implements Listener {
 
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
             List<String> results = cmd.tabComplete(issuer, commandLabel, args, true);
-            event.setCompletions(results);
+            event.getCompletions().addAll(results);
             event.setHandled(true);
         } catch (Exception ignored) {
         }
