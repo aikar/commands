@@ -44,7 +44,7 @@ class PaperAsyncTabCompleteHandler implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onAsyncTabComplete(AsyncTabCompleteEvent event) {
         String buffer = event.getBuffer();
-        if (!event.isCommand() && !buffer.startsWith("/") || buffer.indexOf(' ') == -1) {
+        if ((!event.isCommand() && !buffer.startsWith("/")) || buffer.indexOf(' ') == -1) {
             return;
         }
         try {
@@ -66,11 +66,11 @@ class PaperAsyncTabCompleteHandler implements Listener {
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
             List<String> results = cmd.tabComplete(issuer, commandLabel, args, true);
             if (event.getCompletions() instanceof ImmutableList) {
-                event.setCompletions(new ArrayList<>(results));
+                event.setCompletions(new ArrayList<>(event.getCompletions()));
             }
+            event.getCompletions().addAll(results);
             event.setHandled(true);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @EventHandler(ignoreCancelled = true)
