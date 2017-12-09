@@ -153,10 +153,11 @@ public abstract class BaseCommand {
             }
             if (isParentEmpty && (def != null || (!foundDefault && helpCommand != null))) {
                 if (!foundDefault) {
-                    registerSubcommand(method, DEFAULT);
                     if (def != null) {
+                        this.subCommands.get(DEFAULT).clear();
                         foundDefault = true;
                     }
+                    registerSubcommand(method, DEFAULT);
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @Default/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -174,10 +175,11 @@ public abstract class BaseCommand {
             PreCommand     preCommand = method.getAnnotation(PreCommand.class);
             if (unknown != null || (!foundUnknown && helpCommand != null)) {
                 if (!foundUnknown) {
-                    registerSubcommand(method, UNKNOWN);
                     if (unknown != null) {
+                        this.subCommands.get(UNKNOWN).clear();
                         foundUnknown = true;
                     }
+                    registerSubcommand(method, UNKNOWN);
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -473,6 +475,8 @@ public abstract class BaseCommand {
                 cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));
             } else if (subCommands.get(UNKNOWN).size() == 1) {
                 cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel, isAsync));
+            } else if (subCommands.get(DEFAULT).size() == 1) {
+                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
             }
 
             return filterTabComplete(args[args.length - 1], cmds);
