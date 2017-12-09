@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -37,5 +38,14 @@ public class BukkitCommandExecutionContext extends CommandExecutionContext<Bukki
 
     public CommandSender getSender() {
         return this.issuer.getIssuer();
+    }
+
+    /**
+     * Returns the Player object if this Issuer is a Player
+     * @return
+     */
+    public Player getPlayer() {
+        CommandSender issuer = this.issuer.getIssuer();
+        return issuer instanceof Player ? (Player) issuer : null;
     }
 }

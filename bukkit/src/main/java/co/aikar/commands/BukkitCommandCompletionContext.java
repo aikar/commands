@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class BukkitCommandCompletionContext extends CommandCompletionContext {
     BukkitCommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {
@@ -32,5 +33,14 @@ public class BukkitCommandCompletionContext extends CommandCompletionContext {
 
     public CommandSender getSender() {
         return this.getIssuer().getIssuer();
+    }
+
+    /**
+     * Returns the Player object if this Issuer is a Player
+     * @return
+     */
+    public Player getPlayer() {
+        CommandSender issuer = this.issuer.getIssuer();
+        return issuer instanceof Player ? (Player) issuer : null;
     }
 }
