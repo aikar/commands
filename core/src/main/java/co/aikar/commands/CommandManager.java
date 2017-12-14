@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
@@ -269,6 +270,9 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
     }
 
     protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t) {
+        if (t instanceof InvocationTargetException && t.getCause() != null) {
+            t = t.getCause();
+        }
         boolean result = false;
         if (scope.getExceptionHandler() != null) {
             result = scope.getExceptionHandler().execute(scope, registeredCommand, sender, args, t);
