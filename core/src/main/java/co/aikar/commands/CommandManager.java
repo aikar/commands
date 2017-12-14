@@ -195,6 +195,10 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         usePerIssuerLocale = setting;
         return old;
     }
+    public <R extends ConditionContext> R createConditionContext(CommandOperationContext context) {
+        //noinspection unchecked
+        return (R) new ConditionContext<>(context.getRegisteredCommand(), context.getCommandIssuer());
+    }
 
     public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
@@ -327,10 +331,11 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return getLocales().getDefaultLocale();
     }
 
-    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
-        return new CommandOperationContext(
+    CommandOperationContext<AI> createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
+        //noinspection unchecked
+        return new CommandOperationContext<>(
                 this,
-                issuer,
+                (AI) issuer,
                 command,
                 commandLabel,
                 args,

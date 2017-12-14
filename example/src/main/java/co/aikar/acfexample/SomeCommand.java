@@ -27,6 +27,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
@@ -46,6 +47,12 @@ public class SomeCommand extends BaseCommand {
     @CommandAlias("%testcmd")
     public void onCommand(CommandSender sender, SomeObject someObject) {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
+    }
+
+    @Subcommand("condition")
+    @Conditions("condition=1")
+    public void onCondition(CommandSender sender) {
+
     }
 
     // /acf admin - requires permission some.perm

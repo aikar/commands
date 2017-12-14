@@ -28,17 +28,17 @@ import java.lang.annotation.Annotation;
 /**
  * Holds information about the currently executing command on this thread
  */
-public class CommandOperationContext {
+public class CommandOperationContext <I extends CommandIssuer> {
 
     private final CommandManager manager;
-    private final CommandIssuer issuer;
+    private final I issuer;
     private final BaseCommand command;
     private final String commandLabel;
     private final String[] args;
     private final boolean isAsync;
     private RegisteredCommand registeredCommand;
 
-    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
+    CommandOperationContext(CommandManager manager, I issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
         this.manager = manager;
         this.issuer = issuer;
         this.command = command;
@@ -51,7 +51,7 @@ public class CommandOperationContext {
         return manager;
     }
 
-    public CommandIssuer getCommandIssuer() {
+    public I getCommandIssuer() {
         return issuer;
     }
 
