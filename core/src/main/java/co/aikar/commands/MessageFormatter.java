@@ -31,18 +31,18 @@ import java.util.regex.Matcher;
 
 /**
  * Handles formatting Messages and managing colors
- * @param <C> The platform specific color object
+ * @param <FT> The platform specific color object
  */
-public abstract class MessageFormatter <C> {
+public abstract class MessageFormatter <FT> {
 
-    private final List<C> colors = new ArrayList<>();
+    private final List<FT> colors = new ArrayList<>();
 
     @SafeVarargs
-    public MessageFormatter(C... colors) {
+    public MessageFormatter(FT... colors) {
         this.colors.addAll(Arrays.asList(colors));
 
     }
-    public C setColor(int index, C color) {
+    public FT setColor(int index, FT color) {
         if (index > 0) {
             index--;
         } else {
@@ -60,24 +60,24 @@ public abstract class MessageFormatter <C> {
         }
     }
 
-    public C getColor(int index) {
+    public FT getColor(int index) {
         if (index > 0) {
             index--;
         } else {
             index = 0;
         }
-        C color = colors.get(index);
+        FT color = colors.get(index);
         if (color == null) {
             color = getDefaultColor();
         }
         return color;
     }
 
-    public C getDefaultColor() {
+    public FT getDefaultColor() {
         return getColor(1);
     }
 
-    abstract String format(C color, String message);
+    abstract String format(FT color, String message);
 
     public String format(int index, String message) {
         return format(getColor(index), message);

@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
@@ -35,11 +36,6 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +53,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("WeakerAccess")
-public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCommandIssuer, ChatColor, BukkitMessageFormatter> {
+public class BukkitCommandManager extends CommandManager<
+        CommandSender,
+        BukkitCommandIssuer,
+        ChatColor,
+        BukkitMessageFormatter,
+        BukkitCommandExecutionContext,
+        BukkitCommandCompletionContext,
+        BukkitConditionContext,
+        BukkitParameterConditionContext<?>
+        > {
 
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
@@ -85,7 +90,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
-        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(plugin), plugin);
+        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
         getLocales(); // auto load locales
         this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (cantReadLocale) {
@@ -246,7 +251,7 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
         return null;
     }
 
-    private void readPlayerLocale(Player player) {
+    void readPlayerLocale(Player player) {
         if (!player.isOnline() || cantReadLocale) {
             return;
         }
@@ -275,33 +280,6 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
         }
     }
 
-    private class ACFBukkitListener implements Listener {
-        private final Plugin plugin;
-
-        public ACFBukkitListener(Plugin plugin) {
-            this.plugin = plugin;
-        }
-
-        @EventHandler
-        public void onPluginDisable(PluginDisableEvent event) {
-            if (!(plugin.getName().equalsIgnoreCase(event.getPlugin().getName()))) {
-                return;
-            }
-            unregisterCommands();
-        }
-        @EventHandler
-        public void onPlayerJoin(PlayerJoinEvent event) {
-            Player player = event.getPlayer();
-            readPlayerLocale(player);
-            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> readPlayerLocale(player), 20);
-        }
-
-        @EventHandler
-        public void onPlayerJoin(PlayerQuitEvent event) {
-            issuersLocale.remove(event.getPlayer().getUniqueId());
-        }
-    }
-
     public TimingManager getTimings() {
         return timingManager;
     }
@@ -320,19 +298,28 @@ public class BukkitCommandManager extends CommandManager<CommandSender, BukkitCo
     }
 
     @Override
-    public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        //noinspection unchecked
-        return (R) new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);
+    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);
     }
 
     @Override
-    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
+    public BukkitCommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
         return new BukkitCommandCompletionContext(command, sender, input, config, args);
     }
 
     @Override
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new BukkitRegisteredCommand(command, cmdName, method, prefSubCommand);
+    }
+
+    @Override
+    public BukkitConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
+        return new BukkitConditionContext(context.getRegisteredCommand(), (BukkitCommandIssuer) context.getCommandIssuer(), conditions);
+    }
+
+    @Override
+    public <P> BukkitParameterConditionContext createConditionContext(CommandOperationContext context, BukkitCommandExecutionContext execContext, Conditions conditions) {
+        return new BukkitParameterConditionContext<P>(context.getRegisteredCommand(), (BukkitCommandIssuer) context.getCommandIssuer(), execContext, conditions);
     }
 
     @Override

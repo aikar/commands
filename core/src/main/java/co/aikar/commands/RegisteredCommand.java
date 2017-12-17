@@ -52,13 +52,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
-public class RegisteredCommand <R extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
+public class RegisteredCommand <CEC extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final String command;
     final Method method;
     final String prefSubCommand;
     final Parameter[] parameters;
-    final ContextResolver<?, R>[] resolvers;
+    final ContextResolver<?, CEC>[] resolvers;
     final String syntaxText;
     final String helpText;
 
@@ -67,7 +67,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
     final int requiredResolvers;
     final int optionalResolvers;
     final List<String> registeredSubcommands = new ArrayList<>();
-    private final CommandManager<?, ?, ?, ?> manager;
+    private final CommandManager<?, ?, ?, ?, ?, ?, ?, ?> manager;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -100,7 +100,7 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             final Class<?> type = parameter.getType();
 
             //noinspection unchecked
-            final ContextResolver<?, R> resolver = commandContexts.getResolver(type);
+            final ContextResolver<?, CEC> resolver = commandContexts.getResolver(type);
             if (resolver != null) {
                 resolvers[i] = resolver;
 
@@ -129,13 +129,13 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
         this.optionalResolvers = optionalResolvers;
     }
 
-    private boolean isOptionalResolver(ContextResolver<?, R> resolver, Parameter parameter) {
+    private boolean isOptionalResolver(ContextResolver<?, CEC> resolver, Parameter parameter) {
         return isOptionalResolver(resolver)
                 || parameter.getAnnotation(Optional.class) != null
                 || parameter.getAnnotation(Default.class) != null;
     }
 
-    private boolean isOptionalResolver(ContextResolver<?, R> resolver) {
+    private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
         return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver
                 || resolver instanceof OptionalContextResolver;
     }
@@ -203,8 +203,9 @@ public class RegisteredCommand <R extends CommandExecutionContext<? extends Comm
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked
-            final ContextResolver<?, R> resolver = resolvers[i];
-            R context = this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            final ContextResolver<?, CEC> resolver = resolvers[i];
+            //noinspection unchecked
+            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
             boolean isOptionalResolver = isOptionalResolver(resolver, parameter);
             if (!isOptionalResolver) {
                 remainingRequired--;

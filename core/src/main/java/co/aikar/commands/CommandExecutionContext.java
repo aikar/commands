@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class CommandExecutionContext <T extends CommandExecutionContext, I extends CommandIssuer> {
+public class CommandExecutionContext <CEC extends CommandExecutionContext, I extends CommandIssuer> {
     private final RegisteredCommand cmd;
     private final Parameter param;
     protected final I issuer;

@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -40,7 +41,16 @@ import java.util.Set;
 import java.util.Stack;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends MessageFormatter<FT>> {
+public abstract class CommandManager <
+        IT,
+        I extends CommandIssuer,
+        FT,
+        MF extends MessageFormatter<FT>,
+        CEC extends CommandExecutionContext<CEC, I>,
+        CCC extends CommandCompletionContext,
+        CC extends ConditionContext<I>,
+        PCC extends ParameterConditionContext<?, CEC, I>
+    > {
 
     /**
      * This is a stack incase a command calls a command
@@ -58,10 +68,10 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
     protected ExceptionHandler defaultExceptionHandler = null;
 
     protected boolean usePerIssuerLocale = false;
-    protected List<IssuerLocaleChangedCallback<AI>> localeChangedCallbacks = Lists.newArrayList();
+    protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = Lists.newArrayList();
     protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
-    protected Map<MessageType, F> formatters = new IdentityHashMap<>();
-    protected F defaultFormatter;
+    protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
+    protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
 
     private Set<String> unstableAPIs = Sets.newHashSet();
@@ -80,31 +90,31 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return context != null ? context.getCommandManager() : null;
     }
 
-    public F setFormat(MessageType type, F formatter) {
+    public MF setFormat(MessageType type, MF formatter) {
         return formatters.put(type, formatter);
     }
 
-    public F getFormat(MessageType type) {
+    public MF getFormat(MessageType type) {
         return formatters.getOrDefault(type, defaultFormatter);
     }
 
     public void setFormat(MessageType type, FT... colors) {
-        F format = getFormat(type);
+        MF format = getFormat(type);
         for (int i = 0; i < colors.length; i++) {
             format.setColor(i, colors[i]);
         }
     }
 
     public void setFormat(MessageType type, int i, FT color) {
-        F format = getFormat(type);
+        MF format = getFormat(type);
         format.setColor(i, color);
     }
 
-    public F getDefaultFormatter() {
+    public MF getDefaultFormatter() {
         return defaultFormatter;
     }
 
-    public void setDefaultFormatter(F defaultFormatter) {
+    public void setDefaultFormatter(MF defaultFormatter) {
         this.defaultFormatter = defaultFormatter;
     }
 
@@ -176,7 +186,7 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
     public abstract boolean isCommandIssuer(Class<?> type);
 
     // TODO: Change this to I if we make a breaking change
-    public abstract AI getCommandIssuer(Object issuer);
+    public abstract I getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
 
@@ -195,12 +205,17 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         usePerIssuerLocale = setting;
         return old;
     }
-    public <R extends ConditionContext> R createConditionContext(CommandOperationContext context) {
+    public ConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
         //noinspection unchecked
-        return (R) new ConditionContext<>(context.getRegisteredCommand(), context.getCommandIssuer());
+        return new ConditionContext<>(context.getRegisteredCommand(), context.getCommandIssuer(), conditions);
     }
 
-    public abstract <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+    public <P> ParameterConditionContext createConditionContext(CommandOperationContext context, CEC execContext, Conditions conditions) {
+        //noinspection unchecked
+        return new ParameterConditionContext<P, CEC, I>(context.getRegisteredCommand(), (I) context.getCommandIssuer(), execContext, conditions);
+    }
+
+    public abstract CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
 
@@ -286,7 +301,7 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return result;
     }
 
-    public void sendMessage(I issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
+    public void sendMessage(IT issuerArg, MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(getCommandIssuer(issuerArg), type, key, replacements);
     }
 
@@ -313,11 +328,11 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return message;
     }
 
-    public void onLocaleChange(IssuerLocaleChangedCallback<AI> onChange) {
+    public void onLocaleChange(IssuerLocaleChangedCallback<I> onChange) {
         localeChangedCallbacks.add(onChange);
     }
 
-    public void notifyLocaleChange(AI issuer, Locale oldLocale, Locale newLocale) {
+    public void notifyLocaleChange(I issuer, Locale oldLocale, Locale newLocale) {
         localeChangedCallbacks.forEach(cb -> {
             try {
                 cb.onIssuerLocaleChange(issuer, oldLocale, newLocale);
@@ -331,11 +346,11 @@ public abstract class CommandManager <I, AI extends CommandIssuer, FT, F extends
         return getLocales().getDefaultLocale();
     }
 
-    CommandOperationContext<AI> createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
+    CommandOperationContext<I> createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
         //noinspection unchecked
         return new CommandOperationContext<>(
                 this,
-                (AI) issuer,
+                (I) issuer,
                 command,
                 commandLabel,
                 args,

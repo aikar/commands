@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
@@ -40,7 +41,16 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandManager extends CommandManager<CommandSource, SpongeCommandIssuer, TextColor, SpongeMessageFormatter> {
+public class SpongeCommandManager extends CommandManager<
+        CommandSource,
+        SpongeCommandIssuer,
+        TextColor,
+        SpongeMessageFormatter,
+        SpongeCommandExecutionContext,
+        SpongeCommandCompletionContext,
+        SpongeConditionContext,
+        SpongeParameterConditionContext<?>
+    > {
 
     protected final PluginContainer plugin;
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
@@ -134,9 +144,8 @@ public class SpongeCommandManager extends CommandManager<CommandSource, SpongeCo
     }
 
     @Override
-    public <R extends CommandExecutionContext> R createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        //noinspection unchecked
-        return (R) new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
+    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+        return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
     }
 
     @Override
@@ -182,4 +191,16 @@ public class SpongeCommandManager extends CommandManager<CommandSource, SpongeCo
                 isAsync
         );
     }
+
+
+    @Override
+    public SpongeConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
+        return new SpongeConditionContext(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), conditions);
+    }
+
+    @Override
+    public <P> SpongeParameterConditionContext createConditionContext(CommandOperationContext context, SpongeCommandExecutionContext execContext, Conditions conditions) {
+        return new SpongeParameterConditionContext<P>(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), execContext, conditions);
+    }
+
 }

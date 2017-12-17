@@ -71,7 +71,7 @@ public abstract class BaseCommand {
     private String execSubcommand;
     @SuppressWarnings("WeakerAccess")
     private String[] origArgs;
-    CommandManager<?, ?, ?, ?> manager = null;
+    CommandManager<?, ?, ?, ?, ?, ?, ?, ?> manager = null;
     BaseCommand parentCommand;
     Map<String, RootCommand> registeredCommands = new HashMap<>();
     String description;

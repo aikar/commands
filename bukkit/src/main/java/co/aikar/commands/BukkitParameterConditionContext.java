@@ -24,41 +24,9 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Conditions;
-import com.google.common.collect.Maps;
 
-import java.util.Map;
-
-public class ConditionContext <I extends CommandIssuer> {
-
-    private final RegisteredCommand cmd;
-    private final I issuer;
-    private final Conditions condAnno;
-    private final Map<String, String> flags;
-
-    ConditionContext(RegisteredCommand cmd, I issuer, Conditions condAnno) {
-        this.cmd = cmd;
-        this.issuer = issuer;
-        this.condAnno = condAnno;
-        this.flags = Maps.newHashMap();
-        for (String s : ACFPatterns.COMMA.split(cmd.scope.manager.getCommandReplacements().replace(condAnno.value()))) {
-            String[] v = ACFPatterns.EQUALS.split(s, 2);
-            this.flags.put(v[0], v.length > 1 ? v[1] : null);
-        }
-    }
-
-    public I getIssuer() {
-        return issuer;
-    }
-
-    public boolean hasFlag(String flag) {
-        return flags.containsKey(flag);
-    }
-
-    public String getFlagValue(String flag, String def) {
-        return flags.getOrDefault(flag, def);
-    }
-
-    public Integer getFlagValue(String flag, Integer def) {
-        return ACFUtil.parseInt(this.flags.get(flag), def);
+public class BukkitParameterConditionContext <P> extends ParameterConditionContext<P, BukkitCommandExecutionContext, BukkitCommandIssuer> {
+    BukkitParameterConditionContext(RegisteredCommand cmd, BukkitCommandIssuer issuer, BukkitCommandExecutionContext execContext, Conditions conditions) {
+        super(cmd, issuer, execContext, conditions);
     }
 }
