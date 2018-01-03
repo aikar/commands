@@ -100,8 +100,8 @@ public abstract class CommandManager <
 
     public void setFormat(MessageType type, FT... colors) {
         MF format = getFormat(type);
-        for (int i = 0; i < colors.length; i++) {
-            format.setColor(i, colors[i]);
+        for (int i = 1; i <= colors.length; i++) {
+            format.setColor(i, colors[i-1]);
         }
     }
 
