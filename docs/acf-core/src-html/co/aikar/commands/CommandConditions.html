@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
+<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
+<span class="sourceLineNo">022</span> */<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import co.aikar.commands.annotation.Conditions;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.google.common.collect.HashBasedTable;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.google.common.collect.Maps;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.google.common.collect.Table;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.Map;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>@SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong<a name="line.33"></a>
+<span class="sourceLineNo">034</span>public class CommandConditions &lt;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        I extends CommandIssuer,<a name="line.35"></a>
+<span class="sourceLineNo">036</span>        M extends CommandManager,<a name="line.36"></a>
+<span class="sourceLineNo">037</span>        CC extends ConditionContext,<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        CEC extends CommandExecutionContext&lt;CEC, I&gt;,<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        PCC extends ParameterConditionContext&lt;?, CEC, I&gt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    &gt; {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    M manager;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    Map&lt;String, Condition&lt;CC&gt;&gt; conditions = Maps.newHashMap();<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    Table&lt;Class&lt;?&gt;, String, ParameterCondition&lt;PCC&gt;&gt; paramConditions = HashBasedTable.create();<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    CommandConditions(M manager) {<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        this.manager = manager;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    }<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>    Condition&lt;CC&gt; addCondition(String id, Condition&lt;CC&gt; handler) {<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        return this.conditions.put(id.toLowerCase(), handler);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    }<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    &lt;P&gt; ParameterCondition addCondition(Class&lt;P&gt; clazz, String id, ParameterCondition&lt;PCC&gt; handler) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        return this.paramConditions.put(clazz, id.toLowerCase(), handler);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    }<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>    boolean validateConditions(CommandOperationContext context, CEC cec) {<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        Conditions conditions = cec.getParam().getAnnotation(Conditions.class);<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        return conditions == null || validateConditions(conditions, context, cec);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    }<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>    boolean validateConditions(CommandOperationContext context) {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        RegisteredCommand cmd = context.getRegisteredCommand();<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        Conditions conditions = cmd.method.getAnnotation(Conditions.class);<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        if (conditions != null) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>            if (!validateConditions(conditions, context)) {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                return false;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>            }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        }<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        return validateConditions(cmd.scope, context);<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>    private boolean validateConditions(BaseCommand scope, CommandOperationContext operationContext) {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        Conditions conditions = scope.getClass().getAnnotation(Conditions.class);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        //noinspection SimplifiableIfStatement<a name="line.75"></a>
+<span class="sourceLineNo">076</span>        if (!validateConditions(conditions, operationContext)) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            return false;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        }<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        return scope.parentCommand == null || validateConditions(scope.parentCommand, operationContext);<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    }<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>    private boolean validateConditions(Conditions condAnno, CommandOperationContext context) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        if (condAnno == null) {<a name="line.83"></a>
+<span class="sourceLineNo">084</span>            return true;<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        }<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        //noinspection unchecked<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        CC conditionContext = (CC) this.manager.createConditionContext(context, condAnno);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            String[] split = ACFPatterns.EQUALS.split(cond, 2);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>            Condition&lt;CC&gt; condition = this.conditions.get(split[0].toLowerCase());<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>            if (!condition.validateCondition(conditionContext)) {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                return false;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>            }<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        }<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>        return true;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    }<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>    private boolean validateConditions(Conditions condAnno, CommandOperationContext context, CEC execContext) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        if (condAnno == null) {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>            return true;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        }<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        //noinspection unchecked<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        ParameterConditionContext conditionContext = this.manager.createConditionContext(context, execContext, condAnno);<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            String[] split = ACFPatterns.EQUALS.split(cond, 2);<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            ParameterCondition condition;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            Class&lt;?&gt; cls = execContext.getParam().getClass();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            String id = split[0].toLowerCase();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>            do {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                condition = this.paramConditions.get(cls, id);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                if (condition == null &amp;&amp; cls.getSuperclass() != null &amp;&amp; cls.getSuperclass() != Object.class) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                    cls = cls.getSuperclass();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                } else {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                    break;<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                }<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            } while (cls != null);<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>            //noinspection unchecked<a name="line.122"></a>
+<span class="sourceLineNo">123</span>            if (condition != null &amp;&amp; !condition.validateCondition(conditionContext)) {<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                return false;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            }<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        }<a name="line.126"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>        return true;<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    }<a name="line.129"></a>
+<span class="sourceLineNo">130</span><a name="line.130"></a>
+<span class="sourceLineNo">131</span>    interface Condition &lt;CC extends ConditionContext&gt; {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        boolean validateCondition(CC context);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    interface ParameterCondition &lt;PCC extends ParameterConditionContext&gt; {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        boolean validateCondition(PCC context);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>}<a name="line.137"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

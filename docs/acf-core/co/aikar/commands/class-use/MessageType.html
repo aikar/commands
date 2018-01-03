@@ -127,7 +127,7 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>,<a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a>&gt;</code></td>
+<td class="colFirst"><code>protected <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>,<a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">MF</a>&gt;</code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#formatters">formatters</a></span></code>&nbsp;</td>
 </tr>
 </tbody>
@@ -147,7 +147,7 @@
              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a></code></td>
+<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">MF</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#getFormat-co.aikar.commands.MessageType-">getFormat</a></span>(<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -159,7 +159,7 @@
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#sendMessage-I-co.aikar.commands.MessageType-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendMessage</a></span>(<a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">I</a>&nbsp;issuerArg,
+<td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#sendMessage-IT-co.aikar.commands.MessageType-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendMessage</a></span>(<a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuerArg,
            <a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
            co.aikar.locales.MessageKeyProvider&nbsp;key,
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
@@ -177,20 +177,20 @@
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a></code></td>
-<td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#setFormat-co.aikar.commands.MessageType-F-">setFormat</a></span>(<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
-         <a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">F</a>&nbsp;formatter)</code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#setFormat-co.aikar.commands.MessageType-FT...-">setFormat</a></span>(<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
          <a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>...&nbsp;colors)</code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#setFormat-co.aikar.commands.MessageType-int-FT-">setFormat</a></span>(<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
          int&nbsp;i,
          <a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">FT</a>&nbsp;color)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">MF</a></code></td>
+<td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#setFormat-co.aikar.commands.MessageType-MF-">setFormat</a></span>(<a href="../../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+         <a href="../../../../co/aikar/commands/CommandManager.html" title="type parameter in CommandManager">MF</a>&nbsp;formatter)</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>
@@ -245,6 +245,6 @@
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2017. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
 </body>
 </html>

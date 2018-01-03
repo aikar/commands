@@ -131,32 +131,40 @@
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,M extends <a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,PCC extends <a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a>&lt;?,CEC,I&gt;&gt;</td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands">CommandContexts</a>&lt;R extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</td>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
-<td class="colFirst"><a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;T extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</td>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</td>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></td>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
-<td class="colFirst"><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&lt;I,AI extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,FT,F extends <a href="../../../co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;FT&gt;&gt;</td>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&lt;IT,I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,FT,MF extends <a href="../../../co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;FT&gt;,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,CCC extends <a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I&gt;,PCC extends <a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a>&lt;?,CEC,I&gt;&gt;</td>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
-<td class="colFirst"><a href="../../../co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></td>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</td>
 <td class="colLast">
 <div class="block">Holds information about the currently executing command on this thread</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../co/aikar/commands/CommandReplacements.html" title="class in co.aikar.commands">CommandReplacements</a></td>
 <td class="colLast">
 <div class="block">Manages replacement template strings</div>
 </td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</td>
+<td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><a href="../../../co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></td>
@@ -171,7 +179,7 @@
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><a href="../../../co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;C&gt;</td>
+<td class="colFirst"><a href="../../../co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;FT&gt;</td>
 <td class="colLast">
 <div class="block">Handles formatting Messages and managing colors</div>
 </td>
@@ -181,7 +189,11 @@
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><a href="../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;R extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;? extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,? extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</td>
+<td class="colFirst"><a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a>&lt;P,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;? extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,? extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</td>
 <td class="colLast">&nbsp;</td>
 </tr>
 </tbody>
@@ -290,6 +302,6 @@
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2017. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
 </body>
 </html>

@@ -36,17 +36,17 @@
 <span class="sourceLineNo">028</span>/**<a name="line.28"></a>
 <span class="sourceLineNo">029</span> * Holds information about the currently executing command on this thread<a name="line.29"></a>
 <span class="sourceLineNo">030</span> */<a name="line.30"></a>
-<span class="sourceLineNo">031</span>public class CommandOperationContext {<a name="line.31"></a>
+<span class="sourceLineNo">031</span>public class CommandOperationContext &lt;I extends CommandIssuer&gt; {<a name="line.31"></a>
 <span class="sourceLineNo">032</span><a name="line.32"></a>
 <span class="sourceLineNo">033</span>    private final CommandManager manager;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    private final CommandIssuer issuer;<a name="line.34"></a>
+<span class="sourceLineNo">034</span>    private final I issuer;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>    private final BaseCommand command;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>    private final String commandLabel;<a name="line.36"></a>
 <span class="sourceLineNo">037</span>    private final String[] args;<a name="line.37"></a>
 <span class="sourceLineNo">038</span>    private final boolean isAsync;<a name="line.38"></a>
 <span class="sourceLineNo">039</span>    private RegisteredCommand registeredCommand;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>    CommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {<a name="line.41"></a>
+<span class="sourceLineNo">041</span>    CommandOperationContext(CommandManager manager, I issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {<a name="line.41"></a>
 <span class="sourceLineNo">042</span>        this.manager = manager;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>        this.issuer = issuer;<a name="line.43"></a>
 <span class="sourceLineNo">044</span>        this.command = command;<a name="line.44"></a>
@@ -59,7 +59,7 @@
 <span class="sourceLineNo">051</span>        return manager;<a name="line.51"></a>
 <span class="sourceLineNo">052</span>    }<a name="line.52"></a>
 <span class="sourceLineNo">053</span><a name="line.53"></a>
-<span class="sourceLineNo">054</span>    public CommandIssuer getCommandIssuer() {<a name="line.54"></a>
+<span class="sourceLineNo">054</span>    public I getCommandIssuer() {<a name="line.54"></a>
 <span class="sourceLineNo">055</span>        return issuer;<a name="line.55"></a>
 <span class="sourceLineNo">056</span>    }<a name="line.56"></a>
 <span class="sourceLineNo">057</span><a name="line.57"></a>

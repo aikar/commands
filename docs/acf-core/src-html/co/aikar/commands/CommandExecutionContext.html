@@ -46,7 +46,7 @@
 <span class="sourceLineNo">038</span>import java.util.Map;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span>@SuppressWarnings({"WeakerAccess", "unused"})<a name="line.40"></a>
-<span class="sourceLineNo">041</span>public class CommandExecutionContext &lt;T extends CommandExecutionContext, I extends CommandIssuer&gt; {<a name="line.41"></a>
+<span class="sourceLineNo">041</span>public class CommandExecutionContext &lt;CEC extends CommandExecutionContext, I extends CommandIssuer&gt; {<a name="line.41"></a>
 <span class="sourceLineNo">042</span>    private final RegisteredCommand cmd;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>    private final Parameter param;<a name="line.43"></a>
 <span class="sourceLineNo">044</span>    protected final I issuer;<a name="line.44"></a>

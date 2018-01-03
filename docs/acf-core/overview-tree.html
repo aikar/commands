@@ -93,17 +93,23 @@
 </li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandCompletionContext</span></a></li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandCompletions</span></a>&lt;C&gt;</li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandConditions</span></a>&lt;I,M,CC,CEC,PCC&gt;</li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandContexts</span></a>&lt;R&gt;</li>
-<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandExecutionContext</span></a>&lt;T,I&gt;</li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandExecutionContext</span></a>&lt;CEC,I&gt;</li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandHelp</span></a></li>
-<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandManager</span></a>&lt;I,AI,FT,F&gt;</li>
-<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandOperationContext</span></a></li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandManager</span></a>&lt;IT,I,FT,MF,CEC,CCC,CC,PCC&gt;</li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandOperationContext</span></a>&lt;I&gt;</li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/CommandReplacements.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandReplacements</span></a></li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">ConditionContext</span></a>&lt;I&gt;
+<ul>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">ParameterConditionContext</span></a>&lt;P,CEC,I&gt;</li>
+</ul>
+</li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands"><span class="typeNameLink">HelpEntry</span></a></li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands"><span class="typeNameLink">Locales</span></a></li>
-<li type="circle">co.aikar.commands.<a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands"><span class="typeNameLink">MessageFormatter</span></a>&lt;C&gt;</li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands"><span class="typeNameLink">MessageFormatter</span></a>&lt;FT&gt;</li>
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/MessageType.html" title="class in co.aikar.commands"><span class="typeNameLink">MessageType</span></a></li>
-<li type="circle">co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands"><span class="typeNameLink">RegisteredCommand</span></a>&lt;R&gt;</li>
+<li type="circle">co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands"><span class="typeNameLink">RegisteredCommand</span></a>&lt;CEC&gt;</li>
 <li type="circle">java.lang.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang"><span class="typeNameLink">Throwable</span></a> (implements java.io.<a href="http://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</a>)
 <ul>
 <li type="circle">java.lang.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang"><span class="typeNameLink">Exception</span></a>
@@ -151,6 +157,7 @@
 <li type="circle">co.aikar.commands.<a href="co/aikar/commands/UnstableAPI.html" title="annotation in co.aikar.commands"><span class="typeNameLink">UnstableAPI</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
 <li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/Subcommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Subcommand</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
 <li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/Single.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Single</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
+<li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/Conditions.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Conditions</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
 <li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/UnknownHandler.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">UnknownHandler</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
 <li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/CommandCompletion.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CommandCompletion</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
 <li type="circle">co.aikar.commands.annotation.<a href="co/aikar/commands/annotation/HelpCommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">HelpCommand</span></a> (implements java.lang.annotation.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Annotation.html?is-external=true" title="class or interface in java.lang.annotation">Annotation</a>)</li>
@@ -225,6 +232,6 @@
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2017. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
 </body>
 </html>
