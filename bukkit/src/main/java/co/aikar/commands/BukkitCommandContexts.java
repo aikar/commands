@@ -28,6 +28,7 @@ import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -119,6 +121,19 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), arg, isOptional);
                 return onlinePlayer != null ? onlinePlayer.getPlayer() : null;
             }
+        });
+        registerContext(OfflinePlayer.class, c -> {
+            String name = c.popFirstArg();
+            UUID uuid = null;
+            if (c.hasFlag("uuid")) {
+                uuid = UUID.fromString(name);
+            }
+            OfflinePlayer offlinePlayer = uuid != null ? Bukkit.getOfflinePlayer(uuid) : Bukkit.getOfflinePlayer(name);
+            if (offlinePlayer == null) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,
+                        "{search}", name);
+            }
+            return offlinePlayer;
         });
         registerContext(ChatColor.class, c -> {
             String first = c.popFirstArg();
