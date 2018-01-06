@@ -90,15 +90,35 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         });
         registerIssuerAwareContext(CommandSender.class, BukkitCommandExecutionContext::getSender);
         registerIssuerAwareContext(Player.class, (c) -> {
-            Player player = c.getSender() instanceof Player ? (Player) c.getSender() : null;
-            if (player == null && !c.hasAnnotation(Optional.class)) {
-                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
+            boolean isOptional = c.hasAnnotation(Optional.class);
+            CommandSender sender = c.getSender();
+            boolean isPlayerSender = sender instanceof Player;
+            if (!c.hasFlag("other")) {
+                Player player = isPlayerSender ? (Player) sender : null;
+                if (player == null && !isOptional) {
+                    throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
+                }
+                PlayerInventory inventory = player != null ? player.getInventory() : null;
+                if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
+                }
+                return player;
+            } else {
+                String arg = c.popFirstArg();
+                if (arg == null && isOptional) {
+                    if (c.hasFlag("defaultself")) {
+                        if (isPlayerSender) {
+                            return (Player) sender;
+                        } else {
+                            throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
+                        }
+                    } else {
+                        return null;
+                    }
+                }
+                OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), arg, isOptional);
+                return onlinePlayer != null ? onlinePlayer.getPlayer() : null;
             }
-            PlayerInventory inventory = player != null ? player.getInventory() : null;
-            if (inventory != null && c.hasFlag("itemheld") && !ACFBukkitUtil.isValidItem(inventory.getItem(inventory.getHeldItemSlot()))) {
-                throw new InvalidCommandArgument(MinecraftMessageKeys.YOU_MUST_BE_HOLDING_ITEM, false);
-            }
-            return player;
         });
         registerContext(ChatColor.class, c -> {
             String first = c.popFirstArg();
