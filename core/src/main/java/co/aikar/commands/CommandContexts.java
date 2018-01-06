@@ -42,7 +42,28 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
 
     CommandContexts(CommandManager manager) {
         this.manager = manager;
+        registerContext(Short.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).shortValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
+        registerContext(short.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).shortValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
         registerContext(Integer.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
+        registerContext(int.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).intValue();
             } catch (NumberFormatException e) {
@@ -55,9 +76,22 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
-
+        });
+        registerContext(long.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).longValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
         });
         registerContext(Float.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).floatValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
+        registerContext(float.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).floatValue();
             } catch (NumberFormatException e) {
@@ -71,6 +105,13 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
+        registerContext(double.class, (c) -> {
+            try {
+                return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes")).doubleValue();
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
         registerContext(Number.class, (c) -> {
             try {
                 return ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
@@ -78,12 +119,14 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
-        registerContext(Boolean.class, (c) -> {
-            String test = c.popFirstArg();
-            if (test == null) {
-                return null;
+        registerContext(Boolean.class, (c) -> ACFUtil.isTruthy(c.popFirstArg()));
+        registerContext(boolean.class, (c) -> ACFUtil.isTruthy(c.popFirstArg()));
+        registerContext(char.class, c -> {
+            String s = c.popFirstArg();
+            if (s.length() > 1) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(1));
             }
-            return ACFUtil.isTruthy(test);
+            return s.charAt(0);
         });
         registerContext(String.class, (c) -> {
             final Values values = c.getParam().getAnnotation(Values.class);

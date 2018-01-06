@@ -216,7 +216,11 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
                 if (allowOptional && def != null) {
                     args.add(scope.manager.getCommandReplacements().replace(def.value()));
                 } else if (allowOptional && opt != null) {
-                    passedArgs.put(parameterName, isOptionalResolver(resolver) ? resolver.getContext(context) : null);
+                    Object value = isOptionalResolver(resolver) ? resolver.getContext(context) : null;
+                    if (value == null && parameter.getClass().isPrimitive()) {
+                        throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
+                    }
+                    passedArgs.put(parameterName, value);
                     //noinspection UnnecessaryContinue
                     continue;
                 } else if (!isOptionalResolver) {
