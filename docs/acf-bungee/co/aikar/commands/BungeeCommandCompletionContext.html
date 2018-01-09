@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10};
+var methods = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -99,7 +99,7 @@ var activeTableTab = "activeTableTab";
 <li><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>co.aikar.commands.CommandCompletionContext</li>
+<li>co.aikar.commands.CommandCompletionContext&lt;<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>&gt;</li>
 <li>
 <ul class="inheritance">
 <li>co.aikar.commands.BungeeCommandCompletionContext</li>
@@ -113,8 +113,8 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/BungeeCommandCompletionContext.html#line.28">BungeeCommandCompletionContext</a>
-extends co.aikar.commands.CommandCompletionContext</pre>
+<pre>public class <a href="../../../src-html/co/aikar/commands/BungeeCommandCompletionContext.html#line.29">BungeeCommandCompletionContext</a>
+extends co.aikar.commands.CommandCompletionContext&lt;<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>&gt;</pre>
 </li>
 </ul>
 </div>
@@ -149,6 +149,10 @@ extends co.aikar.commands.CommandCompletionContext</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>net.md_5.bungee.api.connection.ProxiedPlayer</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeCommandCompletionContext.html#getPlayer--">getPlayer</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>net.md_5.bungee.api.CommandSender</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeCommandCompletionContext.html#getSender--">getSender</a></span>()</code>&nbsp;</td>
 </tr>
@@ -184,10 +188,19 @@ extends co.aikar.commands.CommandCompletionContext</pre>
 <a name="getSender--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getSender</h4>
-<pre>public&nbsp;net.md_5.bungee.api.CommandSender&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandCompletionContext.html#line.34">getSender</a>()</pre>
+<pre>public&nbsp;net.md_5.bungee.api.CommandSender&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandCompletionContext.html#line.35">getSender</a>()</pre>
+</li>
+</ul>
+<a name="getPlayer--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getPlayer</h4>
+<pre>public&nbsp;net.md_5.bungee.api.connection.ProxiedPlayer&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandCompletionContext.html#line.39">getPlayer</a>()</pre>
 </li>
 </ul>
 </li>

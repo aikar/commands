@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -49,7 +49,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandReplacements.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/ExceptionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/ConditionFailedException.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/ConditionContext.html" target="_top">Frames</a></li>
@@ -106,13 +106,9 @@ var activeTableTab = "activeTableTab";
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a></dd>
-</dl>
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.31">ConditionContext</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;
+<pre>public class <a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.30">ConditionContext</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
@@ -133,22 +129,26 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getFlagValue-java.lang.String-java.lang.Integer-">getFlagValue</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
-            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;def)</code>&nbsp;</td>
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getConfig--">getConfig</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getFlagValue-java.lang.String-java.lang.String-">getFlagValue</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
-            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;def)</code>&nbsp;</td>
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getConfigValue-java.lang.String-java.lang.Integer-">getConfigValue</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
+              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;def)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getConfigValue-java.lang.String-java.lang.String-">getConfigValue</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
+              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;def)</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/ConditionContext.html" title="type parameter in ConditionContext">I</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#getIssuer--">getIssuer</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#hasFlag-java.lang.String-">hasFlag</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ConditionContext.html#hasConfig-java.lang.String-">hasConfig</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -181,33 +181,42 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <pre>public&nbsp;<a href="../../../co/aikar/commands/ConditionContext.html" title="type parameter in ConditionContext">I</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.49">getIssuer</a>()</pre>
 </li>
 </ul>
-<a name="hasFlag-java.lang.String-">
+<a name="getConfig--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>hasFlag</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.53">hasFlag</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag)</pre>
+<h4>getConfig</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.53">getConfig</a>()</pre>
 </li>
 </ul>
-<a name="getFlagValue-java.lang.String-java.lang.String-">
+<a name="hasConfig-java.lang.String-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getFlagValue</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.57">getFlagValue</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
-                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;def)</pre>
+<h4>hasConfig</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.56">hasConfig</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag)</pre>
 </li>
 </ul>
-<a name="getFlagValue-java.lang.String-java.lang.Integer-">
+<a name="getConfigValue-java.lang.String-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getConfigValue</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.60">getConfigValue</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
+                             <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;def)</pre>
+</li>
+</ul>
+<a name="getConfigValue-java.lang.String-java.lang.Integer-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getFlagValue</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.61">getFlagValue</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
-                            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;def)</pre>
+<h4>getConfigValue</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/ConditionContext.html#line.64">getConfigValue</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;flag,
+                              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</a>&nbsp;def)</pre>
 </li>
 </ul>
 </li>
@@ -238,7 +247,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandReplacements.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/ExceptionHandler.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/ConditionFailedException.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/ConditionContext.html" target="_top">Frames</a></li>

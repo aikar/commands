@@ -31,175 +31,165 @@
 <span class="sourceLineNo">023</span><a name="line.23"></a>
 <span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import co.aikar.commands.annotation.Conditions;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import net.md_5.bungee.api.ChatColor;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import net.md_5.bungee.api.CommandSender;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import net.md_5.bungee.api.plugin.Plugin;<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>import java.lang.reflect.Method;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import java.lang.reflect.Parameter;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import java.util.HashMap;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import java.util.List;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import java.util.Map;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import java.util.logging.Level;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import java.util.logging.Logger;<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>public class BungeeCommandManager extends CommandManager&lt;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>        CommandSender,<a name="line.41"></a>
-<span class="sourceLineNo">042</span>        BungeeCommandIssuer,<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        ChatColor,<a name="line.43"></a>
-<span class="sourceLineNo">044</span>        BungeeMessageFormatter,<a name="line.44"></a>
-<span class="sourceLineNo">045</span>        BungeeCommandExecutionContext,<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        BungeeCommandCompletionContext,<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        BungeeConditionContext,<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        BungeeParameterConditionContext&lt;?&gt;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    &gt; {<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>    protected final Plugin plugin;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>    protected Map&lt;String, BungeeRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    protected BungeeCommandContexts contexts;<a name="line.53"></a>
-<span class="sourceLineNo">054</span>    protected BungeeCommandCompletions completions;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    protected BungeeLocales locales;<a name="line.55"></a>
-<span class="sourceLineNo">056</span><a name="line.56"></a>
-<span class="sourceLineNo">057</span>    public BungeeCommandManager(Plugin plugin) {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        this.plugin = plugin;<a name="line.58"></a>
-<span class="sourceLineNo">059</span>        this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));<a name="line.60"></a>
-<span class="sourceLineNo">061</span>        this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));<a name="line.61"></a>
-<span class="sourceLineNo">062</span>        this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        getLocales(); // auto load locales<a name="line.63"></a>
-<span class="sourceLineNo">064</span>    }<a name="line.64"></a>
-<span class="sourceLineNo">065</span><a name="line.65"></a>
-<span class="sourceLineNo">066</span>    public Plugin getPlugin() {<a name="line.66"></a>
-<span class="sourceLineNo">067</span>        return this.plugin;<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    }<a name="line.68"></a>
-<span class="sourceLineNo">069</span><a name="line.69"></a>
-<span class="sourceLineNo">070</span>    @Override<a name="line.70"></a>
-<span class="sourceLineNo">071</span>    public synchronized CommandContexts&lt;BungeeCommandExecutionContext&gt; getCommandContexts() {<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        if (this.contexts == null) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>            this.contexts = new BungeeCommandContexts(this);<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        }<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        return contexts;<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
-<span class="sourceLineNo">077</span><a name="line.77"></a>
-<span class="sourceLineNo">078</span>    @Override<a name="line.78"></a>
-<span class="sourceLineNo">079</span>    public synchronized CommandCompletions&lt;BungeeCommandCompletionContext&gt; getCommandCompletions() {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        if (this.completions == null) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            this.completions = new BungeeCommandCompletions(this);<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        return completions;<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    }<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    @Override<a name="line.86"></a>
-<span class="sourceLineNo">087</span>    public BungeeLocales getLocales() {<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        if (this.locales == null) {<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            this.locales = new BungeeLocales(this);<a name="line.89"></a>
-<span class="sourceLineNo">090</span>            this.locales.loadLanguages();<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        }<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        return locales;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span><a name="line.95"></a>
-<span class="sourceLineNo">096</span>    @Override<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    public void registerCommand(BaseCommand command) {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        command.onRegister(this);<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>            String commandName = entry.getKey().toLowerCase();<a name="line.100"></a>
-<span class="sourceLineNo">101</span>            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();<a name="line.101"></a>
-<span class="sourceLineNo">102</span>            if (!bungeeCommand.isRegistered) {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>                this.plugin.getProxy().getPluginManager().registerCommand(this.plugin, bungeeCommand);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            }<a name="line.104"></a>
-<span class="sourceLineNo">105</span>            bungeeCommand.isRegistered = true;<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            registeredCommands.put(commandName, bungeeCommand);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        }<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    }<a name="line.108"></a>
-<span class="sourceLineNo">109</span><a name="line.109"></a>
-<span class="sourceLineNo">110</span>    public void unregisterCommand(BaseCommand command) {<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.111"></a>
-<span class="sourceLineNo">112</span>            String commandName = entry.getKey().toLowerCase();<a name="line.112"></a>
-<span class="sourceLineNo">113</span>            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());<a name="line.114"></a>
-<span class="sourceLineNo">115</span>            if (bungeeCommand.getSubCommands().isEmpty() &amp;&amp; bungeeCommand.isRegistered)  {<a name="line.115"></a>
-<span class="sourceLineNo">116</span>                unregisterCommand(bungeeCommand);<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                bungeeCommand.isRegistered = false;<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                registeredCommands.remove(commandName);<a name="line.118"></a>
-<span class="sourceLineNo">119</span>            }<a name="line.119"></a>
-<span class="sourceLineNo">120</span>        }<a name="line.120"></a>
-<span class="sourceLineNo">121</span>    }<a name="line.121"></a>
-<span class="sourceLineNo">122</span><a name="line.122"></a>
-<span class="sourceLineNo">123</span>    public void unregisterCommand(BungeeRootCommand command) {<a name="line.123"></a>
-<span class="sourceLineNo">124</span>        this.plugin.getProxy().getPluginManager().unregisterCommand(command);<a name="line.124"></a>
-<span class="sourceLineNo">125</span>    }<a name="line.125"></a>
-<span class="sourceLineNo">126</span><a name="line.126"></a>
-<span class="sourceLineNo">127</span>    public void unregisterCommands() {<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        for (Map.Entry&lt;String, BungeeRootCommand&gt; entry : registeredCommands.entrySet()) {<a name="line.128"></a>
-<span class="sourceLineNo">129</span>            unregisterCommand(entry.getValue());<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        }<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>    @Override<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    public boolean hasRegisteredCommands() {<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        return !registeredCommands.isEmpty();<a name="line.135"></a>
-<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
-<span class="sourceLineNo">137</span><a name="line.137"></a>
-<span class="sourceLineNo">138</span>    @Override<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    public boolean isCommandIssuer(Class&lt;?&gt; aClass) {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        return CommandSender.class.isAssignableFrom(aClass);<a name="line.140"></a>
-<span class="sourceLineNo">141</span>    }<a name="line.141"></a>
-<span class="sourceLineNo">142</span><a name="line.142"></a>
-<span class="sourceLineNo">143</span>    @Override<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    public BungeeCommandIssuer getCommandIssuer(Object issuer) {<a name="line.144"></a>
-<span class="sourceLineNo">145</span>        if (!(issuer instanceof CommandSender)) {<a name="line.145"></a>
-<span class="sourceLineNo">146</span>            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        }<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        return new BungeeCommandIssuer(this, (CommandSender) issuer);<a name="line.148"></a>
-<span class="sourceLineNo">149</span>    }<a name="line.149"></a>
-<span class="sourceLineNo">150</span><a name="line.150"></a>
-<span class="sourceLineNo">151</span>    @Override<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    public RootCommand createRootCommand(String cmd) {<a name="line.152"></a>
-<span class="sourceLineNo">153</span>        return new BungeeRootCommand(this, cmd);<a name="line.153"></a>
-<span class="sourceLineNo">154</span>    }<a name="line.154"></a>
-<span class="sourceLineNo">155</span><a name="line.155"></a>
-<span class="sourceLineNo">156</span>    @Override<a name="line.156"></a>
-<span class="sourceLineNo">157</span>    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {<a name="line.157"></a>
-<span class="sourceLineNo">158</span>        return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);<a name="line.158"></a>
-<span class="sourceLineNo">159</span>    }<a name="line.159"></a>
-<span class="sourceLineNo">160</span><a name="line.160"></a>
-<span class="sourceLineNo">161</span>    @Override<a name="line.161"></a>
-<span class="sourceLineNo">162</span>    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>        return new BungeeCommandCompletionContext(command, sender, input, config, args);<a name="line.163"></a>
-<span class="sourceLineNo">164</span>    }<a name="line.164"></a>
-<span class="sourceLineNo">165</span><a name="line.165"></a>
-<span class="sourceLineNo">166</span><a name="line.166"></a>
-<span class="sourceLineNo">167</span>    @Override<a name="line.167"></a>
-<span class="sourceLineNo">168</span>    public BungeeConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {<a name="line.168"></a>
-<span class="sourceLineNo">169</span>        return new BungeeConditionContext(context.getRegisteredCommand(), (BungeeCommandIssuer) context.getCommandIssuer(), conditions);<a name="line.169"></a>
-<span class="sourceLineNo">170</span>    }<a name="line.170"></a>
-<span class="sourceLineNo">171</span><a name="line.171"></a>
-<span class="sourceLineNo">172</span>    @Override<a name="line.172"></a>
-<span class="sourceLineNo">173</span>    public &lt;P&gt; BungeeParameterConditionContext createConditionContext(CommandOperationContext context, BungeeCommandExecutionContext execContext, Conditions conditions) {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>        return new BungeeParameterConditionContext&lt;P&gt;(context.getRegisteredCommand(), (BungeeCommandIssuer) context.getCommandIssuer(), execContext, conditions);<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    }<a name="line.175"></a>
-<span class="sourceLineNo">176</span><a name="line.176"></a>
-<span class="sourceLineNo">177</span><a name="line.177"></a>
-<span class="sourceLineNo">178</span>    @Override<a name="line.178"></a>
-<span class="sourceLineNo">179</span>    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        return new RegisteredCommand(command, cmdName, method, prefSubCommand);<a name="line.180"></a>
-<span class="sourceLineNo">181</span>    }<a name="line.181"></a>
-<span class="sourceLineNo">182</span><a name="line.182"></a>
-<span class="sourceLineNo">183</span>    @Override<a name="line.183"></a>
-<span class="sourceLineNo">184</span>    public void log(LogLevel level, String message, Throwable throwable) {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>        Logger logger = this.plugin.getLogger();<a name="line.185"></a>
-<span class="sourceLineNo">186</span>        Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;<a name="line.186"></a>
-<span class="sourceLineNo">187</span>        logger.log(logLevel, LogLevel.LOG_PREFIX + message);<a name="line.187"></a>
-<span class="sourceLineNo">188</span>        if (throwable != null) {<a name="line.188"></a>
-<span class="sourceLineNo">189</span>            for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>                logger.log(logLevel, LogLevel.LOG_PREFIX + line);<a name="line.190"></a>
-<span class="sourceLineNo">191</span>            }<a name="line.191"></a>
-<span class="sourceLineNo">192</span>        }<a name="line.192"></a>
-<span class="sourceLineNo">193</span>    }<a name="line.193"></a>
-<span class="sourceLineNo">194</span>}<a name="line.194"></a>
+<span class="sourceLineNo">026</span>import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import net.md_5.bungee.api.ChatColor;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import net.md_5.bungee.api.CommandSender;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import net.md_5.bungee.api.plugin.Plugin;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.lang.reflect.Method;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.lang.reflect.Parameter;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.HashMap;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.List;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.util.Map;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.util.logging.Level;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.logging.Logger;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>public class BungeeCommandManager extends CommandManager&lt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        CommandSender,<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        BungeeCommandIssuer,<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        ChatColor,<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        BungeeMessageFormatter,<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        BungeeCommandExecutionContext,<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        BungeeConditionContext<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    &gt; {<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>    protected final Plugin plugin;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    protected Map&lt;String, BungeeRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    protected BungeeCommandContexts contexts;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    protected BungeeCommandCompletions completions;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    protected BungeeLocales locales;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public BungeeCommandManager(Plugin plugin) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        this.plugin = plugin;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));<a name="line.58"></a>
+<span class="sourceLineNo">059</span>        this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));<a name="line.59"></a>
+<span class="sourceLineNo">060</span>        getLocales(); // auto load locales<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    }<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>    public Plugin getPlugin() {<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        return this.plugin;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    }<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>    @Override<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public synchronized CommandContexts&lt;BungeeCommandExecutionContext&gt; getCommandContexts() {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        if (this.contexts == null) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>            this.contexts = new BungeeCommandContexts(this);<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        }<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        return contexts;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>    @Override<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public synchronized CommandCompletions&lt;BungeeCommandCompletionContext&gt; getCommandCompletions() {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        if (this.completions == null) {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            this.completions = new BungeeCommandCompletions(this);<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        }<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        return completions;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    }<a name="line.81"></a>
+<span class="sourceLineNo">082</span><a name="line.82"></a>
+<span class="sourceLineNo">083</span>    @Override<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    public BungeeLocales getLocales() {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        if (this.locales == null) {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>            this.locales = new BungeeLocales(this);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            this.locales.loadLanguages();<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        }<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        return locales;<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>    @Override<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    public void registerCommand(BaseCommand command) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        command.onRegister(this);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            String commandName = entry.getKey().toLowerCase();<a name="line.97"></a>
+<span class="sourceLineNo">098</span>            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>            if (!bungeeCommand.isRegistered) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                this.plugin.getProxy().getPluginManager().registerCommand(this.plugin, bungeeCommand);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>            }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>            bungeeCommand.isRegistered = true;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>            registeredCommands.put(commandName, bungeeCommand);<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        }<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    }<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    public void unregisterCommand(BaseCommand command) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            String commandName = entry.getKey().toLowerCase();<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            if (bungeeCommand.getSubCommands().isEmpty() &amp;&amp; bungeeCommand.isRegistered)  {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                unregisterCommand(bungeeCommand);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                bungeeCommand.isRegistered = false;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                registeredCommands.remove(commandName);<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            }<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    }<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>    public void unregisterCommand(BungeeRootCommand command) {<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        this.plugin.getProxy().getPluginManager().unregisterCommand(command);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>    public void unregisterCommands() {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        for (Map.Entry&lt;String, BungeeRootCommand&gt; entry : registeredCommands.entrySet()) {<a name="line.125"></a>
+<span class="sourceLineNo">126</span>            unregisterCommand(entry.getValue());<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        }<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    }<a name="line.128"></a>
+<span class="sourceLineNo">129</span><a name="line.129"></a>
+<span class="sourceLineNo">130</span>    @Override<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    public boolean hasRegisteredCommands() {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        return !registeredCommands.isEmpty();<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span><a name="line.134"></a>
+<span class="sourceLineNo">135</span>    @Override<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    public boolean isCommandIssuer(Class&lt;?&gt; aClass) {<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        return CommandSender.class.isAssignableFrom(aClass);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    }<a name="line.138"></a>
+<span class="sourceLineNo">139</span><a name="line.139"></a>
+<span class="sourceLineNo">140</span>    @Override<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    public BungeeCommandIssuer getCommandIssuer(Object issuer) {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        if (!(issuer instanceof CommandSender)) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        }<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        return new BungeeCommandIssuer(this, (CommandSender) issuer);<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    @Override<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    public RootCommand createRootCommand(String cmd) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        return new BungeeRootCommand(this, cmd);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    }<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>    @Override<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    @Override<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        return new BungeeCommandCompletionContext(command, (BungeeCommandIssuer) sender, input, config, args);<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    }<a name="line.161"></a>
+<span class="sourceLineNo">162</span><a name="line.162"></a>
+<span class="sourceLineNo">163</span>    @Override<a name="line.163"></a>
+<span class="sourceLineNo">164</span>    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>        return new RegisteredCommand(command, cmdName, method, prefSubCommand);<a name="line.165"></a>
+<span class="sourceLineNo">166</span>    }<a name="line.166"></a>
+<span class="sourceLineNo">167</span><a name="line.167"></a>
+<span class="sourceLineNo">168</span>    @Override<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    public BungeeConditionContext createConditionContext(CommandIssuer issuer, String config) {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>        return new BungeeConditionContext((BungeeCommandIssuer) issuer, config);<a name="line.170"></a>
+<span class="sourceLineNo">171</span>    }<a name="line.171"></a>
+<span class="sourceLineNo">172</span><a name="line.172"></a>
+<span class="sourceLineNo">173</span>    @Override<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    public void log(LogLevel level, String message, Throwable throwable) {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        Logger logger = this.plugin.getLogger();<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        logger.log(logLevel, LogLevel.LOG_PREFIX + message);<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        if (throwable != null) {<a name="line.178"></a>
+<span class="sourceLineNo">179</span>            for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.179"></a>
+<span class="sourceLineNo">180</span>                logger.log(logLevel, LogLevel.LOG_PREFIX + line);<a name="line.180"></a>
+<span class="sourceLineNo">181</span>            }<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        }<a name="line.182"></a>
+<span class="sourceLineNo">183</span>    }<a name="line.183"></a>
+<span class="sourceLineNo">184</span>}<a name="line.184"></a>
 
 
 

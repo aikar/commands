@@ -18,6 +18,12 @@
     catch(err) {
     }
 //-->
+var methods = {"i0":10,"i1":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var altColor = "altColor";
+var rowColor = "rowColor";
+var tableTab = "tableTab";
+var activeTableTab = "activeTableTab";
 </script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -43,7 +49,7 @@
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandCompletions.SyncCompletionRequired.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/CommandConditions.html" target="_top">Frames</a></li>
@@ -67,16 +73,16 @@
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.top">
@@ -86,14 +92,14 @@
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="subTitle">co.aikar.commands</div>
-<h2 title="Class CommandConditions" class="title">Class CommandConditions&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,M extends <a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,PCC extends <a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a>&lt;?,CEC,I&gt;&gt;</h2>
+<h2 title="Class CommandConditions" class="title">Class CommandConditions&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I&gt;&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>co.aikar.commands.CommandConditions&lt;I,M,CC,CEC,PCC&gt;</li>
+<li>co.aikar.commands.CommandConditions&lt;I,CEC,CC&gt;</li>
 </ul>
 </li>
 </ul>
@@ -102,7 +108,7 @@
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/CommandConditions.html#line.34">CommandConditions</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,M extends <a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,PCC extends <a href="../../../co/aikar/commands/ParameterConditionContext.html" title="class in co.aikar.commands">ParameterConditionContext</a>&lt;?,CEC,I&gt;&gt;
+<pre>public class <a href="../../../src-html/co/aikar/commands/CommandConditions.html#line.35">CommandConditions</a>&lt;I extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,CEC extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,I&gt;,CC extends <a href="../../../co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I&gt;&gt;
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
@@ -110,18 +116,98 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static interface&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands">CommandConditions.Condition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="type parameter in CommandConditions.Condition">I</a> extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static interface&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="interface in co.aikar.commands">CommandConditions.ParameterCondition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="type parameter in CommandConditions.ParameterCondition">P</a>,<a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="type parameter in CommandConditions.ParameterCondition">CEC</a> extends <a href="../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>,<a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="type parameter in CommandConditions.ParameterCondition">I</a> extends <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;</span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
 <!--   -->
 </a>
 <h3>Method Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr id="i0" class="altColor">
+<td class="colFirst"><code>&lt;P&gt;&nbsp;<a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="interface in co.aikar.commands">CommandConditions.ParameterCondition</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandConditions.html#addCondition-java.lang.Class-java.lang.String-co.aikar.commands.CommandConditions.ParameterCondition-">addCondition</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;P&gt;&nbsp;clazz,
+            @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+            @NotNull <a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="interface in co.aikar.commands">CommandConditions.ParameterCondition</a>&lt;P,<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">CEC</a>,<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;&nbsp;handler)</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands">CommandConditions.Condition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandConditions.html#addCondition-java.lang.String-co.aikar.commands.CommandConditions.Condition-">addCondition</a></span>(@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+            @NotNull <a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands">CommandConditions.Condition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;&nbsp;handler)</code>&nbsp;</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
 <code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method.detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="addCondition-java.lang.String-co.aikar.commands.CommandConditions.Condition-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addCondition</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands">CommandConditions.Condition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/CommandConditions.html#line.48">addCondition</a>(@NotNull
+                                                   @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                   @NotNull
+                                                   @NotNull <a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands">CommandConditions.Condition</a>&lt;<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;&nbsp;handler)</pre>
+</li>
+</ul>
+<a name="addCondition-java.lang.Class-java.lang.String-co.aikar.commands.CommandConditions.ParameterCondition-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>addCondition</h4>
+<pre>public&nbsp;&lt;P&gt;&nbsp;<a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="interface in co.aikar.commands">CommandConditions.ParameterCondition</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandConditions.html#line.52">addCondition</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;P&gt;&nbsp;clazz,
+                                                             @NotNull
+                                                             @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                             @NotNull
+                                                             @NotNull <a href="../../../co/aikar/commands/CommandConditions.ParameterCondition.html" title="interface in co.aikar.commands">CommandConditions.ParameterCondition</a>&lt;P,<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">CEC</a>,<a href="../../../co/aikar/commands/CommandConditions.html" title="type parameter in CommandConditions">I</a>&gt;&nbsp;handler)</pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -151,7 +237,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/CommandCompletions.SyncCompletionRequired.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandConditions.Condition.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/CommandConditions.html" target="_top">Frames</a></li>
@@ -175,16 +261,16 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.bottom">

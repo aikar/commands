@@ -98,7 +98,7 @@ var activeTableTab = "activeTableTab";
 <li><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,co.aikar.commands.BukkitCommandIssuer,org.bukkit.ChatColor,co.aikar.commands.BukkitMessageFormatter,co.aikar.commands.BukkitCommandExecutionContext,co.aikar.commands.BukkitCommandCompletionContext,co.aikar.commands.BukkitConditionContext,co.aikar.commands.BukkitParameterConditionContext&lt;?&gt;&gt;</li>
+<li>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,co.aikar.commands.BukkitCommandIssuer,org.bukkit.ChatColor,co.aikar.commands.BukkitMessageFormatter,co.aikar.commands.BukkitCommandExecutionContext,co.aikar.commands.BukkitConditionContext&gt;</li>
 <li>
 <ul class="inheritance">
 <li>co.aikar.commands.BukkitCommandManager</li>
@@ -143,7 +143,7 @@ extends co.aikar.commands.BukkitCommandManager</pre>
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
+<code>conditions, defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
 </ul>
 </li>
 </ul>
@@ -190,14 +190,14 @@ extends co.aikar.commands.BukkitCommandManager</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.BukkitCommandManager</h3>
-<code>createCommandContext, createCompletionContext, createConditionContext, createConditionContext, createRegisteredCommand, createRootCommand, getCommandIssuer, getIssuerLocale, getLocales, getPlugin, getTimings, hasRegisteredCommands, isCommandIssuer, log, registerCommand, registerCommand, unregisterCommand, unregisterCommand, unregisterCommands</code></li>
+<code>createCommandContext, createCompletionContext, createConditionContext, createRegisteredCommand, createRootCommand, getCommandIssuer, getIssuerLocale, getLocales, getPlugin, getTimings, hasRegisteredCommands, isCommandIssuer, log, registerCommand, registerCommand, unregisterCommand, unregisterCommand, unregisterCommands</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.co.aikar.commands.CommandManager">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, usePerIssuerLocale, usingPerIssuerLocale</code></li>
+<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandConditions, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, usePerIssuerLocale, usingPerIssuerLocale</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">

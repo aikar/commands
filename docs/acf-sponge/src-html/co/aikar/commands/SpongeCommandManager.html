@@ -31,187 +31,178 @@
 <span class="sourceLineNo">023</span><a name="line.23"></a>
 <span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import co.aikar.commands.annotation.Conditions;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import co.aikar.timings.Timing;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import co.aikar.timings.Timings;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.slf4j.Logger;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.spongepowered.api.Sponge;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.spongepowered.api.command.CommandSource;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.spongepowered.api.plugin.PluginContainer;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.spongepowered.api.text.format.TextColor;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.spongepowered.api.text.format.TextColors;<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>import java.lang.reflect.Method;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import java.lang.reflect.Parameter;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import java.util.HashMap;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import java.util.List;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import java.util.Map;<a name="line.41"></a>
-<span class="sourceLineNo">042</span><a name="line.42"></a>
-<span class="sourceLineNo">043</span>@SuppressWarnings("WeakerAccess")<a name="line.43"></a>
-<span class="sourceLineNo">044</span>public class SpongeCommandManager extends CommandManager&lt;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>        CommandSource,<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        SpongeCommandIssuer,<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        TextColor,<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        SpongeMessageFormatter,<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        SpongeCommandExecutionContext,<a name="line.49"></a>
-<span class="sourceLineNo">050</span>        SpongeCommandCompletionContext,<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        SpongeConditionContext,<a name="line.51"></a>
-<span class="sourceLineNo">052</span>        SpongeParameterConditionContext&lt;?&gt;<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    &gt; {<a name="line.53"></a>
-<span class="sourceLineNo">054</span><a name="line.54"></a>
-<span class="sourceLineNo">055</span>    protected final PluginContainer plugin;<a name="line.55"></a>
-<span class="sourceLineNo">056</span>    protected Map&lt;String, SpongeRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();<a name="line.56"></a>
-<span class="sourceLineNo">057</span>    protected SpongeCommandContexts contexts;<a name="line.57"></a>
-<span class="sourceLineNo">058</span>    protected SpongeCommandCompletions completions;<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    private Timing commandTiming;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>    protected SpongeLocales locales;<a name="line.60"></a>
-<span class="sourceLineNo">061</span><a name="line.61"></a>
-<span class="sourceLineNo">062</span>    public SpongeCommandManager(PluginContainer plugin) {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        this.plugin = plugin;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        String pluginName = "acf-" + plugin.getName();<a name="line.64"></a>
-<span class="sourceLineNo">065</span>        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        this.commandTiming = Timings.of(plugin, "Commands");<a name="line.66"></a>
-<span class="sourceLineNo">067</span><a name="line.67"></a>
-<span class="sourceLineNo">068</span>        this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        getLocales(); // auto load locales<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>    public PluginContainer getPlugin() {<a name="line.75"></a>
-<span class="sourceLineNo">076</span>        return plugin;<a name="line.76"></a>
-<span class="sourceLineNo">077</span>    }<a name="line.77"></a>
-<span class="sourceLineNo">078</span><a name="line.78"></a>
-<span class="sourceLineNo">079</span>    @Override<a name="line.79"></a>
-<span class="sourceLineNo">080</span>    public boolean isCommandIssuer(Class&lt;?&gt; type) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>        return CommandSource.class.isAssignableFrom(type);<a name="line.81"></a>
-<span class="sourceLineNo">082</span>    }<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>    @Override<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    public synchronized CommandContexts&lt;SpongeCommandExecutionContext&gt; getCommandContexts() {<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        if (this.contexts == null) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>            this.contexts = new SpongeCommandContexts(this);<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        }<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        return contexts;<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
-<span class="sourceLineNo">091</span><a name="line.91"></a>
-<span class="sourceLineNo">092</span>    @Override<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    public synchronized CommandCompletions&lt;SpongeCommandCompletionContext&gt; getCommandCompletions() {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        if (this.completions == null) {<a name="line.94"></a>
-<span class="sourceLineNo">095</span>            this.completions = new SpongeCommandCompletions(this);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        }<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        return completions;<a name="line.97"></a>
-<span class="sourceLineNo">098</span>    }<a name="line.98"></a>
-<span class="sourceLineNo">099</span><a name="line.99"></a>
-<span class="sourceLineNo">100</span>    @Override<a name="line.100"></a>
-<span class="sourceLineNo">101</span>    public SpongeLocales getLocales() {<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        if (this.locales == null) {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>            this.locales = new SpongeLocales(this);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            this.locales.loadLanguages();<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        }<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        return locales;<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    }<a name="line.107"></a>
-<span class="sourceLineNo">108</span><a name="line.108"></a>
-<span class="sourceLineNo">109</span>    @Override<a name="line.109"></a>
-<span class="sourceLineNo">110</span>    public boolean hasRegisteredCommands() {<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        return !registeredCommands.isEmpty();<a name="line.111"></a>
-<span class="sourceLineNo">112</span>    }<a name="line.112"></a>
-<span class="sourceLineNo">113</span><a name="line.113"></a>
-<span class="sourceLineNo">114</span>    @Override<a name="line.114"></a>
-<span class="sourceLineNo">115</span>    public void registerCommand(BaseCommand command) {<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        command.onRegister(this);<a name="line.116"></a>
-<span class="sourceLineNo">117</span><a name="line.117"></a>
-<span class="sourceLineNo">118</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>            String commandName = entry.getKey().toLowerCase();<a name="line.119"></a>
-<span class="sourceLineNo">120</span>            SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();<a name="line.120"></a>
-<span class="sourceLineNo">121</span>            if (!spongeCommand.isRegistered) {<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                Sponge.getCommandManager().register(this.plugin, spongeCommand, commandName);<a name="line.122"></a>
-<span class="sourceLineNo">123</span>            }<a name="line.123"></a>
-<span class="sourceLineNo">124</span>            spongeCommand.isRegistered = true;<a name="line.124"></a>
-<span class="sourceLineNo">125</span>            registeredCommands.put(commandName, spongeCommand);<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        }<a name="line.126"></a>
-<span class="sourceLineNo">127</span>    }<a name="line.127"></a>
-<span class="sourceLineNo">128</span><a name="line.128"></a>
-<span class="sourceLineNo">129</span>    public Timing createTiming(final String name) {<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        return Timings.of(this.plugin, name, this.commandTiming);<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>    @Override<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    public RootCommand createRootCommand(String cmd) {<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        return new SpongeRootCommand(this, cmd);<a name="line.135"></a>
-<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
-<span class="sourceLineNo">137</span><a name="line.137"></a>
-<span class="sourceLineNo">138</span>    @Override<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    public SpongeCommandIssuer getCommandIssuer(Object issuer) {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        if (!(issuer instanceof CommandSource)) {<a name="line.140"></a>
-<span class="sourceLineNo">141</span>            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");<a name="line.141"></a>
-<span class="sourceLineNo">142</span>        }<a name="line.142"></a>
-<span class="sourceLineNo">143</span>        return new SpongeCommandIssuer(this, (CommandSource) issuer);<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    }<a name="line.144"></a>
-<span class="sourceLineNo">145</span><a name="line.145"></a>
-<span class="sourceLineNo">146</span>    @Override<a name="line.146"></a>
-<span class="sourceLineNo">147</span>    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);<a name="line.148"></a>
-<span class="sourceLineNo">149</span>    }<a name="line.149"></a>
-<span class="sourceLineNo">150</span><a name="line.150"></a>
-<span class="sourceLineNo">151</span>    @Override<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {<a name="line.152"></a>
-<span class="sourceLineNo">153</span>        return new SpongeCommandCompletionContext(command, sender, input, config, args);<a name="line.153"></a>
-<span class="sourceLineNo">154</span>    }<a name="line.154"></a>
-<span class="sourceLineNo">155</span><a name="line.155"></a>
-<span class="sourceLineNo">156</span>    @Override<a name="line.156"></a>
-<span class="sourceLineNo">157</span>    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {<a name="line.157"></a>
-<span class="sourceLineNo">158</span>        return new SpongeRegisteredCommand(command, cmdName, method, prefSubCommand);<a name="line.158"></a>
-<span class="sourceLineNo">159</span>    }<a name="line.159"></a>
-<span class="sourceLineNo">160</span><a name="line.160"></a>
-<span class="sourceLineNo">161</span>    @Override<a name="line.161"></a>
-<span class="sourceLineNo">162</span>    public void log(final LogLevel level, final String message, final Throwable throwable) {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>        Logger logger = this.plugin.getLogger();<a name="line.163"></a>
-<span class="sourceLineNo">164</span>        switch(level) {<a name="line.164"></a>
-<span class="sourceLineNo">165</span>            case INFO:<a name="line.165"></a>
-<span class="sourceLineNo">166</span>                logger.info(LogLevel.LOG_PREFIX + message);<a name="line.166"></a>
-<span class="sourceLineNo">167</span>                if (throwable != null) {<a name="line.167"></a>
-<span class="sourceLineNo">168</span>                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.168"></a>
-<span class="sourceLineNo">169</span>                        logger.info(LogLevel.LOG_PREFIX + line);<a name="line.169"></a>
-<span class="sourceLineNo">170</span>                    }<a name="line.170"></a>
-<span class="sourceLineNo">171</span>                }<a name="line.171"></a>
-<span class="sourceLineNo">172</span>                return;<a name="line.172"></a>
-<span class="sourceLineNo">173</span>            case ERROR:<a name="line.173"></a>
-<span class="sourceLineNo">174</span>                logger.error(LogLevel.LOG_PREFIX + message);<a name="line.174"></a>
-<span class="sourceLineNo">175</span>                if (throwable != null) {<a name="line.175"></a>
-<span class="sourceLineNo">176</span>                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.176"></a>
-<span class="sourceLineNo">177</span>                        logger.error(LogLevel.LOG_PREFIX + line);<a name="line.177"></a>
-<span class="sourceLineNo">178</span>                    }<a name="line.178"></a>
-<span class="sourceLineNo">179</span>                }<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        }<a name="line.180"></a>
-<span class="sourceLineNo">181</span>    }<a name="line.181"></a>
-<span class="sourceLineNo">182</span><a name="line.182"></a>
-<span class="sourceLineNo">183</span>    @Override<a name="line.183"></a>
-<span class="sourceLineNo">184</span>    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>        return new SpongeCommandOperationContext(<a name="line.185"></a>
-<span class="sourceLineNo">186</span>                this,<a name="line.186"></a>
-<span class="sourceLineNo">187</span>                issuer,<a name="line.187"></a>
-<span class="sourceLineNo">188</span>                command,<a name="line.188"></a>
-<span class="sourceLineNo">189</span>                commandLabel,<a name="line.189"></a>
-<span class="sourceLineNo">190</span>                args,<a name="line.190"></a>
-<span class="sourceLineNo">191</span>                isAsync<a name="line.191"></a>
-<span class="sourceLineNo">192</span>        );<a name="line.192"></a>
-<span class="sourceLineNo">193</span>    }<a name="line.193"></a>
-<span class="sourceLineNo">194</span><a name="line.194"></a>
-<span class="sourceLineNo">195</span><a name="line.195"></a>
-<span class="sourceLineNo">196</span>    @Override<a name="line.196"></a>
-<span class="sourceLineNo">197</span>    public SpongeConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {<a name="line.197"></a>
-<span class="sourceLineNo">198</span>        return new SpongeConditionContext(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), conditions);<a name="line.198"></a>
-<span class="sourceLineNo">199</span>    }<a name="line.199"></a>
-<span class="sourceLineNo">200</span><a name="line.200"></a>
-<span class="sourceLineNo">201</span>    @Override<a name="line.201"></a>
-<span class="sourceLineNo">202</span>    public &lt;P&gt; SpongeParameterConditionContext createConditionContext(CommandOperationContext context, SpongeCommandExecutionContext execContext, Conditions conditions) {<a name="line.202"></a>
-<span class="sourceLineNo">203</span>        return new SpongeParameterConditionContext&lt;P&gt;(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), execContext, conditions);<a name="line.203"></a>
-<span class="sourceLineNo">204</span>    }<a name="line.204"></a>
-<span class="sourceLineNo">205</span><a name="line.205"></a>
-<span class="sourceLineNo">206</span>}<a name="line.206"></a>
+<span class="sourceLineNo">026</span>import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import co.aikar.timings.Timing;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import co.aikar.timings.Timings;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.slf4j.Logger;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.spongepowered.api.Sponge;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.spongepowered.api.command.CommandSource;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.spongepowered.api.plugin.PluginContainer;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.spongepowered.api.text.format.TextColor;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.spongepowered.api.text.format.TextColors;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.lang.reflect.Method;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.lang.reflect.Parameter;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.util.HashMap;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import java.util.List;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import java.util.Map;<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>@SuppressWarnings("WeakerAccess")<a name="line.42"></a>
+<span class="sourceLineNo">043</span>public class SpongeCommandManager extends CommandManager&lt;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        CommandSource,<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        SpongeCommandIssuer,<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        TextColor,<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        SpongeMessageFormatter,<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        SpongeCommandExecutionContext,<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        SpongeConditionContext<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    &gt; {<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    protected final PluginContainer plugin;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    protected Map&lt;String, SpongeRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    protected SpongeCommandContexts contexts;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    protected SpongeCommandCompletions completions;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    private Timing commandTiming;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    protected SpongeLocales locales;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>    public SpongeCommandManager(PluginContainer plugin) {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>        this.plugin = plugin;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        String pluginName = "acf-" + plugin.getName();<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        this.commandTiming = Timings.of(plugin, "Commands");<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>        this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        getLocales(); // auto load locales<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>    public PluginContainer getPlugin() {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        return plugin;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    @Override<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    public boolean isCommandIssuer(Class&lt;?&gt; type) {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        return CommandSource.class.isAssignableFrom(type);<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    }<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>    @Override<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    public synchronized CommandContexts&lt;SpongeCommandExecutionContext&gt; getCommandContexts() {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        if (this.contexts == null) {<a name="line.83"></a>
+<span class="sourceLineNo">084</span>            this.contexts = new SpongeCommandContexts(this);<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        }<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        return contexts;<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    }<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>    @Override<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    public synchronized CommandCompletions&lt;SpongeCommandCompletionContext&gt; getCommandCompletions() {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        if (this.completions == null) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>            this.completions = new SpongeCommandCompletions(this);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        return completions;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    @Override<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    public SpongeLocales getLocales() {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        if (this.locales == null) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            this.locales = new SpongeLocales(this);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>            this.locales.loadLanguages();<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        }<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        return locales;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
+<span class="sourceLineNo">105</span><a name="line.105"></a>
+<span class="sourceLineNo">106</span>    @Override<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    public boolean hasRegisteredCommands() {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        return !registeredCommands.isEmpty();<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    }<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>    @Override<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    public void registerCommand(BaseCommand command) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        command.onRegister(this);<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            String commandName = entry.getKey().toLowerCase();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();<a name="line.117"></a>
+<span class="sourceLineNo">118</span>            if (!spongeCommand.isRegistered) {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                Sponge.getCommandManager().register(this.plugin, spongeCommand, commandName);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            }<a name="line.120"></a>
+<span class="sourceLineNo">121</span>            spongeCommand.isRegistered = true;<a name="line.121"></a>
+<span class="sourceLineNo">122</span>            registeredCommands.put(commandName, spongeCommand);<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        }<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    }<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>    public Timing createTiming(final String name) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        return Timings.of(this.plugin, name, this.commandTiming);<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    }<a name="line.128"></a>
+<span class="sourceLineNo">129</span><a name="line.129"></a>
+<span class="sourceLineNo">130</span>    @Override<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    public RootCommand createRootCommand(String cmd) {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        return new SpongeRootCommand(this, cmd);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span><a name="line.134"></a>
+<span class="sourceLineNo">135</span>    @Override<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    public SpongeCommandIssuer getCommandIssuer(Object issuer) {<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        if (!(issuer instanceof CommandSource)) {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        }<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        return new SpongeCommandIssuer(this, (CommandSource) issuer);<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    }<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>    @Override<a name="line.143"></a>
+<span class="sourceLineNo">144</span>    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    @Override<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        return new SpongeCommandCompletionContext(command, (SpongeCommandIssuer) sender, input, config, args);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    }<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>    @Override<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        return new SpongeRegisteredCommand(command, cmdName, method, prefSubCommand);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    @Override<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    public void log(final LogLevel level, final String message, final Throwable throwable) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        Logger logger = this.plugin.getLogger();<a name="line.160"></a>
+<span class="sourceLineNo">161</span>        switch(level) {<a name="line.161"></a>
+<span class="sourceLineNo">162</span>            case INFO:<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                logger.info(LogLevel.LOG_PREFIX + message);<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                if (throwable != null) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                        logger.info(LogLevel.LOG_PREFIX + line);<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                    }<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                }<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                return;<a name="line.169"></a>
+<span class="sourceLineNo">170</span>            case ERROR:<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                logger.error(LogLevel.LOG_PREFIX + message);<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                if (throwable != null) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                    for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                        logger.error(LogLevel.LOG_PREFIX + line);<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                    }<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        }<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    }<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>    @Override<a name="line.180"></a>
+<span class="sourceLineNo">181</span>    CommandOperationContext createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        return new SpongeCommandOperationContext(<a name="line.182"></a>
+<span class="sourceLineNo">183</span>                this,<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                issuer,<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                command,<a name="line.185"></a>
+<span class="sourceLineNo">186</span>                commandLabel,<a name="line.186"></a>
+<span class="sourceLineNo">187</span>                args,<a name="line.187"></a>
+<span class="sourceLineNo">188</span>                isAsync<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        );<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span>    @Override<a name="line.192"></a>
+<span class="sourceLineNo">193</span>    public SpongeConditionContext createConditionContext(CommandIssuer issuer, String config) {<a name="line.193"></a>
+<span class="sourceLineNo">194</span>        return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);<a name="line.194"></a>
+<span class="sourceLineNo">195</span>    }<a name="line.195"></a>
+<span class="sourceLineNo">196</span><a name="line.196"></a>
+<span class="sourceLineNo">197</span>}<a name="line.197"></a>
 
 
 

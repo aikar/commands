@@ -115,8 +115,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitMessageFormatter.html#BukkitMessageFormatter-org.bukkit.ChatColor...-">BukkitMessageFormatter(ChatColor...)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="co/aikar/commands/BukkitParameterConditionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">BukkitParameterConditionContext</span></a>&lt;<a href="co/aikar/commands/BukkitParameterConditionContext.html" title="type parameter in BukkitParameterConditionContext">P</a>&gt; - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/BukkitRegisteredCommand.html" title="class in co.aikar.commands"><span class="typeNameLink">BukkitRegisteredCommand</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands"><span class="typeNameLink">BukkitRootCommand</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
@@ -141,9 +139,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#createCompletionContext-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String-java.lang.String:A-">createCompletionContext(RegisteredCommand, CommandIssuer, String, String, String[])</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#createConditionContext-co.aikar.commands.CommandOperationContext-co.aikar.commands.annotation.Conditions-">createConditionContext(CommandOperationContext, Conditions)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#createConditionContext-co.aikar.commands.CommandOperationContext-co.aikar.commands.BukkitCommandExecutionContext-co.aikar.commands.annotation.Conditions-">createConditionContext(CommandOperationContext, BukkitCommandExecutionContext, Conditions)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#createConditionContext-co.aikar.commands.CommandIssuer-java.lang.String-">createConditionContext(CommandIssuer, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#createRegisteredCommand-co.aikar.commands.BaseCommand-java.lang.String-java.lang.reflect.Method-java.lang.String-">createRegisteredCommand(BaseCommand, String, Method, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
 <dd>&nbsp;</dd>
@@ -233,6 +229,10 @@
 <dd>
 <div class="block">Returns the Player object if this Issuer is a Player</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandIssuer.html#getPlayer--">getPlayer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitConditionContext.html#getPlayer--">getPlayer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitConditionContext.html" title="class in co.aikar.commands">BukkitConditionContext</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/contexts/OnlinePlayer.html#getPlayer--">getPlayer()</a></span> - Method in class co.aikar.commands.contexts.<a href="co/aikar/commands/contexts/OnlinePlayer.html" title="class in co.aikar.commands.contexts">OnlinePlayer</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandManager.html#getPlugin--">getPlugin()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandManager.html" title="class in co.aikar.commands">BukkitCommandManager</a></dt>
@@ -246,6 +246,8 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandCompletionContext.html#getSender--">getSender()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandCompletionContext.html" title="class in co.aikar.commands">BukkitCommandCompletionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitCommandExecutionContext.html#getSender--">getSender()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitCommandExecutionContext.html" title="class in co.aikar.commands">BukkitCommandExecutionContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitConditionContext.html#getSender--">getSender()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitConditionContext.html" title="class in co.aikar.commands">BukkitConditionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BukkitRootCommand.html#getSubCommands--">getSubCommands()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a></dt>
 <dd>&nbsp;</dd>

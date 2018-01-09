@@ -32,18 +32,23 @@
 <span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
 <span class="sourceLineNo">026</span>import org.spongepowered.api.command.CommandSource;<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span>@SuppressWarnings("WeakerAccess")<a name="line.28"></a>
-<span class="sourceLineNo">029</span>public class SpongeCommandCompletionContext extends CommandCompletionContext {<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>    SpongeCommandCompletionContext(final RegisteredCommand command, final CommandIssuer issuer, final String input, final String config, final String[] args) {<a name="line.31"></a>
-<span class="sourceLineNo">032</span>        super(command, issuer, input, config, args);<a name="line.32"></a>
-<span class="sourceLineNo">033</span>    }<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>    public CommandSource getSource() {<a name="line.35"></a>
-<span class="sourceLineNo">036</span>        return this.issuer.getIssuer();<a name="line.36"></a>
-<span class="sourceLineNo">037</span>    }<a name="line.37"></a>
-<span class="sourceLineNo">038</span>}<a name="line.38"></a>
+<span class="sourceLineNo">027</span>import org.spongepowered.api.entity.living.player.Player;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>@SuppressWarnings("WeakerAccess")<a name="line.29"></a>
+<span class="sourceLineNo">030</span>public class SpongeCommandCompletionContext extends CommandCompletionContext&lt;SpongeCommandIssuer&gt; {<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>    SpongeCommandCompletionContext(final RegisteredCommand command, final SpongeCommandIssuer issuer, final String input, final String config, final String[] args) {<a name="line.32"></a>
+<span class="sourceLineNo">033</span>        super(command, issuer, input, config, args);<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    }<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>    public CommandSource getSource() {<a name="line.36"></a>
+<span class="sourceLineNo">037</span>        return this.issuer.getIssuer();<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    }<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>    public Player getPlayer() {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        return this.issuer.getPlayer();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    }<a name="line.42"></a>
+<span class="sourceLineNo">043</span>}<a name="line.43"></a>
 
 
 

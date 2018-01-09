@@ -32,17 +32,22 @@
 <span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
 <span class="sourceLineNo">026</span>import net.md_5.bungee.api.CommandSender;<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span>public class BungeeCommandCompletionContext extends CommandCompletionContext {<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>    BungeeCommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {<a name="line.30"></a>
-<span class="sourceLineNo">031</span>        super(command, issuer, input, config, args);<a name="line.31"></a>
-<span class="sourceLineNo">032</span>    }<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>    public CommandSender getSender() {<a name="line.34"></a>
-<span class="sourceLineNo">035</span>        return this.getIssuer().getIssuer();<a name="line.35"></a>
-<span class="sourceLineNo">036</span>    }<a name="line.36"></a>
-<span class="sourceLineNo">037</span>}<a name="line.37"></a>
+<span class="sourceLineNo">027</span>import net.md_5.bungee.api.connection.ProxiedPlayer;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>public class BungeeCommandCompletionContext extends CommandCompletionContext&lt;BungeeCommandIssuer&gt; {<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>    BungeeCommandCompletionContext(RegisteredCommand command, BungeeCommandIssuer issuer, String input, String config, String[] args) {<a name="line.31"></a>
+<span class="sourceLineNo">032</span>        super(command, issuer, input, config, args);<a name="line.32"></a>
+<span class="sourceLineNo">033</span>    }<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>    public CommandSender getSender() {<a name="line.35"></a>
+<span class="sourceLineNo">036</span>        return this.getIssuer().getIssuer();<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    }<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>    public ProxiedPlayer getPlayer() {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        return this.issuer.getPlayer();<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    }<a name="line.41"></a>
+<span class="sourceLineNo">042</span>}<a name="line.42"></a>
 
 
 

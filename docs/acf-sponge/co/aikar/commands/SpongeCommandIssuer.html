@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -138,7 +138,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#equals-java.lang.Object-">equals</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>&lt;T&gt;&nbsp;T</code></td>
+<td class="colFirst"><code>org.spongepowered.api.command.CommandSource</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#getIssuer--">getIssuer</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
@@ -146,18 +146,22 @@ implements co.aikar.commands.CommandIssuer</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>org.spongepowered.api.entity.living.player.Player</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#getPlayer--">getPlayer</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#hashCode--">hashCode</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#hasPermission-java.lang.String-">hasPermission</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#isPlayer--">isPlayer</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandIssuer.html#sendMessageInternal-java.lang.String-">sendMessageInternal</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>&nbsp;</td>
 </tr>
@@ -209,11 +213,20 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getIssuer</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;T&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.48">getIssuer</a>()</pre>
+<pre>public&nbsp;org.spongepowered.api.command.CommandSource&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.48">getIssuer</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getIssuer</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
 </dl>
+</li>
+</ul>
+<a name="getPlayer--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPlayer</h4>
+<pre>public&nbsp;org.spongepowered.api.entity.living.player.Player&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.52">getPlayer</a>()</pre>
 </li>
 </ul>
 <a name="getManager--">
@@ -222,7 +235,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.54">getManager</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.57">getManager</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -235,7 +248,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessageInternal</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.59">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.62">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>sendMessageInternal</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -248,7 +261,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>hasPermission</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.64">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.67">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasPermission</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -261,7 +274,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>equals</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.70">equals</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.73">equals</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;o)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a></code>&nbsp;in class&nbsp;<code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></code></dd>
@@ -274,7 +287,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>hashCode</h4>
-<pre>public&nbsp;int&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.78">hashCode</a>()</pre>
+<pre>public&nbsp;int&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandIssuer.html#line.81">hashCode</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></code></dd>
