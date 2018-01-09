@@ -2,9 +2,11 @@
 ## Purpose
 This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
-Many people have wanted to use this framework for themselves, So here are, a public ready version!
+ACF is an extremely powerful command framework that takes nearly every concept of boilerplate code commonly found in command handlers, and abstracts them away behind annotations.
 
-ACF Core is now game agnostic, and can be used in any Java Server Software that implements a command system.
+ACF redefines how you build your command handlers, allowing things such as Dependency Injection, Validation, Tab Completion, Help Documentation, Syntax Advice, and Stateful Conditions to all be behind Annotations that you place on methods.
+
+Clean up your command handlers and unleash rich command experiences that would be too burdensome to pull off manually.
 
 ## Beta Testing
 While the 0.x.x series of ACF is "Beta", note that it is very stable.
@@ -15,12 +17,16 @@ It is labeled Beta as the framework is growing fast and gaining new features, an
 
 Please be prepared to keep up with changes, but I try to keep them as least disruptful as possible.
 
+v1.0.0 will be the signal that ACF features are more complete and the API will remain stable for a long time.
+
 ## Documentation / Using ACF
 
 [Documentation Wiki](https://github.com/aikar/commands/wiki) - All of ACF's documentation is currently on the GitHub Wiki. 
 Please review every page to learn about each feature.
 
 See [Using ACF](https://github.com/aikar/commands/wiki/Using-ACF) on how to add ACF to your plugin and getting started.
+
+See [Examples](https://github.com/aikar/commands/wiki/Real-World-Examples) for some real world examples
 
 ## Targeted Platforms / Current Version
 
@@ -40,63 +46,11 @@ Any bump in version implies an API break. See [CHANGELOG](CHANGELOG.md) for info
  
 Every change that should not cause any API break will be deployed over the current version.
 
-## Example
-For a complete example Bukkit Plugin that demonstrates most ACF Features, see [ACFExample](https://github.com/aikar/commands/tree/master/example/src/main/java/co/aikar/acfexample)
+## Say Thanks
+If this library has helped you, please consider donating as a way of saying thanks
 
-But a rough overview of the style/syntax in a realistic use case (this is EMC code):
-```java
-@CommandAlias("res|residence|resadmin")
-public class ResidenceCommand extends BaseCommand {
-    
-    @Subcommand("pset")
-    @CommandCompletion("@allplayers:30 @flags @flagstates")
-    public void onResFlagPSet(Player player, @Flags("admin") Residence res, EmpireUser[] users, String flag, @Values("@flagstates") String state) {
-        res.getPermissions().setPlayerFlag(player, Stream.of(users).map(EmpireUser::getName).collect(Collectors.joining(",")), flag, state, resadmin, true);
-    }
+[![PayPal Donate](https://aikar.co/donate.png "Donate with PayPal")](https://paypal.me/empireminecraft)
 
-    
-    @Subcommand("area replace")
-    @CommandPermission("residence.admin")
-    public void onResAreaReplace(Player player, CuboidSelection selection, @Flags("verbose") Residence res, @Default("main") @Single String area) {
-        res.replaceArea(player,
-            new CuboidArea(selection),
-            area,
-            resadmin);
-    }
-    
-}
-@CommandAlias("group|gr")
-public class GroupCommand extends BaseCommand {
-
-    @Subcommand("invitenear|invnear")
-    @CommandAlias("invitenear|invnear|ginvnear")
-    @Syntax("[radius=32] &e- Invite Nearby Players to the group.")
-    public void onInviteNear(Player player, @Default("32") Integer radius) {
-        int maxRadius = UserUtil.isModerator(player) ? 256 : 64;
-        radius = !UserUtil.isSrStaff(player) ? Math.min(maxRadius, radius) : radius;
-        List<String> names = player.getNearbyEntities(radius, Math.min(128, radius), radius)
-            .stream().filter((e) -> e instanceof Player && !UserUtil.isVanished((Player) e))
-            .map(CommandSender::getName)
-            .collect(Collectors.toList());
-        Groups.invitePlayers(player, names);
-    }
-
-    @Subcommand("invite|inv")
-    @CommandAlias("invite|inv|ginv")
-    @Syntax("<name> [name2] [name3] &e- Invite Players to the group.")
-    public void onInvite(Player player, String[] names) {
-        Groups.invitePlayers(player, names);
-    }
-
-    @Subcommand("kick|gkick")
-    @CommandAlias("gkick")
-    @Syntax("<player> &e- Kick Player from the group.")
-    public void onKick(Player player, @Flags("leader") Group group, OnlinePlayer toKick) {
-        group.kickPlayer(player, toKick.getPlayer());
-    }
-
-}
-```
 ## Why does it require Java 8+?
 Get off your dinosaur and get on this rocket ship!
 
