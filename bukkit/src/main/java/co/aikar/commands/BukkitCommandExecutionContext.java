@@ -45,7 +45,6 @@ public class BukkitCommandExecutionContext extends CommandExecutionContext<Bukki
      * @return
      */
     public Player getPlayer() {
-        CommandSender issuer = this.issuer.getIssuer();
-        return issuer instanceof Player ? (Player) issuer : null;
+        return this.issuer.getPlayer();
     }
 }

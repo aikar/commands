@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
@@ -59,9 +58,7 @@ public class BukkitCommandManager extends CommandManager<
         ChatColor,
         BukkitMessageFormatter,
         BukkitCommandExecutionContext,
-        BukkitCommandCompletionContext,
-        BukkitConditionContext,
-        BukkitParameterConditionContext<?>
+        BukkitConditionContext
         > {
 
     @SuppressWarnings("WeakerAccess")
@@ -304,7 +301,7 @@ public class BukkitCommandManager extends CommandManager<
 
     @Override
     public BukkitCommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
-        return new BukkitCommandCompletionContext(command, sender, input, config, args);
+        return new BukkitCommandCompletionContext(command, (BukkitCommandIssuer) sender, input, config, args);
     }
 
     @Override
@@ -313,14 +310,10 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     @Override
-    public BukkitConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
-        return new BukkitConditionContext(context.getRegisteredCommand(), (BukkitCommandIssuer) context.getCommandIssuer(), conditions);
+    public BukkitConditionContext createConditionContext(CommandIssuer issuer, String config) {
+        return new BukkitConditionContext((BukkitCommandIssuer) issuer, config);
     }
 
-    @Override
-    public <P> BukkitParameterConditionContext createConditionContext(CommandOperationContext context, BukkitCommandExecutionContext execContext, Conditions conditions) {
-        return new BukkitParameterConditionContext<P>(context.getRegisteredCommand(), (BukkitCommandIssuer) context.getCommandIssuer(), execContext, conditions);
-    }
 
     @Override
     public void log(LogLevel level, String message, Throwable throwable) {

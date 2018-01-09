@@ -30,15 +30,15 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-public class CommandCompletionContext {
+public class CommandCompletionContext <I extends CommandIssuer> {
     private final RegisteredCommand command;
-    protected final CommandIssuer issuer;
+    protected final I issuer;
     private final String input;
     private final String config;
     private final Map<String, String> configs = Maps.newHashMap();
     private final List<String> args;
 
-    CommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {
+    CommandCompletionContext(RegisteredCommand command, I issuer, String input, String config, String[] args) {
         this.command = command;
         this.issuer = issuer;
         this.input = input;

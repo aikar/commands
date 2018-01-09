@@ -24,15 +24,20 @@
 package co.aikar.commands;
 
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.living.player.Player;
 
 @SuppressWarnings("WeakerAccess")
-public class SpongeCommandCompletionContext extends CommandCompletionContext {
+public class SpongeCommandCompletionContext extends CommandCompletionContext<SpongeCommandIssuer> {
 
-    SpongeCommandCompletionContext(final RegisteredCommand command, final CommandIssuer issuer, final String input, final String config, final String[] args) {
+    SpongeCommandCompletionContext(final RegisteredCommand command, final SpongeCommandIssuer issuer, final String input, final String config, final String[] args) {
         super(command, issuer, input, config, args);
     }
 
     public CommandSource getSource() {
         return this.issuer.getIssuer();
+    }
+
+    public Player getPlayer() {
+        return this.issuer.getPlayer();
     }
 }

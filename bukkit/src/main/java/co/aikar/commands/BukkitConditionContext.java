@@ -23,10 +23,19 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class BukkitConditionContext extends ConditionContext<BukkitCommandIssuer> {
-    BukkitConditionContext(RegisteredCommand cmd, BukkitCommandIssuer issuer, Conditions condAnno) {
-        super(cmd, issuer, condAnno);
+    BukkitConditionContext(BukkitCommandIssuer issuer, String config) {
+        super(issuer, config);
+    }
+
+    public CommandSender getSender() {
+        return getIssuer().getIssuer();
+    }
+
+    public Player getPlayer() {
+        return getIssuer().getPlayer();
     }
 }

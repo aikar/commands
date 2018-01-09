@@ -52,7 +52,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
-public class RegisteredCommand <CEC extends CommandExecutionContext<? extends CommandExecutionContext, ? extends CommandIssuer>> {
+public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final String command;
     final Method method;
@@ -67,7 +67,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
     final int requiredResolvers;
     final int optionalResolvers;
     final List<String> registeredSubcommands = new ArrayList<>();
-    private final CommandManager<?, ?, ?, ?, ?, ?, ?, ?> manager;
+    private final CommandManager manager;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -89,6 +89,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
         //noinspection unchecked
         this.resolvers = new ContextResolver[this.parameters.length];
         final Syntax syntaxStr = method.getAnnotation(Syntax.class);
+        //noinspection unchecked
         final CommandContexts commandContexts = this.manager.getCommandContexts();
 
         int requiredResolvers = 0;
@@ -140,12 +141,13 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
                 || resolver instanceof OptionalContextResolver;
     }
 
-    void invoke(CommandIssuer sender, List<String> args) {
+    void invoke(CommandIssuer sender, List<String> args, CommandOperationContext context) {
         if (!scope.canExecute(sender, this)) {
             return;
         }
         preCommand();
         try {
+            this.manager.conditions.validateConditions(context);
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
@@ -220,6 +222,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
+                    //noinspection unchecked
+                    this.manager.conditions.validateConditions(context, value);
                     passedArgs.put(parameterName, value);
                     //noinspection UnnecessaryContinue
                     continue;
@@ -235,6 +239,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
                 final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
                 for (String s : split) {
+                    //noinspection unchecked
                     List<String> check = this.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
                         possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
@@ -248,7 +253,10 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<? extends Co
                             "{valid}", ACFUtil.join(possible, ", "));
                 }
             }
-            passedArgs.put(parameterName, resolver.getContext(context));
+            Object paramValue = resolver.getContext(context);
+            //noinspection unchecked
+            this.manager.conditions.validateConditions(context, paramValue);
+            passedArgs.put(parameterName, paramValue);
         }
         return passedArgs;
     }

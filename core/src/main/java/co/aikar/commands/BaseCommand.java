@@ -71,7 +71,7 @@ public abstract class BaseCommand {
     private String execSubcommand;
     @SuppressWarnings("WeakerAccess")
     private String[] origArgs;
-    CommandManager<?, ?, ?, ?, ?, ?, ?, ?> manager = null;
+    CommandManager<?, ?, ?, ?, ?, ?> manager = null;
     BaseCommand parentCommand;
     Map<String, RootCommand> registeredCommands = new HashMap<>();
     String description;
@@ -443,7 +443,7 @@ public abstract class BaseCommand {
                 return;
             }
             List<String> sargs = Lists.newArrayList(args);
-            cmd.invoke(issuer, sargs);
+            cmd.invoke(issuer, sargs, commandOperationContext);
         } else {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
         }

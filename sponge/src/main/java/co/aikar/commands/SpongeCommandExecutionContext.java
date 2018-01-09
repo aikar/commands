@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -38,5 +39,9 @@ public class SpongeCommandExecutionContext extends CommandExecutionContext<Spong
 
     public CommandSource getSource() {
         return this.issuer.getIssuer();
+    }
+
+    public Player getPlayer() {
+        return this.issuer.getPlayer();
     }
 }

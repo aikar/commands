@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 @SuppressWarnings("WeakerAccess")
@@ -72,7 +73,7 @@ public class Locales {
     public static final Locale WELSH = new Locale("cy");
 
 
-    private final CommandManager<?, ?, ?, ?, ?, ?, ?, ?> manager;
+    private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
     private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
 
@@ -97,7 +98,9 @@ public class Locales {
      * Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.
      */
     public void loadMissingBundles() {
-        for (Locale locale : manager.getSupportedLanguages()) {
+        //noinspection unchecked
+        Set<Locale> supportedLanguages = manager.getSupportedLanguages();
+        for (Locale locale : supportedLanguages) {
             for (String bundleName : Sets.newHashSet(loadedBundles.keys())) {
                 addMessageBundle(bundleName, locale);
             }
@@ -106,7 +109,9 @@ public class Locales {
 
     public void addMessageBundles(String... bundleNames) {
         for (String bundleName : bundleNames) {
-            for (Locale locale : manager.getSupportedLanguages()) {
+            //noinspection unchecked
+            Set<Locale> supportedLanguages = manager.getSupportedLanguages();
+            for (Locale locale : supportedLanguages) {
                 addMessageBundle(bundleName, locale);
             }
         }

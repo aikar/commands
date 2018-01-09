@@ -45,9 +45,12 @@ public class SpongeCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public <T> T getIssuer() {
-        //noinspection unchecked
-        return (T) this.source;
+    public CommandSource getIssuer() {
+        return this.source;
+    }
+
+    public Player getPlayer() {
+        return isPlayer() ? (Player) source : null;
     }
 
     @Override

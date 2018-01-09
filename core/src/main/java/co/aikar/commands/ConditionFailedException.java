@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -23,10 +23,23 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
+import co.aikar.locales.MessageKey;
+import co.aikar.locales.MessageKeyProvider;
 
-public class BukkitParameterConditionContext <P> extends ParameterConditionContext<P, BukkitCommandExecutionContext, BukkitCommandIssuer> {
-    BukkitParameterConditionContext(RegisteredCommand cmd, BukkitCommandIssuer issuer, BukkitCommandExecutionContext execContext, Conditions conditions) {
-        super(cmd, issuer, execContext, conditions);
+public class ConditionFailedException extends InvalidCommandArgument {
+    public ConditionFailedException() {
+        super(false);
+    }
+
+    public ConditionFailedException(MessageKeyProvider key, String... replacements) {
+        super(key, false, replacements);
+    }
+
+    public ConditionFailedException(MessageKey key, String... replacements) {
+        super(key, false, replacements);
+    }
+
+    public ConditionFailedException(String message) {
+        super(message, false);
     }
 }

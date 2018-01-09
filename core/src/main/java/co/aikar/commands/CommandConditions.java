@@ -27,88 +27,92 @@ import co.aikar.commands.annotation.Conditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong
 public class CommandConditions <
         I extends CommandIssuer,
-        M extends CommandManager,
-        CC extends ConditionContext,
         CEC extends CommandExecutionContext<CEC, I>,
-        PCC extends ParameterConditionContext<?, CEC, I>
+        CC extends ConditionContext<I>
     > {
-    M manager;
-    Map<String, Condition<CC>> conditions = Maps.newHashMap();
-    Table<Class<?>, String, ParameterCondition<PCC>> paramConditions = HashBasedTable.create();
-    CommandConditions(M manager) {
+    private CommandManager manager;
+    private Map<String, Condition<I>> conditions = Maps.newHashMap();
+    private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = HashBasedTable.create();
+
+    CommandConditions(CommandManager manager) {
         this.manager = manager;
     }
 
-    Condition<CC> addCondition(String id, Condition<CC> handler) {
+    public Condition<I> addCondition(@NotNull String id, @NotNull Condition<I> handler) {
         return this.conditions.put(id.toLowerCase(), handler);
     }
 
-    <P> ParameterCondition addCondition(Class<P> clazz, String id, ParameterCondition<PCC> handler) {
+    public <P> ParameterCondition addCondition(Class<P> clazz, @NotNull String id,
+                                               @NotNull ParameterCondition<P, CEC, I> handler) {
         return this.paramConditions.put(clazz, id.toLowerCase(), handler);
     }
 
-    boolean validateConditions(CommandOperationContext context, CEC cec) {
+    void validateConditions(CEC cec, Object value) throws InvalidCommandArgument {
         Conditions conditions = cec.getParam().getAnnotation(Conditions.class);
-        return conditions == null || validateConditions(conditions, context, cec);
+        validateConditions(conditions, cec, value);
     }
 
-    boolean validateConditions(CommandOperationContext context) {
+    void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {
         RegisteredCommand cmd = context.getRegisteredCommand();
         Conditions conditions = cmd.method.getAnnotation(Conditions.class);
-        if (conditions != null) {
-            if (!validateConditions(conditions, context)) {
-                return false;
-            }
-        }
-        return validateConditions(cmd.scope, context);
+        validateConditions(conditions, context);
+        validateConditions(cmd.scope, context);
     }
 
 
-    private boolean validateConditions(BaseCommand scope, CommandOperationContext operationContext) {
+    private void validateConditions(BaseCommand scope, CommandOperationContext operationContext) throws InvalidCommandArgument {
         Conditions conditions = scope.getClass().getAnnotation(Conditions.class);
-        //noinspection SimplifiableIfStatement
-        if (!validateConditions(conditions, operationContext)) {
-            return false;
+        validateConditions(conditions, operationContext);
+
+        if (scope.parentCommand != null) {
+            validateConditions(scope.parentCommand, operationContext);
         }
-        return scope.parentCommand == null || validateConditions(scope.parentCommand, operationContext);
     }
 
-    private boolean validateConditions(Conditions condAnno, CommandOperationContext context) {
+    private void validateConditions(Conditions condAnno, CommandOperationContext context) throws InvalidCommandArgument {
         if (condAnno == null) {
-            return true;
+            return;
         }
-        //noinspection unchecked
-        CC conditionContext = (CC) this.manager.createConditionContext(context, condAnno);
-        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());
-        for (String cond : ACFPatterns.PIPE.split(conditions)) {
-            String[] split = ACFPatterns.EQUALS.split(cond, 2);
-            Condition<CC> condition = this.conditions.get(split[0].toLowerCase());
 
+        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());
+        CommandIssuer issuer = context.getCommandIssuer();
+        for (String cond : ACFPatterns.PIPE.split(conditions)) {
+            String[] split = ACFPatterns.COLON.split(cond, 2);
+            String id = split[0].toLowerCase();
+            Condition<I> condition = this.conditions.get(id);
+            if (condition == null) {
+                RegisteredCommand cmd = context.getRegisteredCommand();
+                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName());
+                continue;
+            }
+
+            String config = split.length == 2 ? split[1] : null;
+            //noinspection unchecked
+            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);
+            //noinspection unchecked
             if (!condition.validateCondition(conditionContext)) {
-                return false;
+                return;
             }
         }
-
-        return true;
     }
 
-    private boolean validateConditions(Conditions condAnno, CommandOperationContext context, CEC execContext) {
+    private void validateConditions(Conditions condAnno, CEC execContext, Object value) throws InvalidCommandArgument {
         if (condAnno == null) {
-            return true;
+            return;
         }
-        //noinspection unchecked
-        ParameterConditionContext conditionContext = this.manager.createConditionContext(context, execContext, condAnno);
         String conditions = this.manager.getCommandReplacements().replace(condAnno.value());
+        I issuer = execContext.getIssuer();
         for (String cond : ACFPatterns.PIPE.split(conditions)) {
-            String[] split = ACFPatterns.EQUALS.split(cond, 2);
+            String[] split = ACFPatterns.COLON.split(cond, 2);
             ParameterCondition condition;
-            Class<?> cls = execContext.getParam().getClass();
+            Class<?> cls = execContext.getParam().getType();
             String id = split[0].toLowerCase();
             do {
                 condition = this.paramConditions.get(cls, id);
@@ -119,19 +123,28 @@ public class CommandConditions <
                 }
             } while (cls != null);
 
+
+            if (condition == null) {
+                RegisteredCommand cmd = execContext.getCmd();
+                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" +execContext.getParam().getName());
+                continue;
+            }
+            String config = split.length == 2 ? split[1] : null;
             //noinspection unchecked
-            if (condition != null && !condition.validateCondition(conditionContext)) {
-                return false;
+            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);
+
+            //noinspection unchecked
+            if (!condition.validateCondition(conditionContext, execContext, value)) {
+                return;
             }
         }
-
-        return true;
     }
 
-    interface Condition <CC extends ConditionContext> {
-        boolean validateCondition(CC context);
+    public interface Condition <I extends CommandIssuer> {
+        boolean validateCondition(ConditionContext<I> context) throws InvalidCommandArgument;
     }
-    interface ParameterCondition <PCC extends ParameterConditionContext> {
-        boolean validateCondition(PCC context);
+
+    public interface ParameterCondition <P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
+        boolean validateCondition(ConditionContext<I> context, CEC execContext, P value) throws InvalidCommandArgument;
     }
 }

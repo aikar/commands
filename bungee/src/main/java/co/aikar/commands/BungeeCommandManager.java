@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -43,9 +42,7 @@ public class BungeeCommandManager extends CommandManager<
         ChatColor,
         BungeeMessageFormatter,
         BungeeCommandExecutionContext,
-        BungeeCommandCompletionContext,
-        BungeeConditionContext,
-        BungeeParameterConditionContext<?>
+        BungeeConditionContext
     > {
 
     protected final Plugin plugin;
@@ -160,24 +157,17 @@ public class BungeeCommandManager extends CommandManager<
 
     @Override
     public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
-        return new BungeeCommandCompletionContext(command, sender, input, config, args);
+        return new BungeeCommandCompletionContext(command, (BungeeCommandIssuer) sender, input, config, args);
     }
-
-
-    @Override
-    public BungeeConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
-        return new BungeeConditionContext(context.getRegisteredCommand(), (BungeeCommandIssuer) context.getCommandIssuer(), conditions);
-    }
-
-    @Override
-    public <P> BungeeParameterConditionContext createConditionContext(CommandOperationContext context, BungeeCommandExecutionContext execContext, Conditions conditions) {
-        return new BungeeParameterConditionContext<P>(context.getRegisteredCommand(), (BungeeCommandIssuer) context.getCommandIssuer(), execContext, conditions);
-    }
-
 
     @Override
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
+    }
+
+    @Override
+    public BungeeConditionContext createConditionContext(CommandIssuer issuer, String config) {
+        return new BungeeConditionContext((BungeeCommandIssuer) issuer, config);
     }
 
     @Override

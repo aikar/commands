@@ -24,14 +24,19 @@
 package co.aikar.commands;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class BungeeCommandCompletionContext extends CommandCompletionContext {
+public class BungeeCommandCompletionContext extends CommandCompletionContext<BungeeCommandIssuer> {
 
-    BungeeCommandCompletionContext(RegisteredCommand command, CommandIssuer issuer, String input, String config, String[] args) {
+    BungeeCommandCompletionContext(RegisteredCommand command, BungeeCommandIssuer issuer, String input, String config, String[] args) {
         super(command, issuer, input, config, args);
     }
 
     public CommandSender getSender() {
         return this.getIssuer().getIssuer();
+    }
+
+    public ProxiedPlayer getPlayer() {
+        return this.issuer.getPlayer();
     }
 }

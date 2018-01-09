@@ -43,9 +43,13 @@ public class BukkitCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public <T> T getIssuer() {
+    public CommandSender getIssuer() {
         //noinspection unchecked
-        return (T) sender;
+        return sender;
+    }
+
+    public Player getPlayer() {
+        return isPlayer() ? (Player) sender : null;
     }
 
     @Override

@@ -47,9 +47,7 @@ public abstract class CommandManager <
         FT,
         MF extends MessageFormatter<FT>,
         CEC extends CommandExecutionContext<CEC, I>,
-        CCC extends CommandCompletionContext,
-        CC extends ConditionContext<I>,
-        PCC extends ParameterConditionContext<?, CEC, I>
+        CC extends ConditionContext<I>
     > {
 
     /**
@@ -65,6 +63,7 @@ public abstract class CommandManager <
     });
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected final CommandReplacements replacements = new CommandReplacements(this);
+    protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
 
     protected boolean usePerIssuerLocale = false;
@@ -116,6 +115,10 @@ public abstract class CommandManager <
 
     public void setDefaultFormatter(MF defaultFormatter) {
         this.defaultFormatter = defaultFormatter;
+    }
+
+    public CommandConditions<I, CEC, CC> getCommandConditions() {
+        return conditions;
     }
 
     /**
@@ -205,14 +208,10 @@ public abstract class CommandManager <
         usePerIssuerLocale = setting;
         return old;
     }
-    public ConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
-        //noinspection unchecked
-        return new ConditionContext<>(context.getRegisteredCommand(), context.getCommandIssuer(), conditions);
-    }
 
-    public <P> ParameterConditionContext createConditionContext(CommandOperationContext context, CEC execContext, Conditions conditions) {
+    public ConditionContext createConditionContext(CommandIssuer issuer, String config) {
         //noinspection unchecked
-        return new ParameterConditionContext<P, CEC, I>(context.getRegisteredCommand(), (I) context.getCommandIssuer(), execContext, conditions);
+        return new ConditionContext(issuer, config);
     }
 
     public abstract CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
@@ -390,5 +389,9 @@ public abstract class CommandManager <
         if (!unstableAPIs.contains(api)) {
             throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");
         }
+    }
+
+    boolean hasUnstableAPI(String api) {
+        return unstableAPIs.contains(api);
     }
 }

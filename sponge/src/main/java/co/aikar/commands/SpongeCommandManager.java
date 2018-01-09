@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
@@ -47,9 +46,7 @@ public class SpongeCommandManager extends CommandManager<
         TextColor,
         SpongeMessageFormatter,
         SpongeCommandExecutionContext,
-        SpongeCommandCompletionContext,
-        SpongeConditionContext,
-        SpongeParameterConditionContext<?>
+        SpongeConditionContext
     > {
 
     protected final PluginContainer plugin;
@@ -150,7 +147,7 @@ public class SpongeCommandManager extends CommandManager<
 
     @Override
     public CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {
-        return new SpongeCommandCompletionContext(command, sender, input, config, args);
+        return new SpongeCommandCompletionContext(command, (SpongeCommandIssuer) sender, input, config, args);
     }
 
     @Override
@@ -192,15 +189,9 @@ public class SpongeCommandManager extends CommandManager<
         );
     }
 
-
     @Override
-    public SpongeConditionContext createConditionContext(CommandOperationContext context, Conditions conditions) {
-        return new SpongeConditionContext(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), conditions);
-    }
-
-    @Override
-    public <P> SpongeParameterConditionContext createConditionContext(CommandOperationContext context, SpongeCommandExecutionContext execContext, Conditions conditions) {
-        return new SpongeParameterConditionContext<P>(context.getRegisteredCommand(), (SpongeCommandIssuer) context.getCommandIssuer(), execContext, conditions);
+    public SpongeConditionContext createConditionContext(CommandIssuer issuer, String config) {
+        return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);
     }
 
 }

@@ -26,9 +26,6 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * @deprecated This isn't ready yet
- */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Conditions {
     String value();

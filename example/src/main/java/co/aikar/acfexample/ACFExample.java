@@ -24,6 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
 import com.google.common.collect.Lists;
@@ -64,17 +65,31 @@ public final class ACFExample extends JavaPlugin {
             Lists.newArrayList("foo", "bar", "baz")
         ));
 
-        // 5: Register your commands - This first command demonstrates adding an exception handler to that command
+        // 5: Register Command Conditions
+        commandManager.getCommandConditions().addCondition(SomeObject.class, "limits", (c, exec, value) -> {
+            if (value == null) {
+                return true;
+            }
+            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value.getValue()) {
+                throw new ConditionFailedException("Min value must be " + c.getConfigValue("min", 0));
+            }
+            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value.getValue()) {
+                throw new ConditionFailedException("Max value must be " + c.getConfigValue("max", 3));
+            }
+            return true;
+        });
+
+        // 6: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
                 return true; // mark as handeled, default message will not be send to sender
         }));
-        // 5: Register an additional command. This one happens to share the same CommandAlias as the previous command
+        // 7: Register an additional command. This one happens to share the same CommandAlias as the previous command
         // This means it simply registers additional sub commands under the same command, but organized into separate
         // Classes (Maybe different permission sets)
         commandManager.registerCommand(new SomeCommand_ExtraSubs());
 
-        // 6: Register default exception handler for any command that doesn't supply its own
+        // 8: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             getLogger().warning("Error occured while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message

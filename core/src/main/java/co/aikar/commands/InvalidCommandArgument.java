@@ -53,19 +53,10 @@ public class InvalidCommandArgument extends Exception {
         this.replacements = replacements;
     }
 
-    /**
-     * Please move to a MessageKey
-     * @deprecated
-     */
-    @Deprecated
     public InvalidCommandArgument(String message) {
      this(message, true);
     }
-    /**
-     * Please move to a MessageKey
-     * @deprecated
-     */
-    @Deprecated
+
     public InvalidCommandArgument(String message, boolean showSyntax) {
         super(message, null, false, false);
         this.showSyntax = showSyntax;
