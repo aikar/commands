@@ -2,7 +2,7 @@
 if [ ! -z "$1" ]; then
 	cd $1 || exit 1
 fi
-mvn clean javadoc:jar deploy || exit 1
+mvn -T 4 clean javadoc:jar deploy || exit 1
 if [ ! -z "$1" ]; then
 	cd - || exit 1
 fi

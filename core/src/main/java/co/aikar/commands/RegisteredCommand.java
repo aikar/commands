@@ -164,7 +164,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
             e = (Exception) e.getCause();
         }
-        if (e instanceof InvalidCommandArgument) {
+        if (e instanceof ShowCommandHelp) {
+            ShowCommandHelp showHelp = (ShowCommandHelp) e;
+            CommandHelp commandHelp = manager.generateCommandHelp();
+            if (showHelp.search) {
+                commandHelp.setSearch(showHelp.searchArgs == null ? args : showHelp.searchArgs);
+            }
+            commandHelp.showHelp(sender);
+        } else if (e instanceof InvalidCommandArgument) {
             InvalidCommandArgument invalidCommandArg = (InvalidCommandArgument) e;
             if (invalidCommandArg.key != null) {
                 sender.sendMessage(MessageType.ERROR, invalidCommandArg.key, invalidCommandArg.replacements);
