@@ -97,9 +97,7 @@ public class CommandConditions <
             //noinspection unchecked
             CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);
             //noinspection unchecked
-            if (!condition.validateCondition(conditionContext)) {
-                return;
-            }
+            condition.validateCondition(conditionContext);
         }
     }
 
@@ -134,17 +132,15 @@ public class CommandConditions <
             CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);
 
             //noinspection unchecked
-            if (!condition.validateCondition(conditionContext, execContext, value)) {
-                return;
-            }
+            condition.validateCondition(conditionContext, execContext, value);
         }
     }
 
     public interface Condition <I extends CommandIssuer> {
-        boolean validateCondition(ConditionContext<I> context) throws InvalidCommandArgument;
+        void validateCondition(ConditionContext<I> context) throws InvalidCommandArgument;
     }
 
     public interface ParameterCondition <P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
-        boolean validateCondition(ConditionContext<I> context, CEC execContext, P value) throws InvalidCommandArgument;
+        void validateCondition(ConditionContext<I> context, CEC execContext, P value) throws InvalidCommandArgument;
     }
 }

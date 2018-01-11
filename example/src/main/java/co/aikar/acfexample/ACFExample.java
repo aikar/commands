@@ -68,7 +68,7 @@ public final class ACFExample extends JavaPlugin {
         // 5: Register Command Conditions
         commandManager.getCommandConditions().addCondition(SomeObject.class, "limits", (c, exec, value) -> {
             if (value == null) {
-                return true;
+                return;
             }
             if (c.hasConfig("min") && c.getConfigValue("min", 0) > value.getValue()) {
                 throw new ConditionFailedException("Min value must be " + c.getConfigValue("min", 0));
@@ -76,7 +76,6 @@ public final class ACFExample extends JavaPlugin {
             if (c.hasConfig("max") && c.getConfigValue("max", 3) < value.getValue()) {
                 throw new ConditionFailedException("Max value must be " + c.getConfigValue("max", 3));
             }
-            return true;
         });
 
         // 6: Register your commands - This first command demonstrates adding an exception handler to that command
