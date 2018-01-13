@@ -326,6 +326,14 @@ public class BukkitCommandManager extends CommandManager<
         }
     }
 
+    public Locale setPlayerLocale(Player player, Locale locale) {
+        Locale old = this.issuersLocale.put(player.getUniqueId(), locale);
+        if (!Objects.equals(old, locale)) {
+            this.notifyLocaleChange(getCommandIssuer(player), old, locale);
+        }
+        return old;
+    }
+
     @Override
     public Locale getIssuerLocale(CommandIssuer issuer) {
         if (usingPerIssuerLocale() && issuer.getIssuer() instanceof Player) {
