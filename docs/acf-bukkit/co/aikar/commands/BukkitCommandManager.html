@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":42,"i19":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":42,"i20":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -285,10 +285,15 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a 
                boolean&nbsp;force)</code>&nbsp;</td>
 </tr>
 <tr id="i17" class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#setPlayerLocale-org.bukkit.entity.Player-java.util.Locale-">setPlayerLocale</a></span>(org.bukkit.entity.Player&nbsp;player,
+               <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>&nbsp;</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommand-co.aikar.commands.BaseCommand-">unregisterCommand</a></span>(co.aikar.commands.BaseCommand&nbsp;command)</code>&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommand-co.aikar.commands.BukkitRootCommand-">unregisterCommand</a></span>(<a href="../../../co/aikar/commands/BukkitRootCommand.html" title="class in co.aikar.commands">BukkitRootCommand</a>&nbsp;command)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -296,7 +301,7 @@ extends co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a 
 </div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitCommandManager.html#unregisterCommands--">unregisterCommands</a></span>()</code>&nbsp;</td>
 </tr>
@@ -662,13 +667,23 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommand
 </dl>
 </li>
 </ul>
+<a name="setPlayerLocale-org.bukkit.entity.Player-java.util.Locale-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setPlayerLocale</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.329">setPlayerLocale</a>(org.bukkit.entity.Player&nbsp;player,
+                              <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
+</li>
+</ul>
 <a name="getIssuerLocale-co.aikar.commands.CommandIssuer-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getIssuerLocale</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.330">getIssuerLocale</a>(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitCommandManager.html#line.338">getIssuerLocale</a>(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>getIssuerLocale</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.bukkit.command.CommandSender,<a href="../../../co/aikar/commands/BukkitCommandIssuer.html" title="class in co.aikar.commands">BukkitCommandIssuer</a>,org.bukkit.ChatColor,<a href="../../../co/aikar/commands/BukkitMessageFormatter.html" title="class in co.aikar.commands">BukkitMessageFormatter</a>,<a href="../../../co/aikar/commands/BukkitCommandExecutionContext.html" title="class in co.aikar.commands">BukkitCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BukkitConditionContext.html" title="class in co.aikar.commands">BukkitConditionContext</a>&gt;</code></dd>

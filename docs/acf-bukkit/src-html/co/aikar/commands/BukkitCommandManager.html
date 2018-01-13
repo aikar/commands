@@ -334,18 +334,26 @@
 <span class="sourceLineNo">326</span>        }<a name="line.326"></a>
 <span class="sourceLineNo">327</span>    }<a name="line.327"></a>
 <span class="sourceLineNo">328</span><a name="line.328"></a>
-<span class="sourceLineNo">329</span>    @Override<a name="line.329"></a>
-<span class="sourceLineNo">330</span>    public Locale getIssuerLocale(CommandIssuer issuer) {<a name="line.330"></a>
-<span class="sourceLineNo">331</span>        if (usingPerIssuerLocale() &amp;&amp; issuer.getIssuer() instanceof Player) {<a name="line.331"></a>
-<span class="sourceLineNo">332</span>            UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();<a name="line.332"></a>
-<span class="sourceLineNo">333</span>            Locale locale = issuersLocale.get(uniqueId);<a name="line.333"></a>
-<span class="sourceLineNo">334</span>            if (locale != null) {<a name="line.334"></a>
-<span class="sourceLineNo">335</span>                return locale;<a name="line.335"></a>
-<span class="sourceLineNo">336</span>            }<a name="line.336"></a>
-<span class="sourceLineNo">337</span>        }<a name="line.337"></a>
-<span class="sourceLineNo">338</span>        return super.getIssuerLocale(issuer);<a name="line.338"></a>
-<span class="sourceLineNo">339</span>    }<a name="line.339"></a>
-<span class="sourceLineNo">340</span>}<a name="line.340"></a>
+<span class="sourceLineNo">329</span>    public Locale setPlayerLocale(Player player, Locale locale) {<a name="line.329"></a>
+<span class="sourceLineNo">330</span>        Locale old = this.issuersLocale.put(player.getUniqueId(), locale);<a name="line.330"></a>
+<span class="sourceLineNo">331</span>        if (!Objects.equals(old, locale)) {<a name="line.331"></a>
+<span class="sourceLineNo">332</span>            this.notifyLocaleChange(getCommandIssuer(player), old, locale);<a name="line.332"></a>
+<span class="sourceLineNo">333</span>        }<a name="line.333"></a>
+<span class="sourceLineNo">334</span>        return old;<a name="line.334"></a>
+<span class="sourceLineNo">335</span>    }<a name="line.335"></a>
+<span class="sourceLineNo">336</span><a name="line.336"></a>
+<span class="sourceLineNo">337</span>    @Override<a name="line.337"></a>
+<span class="sourceLineNo">338</span>    public Locale getIssuerLocale(CommandIssuer issuer) {<a name="line.338"></a>
+<span class="sourceLineNo">339</span>        if (usingPerIssuerLocale() &amp;&amp; issuer.getIssuer() instanceof Player) {<a name="line.339"></a>
+<span class="sourceLineNo">340</span>            UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();<a name="line.340"></a>
+<span class="sourceLineNo">341</span>            Locale locale = issuersLocale.get(uniqueId);<a name="line.341"></a>
+<span class="sourceLineNo">342</span>            if (locale != null) {<a name="line.342"></a>
+<span class="sourceLineNo">343</span>                return locale;<a name="line.343"></a>
+<span class="sourceLineNo">344</span>            }<a name="line.344"></a>
+<span class="sourceLineNo">345</span>        }<a name="line.345"></a>
+<span class="sourceLineNo">346</span>        return super.getIssuerLocale(issuer);<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    }<a name="line.347"></a>
+<span class="sourceLineNo">348</span>}<a name="line.348"></a>
 
 
 
