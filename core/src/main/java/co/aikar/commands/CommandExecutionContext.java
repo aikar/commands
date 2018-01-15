@@ -61,10 +61,10 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
         if (flags != null) {
             parseFlags(flags.value());
         }
-        inheritContextFlagsFlags(cmd.scope);
+        inheritContextFlags(cmd.scope);
     }
 
-    private void inheritContextFlagsFlags(BaseCommand scope) {
+    private void inheritContextFlags(BaseCommand scope) {
         if (!scope.contextFlags.isEmpty()) {
             Class<?> pCls = param.getType();
             do {
@@ -72,7 +72,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
             } while ((pCls = pCls.getSuperclass()) != null);
         }
         if (scope.parentCommand != null) {
-            inheritContextFlagsFlags(scope.parentCommand);
+            inheritContextFlags(scope.parentCommand);
         }
     }
 
