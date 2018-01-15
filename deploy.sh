@@ -7,4 +7,4 @@ if [ ! -z "$1" ]; then
 	cd - || exit 1
 fi
 git add docs
-git commit docs -m "Updated JavaDocs"
+git commit docs -m "(DEPLOYED ACF) Updated JavaDocs"
