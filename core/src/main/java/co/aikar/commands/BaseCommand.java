@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.CatchAll;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
@@ -60,7 +61,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public abstract class BaseCommand {
 
-    public static final String UNKNOWN = "__unknown";
+    public static final String CATCHALL = "__catchall";
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private Method preCommandHandler;
@@ -138,7 +139,7 @@ public abstract class BaseCommand {
         }
 
         boolean foundDefault = false;
-        boolean foundUnknown = false;
+        boolean foundCatchAll = false;
         boolean isParentEmpty = parentSubcommand.isEmpty();
         for (Method method : self.getMethods()) {
             method.setAccessible(true);
@@ -172,14 +173,16 @@ public abstract class BaseCommand {
             }
 
             UnknownHandler unknown    = method.getAnnotation(UnknownHandler.class);
+            CatchAll catchAll         = method.getAnnotation(CatchAll.class);
             PreCommand     preCommand = method.getAnnotation(PreCommand.class);
-            if (unknown != null || (!foundUnknown && helpCommand != null)) {
-                if (!foundUnknown) {
-                    if (unknown != null) {
-                        this.subCommands.get(UNKNOWN).clear();
-                        foundUnknown = true;
+            boolean hasCatchAll = catchAll != null || unknown != null;
+            if (hasCatchAll || (!foundCatchAll && helpCommand != null)) {
+                if (!foundCatchAll) {
+                    if (hasCatchAll) {
+                        this.subCommands.get(CATCHALL).clear();
+                        foundCatchAll = true;
                     }
-                    registerSubcommand(method, UNKNOWN);
+                    registerSubcommand(method, CATCHALL);
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -353,8 +356,8 @@ public abstract class BaseCommand {
 
             if (subCommands.get(DEFAULT) != null && args.length == 0) {
                 executeSubcommand(commandContext, DEFAULT, issuer, args);
-            } else if (subCommands.get(UNKNOWN) != null) {
-                if (!executeSubcommand(commandContext, UNKNOWN, issuer, args)) {
+            } else if (subCommands.get(CATCHALL) != null) {
+                if (!executeSubcommand(commandContext, CATCHALL, issuer, args)) {
                     help(issuer, args);
                 }
             } else if (subCommands.get(DEFAULT) != null) {
@@ -473,8 +476,8 @@ public abstract class BaseCommand {
 
             if (search != null) {
                 cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));
-            } else if (subCommands.get(UNKNOWN).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(UNKNOWN)), args, commandLabel, isAsync));
+            } else if (subCommands.get(CATCHALL).size() == 1) {
+                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(CATCHALL)), args, commandLabel, isAsync));
             } else if (subCommands.get(DEFAULT).size() == 1) {
                 cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
             }
@@ -490,7 +493,7 @@ public abstract class BaseCommand {
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
-            if (key.startsWith(argString) && !UNKNOWN.equals(key) && !DEFAULT.equals(key)) {
+            if (key.startsWith(argString) && !CATCHALL.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(issuer)) {
                     continue;

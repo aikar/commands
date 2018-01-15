@@ -96,7 +96,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     public void addChild(BaseCommand command) {
-        if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
+        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
             this.defCommand = command;
         }
         addChildShared(this.children, this.subCommands, command);

@@ -54,7 +54,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     @Override
     public void addChild(BaseCommand command) {
-        if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {
+        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
             this.defCommand = command;
 
         }

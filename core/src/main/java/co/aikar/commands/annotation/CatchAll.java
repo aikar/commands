@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -23,13 +23,8 @@
 
 package co.aikar.commands.annotation;
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * @deprecated Use {@link CatchAll instead, which is more accurately named}
- */
-@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnknownHandler {}
+public @interface CatchAll {}
