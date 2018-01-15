@@ -40,6 +40,12 @@ import org.bukkit.entity.Player;
 @CommandAlias("acf|somecommand|sc|somcom")
 public class SomeCommand extends BaseCommand {
 
+    {
+        // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this command that
+        // has a SomeObject parameter
+        setContextFlags(SomeObject.class, "foo=bar");
+    }
+
     // %testcmd was defined in ACFExample plugin and defined as "test4|foobar|barbaz"
     // This means, /test4, /foobar and /barbaz all are aliased here.
     // functionally equivalent to @CommandAlias("test4|foobar|barbaz") but could be dynamic (Read from config)

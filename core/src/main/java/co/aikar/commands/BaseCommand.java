@@ -37,6 +37,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 
@@ -64,6 +65,7 @@ public abstract class BaseCommand {
     public static final String CATCHALL = "__catchall";
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
     private Method preCommandHandler;
 
     @SuppressWarnings("WeakerAccess")
@@ -642,6 +644,14 @@ public abstract class BaseCommand {
 
     public RegisteredCommand getDefaultRegisteredCommand() {
         return this.getSubcommand(DEFAULT);
+    }
+
+    public String setContextFlags(Class<?> cls, String flags) {
+        return this.contextFlags.put(cls, flags);
+    }
+
+    public String getContextFlags(Class<?> cls) {
+        return this.contextFlags.get(cls);
     }
 
     private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;

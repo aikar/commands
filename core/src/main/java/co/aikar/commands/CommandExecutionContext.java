@@ -29,7 +29,6 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.lang.annotation.Annotation;
@@ -46,24 +45,45 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     private final int index;
     private final Map<String, Object> passedArgs;
     private final Map<String, String> flags;
+    private final CommandManager manager;
 
     CommandExecutionContext(RegisteredCommand cmd, Parameter param, I sender, List<String> args,
                                    int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
+        this.manager = cmd.scope.manager;
         this.param = param;
         this.issuer = sender;
         this.args = args;
         this.index = index;
         this.passedArgs = passedArgs;
+        this.flags = Maps.newHashMap();
         Flags flags = param.getAnnotation(Flags.class);
         if (flags != null) {
-            this.flags = Maps.newHashMap();
-            for (String s : ACFPatterns.COMMA.split(cmd.scope.manager.getCommandReplacements().replace(flags.value()))) {
+            parseFlags(flags.value());
+        }
+        inheritContextFlagsFlags(cmd.scope);
+    }
+
+    private void inheritContextFlagsFlags(BaseCommand scope) {
+        if (!scope.contextFlags.isEmpty()) {
+            Class<?> pCls = param.getType();
+            do {
+                parseFlags(scope.contextFlags.get(pCls));
+            } while ((pCls = pCls.getSuperclass()) != null);
+        }
+        if (scope.parentCommand != null) {
+            inheritContextFlagsFlags(scope.parentCommand);
+        }
+    }
+
+    private void parseFlags(String flags) {
+        if (flags != null) {
+            for (String s : ACFPatterns.COMMA.split(manager.getCommandReplacements().replace(flags))) {
                 String[] v = ACFPatterns.EQUALS.split(s, 2);
-                this.flags.put(v[0], v.length > 1 ? v[1] : null);
+                if (!this.flags.containsKey(v[0])) {
+                    this.flags.put(v[0], v.length > 1 ? v[1] : null);
+                }
             }
-        } else {
-            this.flags = ImmutableMap.of();
         }
     }
 
