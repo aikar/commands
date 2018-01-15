@@ -104,7 +104,7 @@
 <span class="sourceLineNo">096</span>    }<a name="line.96"></a>
 <span class="sourceLineNo">097</span><a name="line.97"></a>
 <span class="sourceLineNo">098</span>    public void addChild(BaseCommand command) {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        if (this.defCommand == null || !command.subCommands.get("__default").isEmpty()) {<a name="line.99"></a>
+<span class="sourceLineNo">099</span>        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {<a name="line.99"></a>
 <span class="sourceLineNo">100</span>            this.defCommand = command;<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        }<a name="line.101"></a>
 <span class="sourceLineNo">102</span>        addChildShared(this.children, this.subCommands, command);<a name="line.102"></a>

@@ -80,7 +80,7 @@
 <span class="sourceLineNo">072</span>    RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {<a name="line.72"></a>
 <span class="sourceLineNo">073</span>        this.scope = scope;<a name="line.73"></a>
 <span class="sourceLineNo">074</span>        this.manager = this.scope.manager;<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        if ("__unknown".equals(prefSubCommand) || "__default".equals(prefSubCommand)) {<a name="line.75"></a>
+<span class="sourceLineNo">075</span>        if (BaseCommand.CATCHALL.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {<a name="line.75"></a>
 <span class="sourceLineNo">076</span>            prefSubCommand = "";<a name="line.76"></a>
 <span class="sourceLineNo">077</span>        }<a name="line.77"></a>
 <span class="sourceLineNo">078</span>        this.command = command + (method.getAnnotation(CommandAlias.class) == null &amp;&amp; !prefSubCommand.isEmpty() ? prefSubCommand : "");<a name="line.78"></a>
