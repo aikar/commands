@@ -2,6 +2,8 @@
 ## Purpose
 This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
+ACF Started as a Bukkit Command Framework, but has shifted to be platform agnostic and can be used on any Java based application.
+
 ACF is an extremely powerful command framework that takes nearly every concept of boilerplate code commonly found in command handlers, and abstracts them away behind annotations.
 
 ACF redefines how you build your command handlers, allowing things such as Dependency Injection, Validation, Tab Completion, Help Documentation, Syntax Advice, and Stateful Conditions to all be behind Annotations that you place on methods.
@@ -35,8 +37,8 @@ We are on version:
  - VERSION `0.5.0-SNAPSHOT`
 
 ARTIFACTID varies by platform target:
- * [Bukkit](https://spigotmc.org): ***acf-bukkit*** (For targetting Spigot)
- * [Paper](https://paper.emc.gs): ***acf-paper*** (Recommended for plugins that require Paper, incase Paper specific improvements are added)
+ * [Bukkit](https://spigotmc.org): ***acf-bukkit*** (For targetting Bukkit/Spigot)
+ * [Paper](https://paper.emc.gs): ***acf-paper*** (Recommended over Bukkit, will gradually enhance when ran on Paper, but still runs on Spigot)
  * [Sponge](https://www.spongepowered.org/): ***acf-sponge***
  * [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/): ***acf-bungee*** 
  
@@ -79,7 +81,7 @@ Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 ## License
 As with all my other public projects
 
-Commands (c) Daniel Ennis (Aikar) 2016-2017.
+Commands (c) Daniel Ennis (Aikar) 2016-2018.
 
 Commands is licensed [MIT](https://tldrlegal.com/license/mit-license). See [LICENSE](LICENSE)
 
