@@ -69,10 +69,10 @@
 <span class="sourceLineNo">061</span>        if (flags != null) {<a name="line.61"></a>
 <span class="sourceLineNo">062</span>            parseFlags(flags.value());<a name="line.62"></a>
 <span class="sourceLineNo">063</span>        }<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        inheritContextFlagsFlags(cmd.scope);<a name="line.64"></a>
+<span class="sourceLineNo">064</span>        inheritContextFlags(cmd.scope);<a name="line.64"></a>
 <span class="sourceLineNo">065</span>    }<a name="line.65"></a>
 <span class="sourceLineNo">066</span><a name="line.66"></a>
-<span class="sourceLineNo">067</span>    private void inheritContextFlagsFlags(BaseCommand scope) {<a name="line.67"></a>
+<span class="sourceLineNo">067</span>    private void inheritContextFlags(BaseCommand scope) {<a name="line.67"></a>
 <span class="sourceLineNo">068</span>        if (!scope.contextFlags.isEmpty()) {<a name="line.68"></a>
 <span class="sourceLineNo">069</span>            Class&lt;?&gt; pCls = param.getType();<a name="line.69"></a>
 <span class="sourceLineNo">070</span>            do {<a name="line.70"></a>
@@ -80,7 +80,7 @@
 <span class="sourceLineNo">072</span>            } while ((pCls = pCls.getSuperclass()) != null);<a name="line.72"></a>
 <span class="sourceLineNo">073</span>        }<a name="line.73"></a>
 <span class="sourceLineNo">074</span>        if (scope.parentCommand != null) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            inheritContextFlagsFlags(scope.parentCommand);<a name="line.75"></a>
+<span class="sourceLineNo">075</span>            inheritContextFlags(scope.parentCommand);<a name="line.75"></a>
 <span class="sourceLineNo">076</span>        }<a name="line.76"></a>
 <span class="sourceLineNo">077</span>    }<a name="line.77"></a>
 <span class="sourceLineNo">078</span><a name="line.78"></a>
