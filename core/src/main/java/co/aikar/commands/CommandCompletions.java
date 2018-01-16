@@ -76,7 +76,10 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
-        final String completion = argIndex < completionInfo.length ? completionInfo[argIndex] : null;
+        String completion = argIndex < completionInfo.length ? completionInfo[argIndex] : null;
+        if (completion == null && completionInfo.length > 0) {
+            completion = completionInfo[completionInfo.length - 1];
+        }
         if (completion == null) {
             return ImmutableList.of(input);
         }
