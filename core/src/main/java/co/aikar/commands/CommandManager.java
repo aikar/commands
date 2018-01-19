@@ -387,10 +387,9 @@ public abstract class CommandManager <
      *
      * @param clazz the class the injector should look for when injecting
      * @param instance the instance of the class that should be injected
-     * @throws IllegalArgumentException when instance isn't an instance of clazz
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
-    public void registerDependency(Class<?> clazz, Object instance){
+    public <T> void registerDependency(Class<? extends T> clazz, T instance){
         registerNamedDependency(clazz, clazz.getName(), instance);
     }
 
@@ -402,13 +401,9 @@ public abstract class CommandManager <
      * @param clazz the class the injector should look for when injecting
      * @param key the key which needs to be present if that
      * @param instance the instance of the class that should be injected
-     * @throws IllegalArgumentException when instance isn't an instance of clazz
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
-    public void registerNamedDependency(Class<?> clazz, String key, Object instance){
-        if(!clazz.isInstance(instance)){
-            throw new IllegalArgumentException(instance.getClass().getName() + " isn't a subclass of " + clazz.getName() + "!");
-        }
+    public <T> void registerNamedDependency(Class<? extends T> clazz, String key, T instance){
         if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
             throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
         }
@@ -422,7 +417,7 @@ public abstract class CommandManager <
      *
      * @param baseCommand the instance which fields should be filled
      */
-    public void inject(BaseCommand baseCommand){
+    void injectDependencies(BaseCommand baseCommand){
         for (Field field : baseCommand.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(Dependency.class)) {
                 Dependency dependency = field.getAnnotation(Dependency.class);

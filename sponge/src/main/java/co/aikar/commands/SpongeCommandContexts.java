@@ -117,7 +117,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
 
                 throw new InvalidCommandArgument(false);
             }
-            return players.toArray(new OnlinePlayer[0]);
+            return players.toArray(new OnlinePlayer[players.size()]);
         });
         registerIssuerAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();
