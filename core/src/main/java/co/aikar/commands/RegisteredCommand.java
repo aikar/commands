@@ -201,7 +201,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = Lists.newArrayList(args);
-        String[] origArgs = args.toArray(new String[args.size()]);
+        String[] origArgs = args.toArray(new String[0]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();

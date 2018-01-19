@@ -174,7 +174,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));
             }
 
-            String[] result = args.toArray(new String[args.size()]);
+            String[] result = args.toArray(new String[0]);
             args.clear();
             return result;
         });

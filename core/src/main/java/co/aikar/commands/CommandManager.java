@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -53,13 +52,11 @@ public abstract class CommandManager <
     /**
      * This is a stack incase a command calls a command
      */
-    static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(() -> {
-        return new Stack<CommandOperationContext>() {
-            @Override
-            public synchronized CommandOperationContext peek() {
-                return super.size() == 0 ? null : super.peek();
-            }
-        };
+    static ThreadLocal<Stack<CommandOperationContext>> commandOperationContext = ThreadLocal.withInitial(() -> new Stack<CommandOperationContext>() {
+        @Override
+        public synchronized CommandOperationContext peek() {
+            return super.size() == 0 ? null : super.peek();
+        }
     });
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected final CommandReplacements replacements = new CommandReplacements(this);

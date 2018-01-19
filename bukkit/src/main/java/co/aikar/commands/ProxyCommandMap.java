@@ -87,7 +87,7 @@ class ProxyCommandMap extends SimpleCommandMap {
 
     @Override
     public void clearCommands() {
-        super.clearCommands();;
+        super.clearCommands();
         proxied.clearCommands();
     }
 

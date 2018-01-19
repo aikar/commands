@@ -58,13 +58,12 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 colours = colours.filter(colour -> finalFilter.equals(ACFUtil.simplifyString(colour.getName())));
             }
             Stream<TextColor> finalColours = colours;
-            TextColor match = Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
+            return Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
                 String valid = finalColours
                         .map(colour -> "<c2>" + ACFUtil.simplifyString(colour.getName()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
                 return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
-            return match;
         });
         registerContext(TextStyle.Base.class, c -> {
             String first = c.popFirstArg();
@@ -76,13 +75,12 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 styles = styles.filter(style -> finalFilter.equals(ACFUtil.simplifyString(style.getName())));
             }
             Stream<TextStyle.Base> finalStyles = styles;
-            TextStyle.Base match = Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
+            return Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
                 String valid = finalStyles
                         .map(style -> "<c2>" + ACFUtil.simplifyString(style.getName()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
                 return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
-            return match;
         });
 
         registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);
@@ -119,7 +117,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
 
                 throw new InvalidCommandArgument(false);
             }
-            return players.toArray(new OnlinePlayer[players.size()]);
+            return players.toArray(new OnlinePlayer[0]);
         });
         registerIssuerAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();

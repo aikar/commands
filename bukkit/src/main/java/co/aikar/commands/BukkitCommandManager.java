@@ -261,7 +261,7 @@ public class BukkitCommandManager extends CommandManager<
             if (nmsPlayer != null) {
                 Field localeField = nmsPlayer.getClass().getField("locale");
                 Object localeString = localeField.get(nmsPlayer);
-                if (localeString != null && localeString instanceof String) {
+                if (localeString instanceof String) {
                     String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
                     Locale locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
                     Locale prev = issuersLocale.put(player.getUniqueId(), locale);

@@ -74,7 +74,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
 
                 throw new InvalidCommandArgument(false);
             }
-            return players.toArray(new OnlinePlayer[players.size()]);
+            return players.toArray(new OnlinePlayer[0]);
         });
         registerIssuerAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();
