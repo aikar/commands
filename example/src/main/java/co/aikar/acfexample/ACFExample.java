@@ -84,8 +84,8 @@ public final class ACFExample extends JavaPlugin {
         someHandler.setSomeField("Secret");
         commandManager.registerDependency(SomeHandler.class, someHandler);
         commandManager.registerDependency(String.class, "Test3");
-        commandManager.registerNamedDependency(String.class, "test", "Test");
-        commandManager.registerNamedDependency(String.class, "test2", "Test2");
+        commandManager.registerDependency(String.class, "test", "Test");
+        commandManager.registerDependency(String.class, "test2", "Test2");
 
         // 7: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {

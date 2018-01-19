@@ -390,7 +390,7 @@ public abstract class CommandManager <
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, T instance){
-        registerNamedDependency(clazz, clazz.getName(), instance);
+        registerDependency(clazz, clazz.getName(), instance);
     }
 
     /**
@@ -403,7 +403,7 @@ public abstract class CommandManager <
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
-    public <T> void registerNamedDependency(Class<? extends T> clazz, String key, T instance){
+    public <T> void registerDependency(Class<? extends T> clazz, String key, T instance){
         if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
             throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
         }
