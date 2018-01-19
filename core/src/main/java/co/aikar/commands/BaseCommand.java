@@ -122,6 +122,7 @@ public abstract class BaseCommand {
         onRegister(manager, this.commandName);
     }
     void onRegister(CommandManager manager, String cmd) {
+        manager.inject(this);
         this.manager = manager;
         final Class<? extends BaseCommand> self = this.getClass();
         CommandAlias rootCmdAliasAnno = self.getAnnotation(CommandAlias.class);

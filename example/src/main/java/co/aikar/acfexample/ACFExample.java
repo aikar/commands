@@ -78,17 +78,27 @@ public final class ACFExample extends JavaPlugin {
             }
         });
 
-        // 6: Register your commands - This first command demonstrates adding an exception handler to that command
+        // 6: (Optionally) Register dependencies - Dependencies can be injected into fields of command classes by
+        // marking them with @Dependency. Some classes, like your Plugin, are already registered by default.
+        SomeHandler someHandler = new SomeHandler();
+        someHandler.setSomeField("Secret");
+        commandManager.registerDependency(SomeHandler.class, someHandler);
+        commandManager.registerDependency(String.class, "Test3");
+        commandManager.registerNamedDependency(String.class, "test", "Test");
+        commandManager.registerNamedDependency(String.class, "test2", "Test2");
+
+        // 7: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
                 return true; // mark as handeled, default message will not be send to sender
         }));
-        // 7: Register an additional command. This one happens to share the same CommandAlias as the previous command
+
+        // 8: Register an additional command. This one happens to share the same CommandAlias as the previous command
         // This means it simply registers additional sub commands under the same command, but organized into separate
         // Classes (Maybe different permission sets)
         commandManager.registerCommand(new SomeCommand_ExtraSubs());
 
-        // 8: Register default exception handler for any command that doesn't supply its own
+        // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             getLogger().warning("Error occured while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
