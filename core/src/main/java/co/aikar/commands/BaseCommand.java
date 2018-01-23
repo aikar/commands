@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.CatchAll;
+import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
@@ -62,7 +63,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public abstract class BaseCommand {
 
-    public static final String CATCHALL = "__catchall";
+    public static final String CATCHUNKNOWN = "__catchunknown";
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     final Map<Class<?>, String> contextFlags = Maps.newHashMap();
@@ -141,7 +142,7 @@ public abstract class BaseCommand {
         }
 
         boolean foundDefault = false;
-        boolean foundCatchAll = false;
+        boolean foundCatchUnknown = false;
         boolean isParentEmpty = parentSubcommand.isEmpty();
         for (Method method : self.getMethods()) {
             method.setAccessible(true);
@@ -174,17 +175,15 @@ public abstract class BaseCommand {
                 sublist = helpCommand.value();
             }
 
-            UnknownHandler unknown    = method.getAnnotation(UnknownHandler.class);
-            CatchAll catchAll         = method.getAnnotation(CatchAll.class);
             PreCommand     preCommand = method.getAnnotation(PreCommand.class);
-            boolean hasCatchAll = catchAll != null || unknown != null;
-            if (hasCatchAll || (!foundCatchAll && helpCommand != null)) {
-                if (!foundCatchAll) {
-                    if (hasCatchAll) {
-                        this.subCommands.get(CATCHALL).clear();
-                        foundCatchAll = true;
+            boolean hasCatchUnknown = method.isAnnotationPresent(CatchUnknown.class) || method.isAnnotationPresent(CatchAll.class) || method.isAnnotationPresent(UnknownHandler.class);
+            if (hasCatchUnknown || (!foundCatchUnknown && helpCommand != null)) {
+                if (!foundCatchUnknown) {
+                    if (hasCatchUnknown) {
+                        this.subCommands.get(CATCHUNKNOWN).clear();
+                        foundCatchUnknown = true;
                     }
-                    registerSubcommand(method, CATCHALL);
+                    registerSubcommand(method, CATCHUNKNOWN);
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -358,8 +357,8 @@ public abstract class BaseCommand {
 
             if (subCommands.get(DEFAULT) != null && args.length == 0) {
                 executeSubcommand(commandContext, DEFAULT, issuer, args);
-            } else if (subCommands.get(CATCHALL) != null) {
-                if (!executeSubcommand(commandContext, CATCHALL, issuer, args)) {
+            } else if (subCommands.get(CATCHUNKNOWN) != null) {
+                if (!executeSubcommand(commandContext, CATCHUNKNOWN, issuer, args)) {
                     help(issuer, args);
                 }
             } else if (subCommands.get(DEFAULT) != null) {
@@ -478,8 +477,8 @@ public abstract class BaseCommand {
 
             if (search != null) {
                 cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));
-            } else if (subCommands.get(CATCHALL).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(CATCHALL)), args, commandLabel, isAsync));
+            } else if (subCommands.get(CATCHUNKNOWN).size() == 1) {
+                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));
             } else if (subCommands.get(DEFAULT).size() == 1) {
                 cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
             }
@@ -495,7 +494,7 @@ public abstract class BaseCommand {
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
-            if (key.startsWith(argString) && !CATCHALL.equals(key) && !DEFAULT.equals(key)) {
+            if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(issuer)) {
                     continue;
