@@ -35,7 +35,11 @@ public class JDACommandManager extends CommandManager<
 
     protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
-    JDACommandManager(JDA jda, CommandConfig defaultConfig, CommandConfigProvider configProvider, CommandPermissionResolver permissionResolver) {
+    public JDACommandManager(JDA jda) {
+        this(jda, null, null, null);
+    }
+
+    public JDACommandManager(JDA jda, CommandConfig defaultConfig, CommandConfigProvider configProvider, CommandPermissionResolver permissionResolver) {
         this.jda = jda;
         this.permissionResolver = permissionResolver;
         jda.addEventListener(new JDAListener(this));
