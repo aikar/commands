@@ -1,6 +1,6 @@
 package co.aikar.commands;
 
-public class JDACommandConfig {
+public class JDACommandConfig implements CommandConfig {
     protected String startsWith = "!";
 
     public JDACommandConfig() {

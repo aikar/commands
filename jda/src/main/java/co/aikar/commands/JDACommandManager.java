@@ -25,7 +25,7 @@ public class JDACommandManager extends CommandManager<
     private final JDA jda;
 
     private Logger logger;
-    private JDACommandConfig defaultConfig;
+    private CommandConfig defaultConfig;
     private JDACommandConfigProvider configProvider;
     protected JDACommandCompletions completions;
     protected JDACommandContexts contexts;
@@ -36,17 +36,17 @@ public class JDACommandManager extends CommandManager<
     public JDACommandManager(JDA jda) {
         this(jda, null, null);
     }
-    public JDACommandManager(JDA jda, JDACommandConfig defaultConfig) {
+    public JDACommandManager(JDA jda, CommandConfig defaultConfig) {
         this(jda, defaultConfig, null);
     }
     public JDACommandManager(JDA jda, JDACommandConfigProvider configProvider) {
         this(jda, null, configProvider);
     }
 
-    public JDACommandManager(JDA jda, JDACommandConfig defaultConfig, JDACommandConfigProvider configProvider) {
+    public JDACommandManager(JDA jda, CommandConfig defaultConfig, JDACommandConfigProvider configProvider) {
         this.jda = jda;
         jda.addEventListener(new JDAListener(this));
-        this.defaultConfig = defaultConfig == null ? new JDACommandConfig() : defaultConfig;
+        this.defaultConfig = defaultConfig == null ? new CommandConfig() : defaultConfig;
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
     }
@@ -63,11 +63,11 @@ public class JDACommandManager extends CommandManager<
         this.logger = logger;
     }
 
-    public JDACommandConfig getDefaultConfig() {
+    public CommandConfig getDefaultConfig() {
         return defaultConfig;
     }
 
-    public void setDefaultConfig(JDACommandConfig defaultConfig) {
+    public void setDefaultConfig(CommandConfig defaultConfig) {
         this.defaultConfig = defaultConfig;
     }
 
@@ -163,9 +163,9 @@ public class JDACommandManager extends CommandManager<
         Message message = event.getMessage();
         String msg = message.getContentDisplay();
 
-        JDACommandConfig config = this.defaultConfig;
+        CommandConfig config = this.defaultConfig;
         if (this.configProvider != null) {
-            JDACommandConfig provided = this.configProvider.provide(event);
+            CommandConfig provided = this.configProvider.provide(event);
             if (provided != null) {
                 config = provided;
             }
