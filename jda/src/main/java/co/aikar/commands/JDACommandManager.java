@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -26,29 +27,27 @@ public class JDACommandManager extends CommandManager<
 
     private Logger logger;
     private CommandConfig defaultConfig;
-    private JDACommandConfigProvider configProvider;
+    private CommandConfigProvider configProvider;
+    private CommandPermissionResolver permissionResolver;
     protected JDACommandCompletions completions;
     protected JDACommandContexts contexts;
     protected JDALocales locales;
 
     protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
-    public JDACommandManager(JDA jda) {
-        this(jda, null, null);
-    }
-    public JDACommandManager(JDA jda, CommandConfig defaultConfig) {
-        this(jda, defaultConfig, null);
-    }
-    public JDACommandManager(JDA jda, JDACommandConfigProvider configProvider) {
-        this(jda, null, configProvider);
-    }
-
-    public JDACommandManager(JDA jda, CommandConfig defaultConfig, JDACommandConfigProvider configProvider) {
+    JDACommandManager(JDA jda, CommandConfig defaultConfig, CommandConfigProvider configProvider, CommandPermissionResolver permissionResolver) {
         this.jda = jda;
+        this.permissionResolver = permissionResolver;
         jda.addEventListener(new JDAListener(this));
         this.defaultConfig = defaultConfig == null ? new JDACommandConfig() : defaultConfig;
+        this.configProvider = configProvider;
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
+    }
+
+
+    public static JDACommandManagerBuilder builder(JDA jda) {
+        return new JDACommandManagerBuilder(jda);
     }
 
     public JDA getJDA() {
@@ -67,16 +66,24 @@ public class JDACommandManager extends CommandManager<
         return defaultConfig;
     }
 
-    public void setDefaultConfig(CommandConfig defaultConfig) {
+    public void setDefaultConfig(@NotNull CommandConfig defaultConfig) {
         this.defaultConfig = defaultConfig;
     }
 
-    public JDACommandConfigProvider getConfigProvider() {
+    public CommandConfigProvider getConfigProvider() {
         return configProvider;
     }
 
-    public void setConfigProvider(JDACommandConfigProvider configProvider) {
+    public void setConfigProvider(CommandConfigProvider configProvider) {
         this.configProvider = configProvider;
+    }
+
+    public CommandPermissionResolver getPermissionResolver() {
+        return permissionResolver;
+    }
+
+    public void setPermissionResolver(CommandPermissionResolver permissionResolver) {
+        this.permissionResolver = permissionResolver;
     }
 
     @Override
@@ -84,7 +91,7 @@ public class JDACommandManager extends CommandManager<
         if (this.contexts == null) {
             this.contexts = new JDACommandContexts(this);
         }
-        return null;
+        return this.contexts;
     }
 
     @Override
@@ -133,7 +140,7 @@ public class JDACommandManager extends CommandManager<
             this.locales = new JDALocales(this);
             this.locales.loadLanguages();
         }
-        return null;
+        return this.locales;
     }
 
     @Override

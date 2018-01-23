@@ -2,6 +2,6 @@ package co.aikar.commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public interface JDACommandConfigProvider {
+public interface CommandConfigProvider {
     CommandConfig provide(MessageReceivedEvent event);
 }

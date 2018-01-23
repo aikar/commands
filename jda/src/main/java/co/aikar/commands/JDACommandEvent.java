@@ -36,8 +36,8 @@ public class JDACommandEvent implements CommandIssuer {
 
     @Override
     public boolean hasPermission(String permission) {
-        // TODO: Permission Resolving
-        return false;
+        CommandPermissionResolver permissionResolver = this.manager.getPermissionResolver();
+        return permissionResolver == null || permissionResolver.hasPermission(this, permission);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class JDACommandEvent implements CommandIssuer {
 
     @Override
     public void sendMessage(String message) {
-
+        this.event.getChannel().sendMessage(message).queue();
     }
 
     public void sendMessage(Message message) {
