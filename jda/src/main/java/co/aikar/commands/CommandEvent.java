@@ -15,6 +15,10 @@ public class CommandEvent implements CommandIssuer {
         this.event = event;
     }
 
+    public MessageReceivedEvent getEvent() {
+        return event;
+    }
+
     @Override
     public MessageReceivedEvent getIssuer() {
         return event;
