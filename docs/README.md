@@ -41,7 +41,9 @@ ARTIFACTID varies by platform target:
  * [Paper](https://paper.emc.gs): ***acf-paper*** (Recommended over Bukkit, will gradually enhance when ran on Paper, but still runs on Spigot)
  * [Sponge](https://www.spongepowered.org/): ***acf-sponge***
  * [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/): ***acf-bungee*** 
+ * [JDA](https://github.com/DV8FromTheWorld/JDA): ***acf-jda*** - IN PROGRESS - NOT READY
  
+Setup Guides (Repo and Requirements): [Maven](https://github.com/aikar/commands/wiki/Maven-Setup), [Gradle](https://github.com/aikar/commands/wiki/Gradle-Setup)
 You may include more than 1 platform in your jar if your plugin supports multiple platforms.
     
 Any bump in version implies an API break. See [CHANGELOG](CHANGELOG.md) for information on migration guides for API breaks.
