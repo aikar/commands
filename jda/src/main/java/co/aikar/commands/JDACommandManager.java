@@ -23,8 +23,10 @@ public class JDACommandManager extends CommandManager<
         > {
 
     private final JDA jda;
-    private String startsWith;
+
     private Logger logger;
+    private JDACommandConfig defaultConfig;
+    private JDACommandConfigProvider configProvider;
     protected JDACommandCompletions completions;
     protected JDACommandContexts contexts;
     protected JDALocales locales;
@@ -32,12 +34,19 @@ public class JDACommandManager extends CommandManager<
     protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
     public JDACommandManager(JDA jda) {
-        this(jda, "!");
+        this(jda, null, null);
     }
-    public JDACommandManager(JDA jda, String startsWith) {
+    public JDACommandManager(JDA jda, JDACommandConfig defaultConfig) {
+        this(jda, defaultConfig, null);
+    }
+    public JDACommandManager(JDA jda, JDACommandConfigProvider configProvider) {
+        this(jda, null, configProvider);
+    }
+
+    public JDACommandManager(JDA jda, JDACommandConfig defaultConfig, JDACommandConfigProvider configProvider) {
         this.jda = jda;
         jda.addEventListener(new JDAListener(this));
-        this.startsWith = startsWith;
+        this.defaultConfig = defaultConfig == null ? new JDACommandConfig() : defaultConfig;
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
     }
@@ -54,12 +63,20 @@ public class JDACommandManager extends CommandManager<
         this.logger = logger;
     }
 
-    public String getStartsWith() {
-        return startsWith;
+    public JDACommandConfig getDefaultConfig() {
+        return defaultConfig;
     }
 
-    public void setStartsWith(String startsWith) {
-        this.startsWith = startsWith;
+    public void setDefaultConfig(JDACommandConfig defaultConfig) {
+        this.defaultConfig = defaultConfig;
+    }
+
+    public JDACommandConfigProvider getConfigProvider() {
+        return configProvider;
+    }
+
+    public void setConfigProvider(JDACommandConfigProvider configProvider) {
+        this.configProvider = configProvider;
     }
 
     @Override
@@ -146,7 +163,15 @@ public class JDACommandManager extends CommandManager<
         Message message = event.getMessage();
         String msg = message.getContentDisplay();
 
-        if (!msg.startsWith(this.startsWith)) {
+        JDACommandConfig config = this.defaultConfig;
+        if (this.configProvider != null) {
+            JDACommandConfig provided = this.configProvider.provide(event);
+            if (provided != null) {
+                config = provided;
+            }
+        }
+
+        if (!msg.startsWith(config.startsWith)) {
             return;
         }
 
