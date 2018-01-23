@@ -45,11 +45,6 @@ public class JDACommandEvent implements CommandIssuer {
         this.event.getChannel().sendMessage(message).queue();
     }
 
-    @Override
-    public void sendMessage(String message) {
-        this.event.getChannel().sendMessage(message).queue();
-    }
-
     public void sendMessage(Message message) {
         this.event.getChannel().sendMessage(message).queue();
     }
