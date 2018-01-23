@@ -12,6 +12,7 @@
         <module name="acf-bungee" />
         <module name="acf-core" />
         <module name="acf-example" />
+        <module name="acf-jda" />
         <module name="acf-paper" />
         <module name="acf-sponge" />
         <module name="commands" />
@@ -24,6 +25,7 @@
       <module name="acf-bungee" target="1.8" />
       <module name="acf-core" target="1.8" />
       <module name="acf-example" target="1.8" />
+      <module name="acf-jda" target="1.8" />
       <module name="acf-paper" target="1.8" />
       <module name="acf-parent" target="1.8" />
       <module name="acf-sponge" target="1.8" />
