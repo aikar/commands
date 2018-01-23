@@ -171,7 +171,7 @@ public class JDACommandManager extends CommandManager<
             }
         }
 
-        if (!msg.startsWith(config.startsWith)) {
+        if (!msg.startsWith(config.getStartsWith())) {
             return;
         }
 
