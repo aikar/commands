@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class JDACommandContexts extends CommandContexts<JDACommandExecutionContext> {
     public JDACommandContexts(JDACommandManager manager) {
         super(manager);
-        this.registerIssuerOnlyContext(CommandEvent.class, CommandExecutionContext::getIssuer);
+        this.registerIssuerOnlyContext(JDACommandEvent.class, CommandExecutionContext::getIssuer);
         this.registerIssuerOnlyContext(MessageReceivedEvent.class, c -> c.getIssuer().getIssuer());
         this.registerIssuerOnlyContext(Message.class, c -> {
             MessageReceivedEvent event = c.getIssuer().getIssuer();

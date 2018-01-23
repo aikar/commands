@@ -2,7 +2,6 @@ package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import com.google.common.collect.Maps;
-import jdk.nashorn.internal.ir.IfNode;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,7 +15,7 @@ import java.util.logging.Logger;
 
 public class JDACommandManager extends CommandManager<
         MessageReceivedEvent,
-        CommandEvent,
+        JDACommandEvent,
         String,
         MessageFormatter<String>,
         JDACommandExecutionContext,
@@ -95,15 +94,15 @@ public class JDACommandManager extends CommandManager<
 
     @Override
     public boolean isCommandIssuer(Class<?> type) {
-        return CommandEvent.class.isAssignableFrom(type);
+        return JDACommandEvent.class.isAssignableFrom(type);
     }
 
     @Override
-    public CommandEvent getCommandIssuer(Object issuer) {
+    public JDACommandEvent getCommandIssuer(Object issuer) {
         if (!(issuer instanceof MessageReceivedEvent)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Message Received Event.");
         }
-        return new CommandEvent(this, (MessageReceivedEvent) issuer);
+        return new JDACommandEvent(this, (MessageReceivedEvent) issuer);
     }
 
     @Override
@@ -122,7 +121,7 @@ public class JDACommandManager extends CommandManager<
 
     @Override
     public CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new JDACommandExecutionContext(command, parameter, (CommandEvent) sender, args, i, passedArgs);
+        return new JDACommandExecutionContext(command, parameter, (JDACommandEvent) sender, args, i, passedArgs);
     }
 
     @Override

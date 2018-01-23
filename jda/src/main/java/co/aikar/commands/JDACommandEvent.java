@@ -4,12 +4,12 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class CommandEvent implements CommandIssuer {
+public class JDACommandEvent implements CommandIssuer {
 
     private MessageReceivedEvent event;
     private JDACommandManager manager;
 
-    public CommandEvent(JDACommandManager manager, MessageReceivedEvent event) {
+    public JDACommandEvent(JDACommandManager manager, MessageReceivedEvent event) {
 
         this.manager = manager;
         this.event = event;

@@ -1,7 +1,7 @@
 package co.aikar.commands;
 
-public class JDAConditionContext extends ConditionContext<CommandEvent> {
-    JDAConditionContext(CommandEvent issuer, String config) {
+public class JDAConditionContext extends ConditionContext<JDACommandEvent> {
+    JDAConditionContext(JDACommandEvent issuer, String config) {
         super(issuer, config);
     }
 }
