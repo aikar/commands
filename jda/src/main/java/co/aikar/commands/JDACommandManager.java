@@ -126,6 +126,7 @@ public class JDACommandManager extends CommandManager<
 
     @Override
     public void registerCommand(BaseCommand command) {
+        command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String commandName = entry.getKey().toLowerCase();
             JDARootCommand cmd = (JDARootCommand) entry.getValue();
