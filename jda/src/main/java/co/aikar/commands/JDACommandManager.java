@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,8 +57,7 @@ public class JDACommandManager extends CommandManager<
         });
     }
 
-    private long getBotOwnerId() {
-        // Lazy initialization is required because a forced RestAction on startup is bad
+    void initializeBotOwner() {
         if (botOwner == 0L) {
             if (jda.getAccountType() == AccountType.BOT) {
                 botOwner = jda.asBot().getApplicationInfo().complete().getOwner().getIdLong();
@@ -67,6 +65,11 @@ public class JDACommandManager extends CommandManager<
                 botOwner = jda.getSelfUser().getIdLong();
             }
         }
+    }
+
+    private long getBotOwnerId() {
+        // Just in case initialization on ReadyEvent fails.
+        initializeBotOwner();
         return botOwner;
     }
 
@@ -126,6 +129,7 @@ public class JDACommandManager extends CommandManager<
 
     @Override
     public void registerCommand(BaseCommand command) {
+        command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String commandName = entry.getKey().toLowerCase();
             JDARootCommand cmd = (JDARootCommand) entry.getValue();
