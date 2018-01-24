@@ -2,8 +2,10 @@ package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import com.google.common.collect.Maps;
+import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,7 @@ public class JDACommandManager extends CommandManager<
     protected JDACommandCompletions completions;
     protected JDACommandContexts contexts;
     protected JDALocales locales;
+    private long botOwner = 0L;
 
     protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
@@ -47,6 +50,24 @@ public class JDACommandManager extends CommandManager<
         this.configProvider = configProvider;
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
+
+        getCommandConditions().addCondition("owneronly", context -> {
+            if (context.getIssuer().getEvent().getAuthor().getIdLong() != getBotOwnerId()) {
+                throw new ConditionFailedException("Only the bot owner can use this command."); // TODO: MessageKey
+            }
+        });
+    }
+
+    private long getBotOwnerId() {
+        // Lazy initialization is required because a forced RestAction on startup is bad
+        if (botOwner == 0L) {
+            if (jda.getAccountType() == AccountType.BOT) {
+                botOwner = jda.asBot().getApplicationInfo().complete().getOwner().getIdLong();
+            } else {
+                botOwner = jda.getSelfUser().getIdLong();
+            }
+        }
+        return botOwner;
     }
 
 
