@@ -43,7 +43,7 @@ interface RootCommand {
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
             RegisteredCommand registeredCommand = e.getValue();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHALL)) {
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
                 return;
             }
             Set<RegisteredCommand> registered = subCommands.get(key);

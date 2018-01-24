@@ -72,7 +72,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
-        if (BaseCommand.CATCHALL.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
+        if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
         }
         this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");

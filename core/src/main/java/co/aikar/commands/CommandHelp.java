@@ -53,7 +53,7 @@ public class CommandHelp {
         Set<RegisteredCommand> seen = new HashSet<>();
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHALL)){
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)){
                 return;
             }
 

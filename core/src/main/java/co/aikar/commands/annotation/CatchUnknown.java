@@ -26,9 +26,6 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * @deprecated Use {@link CatchUnknown instead, which is more accurately named}
- */
-@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CatchAll {}
+public @interface CatchUnknown {
+}
