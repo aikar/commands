@@ -32,7 +32,7 @@ public class InvalidCommandArgument extends Exception {
     final String[] replacements;
 
     public InvalidCommandArgument() {
-        this((String) null, true);
+        this(null, true);
     }
     public InvalidCommandArgument(boolean showSyntax) {
         this(null, showSyntax);

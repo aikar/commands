@@ -35,8 +35,13 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -95,6 +100,15 @@ public class BukkitCommandManager extends CommandManager<
             }
             Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
         }, 5, 5);
+
+        registerDependency(plugin.getClass(), plugin);
+        registerDependency(Plugin.class, plugin);
+        registerDependency(JavaPlugin.class, plugin);
+        registerDependency(PluginManager.class, Bukkit.getPluginManager());
+        registerDependency(Server.class, Bukkit.getServer());
+        registerDependency(BukkitScheduler.class, Bukkit.getScheduler());
+        registerDependency(ScoreboardManager.class, Bukkit.getScoreboardManager());
+        registerDependency(ItemFactory.class, Bukkit.getItemFactory());
     }
 
     @NotNull private CommandMap hookCommandMap() {
@@ -261,7 +275,7 @@ public class BukkitCommandManager extends CommandManager<
             if (nmsPlayer != null) {
                 Field localeField = nmsPlayer.getClass().getField("locale");
                 Object localeString = localeField.get(nmsPlayer);
-                if (localeString != null && localeString instanceof String) {
+                if (localeString instanceof String) {
                     String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
                     Locale locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
                     Locale prev = issuersLocale.put(player.getUniqueId(), locale);
