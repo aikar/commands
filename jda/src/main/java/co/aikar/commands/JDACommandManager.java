@@ -226,7 +226,14 @@ public class JDACommandManager extends CommandManager<
             }
         }
 
-        if (!msg.startsWith(config.getStartsWith())) {
+        boolean foundPrefix = false;
+        for (String prefix : config.getCommandPrefixes()) {
+            if (msg.startsWith(prefix)) {
+                foundPrefix = true;
+                break;
+            }
+        }
+        if (!foundPrefix) {
             return;
         }
 
