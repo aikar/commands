@@ -2,19 +2,18 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class JDACommandConfig implements CommandConfig {
-    protected @NotNull String startsWith = "!";
+    protected @NotNull List<String> commandPrefixes = new CopyOnWriteArrayList<>(new String[] {"!"});
 
     public JDACommandConfig() {
 
     }
 
     @NotNull
-    public String getStartsWith() {
-        return startsWith;
-    }
-
-    public void setStartsWith(@NotNull String startsWith) {
-        this.startsWith = startsWith;
+    public List<String> getCommandPrefixes() {
+        return commandPrefixes;
     }
 }
