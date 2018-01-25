@@ -4,6 +4,7 @@ import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import com.google.common.collect.Maps;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,24 @@ public class JDACommandManager extends CommandManager<
         getCommandConditions().addCondition("owneronly", context -> {
             if (context.getIssuer().getEvent().getAuthor().getIdLong() != getBotOwnerId()) {
                 throw new ConditionFailedException("Only the bot owner can use this command."); // TODO: MessageKey
+            }
+        });
+
+        getCommandConditions().addCondition("guildonly", context -> {
+            if (context.getIssuer().getEvent().getChannelType() != ChannelType.TEXT) {
+                throw new ConditionFailedException("This command must be used in guild chat."); // TODO: MessageKey
+            }
+        });
+
+        getCommandConditions().addCondition("privateonly", context -> {
+            if (context.getIssuer().getEvent().getChannelType() != ChannelType.PRIVATE) {
+                throw new ConditionFailedException("This command must be used in private chat."); // TODO: MessageKey
+            }
+        });
+
+        getCommandConditions().addCondition("grouponly", context -> {
+            if (context.getIssuer().getEvent().getChannelType() != ChannelType.GROUP) {
+                throw new ConditionFailedException("This command must be used in group chat."); // TODO: MessageKey
             }
         });
     }
