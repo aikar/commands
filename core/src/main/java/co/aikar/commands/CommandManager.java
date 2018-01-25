@@ -413,31 +413,38 @@ public abstract class CommandManager <
 
     /**
      * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}
-     * into all fields that are marked with {@link Dependency}.
+     * into all fields of the class and its superclasses that are marked with {@link Dependency}.
      *
      * @param baseCommand the instance which fields should be filled
      */
-    void injectDependencies(BaseCommand baseCommand){
-        for (Field field : baseCommand.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(Dependency.class)) {
-                Dependency dependency = field.getAnnotation(Dependency.class);
-                String key = (key = dependency.value()).equals("") ? field.getType().getName() : key;
-                Object object = dependencies.row(field.getType()).get(key);
-                if(object == null){
-                    throw new UnresolvedDependencyException("Could not find a registered instance of " +
-                            field.getType().getName() + " with key " + key + " for field " + field.getName() +
-                            " in class " + baseCommand.getClass().getName());
-                }
+    void injectDependencies(BaseCommand baseCommand) {
+        Class clazz = baseCommand.getClass();
+        do {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(Dependency.class)) {
+                    Dependency dependency = field.getAnnotation(Dependency.class);
+                    String key = (key = dependency.value()).equals("") ? field.getType().getName() : key;
+                    Object object = dependencies.row(field.getType()).get(key);
+                    if (object == null) {
+                        throw new UnresolvedDependencyException("Could not find a registered instance of " +
+                                field.getType().getName() + " with key " + key + " for field " + field.getName() +
+                                " in class " + baseCommand.getClass().getName());
+                    }
 
-                try {
-                    field.setAccessible(true);
-                    field.set(baseCommand, object);
-                    field.setAccessible(false);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?
+                    try {
+                        boolean accessible = field.isAccessible();
+                        if (!accessible) {
+                            field.setAccessible(true);
+                        }
+                        field.set(baseCommand, object);
+                        field.setAccessible(accessible);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?
+                    }
                 }
             }
-        }
+            clazz = clazz.getSuperclass();
+        } while (!clazz.equals(BaseCommand.class));
     }
 
     /**

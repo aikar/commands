@@ -70,7 +70,6 @@ public class SpongeCommandManager extends CommandManager<
 
         //TODO more default dependencies for sponge
         registerDependency(plugin.getClass(), plugin);
-        registerDependency(PluginContainer.class, plugin);
     }
 
     public PluginContainer getPlugin() {
