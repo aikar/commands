@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Values;
@@ -36,6 +37,7 @@ import co.aikar.commands.contexts.OnlinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 @CommandAlias("acf|somecommand|sc|somcom")
 public class SomeCommand extends BaseCommand {
@@ -44,6 +46,29 @@ public class SomeCommand extends BaseCommand {
         // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this command that
         // has a SomeObject parameter
         setContextFlags(SomeObject.class, "foo=bar");
+    }
+
+    // marking fields with @Dependency allows you to define  instances that should be easily accessible to commands
+    @Dependency
+    private SomeHandler someHandler;
+    // some classes like your plugin are automatically registered for injection
+    @Dependency
+    private Plugin plugin;
+    // you can even use named injections to have multiple instances of the same type
+    @Dependency("test")
+    private String testString;
+    @Dependency("test2")
+    private String testString2;
+    @Dependency
+    private String testString3;
+
+    @Subcommand("testDI")
+    public void onTestDI(CommandSender sender){
+        sender.sendMessage("The value for the injected SomeHandler is " + someHandler.getSomeField());
+        sender.sendMessage("Plugin is null? " + (plugin == null));
+        sender.sendMessage("Test String 1: " + testString);
+        sender.sendMessage("Test String 2: " + testString2);
+        sender.sendMessage("Test String 3: " + testString3);
     }
 
     // %testcmd was defined in ACFExample plugin and defined as "test4|foobar|barbaz"
