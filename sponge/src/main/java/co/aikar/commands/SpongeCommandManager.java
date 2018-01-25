@@ -67,6 +67,9 @@ public class SpongeCommandManager extends CommandManager<
         this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
         this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));
         getLocales(); // auto load locales
+
+        //TODO more default dependencies for sponge
+        registerDependency(plugin.getClass(), plugin);
     }
 
     public PluginContainer getPlugin() {

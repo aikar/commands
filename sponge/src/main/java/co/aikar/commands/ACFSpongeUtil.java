@@ -74,7 +74,7 @@ public class ACFSpongeUtil {
     }
 
     public static List<Player> matchPlayer(String partialName) {
-        List<Player> matchedPlayers = new ArrayList<Player>();
+        List<Player> matchedPlayers = new ArrayList<>();
 
         for (Player iterPlayer : Sponge.getServer().getOnlinePlayers()) {
             String iterPlayerName = iterPlayer.getName();

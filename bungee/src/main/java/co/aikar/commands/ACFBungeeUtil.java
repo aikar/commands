@@ -79,7 +79,7 @@ public class ACFBungeeUtil {
     public static final char COLOR_CHAR = '\u00A7';
 
     public static String getLastColors(String input) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int length = input.length();
 
         // Search backwards from the end as it is faster
@@ -90,7 +90,7 @@ public class ACFBungeeUtil {
                 ChatColor color = ChatColor.getByChar(c);
 
                 if (color != null) {
-                    result = color.toString() + result;
+                    result.insert(0, color.toString());
 
                     // Once we find a color or reset we can stop searching
                     if (isChatColorAColor(color) || color.equals(ChatColor.RESET)) {
@@ -99,7 +99,7 @@ public class ACFBungeeUtil {
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static boolean isChatColorAColor(ChatColor chatColor) {

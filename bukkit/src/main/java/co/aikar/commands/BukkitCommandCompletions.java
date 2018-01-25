@@ -74,7 +74,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
 
             Player senderPlayer = sender instanceof Player ? (Player) sender : null;
 
-            ArrayList<String> matchedPlayers = new ArrayList<String>();
+            ArrayList<String> matchedPlayers = new ArrayList<>();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String name = player.getName();
                 if ((senderPlayer == null || senderPlayer.canSee(player)) && StringUtil.startsWithIgnoreCase(name, c.getInput())) {
