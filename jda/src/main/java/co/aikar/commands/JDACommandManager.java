@@ -226,18 +226,18 @@ public class JDACommandManager extends CommandManager<
             }
         }
 
-        boolean foundPrefix = false;
+        String prefixFound = null;
         for (String prefix : config.getCommandPrefixes()) {
             if (msg.startsWith(prefix)) {
-                foundPrefix = true;
+                prefixFound = prefix;
                 break;
             }
         }
-        if (!foundPrefix) {
+        if (prefixFound == null) {
             return;
         }
 
-        String[] args = ACFPatterns.SPACE.split(msg.substring(1), -1);
+        String[] args = ACFPatterns.SPACE.split(msg.substring(prefixFound.length()), -1);
         if (args.length == 0) {
             return;
         }
