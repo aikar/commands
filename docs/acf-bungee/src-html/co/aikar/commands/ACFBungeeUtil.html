@@ -87,7 +87,7 @@
 <span class="sourceLineNo">079</span>    public static final char COLOR_CHAR = '\u00A7';<a name="line.79"></a>
 <span class="sourceLineNo">080</span><a name="line.80"></a>
 <span class="sourceLineNo">081</span>    public static String getLastColors(String input) {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        String result = "";<a name="line.82"></a>
+<span class="sourceLineNo">082</span>        StringBuilder result = new StringBuilder();<a name="line.82"></a>
 <span class="sourceLineNo">083</span>        int length = input.length();<a name="line.83"></a>
 <span class="sourceLineNo">084</span><a name="line.84"></a>
 <span class="sourceLineNo">085</span>        // Search backwards from the end as it is faster<a name="line.85"></a>
@@ -98,7 +98,7 @@
 <span class="sourceLineNo">090</span>                ChatColor color = ChatColor.getByChar(c);<a name="line.90"></a>
 <span class="sourceLineNo">091</span><a name="line.91"></a>
 <span class="sourceLineNo">092</span>                if (color != null) {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                    result = color.toString() + result;<a name="line.93"></a>
+<span class="sourceLineNo">093</span>                    result.insert(0, color.toString());<a name="line.93"></a>
 <span class="sourceLineNo">094</span><a name="line.94"></a>
 <span class="sourceLineNo">095</span>                    // Once we find a color or reset we can stop searching<a name="line.95"></a>
 <span class="sourceLineNo">096</span>                    if (isChatColorAColor(color) || color.equals(ChatColor.RESET)) {<a name="line.96"></a>
@@ -107,7 +107,7 @@
 <span class="sourceLineNo">099</span>                }<a name="line.99"></a>
 <span class="sourceLineNo">100</span>            }<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        }<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        return result;<a name="line.102"></a>
+<span class="sourceLineNo">102</span>        return result.toString();<a name="line.102"></a>
 <span class="sourceLineNo">103</span>    }<a name="line.103"></a>
 <span class="sourceLineNo">104</span><a name="line.104"></a>
 <span class="sourceLineNo">105</span>    public static boolean isChatColorAColor(ChatColor chatColor) {<a name="line.105"></a>

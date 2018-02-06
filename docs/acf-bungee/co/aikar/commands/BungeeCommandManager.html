@@ -159,7 +159,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>conditions, defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
+<code>conditions, defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, dependencies, formatters, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
 </ul>
 </li>
 </ul>
@@ -281,7 +281,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandConditions, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getIssuerLocale, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, usePerIssuerLocale, usingPerIssuerLocale</code></li>
+<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandConditions, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getIssuerLocale, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, registerDependency, registerDependency, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, usePerIssuerLocale, usingPerIssuerLocale</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -380,7 +380,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>getPlugin</h4>
-<pre>public&nbsp;net.md_5.bungee.api.plugin.Plugin&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.63">getPlugin</a>()</pre>
+<pre>public&nbsp;net.md_5.bungee.api.plugin.Plugin&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.67">getPlugin</a>()</pre>
 </li>
 </ul>
 <a name="getCommandContexts--">
@@ -389,7 +389,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandContexts</h4>
-<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.68">getCommandContexts</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.72">getCommandContexts</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandContexts</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -402,7 +402,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandCompletions</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;<a href="../../../co/aikar/commands/BungeeCommandCompletionContext.html" title="class in co.aikar.commands">BungeeCommandCompletionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.76">getCommandCompletions</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;<a href="../../../co/aikar/commands/BungeeCommandCompletionContext.html" title="class in co.aikar.commands">BungeeCommandCompletionContext</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.80">getCommandCompletions</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandCompletions</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -415,7 +415,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>getLocales</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeLocales.html" title="class in co.aikar.commands">BungeeLocales</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.84">getLocales</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeLocales.html" title="class in co.aikar.commands">BungeeLocales</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.88">getLocales</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getLocales</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -428,7 +428,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>registerCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.94">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.98">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>registerCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -441,7 +441,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.107">unregisterCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.111">unregisterCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 </li>
 </ul>
 <a name="unregisterCommand-co.aikar.commands.BungeeRootCommand-">
@@ -450,7 +450,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.120">unregisterCommand</a>(<a href="../../../co/aikar/commands/BungeeRootCommand.html" title="class in co.aikar.commands">BungeeRootCommand</a>&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.124">unregisterCommand</a>(<a href="../../../co/aikar/commands/BungeeRootCommand.html" title="class in co.aikar.commands">BungeeRootCommand</a>&nbsp;command)</pre>
 </li>
 </ul>
 <a name="unregisterCommands--">
@@ -459,7 +459,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommands</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.124">unregisterCommands</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.128">unregisterCommands</a>()</pre>
 </li>
 </ul>
 <a name="hasRegisteredCommands--">
@@ -468,7 +468,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>hasRegisteredCommands</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.131">hasRegisteredCommands</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.135">hasRegisteredCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasRegisteredCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -481,7 +481,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>isCommandIssuer</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.136">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;aClass)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.140">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;aClass)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>isCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -494,7 +494,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandIssuer</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.141">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.145">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -507,7 +507,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>createRootCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.149">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
+<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.153">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>createRootCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a href="../../../co/aikar/commands/BungeeCommandIssuer.html" title="class in co.aikar.commands">BungeeCommandIssuer</a>,net.md_5.bungee.api.ChatColor,<a href="../../../co/aikar/commands/BungeeMessageFormatter.html" title="class in co.aikar.commands">BungeeMessageFormatter</a>,<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&gt;</code></dd>
@@ -520,7 +520,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>createCommandContext</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.154">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeCommandExecutionContext.html" title="class in co.aikar.commands">BungeeCommandExecutionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.158">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html?is-external=true" title="class or interface in java.lang.reflect">Parameter</a>&nbsp;parameter,
                                                           co.aikar.commands.CommandIssuer&nbsp;sender,
                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;args,
@@ -538,7 +538,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>createCompletionContext</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.159">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.163">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                                           co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;input,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;config,
@@ -555,7 +555,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>createRegisteredCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.164">createRegisteredCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
+<pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.168">createRegisteredCommand</a>(co.aikar.commands.BaseCommand&nbsp;command,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmdName,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html?is-external=true" title="class or interface in java.lang.reflect">Method</a>&nbsp;method,
                                                                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;prefSubCommand)</pre>
@@ -571,7 +571,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockList">
 <li class="blockList">
 <h4>createConditionContext</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.169">createConditionContext</a>(co.aikar.commands.CommandIssuer&nbsp;issuer,
+<pre>public&nbsp;<a href="../../../co/aikar/commands/BungeeConditionContext.html" title="class in co.aikar.commands">BungeeConditionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.173">createConditionContext</a>(co.aikar.commands.CommandIssuer&nbsp;issuer,
                                                      <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;config)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -585,7 +585,7 @@ extends co.aikar.commands.CommandManager&lt;net.md_5.bungee.api.CommandSender,<a
 <ul class="blockListLast">
 <li class="blockList">
 <h4>log</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.174">log</a>(co.aikar.commands.LogLevel&nbsp;level,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeCommandManager.html#line.178">log</a>(co.aikar.commands.LogLevel&nbsp;level,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;throwable)</pre>
 <dl>

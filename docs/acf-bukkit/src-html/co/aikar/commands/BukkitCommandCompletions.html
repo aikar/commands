@@ -82,7 +82,7 @@
 <span class="sourceLineNo">074</span><a name="line.74"></a>
 <span class="sourceLineNo">075</span>            Player senderPlayer = sender instanceof Player ? (Player) sender : null;<a name="line.75"></a>
 <span class="sourceLineNo">076</span><a name="line.76"></a>
-<span class="sourceLineNo">077</span>            ArrayList&lt;String&gt; matchedPlayers = new ArrayList&lt;String&gt;();<a name="line.77"></a>
+<span class="sourceLineNo">077</span>            ArrayList&lt;String&gt; matchedPlayers = new ArrayList&lt;&gt;();<a name="line.77"></a>
 <span class="sourceLineNo">078</span>            for (Player player : Bukkit.getOnlinePlayers()) {<a name="line.78"></a>
 <span class="sourceLineNo">079</span>                String name = player.getName();<a name="line.79"></a>
 <span class="sourceLineNo">080</span>                if ((senderPlayer == null || senderPlayer.canSee(player)) &amp;&amp; StringUtil.startsWithIgnoreCase(name, c.getInput())) {<a name="line.80"></a>
