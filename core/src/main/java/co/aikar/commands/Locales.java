@@ -118,9 +118,14 @@ public class Locales {
     }
 
     public void addMessageBundle(String bundleName, Locale locale) {
-        if (!loadedBundles.containsEntry(bundleName, locale)) {
-            loadedBundles.put(bundleName, locale);
-            this.localeManager.addMessageBundle(bundleName, locale);
+        this.addMessageBundle(this.getClass().getClassLoader(), bundleName, locale);
+    }
+
+    public void addMessageBundle(ClassLoader classLoader, String bundleName, Locale locale) {
+        if(!this.loadedBundles.containsEntry(bundleName, locale)) {
+            if(this.localeManager.addMessageBundle(classLoader, bundleName, locale)) {
+                this.loadedBundles.put(bundleName, locale);
+            }
         }
     }
 

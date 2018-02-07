@@ -48,6 +48,14 @@ public class BukkitLocales extends Locales {
         addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
     }
 
+    @Override
+    public void addMessageBundle(String bundleName, Locale locale) {
+        // Load our bundles from the ClassLoader which ACF resides in
+        super.addMessageBundle(bundleName, locale);
+        // Attempt to load our bundles from the ClassLoader which the managers plugin resides in
+        this.addMessageBundle(this.manager.getPlugin().getClass().getClassLoader(), bundleName, locale);
+    }
+
     /**
      * Loads the given file
      * @param file
