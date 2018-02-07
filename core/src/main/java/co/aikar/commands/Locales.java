@@ -77,7 +77,7 @@ public class Locales {
 
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
-    private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
+    private final Map<ClassLoader, SetMultimap<String, Locale>> loadedBundles = new HashMap<>();
     private final List<ClassLoader> registeredClassLoaders = new ArrayList<>();
 
     public Locales(CommandManager manager) {
@@ -105,9 +105,12 @@ public class Locales {
         //noinspection unchecked
         Set<Locale> supportedLanguages = manager.getSupportedLanguages();
         for (Locale locale : supportedLanguages) {
-            for (String bundleName : Sets.newHashSet(loadedBundles.keys())) {
-                addMessageBundle(bundleName, locale);
+            for(SetMultimap<String, Locale> localeData: this.loadedBundles.values()) {
+                for (String bundleName : Sets.newHashSet(localeData.keys())) {
+                    addMessageBundle(bundleName, locale);
+                }
             }
+
         }
     }
 
@@ -121,24 +124,23 @@ public class Locales {
         }
     }
 
-    public void addMessageBundle(String bundleName, Locale locale) {
-        this.addMessageBundle(this.getClass().getClassLoader(), bundleName, locale);
-
+    public boolean addMessageBundle(String bundleName, Locale locale) {
+        boolean found = false;
         for(ClassLoader classLoader: this.registeredClassLoaders) {
-            System.out.println("Searching for " + bundleName + "(" + locale + ") in " + classLoader);
             if(this.addMessageBundle(classLoader, bundleName, locale)) {
-                System.out.println("Added " + bundleName + "(" + locale + ") in " + classLoader);
-                this.loadedBundles.put(bundleName, locale);
-                break;
+                found = true;
             }
         }
 
+        return found;
     }
 
     public boolean addMessageBundle(ClassLoader classLoader, String bundleName, Locale locale) {
-        if(!this.loadedBundles.containsEntry(bundleName, locale)) {
+        SetMultimap<String, Locale> classLoadersLocales = this.loadedBundles.getOrDefault(classLoader, HashMultimap.create());
+        if(!classLoadersLocales.containsEntry(bundleName, locale)) {
             if(this.localeManager.addMessageBundle(classLoader, bundleName, locale)) {
-                this.loadedBundles.put(bundleName, locale);
+                classLoadersLocales.put(bundleName, locale);
+                this.loadedBundles.put(classLoader, classLoadersLocales);
                 return true;
             }
         }
