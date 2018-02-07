@@ -6,6 +6,7 @@ public class SpongeLocales extends Locales{
     public SpongeLocales(SpongeCommandManager manager) {
         super(manager);
         this.manager = manager;
+        this.addBundleClassLoader(this.manager.getPlugin().getClass().getClassLoader());
     }
 
     @Override
