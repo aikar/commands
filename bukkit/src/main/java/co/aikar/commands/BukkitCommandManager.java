@@ -79,6 +79,7 @@ public class BukkitCommandManager extends CommandManager<
     MCTiming commandTiming;
     protected BukkitLocales locales;
     private boolean cantReadLocale = false;
+    protected boolean autoDetectFromClient = true;
     protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     @SuppressWarnings("JavaReflectionMemberAccess")
@@ -95,7 +96,7 @@ public class BukkitCommandManager extends CommandManager<
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
         getLocales(); // auto load locales
         this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            if (cantReadLocale) {
+            if (this.cantReadLocale || !this.autoDetectFromClient) {
                 return;
             }
             Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
@@ -358,5 +359,12 @@ public class BukkitCommandManager extends CommandManager<
             }
         }
         return super.getIssuerLocale(issuer);
+    }
+
+    public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {
+        boolean old = this.usePerIssuerLocale;
+        this.usePerIssuerLocale = usePerIssuerLocale;
+        this.autoDetectFromClient = autoDetectFromClient;
+        return old;
     }
 }
