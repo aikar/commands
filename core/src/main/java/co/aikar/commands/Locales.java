@@ -31,7 +31,9 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -75,11 +77,13 @@ public class Locales {
 
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
-    private final SetMultimap<String, Locale> loadedBundles = HashMultimap.create();
+    private final Map<ClassLoader, SetMultimap<String, Locale>> loadedBundles = new HashMap<>();
+    private final List<ClassLoader> registeredClassLoaders = new ArrayList<>();
 
     public Locales(CommandManager manager) {
         this.manager = manager;
         this.localeManager = LocaleManager.create(manager::getIssuerLocale);
+        this.addBundleClassLoader(this.getClass().getClassLoader());
     }
 
     public void loadLanguages() {
@@ -101,9 +105,12 @@ public class Locales {
         //noinspection unchecked
         Set<Locale> supportedLanguages = manager.getSupportedLanguages();
         for (Locale locale : supportedLanguages) {
-            for (String bundleName : Sets.newHashSet(loadedBundles.keys())) {
-                addMessageBundle(bundleName, locale);
+            for(SetMultimap<String, Locale> localeData: this.loadedBundles.values()) {
+                for (String bundleName : Sets.newHashSet(localeData.keys())) {
+                    addMessageBundle(bundleName, locale);
+                }
             }
+
         }
     }
 
@@ -117,11 +124,28 @@ public class Locales {
         }
     }
 
-    public void addMessageBundle(String bundleName, Locale locale) {
-        if (!loadedBundles.containsEntry(bundleName, locale)) {
-            loadedBundles.put(bundleName, locale);
-            this.localeManager.addMessageBundle(bundleName, locale);
+    public boolean addMessageBundle(String bundleName, Locale locale) {
+        boolean found = false;
+        for(ClassLoader classLoader: this.registeredClassLoaders) {
+            if(this.addMessageBundle(classLoader, bundleName, locale)) {
+                found = true;
+            }
         }
+
+        return found;
+    }
+
+    public boolean addMessageBundle(ClassLoader classLoader, String bundleName, Locale locale) {
+        SetMultimap<String, Locale> classLoadersLocales = this.loadedBundles.getOrDefault(classLoader, HashMultimap.create());
+        if(!classLoadersLocales.containsEntry(bundleName, locale)) {
+            if(this.localeManager.addMessageBundle(classLoader, bundleName, locale)) {
+                classLoadersLocales.put(bundleName, locale);
+                this.loadedBundles.put(classLoader, classLoadersLocales);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void addMessageStrings(Locale locale, @NotNull Map<String, String> messages) {
@@ -129,6 +153,7 @@ public class Locales {
         messages.forEach((key, value) -> map.put(MessageKey.of(key), value));
         addMessages(locale, map);
     }
+
     public void addMessages(Locale locale, @NotNull Map<MessageKey, String> messages) {
         this.localeManager.addMessages(locale, messages);
     }
@@ -166,5 +191,10 @@ public class Locales {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    public boolean addBundleClassLoader(ClassLoader classLoader) {
+        return !this.registeredClassLoaders.contains(classLoader) && this.registeredClassLoaders.add(classLoader);
+
     }
 }

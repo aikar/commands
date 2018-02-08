@@ -7,6 +7,7 @@ public class BungeeLocales extends Locales {
         super(manager);
 
         this.manager = manager;
+        this.addBundleClassLoader(this.manager.getPlugin().getClass().getClassLoader());
     }
 
     @Override

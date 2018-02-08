@@ -39,6 +39,7 @@ public class BukkitLocales extends Locales {
     public BukkitLocales(BukkitCommandManager manager) {
         super(manager);
         this.manager = manager;
+        this.addBundleClassLoader(this.manager.getPlugin().getClass().getClassLoader());
     }
 
     @Override
