@@ -73,11 +73,6 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     }
 
     public CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
-        // Since you don't have to specify the @ with the id anywhere else
-        if(!id.startsWith("@")) {
-            id = "@" + id;
-        }
-
         // get completion with specified id
         CommandCompletionHandler completion = completionMap.get(id);
 
