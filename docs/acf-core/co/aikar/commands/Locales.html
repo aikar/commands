@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -108,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/Locales.html#line.41">Locales</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/Locales.html#line.43">Locales</a>
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
@@ -285,54 +285,64 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addBundleClassLoader-java.lang.ClassLoader-">addBundleClassLoader</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang">ClassLoader</a>&nbsp;classLoader)</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessage-java.util.Locale-co.aikar.locales.MessageKey-java.lang.String-">addMessage</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
           co.aikar.locales.MessageKey&nbsp;key,
           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>&nbsp;</td>
 </tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessageBundle-java.lang.ClassLoader-java.lang.String-java.util.Locale-">addMessageBundle</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang">ClassLoader</a>&nbsp;classLoader,
+                <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;bundleName,
+                <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessageBundle-java.lang.String-java.util.Locale-">addMessageBundle</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;bundleName,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessageBundles-java.lang.String...-">addMessageBundles</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;bundleNames)</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessages-java.util.Locale-java.util.Map-">addMessages</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
            @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;co.aikar.locales.MessageKey,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;messages)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#addMessageStrings-java.util.Locale-java.util.Map-">addMessageStrings</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
                  @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;messages)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#getDefaultLocale--">getDefaultLocale</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#getMessage-co.aikar.commands.CommandIssuer-co.aikar.locales.MessageKeyProvider-">getMessage</a></span>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
           co.aikar.locales.MessageKeyProvider&nbsp;key)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#loadLanguages--">loadLanguages</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#loadMissingBundles--">loadMissingBundles</a></span>()</code>
 <div class="block">Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#replaceI18NStrings-java.lang.String-">replaceI18NStrings</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/Locales.html#setDefaultLocale-java.util.Locale-">setDefaultLocale</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>&nbsp;</td>
 </tr>
@@ -364,7 +374,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>ENGLISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.43">ENGLISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.45">ENGLISH</a></pre>
 </li>
 </ul>
 <a name="GERMAN">
@@ -373,7 +383,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>GERMAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.44">GERMAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.46">GERMAN</a></pre>
 </li>
 </ul>
 <a name="FRENCH">
@@ -382,7 +392,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>FRENCH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.45">FRENCH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.47">FRENCH</a></pre>
 </li>
 </ul>
 <a name="JAPANESE">
@@ -391,7 +401,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>JAPANESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.46">JAPANESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.48">JAPANESE</a></pre>
 </li>
 </ul>
 <a name="ITALIAN">
@@ -400,7 +410,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>ITALIAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.47">ITALIAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.49">ITALIAN</a></pre>
 </li>
 </ul>
 <a name="KOREAN">
@@ -409,7 +419,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>KOREAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.48">KOREAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.50">KOREAN</a></pre>
 </li>
 </ul>
 <a name="CHINESE">
@@ -418,7 +428,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>CHINESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.49">CHINESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.51">CHINESE</a></pre>
 </li>
 </ul>
 <a name="SIMPLIFIED_CHINESE">
@@ -427,7 +437,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>SIMPLIFIED_CHINESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.50">SIMPLIFIED_CHINESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.52">SIMPLIFIED_CHINESE</a></pre>
 </li>
 </ul>
 <a name="TRADITIONAL_CHINESE">
@@ -436,7 +446,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>TRADITIONAL_CHINESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.51">TRADITIONAL_CHINESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.53">TRADITIONAL_CHINESE</a></pre>
 </li>
 </ul>
 <a name="SPANISH">
@@ -445,7 +455,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>SPANISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.52">SPANISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.54">SPANISH</a></pre>
 </li>
 </ul>
 <a name="DUTCH">
@@ -454,7 +464,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>DUTCH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.53">DUTCH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.55">DUTCH</a></pre>
 </li>
 </ul>
 <a name="DANISH">
@@ -463,7 +473,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>DANISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.54">DANISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.56">DANISH</a></pre>
 </li>
 </ul>
 <a name="CZECH">
@@ -472,7 +482,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>CZECH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.55">CZECH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.57">CZECH</a></pre>
 </li>
 </ul>
 <a name="GREEK">
@@ -481,7 +491,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>GREEK</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.56">GREEK</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.58">GREEK</a></pre>
 </li>
 </ul>
 <a name="LATIN">
@@ -490,7 +500,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>LATIN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.57">LATIN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.59">LATIN</a></pre>
 </li>
 </ul>
 <a name="BULGARIAN">
@@ -499,7 +509,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>BULGARIAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.58">BULGARIAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.60">BULGARIAN</a></pre>
 </li>
 </ul>
 <a name="AFRIKAANS">
@@ -508,7 +518,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>AFRIKAANS</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.59">AFRIKAANS</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.61">AFRIKAANS</a></pre>
 </li>
 </ul>
 <a name="HINDI">
@@ -517,7 +527,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>HINDI</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.60">HINDI</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.62">HINDI</a></pre>
 </li>
 </ul>
 <a name="HEBREW">
@@ -526,7 +536,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>HEBREW</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.61">HEBREW</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.63">HEBREW</a></pre>
 </li>
 </ul>
 <a name="POLISH">
@@ -535,7 +545,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>POLISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.62">POLISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.64">POLISH</a></pre>
 </li>
 </ul>
 <a name="PORTUGUESE">
@@ -544,7 +554,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>PORTUGUESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.63">PORTUGUESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.65">PORTUGUESE</a></pre>
 </li>
 </ul>
 <a name="FINNISH">
@@ -553,7 +563,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>FINNISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.64">FINNISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.66">FINNISH</a></pre>
 </li>
 </ul>
 <a name="SWEDISH">
@@ -562,7 +572,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>SWEDISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.65">SWEDISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.67">SWEDISH</a></pre>
 </li>
 </ul>
 <a name="RUSSIAN">
@@ -571,7 +581,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>RUSSIAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.66">RUSSIAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.68">RUSSIAN</a></pre>
 </li>
 </ul>
 <a name="ROMANIAN">
@@ -580,7 +590,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>ROMANIAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.67">ROMANIAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.69">ROMANIAN</a></pre>
 </li>
 </ul>
 <a name="VIETNAMESE">
@@ -589,7 +599,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>VIETNAMESE</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.68">VIETNAMESE</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.70">VIETNAMESE</a></pre>
 </li>
 </ul>
 <a name="THAI">
@@ -598,7 +608,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>THAI</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.69">THAI</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.71">THAI</a></pre>
 </li>
 </ul>
 <a name="TURKISH">
@@ -607,7 +617,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>TURKISH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.70">TURKISH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.72">TURKISH</a></pre>
 </li>
 </ul>
 <a name="UKRANIAN">
@@ -616,7 +626,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>UKRANIAN</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.71">UKRANIAN</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.73">UKRANIAN</a></pre>
 </li>
 </ul>
 <a name="ARABIC">
@@ -625,7 +635,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>ARABIC</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.72">ARABIC</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.74">ARABIC</a></pre>
 </li>
 </ul>
 <a name="WELSH">
@@ -634,7 +644,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockListLast">
 <li class="blockList">
 <h4>WELSH</h4>
-<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.73">WELSH</a></pre>
+<pre>public static final&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a> <a href="../../../src-html/co/aikar/commands/Locales.html#line.75">WELSH</a></pre>
 </li>
 </ul>
 </li>
@@ -651,7 +661,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockListLast">
 <li class="blockList">
 <h4>Locales</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.80">Locales</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.83">Locales</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
 </li>
 </ul>
 </li>
@@ -668,7 +678,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>loadLanguages</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.85">loadLanguages</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.89">loadLanguages</a>()</pre>
 </li>
 </ul>
 <a name="getDefaultLocale--">
@@ -677,7 +687,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefaultLocale</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.89">getDefaultLocale</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.93">getDefaultLocale</a>()</pre>
 </li>
 </ul>
 <a name="setDefaultLocale-java.util.Locale-">
@@ -686,7 +696,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>setDefaultLocale</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.93">setDefaultLocale</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.97">setDefaultLocale</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
 </li>
 </ul>
 <a name="loadMissingBundles--">
@@ -695,7 +705,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>loadMissingBundles</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.100">loadMissingBundles</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.104">loadMissingBundles</a>()</pre>
 <div class="block">Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.</div>
 </li>
 </ul>
@@ -705,7 +715,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>addMessageBundles</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.110">addMessageBundles</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;bundleNames)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.117">addMessageBundles</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;bundleNames)</pre>
 </li>
 </ul>
 <a name="addMessageBundle-java.lang.String-java.util.Locale-">
@@ -714,8 +724,19 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>addMessageBundle</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.120">addMessageBundle</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;bundleName,
-                             <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.127">addMessageBundle</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;bundleName,
+                                <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
+</li>
+</ul>
+<a name="addMessageBundle-java.lang.ClassLoader-java.lang.String-java.util.Locale-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addMessageBundle</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.138">addMessageBundle</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang">ClassLoader</a>&nbsp;classLoader,
+                                <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;bundleName,
+                                <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
 </li>
 </ul>
 <a name="addMessageStrings-java.util.Locale-java.util.Map-">
@@ -724,7 +745,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>addMessageStrings</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.127">addMessageStrings</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.151">addMessageStrings</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
                               @NotNull
                               @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;messages)</pre>
 </li>
@@ -735,7 +756,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>addMessages</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.132">addMessages</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.157">addMessages</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
                         @NotNull
                         @NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;co.aikar.locales.MessageKey,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;messages)</pre>
 </li>
@@ -746,7 +767,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>addMessage</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.136">addMessage</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.161">addMessage</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale,
                          co.aikar.locales.MessageKey&nbsp;key,
                          <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
 </li>
@@ -757,17 +778,26 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessage</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.140">getMessage</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.165">getMessage</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                          co.aikar.locales.MessageKeyProvider&nbsp;key)</pre>
 </li>
 </ul>
 <a name="replaceI18NStrings-java.lang.String-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>replaceI18NStrings</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.150">replaceI18NStrings</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.175">replaceI18NStrings</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+</li>
+</ul>
+<a name="addBundleClassLoader-java.lang.ClassLoader-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>addBundleClassLoader</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.196">addBundleClassLoader</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang">ClassLoader</a>&nbsp;classLoader)</pre>
 </li>
 </ul>
 </li>

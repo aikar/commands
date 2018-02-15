@@ -196,7 +196,7 @@ extends co.aikar.commands.Locales</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.Locales</h3>
-<code>addMessage, addMessageBundle, addMessageBundles, addMessages, addMessageStrings, getDefaultLocale, getMessage, loadMissingBundles, replaceI18NStrings, setDefaultLocale</code></li>
+<code>addBundleClassLoader, addMessage, addMessageBundle, addMessageBundle, addMessageBundles, addMessages, addMessageStrings, getDefaultLocale, getMessage, loadMissingBundles, replaceI18NStrings, setDefaultLocale</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -242,7 +242,7 @@ extends co.aikar.commands.Locales</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>loadLanguages</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.45">loadLanguages</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.46">loadLanguages</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>loadLanguages</code>&nbsp;in class&nbsp;<code>co.aikar.commands.Locales</code></dd>
@@ -255,7 +255,7 @@ extends co.aikar.commands.Locales</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>loadYamlLanguageFile</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.59">loadYamlLanguageFile</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;file,
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.60">loadYamlLanguageFile</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;file,
                                     <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)
                              throws <a href="http://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a>,
                                     org.bukkit.configuration.InvalidConfigurationException</pre>
@@ -278,7 +278,7 @@ extends co.aikar.commands.Locales</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>loadYamlLanguageFile</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.73">loadYamlLanguageFile</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;file,
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.74">loadYamlLanguageFile</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;file,
                                     <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)
                              throws <a href="http://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a>,
                                     org.bukkit.configuration.InvalidConfigurationException</pre>
@@ -301,7 +301,7 @@ extends co.aikar.commands.Locales</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>loadLanguage</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.86">loadLanguage</a>(org.bukkit.configuration.file.FileConfiguration&nbsp;config,
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitLocales.html#line.87">loadLanguage</a>(org.bukkit.configuration.file.FileConfiguration&nbsp;config,
                             <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
 <div class="block">Loads every message from the Configuration object. Any nested values will be treated as namespace
  so acf-core:\n\tfoo: bar will be acf-core.foo = bar</div>

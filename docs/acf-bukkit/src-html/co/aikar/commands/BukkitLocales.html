@@ -47,69 +47,70 @@
 <span class="sourceLineNo">039</span>    public BukkitLocales(BukkitCommandManager manager) {<a name="line.39"></a>
 <span class="sourceLineNo">040</span>        super(manager);<a name="line.40"></a>
 <span class="sourceLineNo">041</span>        this.manager = manager;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    }<a name="line.42"></a>
-<span class="sourceLineNo">043</span><a name="line.43"></a>
-<span class="sourceLineNo">044</span>    @Override<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    public void loadLanguages() {<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        super.loadLanguages();<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        String pluginName = "acf-" + manager.plugin.getDescription().getName();<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    }<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>    /**<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     * Loads the given file<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     * @param file<a name="line.53"></a>
-<span class="sourceLineNo">054</span>     * @param locale<a name="line.54"></a>
-<span class="sourceLineNo">055</span>     * @return If any language keys were added<a name="line.55"></a>
-<span class="sourceLineNo">056</span>     * @throws IOException<a name="line.56"></a>
-<span class="sourceLineNo">057</span>     * @throws InvalidConfigurationException<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     */<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    public boolean loadYamlLanguageFile(File file, Locale locale) throws IOException, InvalidConfigurationException {<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        YamlConfiguration yamlConfiguration = new YamlConfiguration();<a name="line.60"></a>
-<span class="sourceLineNo">061</span>        yamlConfiguration.load(file);<a name="line.61"></a>
-<span class="sourceLineNo">062</span>        return loadLanguage(yamlConfiguration, locale);<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    }<a name="line.63"></a>
-<span class="sourceLineNo">064</span><a name="line.64"></a>
-<span class="sourceLineNo">065</span>    /**<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * Loads a file out of the plugins data folder by the given name<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * @param file<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     * @param locale<a name="line.68"></a>
-<span class="sourceLineNo">069</span>     * @return If any language keys were added<a name="line.69"></a>
-<span class="sourceLineNo">070</span>     * @throws IOException<a name="line.70"></a>
-<span class="sourceLineNo">071</span>     * @throws InvalidConfigurationException<a name="line.71"></a>
-<span class="sourceLineNo">072</span>     */<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    public boolean loadYamlLanguageFile(String file, Locale locale) throws IOException, InvalidConfigurationException {<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        YamlConfiguration yamlConfiguration = new YamlConfiguration();<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        yamlConfiguration.load(new File(this.manager.plugin.getDataFolder(), file));<a name="line.75"></a>
-<span class="sourceLineNo">076</span>        return loadLanguage(yamlConfiguration, locale);<a name="line.76"></a>
-<span class="sourceLineNo">077</span>    }<a name="line.77"></a>
-<span class="sourceLineNo">078</span><a name="line.78"></a>
-<span class="sourceLineNo">079</span>    /**<a name="line.79"></a>
-<span class="sourceLineNo">080</span>     * Loads every message from the Configuration object. Any nested values will be treated as namespace<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     * so acf-core:\n\tfoo: bar will be acf-core.foo = bar<a name="line.81"></a>
-<span class="sourceLineNo">082</span>     * @param config<a name="line.82"></a>
-<span class="sourceLineNo">083</span>     * @param locale<a name="line.83"></a>
-<span class="sourceLineNo">084</span>     * @return If any language keys were added<a name="line.84"></a>
-<span class="sourceLineNo">085</span>     */<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    public boolean loadLanguage(FileConfiguration config, Locale locale) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        boolean loaded = false;<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        for (String parentKey : config.getKeys(false)) {<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            ConfigurationSection inner = config.getConfigurationSection(parentKey);<a name="line.89"></a>
-<span class="sourceLineNo">090</span>            if (inner == null) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                continue;<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            }<a name="line.92"></a>
-<span class="sourceLineNo">093</span>            for (String key : inner.getKeys(false)) {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                String value = inner.getString(key);<a name="line.94"></a>
-<span class="sourceLineNo">095</span>                if (value != null &amp;&amp; !value.isEmpty()) {<a name="line.95"></a>
-<span class="sourceLineNo">096</span>                    addMessage(locale, MessageKey.of(parentKey + "." + key), value);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>                    loaded = true;<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                }<a name="line.98"></a>
-<span class="sourceLineNo">099</span>            }<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        }<a name="line.100"></a>
-<span class="sourceLineNo">101</span><a name="line.101"></a>
-<span class="sourceLineNo">102</span>        return loaded;<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    }<a name="line.103"></a>
-<span class="sourceLineNo">104</span>}<a name="line.104"></a>
+<span class="sourceLineNo">042</span>        this.addBundleClassLoader(this.manager.getPlugin().getClass().getClassLoader());<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    }<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>    @Override<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    public void loadLanguages() {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        super.loadLanguages();<a name="line.47"></a>
+<span class="sourceLineNo">048</span>        String pluginName = "acf-" + manager.plugin.getDescription().getName();<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    }<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    /**<a name="line.52"></a>
+<span class="sourceLineNo">053</span>     * Loads the given file<a name="line.53"></a>
+<span class="sourceLineNo">054</span>     * @param file<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     * @param locale<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     * @return If any language keys were added<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     * @throws IOException<a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * @throws InvalidConfigurationException<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     */<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public boolean loadYamlLanguageFile(File file, Locale locale) throws IOException, InvalidConfigurationException {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        YamlConfiguration yamlConfiguration = new YamlConfiguration();<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        yamlConfiguration.load(file);<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        return loadLanguage(yamlConfiguration, locale);<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    }<a name="line.64"></a>
+<span class="sourceLineNo">065</span><a name="line.65"></a>
+<span class="sourceLineNo">066</span>    /**<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * Loads a file out of the plugins data folder by the given name<a name="line.67"></a>
+<span class="sourceLineNo">068</span>     * @param file<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     * @param locale<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * @return If any language keys were added<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * @throws IOException<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     * @throws InvalidConfigurationException<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    public boolean loadYamlLanguageFile(String file, Locale locale) throws IOException, InvalidConfigurationException {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        YamlConfiguration yamlConfiguration = new YamlConfiguration();<a name="line.75"></a>
+<span class="sourceLineNo">076</span>        yamlConfiguration.load(new File(this.manager.plugin.getDataFolder(), file));<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        return loadLanguage(yamlConfiguration, locale);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>    /**<a name="line.80"></a>
+<span class="sourceLineNo">081</span>     * Loads every message from the Configuration object. Any nested values will be treated as namespace<a name="line.81"></a>
+<span class="sourceLineNo">082</span>     * so acf-core:\n\tfoo: bar will be acf-core.foo = bar<a name="line.82"></a>
+<span class="sourceLineNo">083</span>     * @param config<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     * @param locale<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     * @return If any language keys were added<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     */<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    public boolean loadLanguage(FileConfiguration config, Locale locale) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        boolean loaded = false;<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        for (String parentKey : config.getKeys(false)) {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            ConfigurationSection inner = config.getConfigurationSection(parentKey);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>            if (inner == null) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                continue;<a name="line.92"></a>
+<span class="sourceLineNo">093</span>            }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            for (String key : inner.getKeys(false)) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                String value = inner.getString(key);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>                if (value != null &amp;&amp; !value.isEmpty()) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                    addMessage(locale, MessageKey.of(parentKey + "." + key), value);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                    loaded = true;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                }<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            }<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        }<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>        return loaded;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
+<span class="sourceLineNo">105</span>}<a name="line.105"></a>
 
 
 
