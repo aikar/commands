@@ -39,15 +39,18 @@ public class JDACommandManager extends CommandManager<
     protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
     public JDACommandManager(JDA jda) {
-        this(jda, null, null, null);
+        this(jda, null);
     }
 
-    public JDACommandManager(JDA jda, CommandConfig defaultConfig, CommandConfigProvider configProvider, CommandPermissionResolver permissionResolver) {
+    public JDACommandManager(JDA jda, JDAOptions options) {
+        if (options == null) {
+            options = new JDAOptions();
+        }
         this.jda = jda;
-        this.permissionResolver = permissionResolver;
+        this.permissionResolver = options.permissionResolver;
         jda.addEventListener(new JDAListener(this));
-        this.defaultConfig = defaultConfig == null ? new JDACommandConfig() : defaultConfig;
-        this.configProvider = configProvider;
+        this.defaultConfig = options.defaultConfig == null ? new JDACommandConfig() : options.defaultConfig;
+        this.configProvider = options.configProvider;
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -93,8 +96,8 @@ public class JDACommandManager extends CommandManager<
     }
 
 
-    public static JDACommandManagerBuilder builder(JDA jda) {
-        return new JDACommandManagerBuilder(jda);
+    public static JDAOptions options() {
+        return new JDAOptions();
     }
 
     public JDA getJDA() {
