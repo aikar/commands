@@ -63,6 +63,7 @@ public class Locales {
     public static final Locale HEBREW = new Locale("he");
     public static final Locale POLISH = new Locale("pl");
     public static final Locale PORTUGUESE = new Locale("pt");
+    public static final Locale PORTUGUESE_BR = new Locale("pt", "BR");
     public static final Locale FINNISH = new Locale("fi");
     public static final Locale SWEDISH = new Locale("sv");
     public static final Locale RUSSIAN = new Locale("ru");
