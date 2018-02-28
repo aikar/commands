@@ -262,6 +262,10 @@ public class BukkitCommandManager extends CommandManager<
         return null;
     }
 
+    public Locale setPlayerLocale(Player player, Locale locale) {
+        return this.setIssuerLocale(player, locale);
+    }
+
     void readPlayerLocale(Player player) {
         if (!player.isOnline() || cantReadLocale) {
             return;

@@ -196,7 +196,7 @@ public abstract class CommandManager <
     public abstract boolean hasRegisteredCommands();
     public abstract boolean isCommandIssuer(Class<?> type);
 
-    // TODO: Change this to I if we make a breaking change
+    // TODO: Change this to IT if we make a breaking change
     public abstract I getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
