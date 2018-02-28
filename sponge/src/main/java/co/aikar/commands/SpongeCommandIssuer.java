@@ -23,11 +23,15 @@
 
 package co.aikar.commands;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
+import org.spongepowered.api.util.Identifiable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.UUID;
 
 public class SpongeCommandIssuer implements CommandIssuer {
 
@@ -49,6 +53,16 @@ public class SpongeCommandIssuer implements CommandIssuer {
         return this.source;
     }
 
+    @Override
+    public @NotNull UUID getUniqueId() {
+        if (isPlayer()) {
+            return ((Identifiable) source).getUniqueId();
+        }
+
+        //generate a unique id based of the name (like for the console command sender)
+        return UUID.nameUUIDFromBytes(source.getName().getBytes(StandardCharsets.UTF_8));
+    }
+
     public Player getPlayer() {
         return isPlayer() ? (Player) source : null;
     }
@@ -67,7 +81,6 @@ public class SpongeCommandIssuer implements CommandIssuer {
     public boolean hasPermission(final String permission) {
         return this.source.hasPermission(permission);
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -26,7 +26,6 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
-import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -52,7 +51,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,7 +78,6 @@ public class BukkitCommandManager extends CommandManager<
     protected BukkitLocales locales;
     private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
-    protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
@@ -93,7 +90,9 @@ public class BukkitCommandManager extends CommandManager<
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
+
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
+
         getLocales(); // auto load locales
         this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (this.cantReadLocale || !this.autoDetectFromClient) {
@@ -339,26 +338,6 @@ public class BukkitCommandManager extends CommandManager<
                 logger.log(logLevel, LogLevel.LOG_PREFIX + line);
             }
         }
-    }
-
-    public Locale setPlayerLocale(Player player, Locale locale) {
-        Locale old = this.issuersLocale.put(player.getUniqueId(), locale);
-        if (!Objects.equals(old, locale)) {
-            this.notifyLocaleChange(getCommandIssuer(player), old, locale);
-        }
-        return old;
-    }
-
-    @Override
-    public Locale getIssuerLocale(CommandIssuer issuer) {
-        if (usingPerIssuerLocale() && issuer.getIssuer() instanceof Player) {
-            UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();
-            Locale locale = issuersLocale.get(uniqueId);
-            if (locale != null) {
-                return locale;
-            }
-        }
-        return super.getIssuerLocale(issuer);
     }
 
     public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {

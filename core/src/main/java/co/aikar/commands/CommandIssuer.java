@@ -25,6 +25,9 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public interface CommandIssuer {
     /**
@@ -49,6 +52,11 @@ public interface CommandIssuer {
     default void sendMessage(String message) {
         getManager().sendMessage(this, MessageType.INFO, MessageKeys.INFO_MESSAGE, "{message}", message);
     }
+
+    /**
+     * @return the unique id of that issuer
+     */
+    @NotNull UUID getUniqueId();
 
     /**
      * Has permission node
