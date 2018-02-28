@@ -71,7 +71,7 @@ public abstract class CommandManager <
 
     protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = Lists.newArrayList();
-    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH);
+    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH, Locales.PORTUGUESE);
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
     protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
