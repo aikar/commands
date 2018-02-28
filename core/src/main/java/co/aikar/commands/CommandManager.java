@@ -349,8 +349,8 @@ public abstract class CommandManager <
         });
     }
 
-    public Locale setPlayerLocale(IT player, Locale locale) {
-        I commandIssuer = getCommandIssuer(player);
+    public Locale setIssuerLocale(IT issuer, Locale locale) {
+        I commandIssuer = getCommandIssuer(issuer);
 
         Locale old = issuersLocale.put(commandIssuer.getUniqueId(), locale);
         if (!Objects.equals(old, locale)) {

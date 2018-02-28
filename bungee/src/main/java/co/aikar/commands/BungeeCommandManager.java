@@ -113,7 +113,7 @@ public class BungeeCommandManager extends CommandManager<
         //This can be null if we didn't received a settings packet
         Locale locale = player.getLocale();
         if (locale != null) {
-            setPlayerLocale(player, player.getLocale());
+            setIssuerLocale(player, player.getLocale());
         }
     }
 

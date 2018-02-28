@@ -18,7 +18,7 @@ public class ACFSpongeListener {
     @Listener(order = Order.POST)
     public void onSettingsChange(PlayerChangeClientSettingsEvent changeSettingsEvent, @First Player targetPlayer) {
         //this event will be fired on join as well as every time the player changes it
-        manager.setPlayerLocale(targetPlayer, targetPlayer.getLocale());
+        manager.setIssuerLocale(targetPlayer, targetPlayer.getLocale());
     }
 
     @Listener
