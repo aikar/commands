@@ -42,10 +42,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
 import java.util.UUID;
+
 
 @SuppressWarnings("WeakerAccess")
 public abstract class CommandManager <
@@ -351,25 +351,18 @@ public abstract class CommandManager <
 
     public Locale setPlayerLocale(IT player, Locale locale) {
         I commandIssuer = getCommandIssuer(player);
-        Optional<UUID> uniqueId = commandIssuer.getUniqueId();
 
-        if (uniqueId.isPresent()) {
-            Locale old = issuersLocale.put(uniqueId.get(), locale);
-            if (!Objects.equals(old, locale)) {
-                this.notifyLocaleChange(commandIssuer, old, locale);
-            }
-
-            return old;
+        Locale old = issuersLocale.put(commandIssuer.getUniqueId(), locale);
+        if (!Objects.equals(old, locale)) {
+            this.notifyLocaleChange(commandIssuer, old, locale);
         }
 
-        throw new IllegalArgumentException("The argument " + player + " doesn't implement getUniqueId. We can only " +
-                "set the locale for player objects");
+        return old;
     }
 
     public Locale getIssuerLocale(CommandIssuer issuer) {
-        Optional<UUID> uniqueId = issuer.getUniqueId();
-        if (usingPerIssuerLocale() && uniqueId.isPresent()) {
-            Locale locale = issuersLocale.get(uniqueId.get());
+        if (usingPerIssuerLocale()) {
+            Locale locale = issuersLocale.get(issuer.getUniqueId());
             if (locale != null) {
                 return locale;
             }

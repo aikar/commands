@@ -3,8 +3,8 @@ package co.aikar.commands;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class JDACommandEvent implements CommandIssuer {
@@ -38,8 +38,11 @@ public class JDACommandEvent implements CommandIssuer {
     }
 
     @Override
-    public Optional<UUID> getUniqueId() {
-        return Optional.empty();
+    public @NotNull UUID getUniqueId() {
+        // Discord id only have 64 bit width (long) while UUIDs have twice the size.
+        // In order to keep it unique we use 0L for the first 64 bit.
+        long authorId = event.getAuthor().getIdLong();
+        return new UUID(0, authorId);
     }
 
     @Override

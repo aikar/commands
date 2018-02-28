@@ -25,8 +25,8 @@ package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface CommandIssuer {
@@ -54,9 +54,9 @@ public interface CommandIssuer {
     }
 
     /**
-     * @return the UUID of that player or Optional.empty() if it's not a player
+     * @return the unique id of that issuer
      */
-    Optional<UUID> getUniqueId();
+    @NotNull UUID getUniqueId();
 
     /**
      * Has permission node

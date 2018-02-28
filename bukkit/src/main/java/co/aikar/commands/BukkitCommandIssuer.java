@@ -23,11 +23,12 @@
 
 package co.aikar.commands;
 
-import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 public class BukkitCommandIssuer implements CommandIssuer {
@@ -55,12 +56,13 @@ public class BukkitCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public Optional<UUID> getUniqueId() {
+    public @NotNull UUID getUniqueId() {
         if (isPlayer()) {
-            return Optional.of(((Player) sender).getUniqueId());
+            return ((Player) sender).getUniqueId();
         }
 
-        return Optional.empty();
+        //generate a unique id based of the name (like for the console command sender)
+        return UUID.nameUUIDFromBytes(sender.getName().getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
