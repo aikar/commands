@@ -60,7 +60,8 @@ class ACFBukkitListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerQuitEvent event) {
-        manager.issuersLocale.remove(event.getPlayer().getUniqueId());
+    public void onPlayerQuit(PlayerQuitEvent quitEvent) {
+        //cleanup
+        manager.issuersLocale.remove(quitEvent.getPlayer().getUniqueId());
     }
 }

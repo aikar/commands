@@ -26,6 +26,9 @@ package co.aikar.commands;
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public interface CommandIssuer {
     /**
      * Gets the issuer in the platforms native object
@@ -49,6 +52,11 @@ public interface CommandIssuer {
     default void sendMessage(String message) {
         getManager().sendMessage(this, MessageType.INFO, MessageKeys.INFO_MESSAGE, "{message}", message);
     }
+
+    /**
+     * @return the UUID of that player or Optional.empty() if it's not a player
+     */
+    Optional<UUID> getUniqueId();
 
     /**
      * Has permission node

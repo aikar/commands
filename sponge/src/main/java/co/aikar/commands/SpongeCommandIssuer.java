@@ -26,8 +26,11 @@ package co.aikar.commands;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
+import org.spongepowered.api.util.Identifiable;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class SpongeCommandIssuer implements CommandIssuer {
 
@@ -49,6 +52,15 @@ public class SpongeCommandIssuer implements CommandIssuer {
         return this.source;
     }
 
+    @Override
+    public Optional<UUID> getUniqueId() {
+        if (isPlayer()) {
+            return Optional.of(((Identifiable) source).getUniqueId());
+        }
+
+        return Optional.empty();
+    }
+
     public Player getPlayer() {
         return isPlayer() ? (Player) source : null;
     }
@@ -67,7 +79,6 @@ public class SpongeCommandIssuer implements CommandIssuer {
     public boolean hasPermission(final String permission) {
         return this.source.hasPermission(permission);
     }
-
 
     @Override
     public boolean equals(Object o) {

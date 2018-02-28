@@ -27,6 +27,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BungeeCommandIssuer implements CommandIssuer {
     private final BungeeCommandManager manager;
@@ -55,6 +57,15 @@ public class BungeeCommandIssuer implements CommandIssuer {
     @Override
     public boolean isPlayer() {
         return sender instanceof ProxiedPlayer;
+    }
+
+    @Override
+    public Optional<UUID> getUniqueId() {
+        if (isPlayer()) {
+            return Optional.of(((ProxiedPlayer) sender).getUniqueId());
+        }
+
+        return Optional.empty();
     }
 
     @Override

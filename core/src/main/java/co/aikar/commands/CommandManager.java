@@ -27,6 +27,7 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
@@ -35,14 +36,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
+import java.util.UUID;
 
 @SuppressWarnings("WeakerAccess")
 public abstract class CommandManager <
@@ -75,6 +78,8 @@ public abstract class CommandManager <
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
     protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
+
+    protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     private Set<String> unstableAPIs = Sets.newHashSet();
 
@@ -344,7 +349,32 @@ public abstract class CommandManager <
         });
     }
 
+    public Locale setPlayerLocale(IT player, Locale locale) {
+        I commandIssuer = getCommandIssuer(player);
+        Optional<UUID> uniqueId = commandIssuer.getUniqueId();
+
+        if (uniqueId.isPresent()) {
+            Locale old = issuersLocale.put(uniqueId.get(), locale);
+            if (!Objects.equals(old, locale)) {
+                this.notifyLocaleChange(commandIssuer, old, locale);
+            }
+
+            return old;
+        }
+
+        throw new IllegalArgumentException("The argument " + player + " doesn't implement getUniqueId. We can only " +
+                "set the locale for player objects");
+    }
+
     public Locale getIssuerLocale(CommandIssuer issuer) {
+        Optional<UUID> uniqueId = issuer.getUniqueId();
+        if (usingPerIssuerLocale() && uniqueId.isPresent()) {
+            Locale locale = issuersLocale.get(uniqueId.get());
+            if (locale != null) {
+                return locale;
+            }
+        }
+
         return getLocales().getDefaultLocale();
     }
 

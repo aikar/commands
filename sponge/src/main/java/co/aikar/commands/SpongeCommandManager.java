@@ -68,6 +68,8 @@ public class SpongeCommandManager extends CommandManager<
         this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));
         getLocales(); // auto load locales
 
+        Sponge.getEventManager().registerListeners(plugin, new ACFSpongeListener(this));
+
         //TODO more default dependencies for sponge
         registerDependency(plugin.getClass(), plugin);
     }
@@ -196,5 +198,4 @@ public class SpongeCommandManager extends CommandManager<
     public SpongeConditionContext createConditionContext(CommandIssuer issuer, String config) {
         return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);
     }
-
 }

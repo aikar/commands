@@ -4,6 +4,9 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class JDACommandEvent implements CommandIssuer {
 
     private MessageReceivedEvent event;
@@ -32,6 +35,11 @@ public class JDACommandEvent implements CommandIssuer {
     @Override
     public boolean isPlayer() {
         return false;
+    }
+
+    @Override
+    public Optional<UUID> getUniqueId() {
+        return Optional.empty();
     }
 
     @Override

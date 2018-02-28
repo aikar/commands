@@ -23,10 +23,12 @@
 
 package co.aikar.commands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BukkitCommandIssuer implements CommandIssuer {
     private final BukkitCommandManager manager;
@@ -50,6 +52,15 @@ public class BukkitCommandIssuer implements CommandIssuer {
 
     public Player getPlayer() {
         return isPlayer() ? (Player) sender : null;
+    }
+
+    @Override
+    public Optional<UUID> getUniqueId() {
+        if (isPlayer()) {
+            return Optional.of(((Player) sender).getUniqueId());
+        }
+
+        return Optional.empty();
     }
 
     @Override
