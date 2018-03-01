@@ -282,7 +282,11 @@ public abstract class BaseCommand {
 
         // Strip pipes off for auto complete addition
         for (int i = 0; i < subCommandParts.length; i++) {
-            subCommandParts[i] = ACFPatterns.PIPE.split(subCommandParts[i])[0];
+            String[] split = ACFPatterns.PIPE.split(subCommandParts[i]);
+            if (split.length == 0 || split[0].isEmpty()) {
+                throw new IllegalArgumentException("Invalid @Subcommand configuration for " + method.getName() + " - parts can not start with | or be empty");
+            }
+            subCommandParts[i] = split[0];
         }
         String prefSubCommand = ApacheCommonsLangUtil.join(subCommandParts, " ");
         final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
