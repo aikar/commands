@@ -89,6 +89,10 @@
 <td class="colFirst"><a href="#co.aikar.commands.contexts">co.aikar.commands.contexts</a></td>
 <td class="colLast">&nbsp;</td>
 </tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#co.aikar.commands.processors">co.aikar.commands.processors</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
 </tbody>
 </table>
 </li>
@@ -149,6 +153,28 @@
 </tr>
 </tbody>
 </table>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Methods in <a href="../../../../co/aikar/commands/package-summary.html">co.aikar.commands</a> with parameters of type <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>default void</code></td>
+<td class="colLast"><span class="typeNameLabel">AnnotationProcessor.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/AnnotationProcessor.html#onPostContextResolution-co.aikar.commands.CommandExecutionContext-java.lang.Object-">onPostContextResolution</a></span>(<a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&nbsp;context,
+                       <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;resolvedValue)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
+&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>default void</code></td>
+<td class="colLast"><span class="typeNameLabel">AnnotationProcessor.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/AnnotationProcessor.html#onPreContextResolution-co.aikar.commands.CommandExecutionContext-">onPreContextResolution</a></span>(<a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&nbsp;context)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
+&nbsp;</td>
+</tr>
+</tbody>
+</table>
 </li>
 <li class="blockList"><a name="co.aikar.commands.contexts">
 <!--   -->
@@ -188,6 +214,27 @@
 <div class="block"><span class="deprecationComment">Please use <a href="../../../../co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts"><code>IssuerAwareContextResolver</code></a></span></div>
 </div>
 </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="co.aikar.commands.processors">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a> in <a href="../../../../co/aikar/commands/processors/package-summary.html">co.aikar.commands.processors</a></h3>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Methods in <a href="../../../../co/aikar/commands/processors/package-summary.html">co.aikar.commands.processors</a> with parameters of type <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">ConditionsProcessor.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/processors/ConditionsProcessor.html#onPostContextResolution-co.aikar.commands.CommandExecutionContext-java.lang.Object-">onPostContextResolution</a></span>(<a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&nbsp;context,
+                       <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;resolvedValue)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
+&nbsp;</td>
 </tr>
 </tbody>
 </table>
