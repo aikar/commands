@@ -33,6 +33,8 @@ import co.aikar.commands.contexts.OptionalContextResolver;
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -116,6 +118,20 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         registerContext(Number.class, (c) -> {
             try {
                 return parseAndValidateNumber(c, Double.MAX_VALUE);
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
+        registerContext(BigDecimal.class, (c) -> {
+            try {
+                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
+            }
+        });
+        registerContext(BigInteger.class, (c) -> {
+            try {
+                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes")).toBigIntegerExact();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
@@ -229,6 +245,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         }
         return val;
     }
+
 
     /**
      * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}
