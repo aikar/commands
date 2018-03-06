@@ -32,6 +32,7 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
@@ -186,8 +187,11 @@ public class BukkitCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase();
             BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();
             if (!bukkitCommand.isRegistered) {
-                if (force && knownCommands.containsKey(commandName)) {
-                    Command oldCommand = commandMap.getCommand(commandName);
+                Command oldCommand = commandMap.getCommand(commandName);
+                if (oldCommand instanceof PluginIdentifiableCommand && ((PluginIdentifiableCommand) oldCommand).getPlugin() == this.plugin) {
+                    knownCommands.remove(commandName);
+                    oldCommand.unregister(commandMap);
+                } else if (oldCommand != null && force) {
                     knownCommands.remove(commandName);
                     for (Map.Entry<String, Command> ce : knownCommands.entrySet()) {
                         String key = ce.getKey();
