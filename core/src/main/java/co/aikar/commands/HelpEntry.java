@@ -23,24 +23,39 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpSearchTags;
+
+import java.lang.reflect.Parameter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class HelpEntry {
 
     private final RegisteredCommand command;
     private final String searchTags;
     private int searchScore = 1;
+    private Map<String, String> parameters = new LinkedHashMap<>();
 
     HelpEntry(RegisteredCommand command) {
         this.command = command;
         HelpSearchTags tagsAnno = command.method.getAnnotation(HelpSearchTags.class);
         this.searchTags = tagsAnno != null ? tagsAnno.value() : null;
+
+        // search for parameter descriptions
+        for (Parameter parameter : command.method.getParameters()) {
+            Description description = parameter.getAnnotation(Description.class);
+            if(description != null){
+                parameters.put(parameter.getName(), description.value());
+            }else{
+                //TODO also add parameters with not description?
+            }
+        }
     }
 
     RegisteredCommand getRegisteredCommand() {
         return this.command;
     }
-
 
     public String getCommand(){
         return "/" + this.command.command;
@@ -68,5 +83,9 @@ public class HelpEntry {
 
     public String getSearchTags() {
         return searchTags;
+    }
+
+    public Map<String, String> getParameters() {
+        return parameters;
     }
 }
