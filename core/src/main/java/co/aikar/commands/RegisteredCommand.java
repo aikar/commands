@@ -28,6 +28,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
@@ -105,11 +106,23 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             if (resolver != null) {
                 resolvers[i] = resolver;
 
-                if (!scope.manager.isCommandIssuer(type)) {
+                Flags flags = parameter.getAnnotation(Flags.class);
+                // check if type is a command issuer and actually the sender of this command
+                if (!scope.manager.isCommandIssuer(type) || (flags != null && flags.value().equals("other"))) {
                     String name = parameter.getName();
                     if (isOptionalResolver(resolver, parameter)) {
-                        optionalResolvers++;
-                        if (!(resolver instanceof IssuerOnlyContextResolver)) {
+                        if(resolver instanceof  IssuerAwareContextResolver){
+                            // if its a issuer, but he has the other flag, its actually not an optional resolver!
+                            if(flags != null && flags.value().equals("other")){
+                                requiredResolvers++;
+                                syntaxB.append('<').append(name).append("> ");
+                            }else{
+                                // optional issuer aware context resolver
+                                optionalResolvers++;
+                            }
+                        }else{
+                            // some other optional resolver
+                            optionalResolvers++;
                             syntaxB.append('[').append(name).append("] ");
                         }
                     } else {
