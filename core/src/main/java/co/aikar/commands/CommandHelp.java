@@ -56,7 +56,7 @@ public class CommandHelp {
         Set<RegisteredCommand> seen = new HashSet<>();
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)){
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
                 return;
             }
 
@@ -106,9 +106,9 @@ public class CommandHelp {
         return manager;
     }
 
-    public boolean isExactMatch(String command){
+    public boolean isExactMatch(String command) {
         for (HelpEntry helpEntry : helpEntries) {
-            if(helpEntry.getCommand().endsWith(" " + command)){
+            if (helpEntry.getCommand().endsWith(" " + command)) {
                 selectedEntry = helpEntry;
                 return true;
             }
@@ -117,15 +117,11 @@ public class CommandHelp {
     }
 
     public void showHelp() {
-        showHelp(issuer, MessageKeys.HELP_FORMAT);
+        showHelp(issuer);
     }
 
     public void showHelp(CommandIssuer issuer) {
-        showHelp(issuer, MessageKeys.HELP_FORMAT);
-    }
-
-    public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
-        if(selectedEntry != null){
+        if (selectedEntry != null) {
             showDetailedHelp(selectedEntry, issuer);
             return;
         }
@@ -140,20 +136,19 @@ public class CommandHelp {
             results = helpEntries.iterator();
         }
         int totalResults = helpEntries.size();
-        int min = (this.page-1) * this.perPage; // TODO: per page configurable?
+        int min = (this.page - 1) * this.perPage; // TODO: per page configurable?
         int max = min + this.perPage;
+        int totalPages = (int) Math.ceil((float) totalResults / (float) this.perPage);
         int i = 0;
         if (min >= totalResults) {
             issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_NO_RESULTS);
             return;
         }
 
-        if(search == null){
-            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER, "{command}", commandName);
-        }else{
-            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_SEARCH_HEADER,
-                    "{command}", commandName,
-                    "{search}", String.join(" ", search));
+        if (search == null) {
+            manager.getHelpFormatter().printHelpHeader(issuer, commandName, page, totalPages, totalResults);
+        } else {
+            manager.getHelpFormatter().printSearchHeader(issuer, commandName, page, totalPages, totalResults, search);
         }
 
         while (results.hasNext()) {
@@ -165,61 +160,33 @@ public class CommandHelp {
                 continue;
             }
 
-            String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
-            for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
-                issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+            if (search == null) {
+                manager.getHelpFormatter().printHelpLine(issuer, commandName, e);
+            } else {
+                manager.getHelpFormatter().printSearchLine(issuer, commandName, e, e.getSearchScore());
             }
         }
-        if (min > 0 || results.hasNext()) {
-            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
-                    "{page}", "" + this.page,
-                    "{totalpages}", ""+ (int)Math.ceil((float)totalResults / (float)this.perPage),
-                    "{results}", "" + totalResults
-            );
+
+        boolean lastPage = !(min > 0 || results.hasNext());
+        if (search == null) {
+            manager.getHelpFormatter().printHelpFooter(issuer, commandName, page, totalPages, totalResults, lastPage);
+        } else {
+            manager.getHelpFormatter().printSearchFooter(issuer, commandName, page, totalPages, totalResults, search, lastPage);
         }
     }
 
-    public void showDetailedHelp(HelpEntry page, CommandIssuer issuer){
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER, "{command}", page.getCommand());
+    public void showDetailedHelp(HelpEntry page, CommandIssuer issuer) {
+        // header
+        manager.getHelpFormatter().printDetailedHelpHeader(issuer, commandName, page);
 
         // normal help line
-        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page));
-        for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
-            issuer.sendMessageInternal(ACFUtil.rtrim(msg));
-        }
+        manager.getHelpFormatter().printHelpLine(issuer, commandName, page);
 
         // additionally detailed help for params
-        page.getParameters().forEach((cmd, help) -> {
-            String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_FORMAT, getDetailedFormatReplacements(cmd, help, page));
-            for (String msg : ACFPatterns.NEWLINE.split(formattedMsg)) {
-                issuer.sendMessageInternal(ACFUtil.rtrim(msg));
-            }
-        });
-    }
+        page.getParameters().forEach((cmd, help) -> manager.getHelpFormatter().printDetailedHelpLine(issuer, commandName, page, cmd, help));
 
-    /**
-     * Override this to control replacements
-     * @param e
-     * @return
-     */
-    @NotNull
-    public String[] getFormatReplacements(HelpEntry e) {
-        //{command} {parameters} {separator} {description}
-        return new String[] {
-                "{command}", e.getCommand(),
-                "{parameters}", e.getParameterSyntax(),
-                "{separator}", e.getDescription().isEmpty() ? "" : "-",
-                "{description}", e.getDescription()
-        };
-    }
-
-    @NotNull
-    public String[] getDetailedFormatReplacements(String cmd, String help, HelpEntry page) {
-        //{name} {description}
-        return new String[] {
-                "{name}", cmd,
-                "{description}", help
-        };
+        // footer
+        manager.getHelpFormatter().printDetailedHelpFooter(issuer, commandName, page);
     }
 
     public List<HelpEntry> getHelpEntries() {
