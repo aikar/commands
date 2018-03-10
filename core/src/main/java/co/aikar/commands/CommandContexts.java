@@ -124,14 +124,18 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         });
         registerContext(BigDecimal.class, (c) -> {
             try {
-                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+                BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+                validateMinMax(c, number, null);
+                return number;
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
         });
         registerContext(BigInteger.class, (c) -> {
             try {
-                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes")).toBigIntegerExact();
+                BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+                validateMinMax(c, number, null);
+                return number.toBigIntegerExact();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);
             }
@@ -240,10 +244,19 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
     @NotNull
     private Number parseAndValidateNumber(R c, Number maxValue) throws InvalidCommandArgument {
         Number val = ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+        validateMinMax(c, val, maxValue);
+        return val;
+    }
+
+    private void validateMinMax(R c, Number val, Number maxValue) throws InvalidCommandArgument {
+        Number minValue = c.getFlagValue("min", (Integer) null);
+        maxValue = c.getFlagValue("max", maxValue != null ? maxValue.intValue() : null);
         if (maxValue != null && val.doubleValue() > maxValue.doubleValue()) {
             throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));
         }
-        return val;
+        if (minValue != null && val.doubleValue() < minValue.doubleValue()) {
+            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_LEAST, "{min}", String.valueOf(minValue));
+        }
     }
 
 

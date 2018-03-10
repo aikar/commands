@@ -42,6 +42,7 @@ public enum MessageKeys implements MessageKeyProvider {
     MUST_BE_A_NUMBER,
     MUST_BE_MIN_LENGTH,
     MUST_BE_MAX_LENGTH,
+    PLEASE_SPECIFY_AT_LEAST,
     PLEASE_SPECIFY_AT_MOST,
     NOT_ALLOWED_ON_CONSOLE,
     COULD_NOT_FIND_PLAYER,
