@@ -132,190 +132,203 @@
 <span class="sourceLineNo">124</span>        });<a name="line.124"></a>
 <span class="sourceLineNo">125</span>        registerContext(BigDecimal.class, (c) -&gt; {<a name="line.125"></a>
 <span class="sourceLineNo">126</span>            try {<a name="line.126"></a>
-<span class="sourceLineNo">127</span>                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.127"></a>
-<span class="sourceLineNo">128</span>            } catch (NumberFormatException e) {<a name="line.128"></a>
-<span class="sourceLineNo">129</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.129"></a>
-<span class="sourceLineNo">130</span>            }<a name="line.130"></a>
-<span class="sourceLineNo">131</span>        });<a name="line.131"></a>
-<span class="sourceLineNo">132</span>        registerContext(BigInteger.class, (c) -&gt; {<a name="line.132"></a>
-<span class="sourceLineNo">133</span>            try {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                return ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes")).toBigIntegerExact();<a name="line.134"></a>
-<span class="sourceLineNo">135</span>            } catch (NumberFormatException e) {<a name="line.135"></a>
-<span class="sourceLineNo">136</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.136"></a>
-<span class="sourceLineNo">137</span>            }<a name="line.137"></a>
-<span class="sourceLineNo">138</span>        });<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        registerContext(Boolean.class, (c) -&gt; ACFUtil.isTruthy(c.popFirstArg()));<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        registerContext(boolean.class, (c) -&gt; ACFUtil.isTruthy(c.popFirstArg()));<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        registerContext(char.class, c -&gt; {<a name="line.141"></a>
-<span class="sourceLineNo">142</span>            String s = c.popFirstArg();<a name="line.142"></a>
-<span class="sourceLineNo">143</span>            if (s.length() &gt; 1) {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(1));<a name="line.144"></a>
-<span class="sourceLineNo">145</span>            }<a name="line.145"></a>
-<span class="sourceLineNo">146</span>            return s.charAt(0);<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        });<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        registerContext(String.class, (c) -&gt; {<a name="line.148"></a>
-<span class="sourceLineNo">149</span>            final Values values = c.getParam().getAnnotation(Values.class);<a name="line.149"></a>
-<span class="sourceLineNo">150</span>            if (values != null) {<a name="line.150"></a>
-<span class="sourceLineNo">151</span>                return c.popFirstArg();<a name="line.151"></a>
-<span class="sourceLineNo">152</span>            }<a name="line.152"></a>
-<span class="sourceLineNo">153</span>            String ret = (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) ?<a name="line.153"></a>
-<span class="sourceLineNo">154</span>                ACFUtil.join(c.getArgs())<a name="line.154"></a>
-<span class="sourceLineNo">155</span>                :<a name="line.155"></a>
-<span class="sourceLineNo">156</span>                c.popFirstArg();<a name="line.156"></a>
-<span class="sourceLineNo">157</span><a name="line.157"></a>
-<span class="sourceLineNo">158</span>            Integer minLen = c.getFlagValue("minlen", (Integer) null);<a name="line.158"></a>
-<span class="sourceLineNo">159</span>            Integer maxLen = c.getFlagValue("maxlen", (Integer) null);<a name="line.159"></a>
-<span class="sourceLineNo">160</span>            if (minLen != null) {<a name="line.160"></a>
-<span class="sourceLineNo">161</span>                if (ret.length() &lt; minLen) {<a name="line.161"></a>
-<span class="sourceLineNo">162</span>                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MIN_LENGTH, "{min}", String.valueOf(minLen));<a name="line.162"></a>
-<span class="sourceLineNo">163</span>                }<a name="line.163"></a>
-<span class="sourceLineNo">164</span>            }<a name="line.164"></a>
-<span class="sourceLineNo">165</span>            if (maxLen != null) {<a name="line.165"></a>
-<span class="sourceLineNo">166</span>                if (ret.length() &gt; maxLen) {<a name="line.166"></a>
-<span class="sourceLineNo">167</span>                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(maxLen));<a name="line.167"></a>
-<span class="sourceLineNo">168</span>                }<a name="line.168"></a>
-<span class="sourceLineNo">169</span>            }<a name="line.169"></a>
-<span class="sourceLineNo">170</span><a name="line.170"></a>
-<span class="sourceLineNo">171</span>            return ret;<a name="line.171"></a>
-<span class="sourceLineNo">172</span>        });<a name="line.172"></a>
-<span class="sourceLineNo">173</span>        registerContext(String[].class, (c) -&gt; {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>            String val;<a name="line.174"></a>
-<span class="sourceLineNo">175</span>            // Go home IDEA, you're drunk<a name="line.175"></a>
-<span class="sourceLineNo">176</span>            //noinspection unchecked<a name="line.176"></a>
-<span class="sourceLineNo">177</span>            List&lt;String&gt; args = c.getArgs();<a name="line.177"></a>
-<span class="sourceLineNo">178</span>            if (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) {<a name="line.178"></a>
-<span class="sourceLineNo">179</span>                val = ACFUtil.join(args);<a name="line.179"></a>
-<span class="sourceLineNo">180</span>            } else {<a name="line.180"></a>
-<span class="sourceLineNo">181</span>                val = c.popFirstArg();<a name="line.181"></a>
-<span class="sourceLineNo">182</span>            }<a name="line.182"></a>
-<span class="sourceLineNo">183</span>            Split split = c.getParam().getAnnotation(Split.class);<a name="line.183"></a>
-<span class="sourceLineNo">184</span>            if (split != null) {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>                if (val.isEmpty()) {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>                    throw new InvalidCommandArgument();<a name="line.186"></a>
-<span class="sourceLineNo">187</span>                }<a name="line.187"></a>
-<span class="sourceLineNo">188</span>                return ACFPatterns.getPattern(split.value()).split(val);<a name="line.188"></a>
-<span class="sourceLineNo">189</span>            } else if (!c.isLastArg()) {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>                ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));<a name="line.190"></a>
-<span class="sourceLineNo">191</span>            }<a name="line.191"></a>
-<span class="sourceLineNo">192</span><a name="line.192"></a>
-<span class="sourceLineNo">193</span>            String[] result = args.toArray(new String[args.size()]);<a name="line.193"></a>
-<span class="sourceLineNo">194</span>            args.clear();<a name="line.194"></a>
-<span class="sourceLineNo">195</span>            return result;<a name="line.195"></a>
-<span class="sourceLineNo">196</span>        });<a name="line.196"></a>
-<span class="sourceLineNo">197</span><a name="line.197"></a>
-<span class="sourceLineNo">198</span>        registerContext(Enum.class, (c) -&gt; {<a name="line.198"></a>
-<span class="sourceLineNo">199</span>            final String first = c.popFirstArg();<a name="line.199"></a>
-<span class="sourceLineNo">200</span>            //noinspection unchecked<a name="line.200"></a>
-<span class="sourceLineNo">201</span>            Class&lt;? extends Enum&lt;?&gt;&gt; enumCls = (Class&lt;? extends Enum&lt;?&gt;&gt;) c.getParam().getType();<a name="line.201"></a>
-<span class="sourceLineNo">202</span>            Enum&lt;?&gt; match = ACFUtil.simpleMatch(enumCls, first);<a name="line.202"></a>
-<span class="sourceLineNo">203</span>            if (match == null) {<a name="line.203"></a>
-<span class="sourceLineNo">204</span>                List&lt;String&gt; names = ACFUtil.enumNames(enumCls);<a name="line.204"></a>
-<span class="sourceLineNo">205</span>                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", ACFUtil.join(names));<a name="line.205"></a>
-<span class="sourceLineNo">206</span>            }<a name="line.206"></a>
-<span class="sourceLineNo">207</span>            return match;<a name="line.207"></a>
-<span class="sourceLineNo">208</span>        });<a name="line.208"></a>
-<span class="sourceLineNo">209</span>        registerOptionalContext(CommandHelp.class, (c) -&gt; {<a name="line.209"></a>
-<span class="sourceLineNo">210</span>            String first = c.getFirstArg();<a name="line.210"></a>
-<span class="sourceLineNo">211</span>            String last = c.getLastArg();<a name="line.211"></a>
-<span class="sourceLineNo">212</span>            int page = 1;<a name="line.212"></a>
-<span class="sourceLineNo">213</span>            List&lt;String&gt; search = null;<a name="line.213"></a>
-<span class="sourceLineNo">214</span>            if (last != null &amp;&amp; ACFUtil.isInteger(last)) {<a name="line.214"></a>
-<span class="sourceLineNo">215</span>                c.popLastArg();<a name="line.215"></a>
-<span class="sourceLineNo">216</span>                page = ACFUtil.parseInt(last);<a name="line.216"></a>
-<span class="sourceLineNo">217</span>                if (!c.getArgs().isEmpty()) {<a name="line.217"></a>
-<span class="sourceLineNo">218</span>                    search = c.getArgs();<a name="line.218"></a>
-<span class="sourceLineNo">219</span>                }<a name="line.219"></a>
-<span class="sourceLineNo">220</span>            } else if (first != null &amp;&amp; ACFUtil.isInteger(first)) {<a name="line.220"></a>
-<span class="sourceLineNo">221</span>                c.popFirstArg();<a name="line.221"></a>
-<span class="sourceLineNo">222</span>                page = ACFUtil.parseInt(first);<a name="line.222"></a>
-<span class="sourceLineNo">223</span>                if (!c.getArgs().isEmpty()) {<a name="line.223"></a>
-<span class="sourceLineNo">224</span>                    search = c.getArgs();<a name="line.224"></a>
-<span class="sourceLineNo">225</span>                }<a name="line.225"></a>
-<span class="sourceLineNo">226</span>            } else if (!c.getArgs().isEmpty()) {<a name="line.226"></a>
-<span class="sourceLineNo">227</span>                search = c.getArgs();<a name="line.227"></a>
-<span class="sourceLineNo">228</span>            }<a name="line.228"></a>
-<span class="sourceLineNo">229</span>            CommandHelp commandHelp = manager.generateCommandHelp();<a name="line.229"></a>
-<span class="sourceLineNo">230</span>            commandHelp.setPage(page);<a name="line.230"></a>
-<span class="sourceLineNo">231</span>            Integer perPage = c.getFlagValue("perpage", (Integer) null);<a name="line.231"></a>
-<span class="sourceLineNo">232</span>            if (perPage != null) {<a name="line.232"></a>
-<span class="sourceLineNo">233</span>                commandHelp.setPerPage(perPage);<a name="line.233"></a>
-<span class="sourceLineNo">234</span>            }<a name="line.234"></a>
-<span class="sourceLineNo">235</span>            commandHelp.setSearch(search);<a name="line.235"></a>
-<span class="sourceLineNo">236</span>            return commandHelp;<a name="line.236"></a>
-<span class="sourceLineNo">237</span>        });<a name="line.237"></a>
-<span class="sourceLineNo">238</span>    }<a name="line.238"></a>
-<span class="sourceLineNo">239</span><a name="line.239"></a>
-<span class="sourceLineNo">240</span>    @NotNull<a name="line.240"></a>
-<span class="sourceLineNo">241</span>    private Number parseAndValidateNumber(R c, Number maxValue) throws InvalidCommandArgument {<a name="line.241"></a>
-<span class="sourceLineNo">242</span>        Number val = ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.242"></a>
-<span class="sourceLineNo">243</span>        if (maxValue != null &amp;&amp; val.doubleValue() &gt; maxValue.doubleValue()) {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));<a name="line.244"></a>
-<span class="sourceLineNo">245</span>        }<a name="line.245"></a>
-<span class="sourceLineNo">246</span>        return val;<a name="line.246"></a>
-<span class="sourceLineNo">247</span>    }<a name="line.247"></a>
-<span class="sourceLineNo">248</span><a name="line.248"></a>
-<span class="sourceLineNo">249</span><a name="line.249"></a>
-<span class="sourceLineNo">250</span>    /**<a name="line.250"></a>
-<span class="sourceLineNo">251</span>     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}<a name="line.251"></a>
-<span class="sourceLineNo">252</span>     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender<a name="line.252"></a>
-<span class="sourceLineNo">253</span>     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)<a name="line.253"></a>
-<span class="sourceLineNo">254</span>     */<a name="line.254"></a>
-<span class="sourceLineNo">255</span>    @Deprecated<a name="line.255"></a>
-<span class="sourceLineNo">256</span>    public &lt;T&gt; void registerSenderAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.256"></a>
-<span class="sourceLineNo">257</span>        contextMap.put(context, supplier);<a name="line.257"></a>
-<span class="sourceLineNo">258</span>    }<a name="line.258"></a>
-<span class="sourceLineNo">259</span><a name="line.259"></a>
-<span class="sourceLineNo">260</span>    /**<a name="line.260"></a>
-<span class="sourceLineNo">261</span>     * Registers a context resolver that may conditionally consume input, falling back to using the context of the<a name="line.261"></a>
-<span class="sourceLineNo">262</span>     * issuer to potentially fulfill this context.<a name="line.262"></a>
-<span class="sourceLineNo">263</span>     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}<a name="line.263"></a>
-<span class="sourceLineNo">264</span>     * if you want to consume that input.<a name="line.264"></a>
-<span class="sourceLineNo">265</span>     */<a name="line.265"></a>
-<span class="sourceLineNo">266</span>    public &lt;T&gt; void registerIssuerAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.266"></a>
-<span class="sourceLineNo">267</span>        contextMap.put(context, supplier);<a name="line.267"></a>
-<span class="sourceLineNo">268</span>    }<a name="line.268"></a>
-<span class="sourceLineNo">269</span><a name="line.269"></a>
-<span class="sourceLineNo">270</span>    /**<a name="line.270"></a>
-<span class="sourceLineNo">271</span>     * Registers a context resolver that will never consume input. It will always satisfy its context based on the<a name="line.271"></a>
-<span class="sourceLineNo">272</span>     * issuer of the command, so it will not appear in syntax strings.<a name="line.272"></a>
-<span class="sourceLineNo">273</span>     */<a name="line.273"></a>
-<span class="sourceLineNo">274</span>    public &lt;T&gt; void registerIssuerOnlyContext(Class&lt;T&gt; context, IssuerOnlyContextResolver&lt;T, R&gt; supplier) {<a name="line.274"></a>
-<span class="sourceLineNo">275</span>        contextMap.put(context, supplier);<a name="line.275"></a>
-<span class="sourceLineNo">276</span>    }<a name="line.276"></a>
-<span class="sourceLineNo">277</span><a name="line.277"></a>
-<span class="sourceLineNo">278</span>    /**<a name="line.278"></a>
-<span class="sourceLineNo">279</span>     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always<a name="line.279"></a>
-<span class="sourceLineNo">280</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.280"></a>
-<span class="sourceLineNo">281</span>     */<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    public &lt;T&gt; void registerOptionalContext(Class&lt;T&gt; context, OptionalContextResolver&lt;T, R&gt; supplier) {<a name="line.282"></a>
-<span class="sourceLineNo">283</span>        contextMap.put(context, supplier);<a name="line.283"></a>
-<span class="sourceLineNo">284</span>    }<a name="line.284"></a>
-<span class="sourceLineNo">285</span><a name="line.285"></a>
-<span class="sourceLineNo">286</span>    /**<a name="line.286"></a>
-<span class="sourceLineNo">287</span>     * Registers a context that requires input from the command issuer to resolve. This resolver should always<a name="line.287"></a>
-<span class="sourceLineNo">288</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.288"></a>
-<span class="sourceLineNo">289</span>     */<a name="line.289"></a>
-<span class="sourceLineNo">290</span>    public &lt;T&gt; void registerContext(Class&lt;T&gt; context, ContextResolver&lt;T, R&gt; supplier) {<a name="line.290"></a>
-<span class="sourceLineNo">291</span>        contextMap.put(context, supplier);<a name="line.291"></a>
-<span class="sourceLineNo">292</span>    }<a name="line.292"></a>
-<span class="sourceLineNo">293</span><a name="line.293"></a>
-<span class="sourceLineNo">294</span>    public ContextResolver&lt;?, R&gt; getResolver(Class&lt;?&gt; type) {<a name="line.294"></a>
-<span class="sourceLineNo">295</span>        Class&lt;?&gt; rootType = type;<a name="line.295"></a>
-<span class="sourceLineNo">296</span>        do {<a name="line.296"></a>
-<span class="sourceLineNo">297</span>            if (type == Object.class) {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>                break;<a name="line.298"></a>
-<span class="sourceLineNo">299</span>            }<a name="line.299"></a>
-<span class="sourceLineNo">300</span><a name="line.300"></a>
-<span class="sourceLineNo">301</span>            final ContextResolver&lt;?, R&gt; resolver = contextMap.get(type);<a name="line.301"></a>
-<span class="sourceLineNo">302</span>            if (resolver != null) {<a name="line.302"></a>
-<span class="sourceLineNo">303</span>                return resolver;<a name="line.303"></a>
-<span class="sourceLineNo">304</span>            }<a name="line.304"></a>
-<span class="sourceLineNo">305</span>        } while ((type = type.getSuperclass()) != null);<a name="line.305"></a>
+<span class="sourceLineNo">127</span>                BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                validateMinMax(c, number, null);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>                return number;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            } catch (NumberFormatException e) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.131"></a>
+<span class="sourceLineNo">132</span>            }<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        });<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        registerContext(BigInteger.class, (c) -&gt; {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>            try {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                validateMinMax(c, number, null);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                return number.toBigIntegerExact();<a name="line.138"></a>
+<span class="sourceLineNo">139</span>            } catch (NumberFormatException e) {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.140"></a>
+<span class="sourceLineNo">141</span>            }<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        });<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        registerContext(Boolean.class, (c) -&gt; ACFUtil.isTruthy(c.popFirstArg()));<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        registerContext(boolean.class, (c) -&gt; ACFUtil.isTruthy(c.popFirstArg()));<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        registerContext(char.class, c -&gt; {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>            String s = c.popFirstArg();<a name="line.146"></a>
+<span class="sourceLineNo">147</span>            if (s.length() &gt; 1) {<a name="line.147"></a>
+<span class="sourceLineNo">148</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(1));<a name="line.148"></a>
+<span class="sourceLineNo">149</span>            }<a name="line.149"></a>
+<span class="sourceLineNo">150</span>            return s.charAt(0);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>        });<a name="line.151"></a>
+<span class="sourceLineNo">152</span>        registerContext(String.class, (c) -&gt; {<a name="line.152"></a>
+<span class="sourceLineNo">153</span>            final Values values = c.getParam().getAnnotation(Values.class);<a name="line.153"></a>
+<span class="sourceLineNo">154</span>            if (values != null) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                return c.popFirstArg();<a name="line.155"></a>
+<span class="sourceLineNo">156</span>            }<a name="line.156"></a>
+<span class="sourceLineNo">157</span>            String ret = (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) ?<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                ACFUtil.join(c.getArgs())<a name="line.158"></a>
+<span class="sourceLineNo">159</span>                :<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                c.popFirstArg();<a name="line.160"></a>
+<span class="sourceLineNo">161</span><a name="line.161"></a>
+<span class="sourceLineNo">162</span>            Integer minLen = c.getFlagValue("minlen", (Integer) null);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>            Integer maxLen = c.getFlagValue("maxlen", (Integer) null);<a name="line.163"></a>
+<span class="sourceLineNo">164</span>            if (minLen != null) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                if (ret.length() &lt; minLen) {<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MIN_LENGTH, "{min}", String.valueOf(minLen));<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                }<a name="line.167"></a>
+<span class="sourceLineNo">168</span>            }<a name="line.168"></a>
+<span class="sourceLineNo">169</span>            if (maxLen != null) {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                if (ret.length() &gt; maxLen) {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_MAX_LENGTH, "{max}", String.valueOf(maxLen));<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                }<a name="line.172"></a>
+<span class="sourceLineNo">173</span>            }<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>            return ret;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        });<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        registerContext(String[].class, (c) -&gt; {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>            String val;<a name="line.178"></a>
+<span class="sourceLineNo">179</span>            // Go home IDEA, you're drunk<a name="line.179"></a>
+<span class="sourceLineNo">180</span>            //noinspection unchecked<a name="line.180"></a>
+<span class="sourceLineNo">181</span>            List&lt;String&gt; args = c.getArgs();<a name="line.181"></a>
+<span class="sourceLineNo">182</span>            if (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>                val = ACFUtil.join(args);<a name="line.183"></a>
+<span class="sourceLineNo">184</span>            } else {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                val = c.popFirstArg();<a name="line.185"></a>
+<span class="sourceLineNo">186</span>            }<a name="line.186"></a>
+<span class="sourceLineNo">187</span>            Split split = c.getParam().getAnnotation(Split.class);<a name="line.187"></a>
+<span class="sourceLineNo">188</span>            if (split != null) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>                if (val.isEmpty()) {<a name="line.189"></a>
+<span class="sourceLineNo">190</span>                    throw new InvalidCommandArgument();<a name="line.190"></a>
+<span class="sourceLineNo">191</span>                }<a name="line.191"></a>
+<span class="sourceLineNo">192</span>                return ACFPatterns.getPattern(split.value()).split(val);<a name="line.192"></a>
+<span class="sourceLineNo">193</span>            } else if (!c.isLastArg()) {<a name="line.193"></a>
+<span class="sourceLineNo">194</span>                ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));<a name="line.194"></a>
+<span class="sourceLineNo">195</span>            }<a name="line.195"></a>
+<span class="sourceLineNo">196</span><a name="line.196"></a>
+<span class="sourceLineNo">197</span>            String[] result = args.toArray(new String[args.size()]);<a name="line.197"></a>
+<span class="sourceLineNo">198</span>            args.clear();<a name="line.198"></a>
+<span class="sourceLineNo">199</span>            return result;<a name="line.199"></a>
+<span class="sourceLineNo">200</span>        });<a name="line.200"></a>
+<span class="sourceLineNo">201</span><a name="line.201"></a>
+<span class="sourceLineNo">202</span>        registerContext(Enum.class, (c) -&gt; {<a name="line.202"></a>
+<span class="sourceLineNo">203</span>            final String first = c.popFirstArg();<a name="line.203"></a>
+<span class="sourceLineNo">204</span>            //noinspection unchecked<a name="line.204"></a>
+<span class="sourceLineNo">205</span>            Class&lt;? extends Enum&lt;?&gt;&gt; enumCls = (Class&lt;? extends Enum&lt;?&gt;&gt;) c.getParam().getType();<a name="line.205"></a>
+<span class="sourceLineNo">206</span>            Enum&lt;?&gt; match = ACFUtil.simpleMatch(enumCls, first);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>            if (match == null) {<a name="line.207"></a>
+<span class="sourceLineNo">208</span>                List&lt;String&gt; names = ACFUtil.enumNames(enumCls);<a name="line.208"></a>
+<span class="sourceLineNo">209</span>                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", ACFUtil.join(names));<a name="line.209"></a>
+<span class="sourceLineNo">210</span>            }<a name="line.210"></a>
+<span class="sourceLineNo">211</span>            return match;<a name="line.211"></a>
+<span class="sourceLineNo">212</span>        });<a name="line.212"></a>
+<span class="sourceLineNo">213</span>        registerOptionalContext(CommandHelp.class, (c) -&gt; {<a name="line.213"></a>
+<span class="sourceLineNo">214</span>            String first = c.getFirstArg();<a name="line.214"></a>
+<span class="sourceLineNo">215</span>            String last = c.getLastArg();<a name="line.215"></a>
+<span class="sourceLineNo">216</span>            int page = 1;<a name="line.216"></a>
+<span class="sourceLineNo">217</span>            List&lt;String&gt; search = null;<a name="line.217"></a>
+<span class="sourceLineNo">218</span>            if (last != null &amp;&amp; ACFUtil.isInteger(last)) {<a name="line.218"></a>
+<span class="sourceLineNo">219</span>                c.popLastArg();<a name="line.219"></a>
+<span class="sourceLineNo">220</span>                page = ACFUtil.parseInt(last);<a name="line.220"></a>
+<span class="sourceLineNo">221</span>                if (!c.getArgs().isEmpty()) {<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                    search = c.getArgs();<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                }<a name="line.223"></a>
+<span class="sourceLineNo">224</span>            } else if (first != null &amp;&amp; ACFUtil.isInteger(first)) {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                c.popFirstArg();<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                page = ACFUtil.parseInt(first);<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                if (!c.getArgs().isEmpty()) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                    search = c.getArgs();<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                }<a name="line.229"></a>
+<span class="sourceLineNo">230</span>            } else if (!c.getArgs().isEmpty()) {<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                search = c.getArgs();<a name="line.231"></a>
+<span class="sourceLineNo">232</span>            }<a name="line.232"></a>
+<span class="sourceLineNo">233</span>            CommandHelp commandHelp = manager.generateCommandHelp();<a name="line.233"></a>
+<span class="sourceLineNo">234</span>            commandHelp.setPage(page);<a name="line.234"></a>
+<span class="sourceLineNo">235</span>            Integer perPage = c.getFlagValue("perpage", (Integer) null);<a name="line.235"></a>
+<span class="sourceLineNo">236</span>            if (perPage != null) {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>                commandHelp.setPerPage(perPage);<a name="line.237"></a>
+<span class="sourceLineNo">238</span>            }<a name="line.238"></a>
+<span class="sourceLineNo">239</span>            commandHelp.setSearch(search);<a name="line.239"></a>
+<span class="sourceLineNo">240</span>            return commandHelp;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>        });<a name="line.241"></a>
+<span class="sourceLineNo">242</span>    }<a name="line.242"></a>
+<span class="sourceLineNo">243</span><a name="line.243"></a>
+<span class="sourceLineNo">244</span>    @NotNull<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    private Number parseAndValidateNumber(R c, Number maxValue) throws InvalidCommandArgument {<a name="line.245"></a>
+<span class="sourceLineNo">246</span>        Number val = ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.246"></a>
+<span class="sourceLineNo">247</span>        validateMinMax(c, val, maxValue);<a name="line.247"></a>
+<span class="sourceLineNo">248</span>        return val;<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    }<a name="line.249"></a>
+<span class="sourceLineNo">250</span><a name="line.250"></a>
+<span class="sourceLineNo">251</span>    private void validateMinMax(R c, Number val, Number maxValue) throws InvalidCommandArgument {<a name="line.251"></a>
+<span class="sourceLineNo">252</span>        Number minValue = c.getFlagValue("min", (Integer) null);<a name="line.252"></a>
+<span class="sourceLineNo">253</span>        maxValue = c.getFlagValue("max", maxValue != null ? maxValue.intValue() : null);<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        if (maxValue != null &amp;&amp; val.doubleValue() &gt; maxValue.doubleValue()) {<a name="line.254"></a>
+<span class="sourceLineNo">255</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));<a name="line.255"></a>
+<span class="sourceLineNo">256</span>        }<a name="line.256"></a>
+<span class="sourceLineNo">257</span>        if (minValue != null &amp;&amp; val.doubleValue() &lt; minValue.doubleValue()) {<a name="line.257"></a>
+<span class="sourceLineNo">258</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_LEAST, "{min}", String.valueOf(minValue));<a name="line.258"></a>
+<span class="sourceLineNo">259</span>        }<a name="line.259"></a>
+<span class="sourceLineNo">260</span>    }<a name="line.260"></a>
+<span class="sourceLineNo">261</span><a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>    /**<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)<a name="line.266"></a>
+<span class="sourceLineNo">267</span>     */<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    @Deprecated<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    public &lt;T&gt; void registerSenderAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        contextMap.put(context, supplier);<a name="line.270"></a>
+<span class="sourceLineNo">271</span>    }<a name="line.271"></a>
+<span class="sourceLineNo">272</span><a name="line.272"></a>
+<span class="sourceLineNo">273</span>    /**<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * Registers a context resolver that may conditionally consume input, falling back to using the context of the<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * issuer to potentially fulfill this context.<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * if you want to consume that input.<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     */<a name="line.278"></a>
+<span class="sourceLineNo">279</span>    public &lt;T&gt; void registerIssuerAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        contextMap.put(context, supplier);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
+<span class="sourceLineNo">282</span><a name="line.282"></a>
+<span class="sourceLineNo">283</span>    /**<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     * Registers a context resolver that will never consume input. It will always satisfy its context based on the<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     * issuer of the command, so it will not appear in syntax strings.<a name="line.285"></a>
+<span class="sourceLineNo">286</span>     */<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    public &lt;T&gt; void registerIssuerOnlyContext(Class&lt;T&gt; context, IssuerOnlyContextResolver&lt;T, R&gt; supplier) {<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        contextMap.put(context, supplier);<a name="line.288"></a>
+<span class="sourceLineNo">289</span>    }<a name="line.289"></a>
+<span class="sourceLineNo">290</span><a name="line.290"></a>
+<span class="sourceLineNo">291</span>    /**<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.293"></a>
+<span class="sourceLineNo">294</span>     */<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    public &lt;T&gt; void registerOptionalContext(Class&lt;T&gt; context, OptionalContextResolver&lt;T, R&gt; supplier) {<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        contextMap.put(context, supplier);<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    }<a name="line.297"></a>
+<span class="sourceLineNo">298</span><a name="line.298"></a>
+<span class="sourceLineNo">299</span>    /**<a name="line.299"></a>
+<span class="sourceLineNo">300</span>     * Registers a context that requires input from the command issuer to resolve. This resolver should always<a name="line.300"></a>
+<span class="sourceLineNo">301</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.301"></a>
+<span class="sourceLineNo">302</span>     */<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    public &lt;T&gt; void registerContext(Class&lt;T&gt; context, ContextResolver&lt;T, R&gt; supplier) {<a name="line.303"></a>
+<span class="sourceLineNo">304</span>        contextMap.put(context, supplier);<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
 <span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span>        this.manager.log(LogLevel.ERROR, "Could not find context resolver", new IllegalStateException("No context resolver defined for " + rootType.getName()));<a name="line.307"></a>
-<span class="sourceLineNo">308</span>        return null;<a name="line.308"></a>
-<span class="sourceLineNo">309</span>    }<a name="line.309"></a>
-<span class="sourceLineNo">310</span>}<a name="line.310"></a>
+<span class="sourceLineNo">307</span>    public ContextResolver&lt;?, R&gt; getResolver(Class&lt;?&gt; type) {<a name="line.307"></a>
+<span class="sourceLineNo">308</span>        Class&lt;?&gt; rootType = type;<a name="line.308"></a>
+<span class="sourceLineNo">309</span>        do {<a name="line.309"></a>
+<span class="sourceLineNo">310</span>            if (type == Object.class) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>                break;<a name="line.311"></a>
+<span class="sourceLineNo">312</span>            }<a name="line.312"></a>
+<span class="sourceLineNo">313</span><a name="line.313"></a>
+<span class="sourceLineNo">314</span>            final ContextResolver&lt;?, R&gt; resolver = contextMap.get(type);<a name="line.314"></a>
+<span class="sourceLineNo">315</span>            if (resolver != null) {<a name="line.315"></a>
+<span class="sourceLineNo">316</span>                return resolver;<a name="line.316"></a>
+<span class="sourceLineNo">317</span>            }<a name="line.317"></a>
+<span class="sourceLineNo">318</span>        } while ((type = type.getSuperclass()) != null);<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>        this.manager.log(LogLevel.ERROR, "Could not find context resolver", new IllegalStateException("No context resolver defined for " + rootType.getName()));<a name="line.320"></a>
+<span class="sourceLineNo">321</span>        return null;<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    }<a name="line.322"></a>
+<span class="sourceLineNo">323</span>}<a name="line.323"></a>
 
 
 
