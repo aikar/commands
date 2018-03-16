@@ -57,77 +57,77 @@
 <span class="sourceLineNo">049</span>            try {<a name="line.49"></a>
 <span class="sourceLineNo">050</span>                return parseAndValidateNumber(c, Short.MAX_VALUE).shortValue();<a name="line.50"></a>
 <span class="sourceLineNo">051</span>            } catch (NumberFormatException e) {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.52"></a>
+<span class="sourceLineNo">052</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.52"></a>
 <span class="sourceLineNo">053</span>            }<a name="line.53"></a>
 <span class="sourceLineNo">054</span>        });<a name="line.54"></a>
 <span class="sourceLineNo">055</span>        registerContext(short.class, (c) -&gt; {<a name="line.55"></a>
 <span class="sourceLineNo">056</span>            try {<a name="line.56"></a>
 <span class="sourceLineNo">057</span>                return parseAndValidateNumber(c, Short.MAX_VALUE).shortValue();<a name="line.57"></a>
 <span class="sourceLineNo">058</span>            } catch (NumberFormatException e) {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.59"></a>
+<span class="sourceLineNo">059</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.59"></a>
 <span class="sourceLineNo">060</span>            }<a name="line.60"></a>
 <span class="sourceLineNo">061</span>        });<a name="line.61"></a>
 <span class="sourceLineNo">062</span>        registerContext(Integer.class, (c) -&gt; {<a name="line.62"></a>
 <span class="sourceLineNo">063</span>            try {<a name="line.63"></a>
 <span class="sourceLineNo">064</span>                return parseAndValidateNumber(c, Integer.MAX_VALUE).intValue();<a name="line.64"></a>
 <span class="sourceLineNo">065</span>            } catch (NumberFormatException e) {<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.66"></a>
+<span class="sourceLineNo">066</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.66"></a>
 <span class="sourceLineNo">067</span>            }<a name="line.67"></a>
 <span class="sourceLineNo">068</span>        });<a name="line.68"></a>
 <span class="sourceLineNo">069</span>        registerContext(int.class, (c) -&gt; {<a name="line.69"></a>
 <span class="sourceLineNo">070</span>            try {<a name="line.70"></a>
 <span class="sourceLineNo">071</span>                return parseAndValidateNumber(c, Integer.MAX_VALUE).intValue();<a name="line.71"></a>
 <span class="sourceLineNo">072</span>            } catch (NumberFormatException e) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.73"></a>
+<span class="sourceLineNo">073</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.73"></a>
 <span class="sourceLineNo">074</span>            }<a name="line.74"></a>
 <span class="sourceLineNo">075</span>        });<a name="line.75"></a>
 <span class="sourceLineNo">076</span>        registerContext(Long.class, (c) -&gt; {<a name="line.76"></a>
 <span class="sourceLineNo">077</span>            try {<a name="line.77"></a>
 <span class="sourceLineNo">078</span>                return parseAndValidateNumber(c, Long.MAX_VALUE).longValue();<a name="line.78"></a>
 <span class="sourceLineNo">079</span>            } catch (NumberFormatException e) {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.80"></a>
+<span class="sourceLineNo">080</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.80"></a>
 <span class="sourceLineNo">081</span>            }<a name="line.81"></a>
 <span class="sourceLineNo">082</span>        });<a name="line.82"></a>
 <span class="sourceLineNo">083</span>        registerContext(long.class, (c) -&gt; {<a name="line.83"></a>
 <span class="sourceLineNo">084</span>            try {<a name="line.84"></a>
 <span class="sourceLineNo">085</span>                return parseAndValidateNumber(c, Long.MAX_VALUE).longValue();<a name="line.85"></a>
 <span class="sourceLineNo">086</span>            } catch (NumberFormatException e) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.87"></a>
+<span class="sourceLineNo">087</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.87"></a>
 <span class="sourceLineNo">088</span>            }<a name="line.88"></a>
 <span class="sourceLineNo">089</span>        });<a name="line.89"></a>
 <span class="sourceLineNo">090</span>        registerContext(Float.class, (c) -&gt; {<a name="line.90"></a>
 <span class="sourceLineNo">091</span>            try {<a name="line.91"></a>
 <span class="sourceLineNo">092</span>                return parseAndValidateNumber(c, Float.MAX_VALUE).floatValue();<a name="line.92"></a>
 <span class="sourceLineNo">093</span>            } catch (NumberFormatException e) {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.94"></a>
+<span class="sourceLineNo">094</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.94"></a>
 <span class="sourceLineNo">095</span>            }<a name="line.95"></a>
 <span class="sourceLineNo">096</span>        });<a name="line.96"></a>
 <span class="sourceLineNo">097</span>        registerContext(float.class, (c) -&gt; {<a name="line.97"></a>
 <span class="sourceLineNo">098</span>            try {<a name="line.98"></a>
 <span class="sourceLineNo">099</span>                return parseAndValidateNumber(c, Float.MAX_VALUE).floatValue();<a name="line.99"></a>
 <span class="sourceLineNo">100</span>            } catch (NumberFormatException e) {<a name="line.100"></a>
-<span class="sourceLineNo">101</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.101"></a>
+<span class="sourceLineNo">101</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.101"></a>
 <span class="sourceLineNo">102</span>            }<a name="line.102"></a>
 <span class="sourceLineNo">103</span>        });<a name="line.103"></a>
 <span class="sourceLineNo">104</span>        registerContext(Double.class, (c) -&gt; {<a name="line.104"></a>
 <span class="sourceLineNo">105</span>            try {<a name="line.105"></a>
 <span class="sourceLineNo">106</span>                return parseAndValidateNumber(c, Double.MAX_VALUE).doubleValue();<a name="line.106"></a>
 <span class="sourceLineNo">107</span>            } catch (NumberFormatException e) {<a name="line.107"></a>
-<span class="sourceLineNo">108</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.108"></a>
+<span class="sourceLineNo">108</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.108"></a>
 <span class="sourceLineNo">109</span>            }<a name="line.109"></a>
 <span class="sourceLineNo">110</span>        });<a name="line.110"></a>
 <span class="sourceLineNo">111</span>        registerContext(double.class, (c) -&gt; {<a name="line.111"></a>
 <span class="sourceLineNo">112</span>            try {<a name="line.112"></a>
 <span class="sourceLineNo">113</span>                return parseAndValidateNumber(c, Double.MAX_VALUE).doubleValue();<a name="line.113"></a>
 <span class="sourceLineNo">114</span>            } catch (NumberFormatException e) {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.115"></a>
+<span class="sourceLineNo">115</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.115"></a>
 <span class="sourceLineNo">116</span>            }<a name="line.116"></a>
 <span class="sourceLineNo">117</span>        });<a name="line.117"></a>
 <span class="sourceLineNo">118</span>        registerContext(Number.class, (c) -&gt; {<a name="line.118"></a>
 <span class="sourceLineNo">119</span>            try {<a name="line.119"></a>
 <span class="sourceLineNo">120</span>                return parseAndValidateNumber(c, Double.MAX_VALUE);<a name="line.120"></a>
 <span class="sourceLineNo">121</span>            } catch (NumberFormatException e) {<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.122"></a>
+<span class="sourceLineNo">122</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.122"></a>
 <span class="sourceLineNo">123</span>            }<a name="line.123"></a>
 <span class="sourceLineNo">124</span>        });<a name="line.124"></a>
 <span class="sourceLineNo">125</span>        registerContext(BigDecimal.class, (c) -&gt; {<a name="line.125"></a>
@@ -136,7 +136,7 @@
 <span class="sourceLineNo">128</span>                validateMinMax(c, number, null);<a name="line.128"></a>
 <span class="sourceLineNo">129</span>                return number;<a name="line.129"></a>
 <span class="sourceLineNo">130</span>            } catch (NumberFormatException e) {<a name="line.130"></a>
-<span class="sourceLineNo">131</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.131"></a>
+<span class="sourceLineNo">131</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.131"></a>
 <span class="sourceLineNo">132</span>            }<a name="line.132"></a>
 <span class="sourceLineNo">133</span>        });<a name="line.133"></a>
 <span class="sourceLineNo">134</span>        registerContext(BigInteger.class, (c) -&gt; {<a name="line.134"></a>
@@ -145,7 +145,7 @@
 <span class="sourceLineNo">137</span>                validateMinMax(c, number, null);<a name="line.137"></a>
 <span class="sourceLineNo">138</span>                return number.toBigIntegerExact();<a name="line.138"></a>
 <span class="sourceLineNo">139</span>            } catch (NumberFormatException e) {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER);<a name="line.140"></a>
+<span class="sourceLineNo">140</span>                throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());<a name="line.140"></a>
 <span class="sourceLineNo">141</span>            }<a name="line.141"></a>
 <span class="sourceLineNo">142</span>        });<a name="line.142"></a>
 <span class="sourceLineNo">143</span>        registerContext(Boolean.class, (c) -&gt; ACFUtil.isTruthy(c.popFirstArg()));<a name="line.143"></a>
@@ -251,84 +251,85 @@
 <span class="sourceLineNo">243</span><a name="line.243"></a>
 <span class="sourceLineNo">244</span>    @NotNull<a name="line.244"></a>
 <span class="sourceLineNo">245</span>    private Number parseAndValidateNumber(R c, Number maxValue) throws InvalidCommandArgument {<a name="line.245"></a>
-<span class="sourceLineNo">246</span>        Number val = ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));<a name="line.246"></a>
+<span class="sourceLineNo">246</span>        Number val = ACFUtil.parseNumber(c.getFirstArg(), c.hasFlag("suffixes"));<a name="line.246"></a>
 <span class="sourceLineNo">247</span>        validateMinMax(c, val, maxValue);<a name="line.247"></a>
-<span class="sourceLineNo">248</span>        return val;<a name="line.248"></a>
-<span class="sourceLineNo">249</span>    }<a name="line.249"></a>
-<span class="sourceLineNo">250</span><a name="line.250"></a>
-<span class="sourceLineNo">251</span>    private void validateMinMax(R c, Number val, Number maxValue) throws InvalidCommandArgument {<a name="line.251"></a>
-<span class="sourceLineNo">252</span>        Number minValue = c.getFlagValue("min", (Integer) null);<a name="line.252"></a>
-<span class="sourceLineNo">253</span>        maxValue = c.getFlagValue("max", maxValue != null ? maxValue.intValue() : null);<a name="line.253"></a>
-<span class="sourceLineNo">254</span>        if (maxValue != null &amp;&amp; val.doubleValue() &gt; maxValue.doubleValue()) {<a name="line.254"></a>
-<span class="sourceLineNo">255</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));<a name="line.255"></a>
-<span class="sourceLineNo">256</span>        }<a name="line.256"></a>
-<span class="sourceLineNo">257</span>        if (minValue != null &amp;&amp; val.doubleValue() &lt; minValue.doubleValue()) {<a name="line.257"></a>
-<span class="sourceLineNo">258</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_LEAST, "{min}", String.valueOf(minValue));<a name="line.258"></a>
-<span class="sourceLineNo">259</span>        }<a name="line.259"></a>
-<span class="sourceLineNo">260</span>    }<a name="line.260"></a>
-<span class="sourceLineNo">261</span><a name="line.261"></a>
+<span class="sourceLineNo">248</span>        c.popFirstArg(); // pop later so we can have a chance to display a nicer error message<a name="line.248"></a>
+<span class="sourceLineNo">249</span>        return val;<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    }<a name="line.250"></a>
+<span class="sourceLineNo">251</span><a name="line.251"></a>
+<span class="sourceLineNo">252</span>    private void validateMinMax(R c, Number val, Number maxValue) throws InvalidCommandArgument {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>        Number minValue = c.getFlagValue("min", (Integer) null);<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        maxValue = c.getFlagValue("max", maxValue != null ? maxValue.intValue() : null);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>        if (maxValue != null &amp;&amp; val.doubleValue() &gt; maxValue.doubleValue()) {<a name="line.255"></a>
+<span class="sourceLineNo">256</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));<a name="line.256"></a>
+<span class="sourceLineNo">257</span>        }<a name="line.257"></a>
+<span class="sourceLineNo">258</span>        if (minValue != null &amp;&amp; val.doubleValue() &lt; minValue.doubleValue()) {<a name="line.258"></a>
+<span class="sourceLineNo">259</span>            throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_LEAST, "{min}", String.valueOf(minValue));<a name="line.259"></a>
+<span class="sourceLineNo">260</span>        }<a name="line.260"></a>
+<span class="sourceLineNo">261</span>    }<a name="line.261"></a>
 <span class="sourceLineNo">262</span><a name="line.262"></a>
-<span class="sourceLineNo">263</span>    /**<a name="line.263"></a>
-<span class="sourceLineNo">264</span>     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}<a name="line.264"></a>
-<span class="sourceLineNo">265</span>     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender<a name="line.265"></a>
-<span class="sourceLineNo">266</span>     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)<a name="line.266"></a>
-<span class="sourceLineNo">267</span>     */<a name="line.267"></a>
-<span class="sourceLineNo">268</span>    @Deprecated<a name="line.268"></a>
-<span class="sourceLineNo">269</span>    public &lt;T&gt; void registerSenderAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.269"></a>
-<span class="sourceLineNo">270</span>        contextMap.put(context, supplier);<a name="line.270"></a>
-<span class="sourceLineNo">271</span>    }<a name="line.271"></a>
-<span class="sourceLineNo">272</span><a name="line.272"></a>
-<span class="sourceLineNo">273</span>    /**<a name="line.273"></a>
-<span class="sourceLineNo">274</span>     * Registers a context resolver that may conditionally consume input, falling back to using the context of the<a name="line.274"></a>
-<span class="sourceLineNo">275</span>     * issuer to potentially fulfill this context.<a name="line.275"></a>
-<span class="sourceLineNo">276</span>     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}<a name="line.276"></a>
-<span class="sourceLineNo">277</span>     * if you want to consume that input.<a name="line.277"></a>
-<span class="sourceLineNo">278</span>     */<a name="line.278"></a>
-<span class="sourceLineNo">279</span>    public &lt;T&gt; void registerIssuerAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.279"></a>
-<span class="sourceLineNo">280</span>        contextMap.put(context, supplier);<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
-<span class="sourceLineNo">282</span><a name="line.282"></a>
-<span class="sourceLineNo">283</span>    /**<a name="line.283"></a>
-<span class="sourceLineNo">284</span>     * Registers a context resolver that will never consume input. It will always satisfy its context based on the<a name="line.284"></a>
-<span class="sourceLineNo">285</span>     * issuer of the command, so it will not appear in syntax strings.<a name="line.285"></a>
-<span class="sourceLineNo">286</span>     */<a name="line.286"></a>
-<span class="sourceLineNo">287</span>    public &lt;T&gt; void registerIssuerOnlyContext(Class&lt;T&gt; context, IssuerOnlyContextResolver&lt;T, R&gt; supplier) {<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        contextMap.put(context, supplier);<a name="line.288"></a>
-<span class="sourceLineNo">289</span>    }<a name="line.289"></a>
-<span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span>    /**<a name="line.291"></a>
-<span class="sourceLineNo">292</span>     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always<a name="line.292"></a>
-<span class="sourceLineNo">293</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.293"></a>
-<span class="sourceLineNo">294</span>     */<a name="line.294"></a>
-<span class="sourceLineNo">295</span>    public &lt;T&gt; void registerOptionalContext(Class&lt;T&gt; context, OptionalContextResolver&lt;T, R&gt; supplier) {<a name="line.295"></a>
-<span class="sourceLineNo">296</span>        contextMap.put(context, supplier);<a name="line.296"></a>
-<span class="sourceLineNo">297</span>    }<a name="line.297"></a>
-<span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>    /**<a name="line.299"></a>
-<span class="sourceLineNo">300</span>     * Registers a context that requires input from the command issuer to resolve. This resolver should always<a name="line.300"></a>
-<span class="sourceLineNo">301</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.301"></a>
-<span class="sourceLineNo">302</span>     */<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    public &lt;T&gt; void registerContext(Class&lt;T&gt; context, ContextResolver&lt;T, R&gt; supplier) {<a name="line.303"></a>
-<span class="sourceLineNo">304</span>        contextMap.put(context, supplier);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span>    public ContextResolver&lt;?, R&gt; getResolver(Class&lt;?&gt; type) {<a name="line.307"></a>
-<span class="sourceLineNo">308</span>        Class&lt;?&gt; rootType = type;<a name="line.308"></a>
-<span class="sourceLineNo">309</span>        do {<a name="line.309"></a>
-<span class="sourceLineNo">310</span>            if (type == Object.class) {<a name="line.310"></a>
-<span class="sourceLineNo">311</span>                break;<a name="line.311"></a>
-<span class="sourceLineNo">312</span>            }<a name="line.312"></a>
-<span class="sourceLineNo">313</span><a name="line.313"></a>
-<span class="sourceLineNo">314</span>            final ContextResolver&lt;?, R&gt; resolver = contextMap.get(type);<a name="line.314"></a>
-<span class="sourceLineNo">315</span>            if (resolver != null) {<a name="line.315"></a>
-<span class="sourceLineNo">316</span>                return resolver;<a name="line.316"></a>
-<span class="sourceLineNo">317</span>            }<a name="line.317"></a>
-<span class="sourceLineNo">318</span>        } while ((type = type.getSuperclass()) != null);<a name="line.318"></a>
-<span class="sourceLineNo">319</span><a name="line.319"></a>
-<span class="sourceLineNo">320</span>        this.manager.log(LogLevel.ERROR, "Could not find context resolver", new IllegalStateException("No context resolver defined for " + rootType.getName()));<a name="line.320"></a>
-<span class="sourceLineNo">321</span>        return null;<a name="line.321"></a>
-<span class="sourceLineNo">322</span>    }<a name="line.322"></a>
-<span class="sourceLineNo">323</span>}<a name="line.323"></a>
+<span class="sourceLineNo">263</span><a name="line.263"></a>
+<span class="sourceLineNo">264</span>    /**<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender<a name="line.266"></a>
+<span class="sourceLineNo">267</span>     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)<a name="line.267"></a>
+<span class="sourceLineNo">268</span>     */<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    @Deprecated<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    public &lt;T&gt; void registerSenderAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        contextMap.put(context, supplier);<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    }<a name="line.272"></a>
+<span class="sourceLineNo">273</span><a name="line.273"></a>
+<span class="sourceLineNo">274</span>    /**<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * Registers a context resolver that may conditionally consume input, falling back to using the context of the<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     * issuer to potentially fulfill this context.<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * if you want to consume that input.<a name="line.278"></a>
+<span class="sourceLineNo">279</span>     */<a name="line.279"></a>
+<span class="sourceLineNo">280</span>    public &lt;T&gt; void registerIssuerAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        contextMap.put(context, supplier);<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    }<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>    /**<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     * Registers a context resolver that will never consume input. It will always satisfy its context based on the<a name="line.285"></a>
+<span class="sourceLineNo">286</span>     * issuer of the command, so it will not appear in syntax strings.<a name="line.286"></a>
+<span class="sourceLineNo">287</span>     */<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    public &lt;T&gt; void registerIssuerOnlyContext(Class&lt;T&gt; context, IssuerOnlyContextResolver&lt;T, R&gt; supplier) {<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        contextMap.put(context, supplier);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>    }<a name="line.290"></a>
+<span class="sourceLineNo">291</span><a name="line.291"></a>
+<span class="sourceLineNo">292</span>    /**<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always<a name="line.293"></a>
+<span class="sourceLineNo">294</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.294"></a>
+<span class="sourceLineNo">295</span>     */<a name="line.295"></a>
+<span class="sourceLineNo">296</span>    public &lt;T&gt; void registerOptionalContext(Class&lt;T&gt; context, OptionalContextResolver&lt;T, R&gt; supplier) {<a name="line.296"></a>
+<span class="sourceLineNo">297</span>        contextMap.put(context, supplier);<a name="line.297"></a>
+<span class="sourceLineNo">298</span>    }<a name="line.298"></a>
+<span class="sourceLineNo">299</span><a name="line.299"></a>
+<span class="sourceLineNo">300</span>    /**<a name="line.300"></a>
+<span class="sourceLineNo">301</span>     * Registers a context that requires input from the command issuer to resolve. This resolver should always<a name="line.301"></a>
+<span class="sourceLineNo">302</span>     * call {@link CommandExecutionContext#popFirstArg()}<a name="line.302"></a>
+<span class="sourceLineNo">303</span>     */<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    public &lt;T&gt; void registerContext(Class&lt;T&gt; context, ContextResolver&lt;T, R&gt; supplier) {<a name="line.304"></a>
+<span class="sourceLineNo">305</span>        contextMap.put(context, supplier);<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    }<a name="line.306"></a>
+<span class="sourceLineNo">307</span><a name="line.307"></a>
+<span class="sourceLineNo">308</span>    public ContextResolver&lt;?, R&gt; getResolver(Class&lt;?&gt; type) {<a name="line.308"></a>
+<span class="sourceLineNo">309</span>        Class&lt;?&gt; rootType = type;<a name="line.309"></a>
+<span class="sourceLineNo">310</span>        do {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>            if (type == Object.class) {<a name="line.311"></a>
+<span class="sourceLineNo">312</span>                break;<a name="line.312"></a>
+<span class="sourceLineNo">313</span>            }<a name="line.313"></a>
+<span class="sourceLineNo">314</span><a name="line.314"></a>
+<span class="sourceLineNo">315</span>            final ContextResolver&lt;?, R&gt; resolver = contextMap.get(type);<a name="line.315"></a>
+<span class="sourceLineNo">316</span>            if (resolver != null) {<a name="line.316"></a>
+<span class="sourceLineNo">317</span>                return resolver;<a name="line.317"></a>
+<span class="sourceLineNo">318</span>            }<a name="line.318"></a>
+<span class="sourceLineNo">319</span>        } while ((type = type.getSuperclass()) != null);<a name="line.319"></a>
+<span class="sourceLineNo">320</span><a name="line.320"></a>
+<span class="sourceLineNo">321</span>        this.manager.log(LogLevel.ERROR, "Could not find context resolver", new IllegalStateException("No context resolver defined for " + rootType.getName()));<a name="line.321"></a>
+<span class="sourceLineNo">322</span>        return null;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>    }<a name="line.323"></a>
+<span class="sourceLineNo">324</span>}<a name="line.324"></a>
 
 
 

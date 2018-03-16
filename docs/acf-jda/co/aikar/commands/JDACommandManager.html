@@ -112,7 +112,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.19">JDACommandManager</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.18">JDACommandManager</a>
 extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</pre>
 </li>
 </ul>
@@ -193,8 +193,8 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>co.aikar.commands.CommandExecutionContext</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandManager.html#createCommandContext-co.aikar.commands.RegisteredCommand-java.lang.reflect.Parameter-co.aikar.commands.CommandIssuer-java.util.List-int-java.util.Map-">createCommandContext</a></span>(co.aikar.commands.RegisteredCommand&nbsp;command,
-                    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html?is-external=true" title="class or interface in java.lang.reflect">Parameter</a>&nbsp;parameter,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandManager.html#createCommandContext-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandParameter-co.aikar.commands.CommandIssuer-java.util.List-int-java.util.Map-">createCommandContext</a></span>(co.aikar.commands.RegisteredCommand&nbsp;command,
+                    co.aikar.commands.CommandParameter&nbsp;parameter,
                     co.aikar.commands.CommandIssuer&nbsp;sender,
                     <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;args,
                     int&nbsp;i,
@@ -321,7 +321,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>completions</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDACommandCompletions.html" title="class in co.aikar.commands">JDACommandCompletions</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.34">completions</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDACommandCompletions.html" title="class in co.aikar.commands">JDACommandCompletions</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.33">completions</a></pre>
 </li>
 </ul>
 <a name="contexts">
@@ -330,7 +330,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>contexts</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDACommandContexts.html" title="class in co.aikar.commands">JDACommandContexts</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.35">contexts</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDACommandContexts.html" title="class in co.aikar.commands">JDACommandContexts</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.34">contexts</a></pre>
 </li>
 </ul>
 <a name="locales">
@@ -339,7 +339,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>locales</h4>
-<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDALocales.html" title="class in co.aikar.commands">JDALocales</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.36">locales</a></pre>
+<pre>protected&nbsp;<a href="../../../co/aikar/commands/JDALocales.html" title="class in co.aikar.commands">JDALocales</a> <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.35">locales</a></pre>
 </li>
 </ul>
 <a name="commands">
@@ -348,7 +348,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>commands</h4>
-<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/JDARootCommand.html" title="class in co.aikar.commands">JDARootCommand</a>&gt; <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.39">commands</a></pre>
+<pre>protected&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../co/aikar/commands/JDARootCommand.html" title="class in co.aikar.commands">JDARootCommand</a>&gt; <a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.38">commands</a></pre>
 </li>
 </ul>
 </li>
@@ -365,7 +365,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>JDACommandManager</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.41">JDACommandManager</a>(net.dv8tion.jda.core.JDA&nbsp;jda)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.40">JDACommandManager</a>(net.dv8tion.jda.core.JDA&nbsp;jda)</pre>
 </li>
 </ul>
 <a name="JDACommandManager-net.dv8tion.jda.core.JDA-co.aikar.commands.JDAOptions-">
@@ -374,7 +374,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>JDACommandManager</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.45">JDACommandManager</a>(net.dv8tion.jda.core.JDA&nbsp;jda,
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.44">JDACommandManager</a>(net.dv8tion.jda.core.JDA&nbsp;jda,
                          <a href="../../../co/aikar/commands/JDAOptions.html" title="class in co.aikar.commands">JDAOptions</a>&nbsp;options)</pre>
 </li>
 </ul>
@@ -392,7 +392,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>options</h4>
-<pre>public static&nbsp;<a href="../../../co/aikar/commands/JDAOptions.html" title="class in co.aikar.commands">JDAOptions</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.99">options</a>()</pre>
+<pre>public static&nbsp;<a href="../../../co/aikar/commands/JDAOptions.html" title="class in co.aikar.commands">JDAOptions</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.98">options</a>()</pre>
 </li>
 </ul>
 <a name="getJDA--">
@@ -401,7 +401,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getJDA</h4>
-<pre>public&nbsp;net.dv8tion.jda.core.JDA&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.103">getJDA</a>()</pre>
+<pre>public&nbsp;net.dv8tion.jda.core.JDA&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.102">getJDA</a>()</pre>
 </li>
 </ul>
 <a name="getLogger--">
@@ -410,7 +410,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getLogger</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.107">getLogger</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.106">getLogger</a>()</pre>
 </li>
 </ul>
 <a name="setLogger-java.util.logging.Logger-">
@@ -419,7 +419,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>setLogger</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.111">setLogger</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a>&nbsp;logger)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.110">setLogger</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a>&nbsp;logger)</pre>
 </li>
 </ul>
 <a name="getDefaultConfig--">
@@ -428,7 +428,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefaultConfig</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandConfig.html" title="interface in co.aikar.commands">CommandConfig</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.115">getDefaultConfig</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandConfig.html" title="interface in co.aikar.commands">CommandConfig</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.114">getDefaultConfig</a>()</pre>
 </li>
 </ul>
 <a name="setDefaultConfig-co.aikar.commands.CommandConfig-">
@@ -437,7 +437,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>setDefaultConfig</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.119">setDefaultConfig</a>(@NotNull
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.118">setDefaultConfig</a>(@NotNull
                              @NotNull <a href="../../../co/aikar/commands/CommandConfig.html" title="interface in co.aikar.commands">CommandConfig</a>&nbsp;defaultConfig)</pre>
 </li>
 </ul>
@@ -447,7 +447,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getConfigProvider</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandConfigProvider.html" title="interface in co.aikar.commands">CommandConfigProvider</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.123">getConfigProvider</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandConfigProvider.html" title="interface in co.aikar.commands">CommandConfigProvider</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.122">getConfigProvider</a>()</pre>
 </li>
 </ul>
 <a name="setConfigProvider-co.aikar.commands.CommandConfigProvider-">
@@ -456,7 +456,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>setConfigProvider</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.127">setConfigProvider</a>(<a href="../../../co/aikar/commands/CommandConfigProvider.html" title="interface in co.aikar.commands">CommandConfigProvider</a>&nbsp;configProvider)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.126">setConfigProvider</a>(<a href="../../../co/aikar/commands/CommandConfigProvider.html" title="interface in co.aikar.commands">CommandConfigProvider</a>&nbsp;configProvider)</pre>
 </li>
 </ul>
 <a name="getPermissionResolver--">
@@ -465,7 +465,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPermissionResolver</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.131">getPermissionResolver</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.130">getPermissionResolver</a>()</pre>
 </li>
 </ul>
 <a name="setPermissionResolver-co.aikar.commands.CommandPermissionResolver-">
@@ -474,7 +474,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>setPermissionResolver</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.135">setPermissionResolver</a>(<a href="../../../co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a>&nbsp;permissionResolver)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.134">setPermissionResolver</a>(<a href="../../../co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a>&nbsp;permissionResolver)</pre>
 </li>
 </ul>
 <a name="getCommandContexts--">
@@ -483,7 +483,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandContexts</h4>
-<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;?&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.140">getCommandContexts</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandContexts&lt;?&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.139">getCommandContexts</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandContexts</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -496,7 +496,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandCompletions</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;?&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.148">getCommandCompletions</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandCompletions&lt;?&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.147">getCommandCompletions</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandCompletions</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -509,7 +509,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>registerCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.153">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.152">registerCommand</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>registerCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -522,7 +522,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>hasRegisteredCommands</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.166">hasRegisteredCommands</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.165">hasRegisteredCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasRegisteredCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -535,7 +535,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>isCommandIssuer</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.171">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.170">isCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>isCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -548,7 +548,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandIssuer</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.176">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.175">getCommandIssuer</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -561,7 +561,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>createRootCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.184">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
+<pre>public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.183">createRootCommand</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>createRootCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
@@ -574,21 +574,21 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>getLocales</h4>
-<pre>public&nbsp;co.aikar.commands.Locales&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.189">getLocales</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.Locales&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.188">getLocales</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getLocales</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.MessageReceivedEvent,<a href="../../../co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a>,<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.MessageFormatter&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;,<a href="../../../co/aikar/commands/JDACommandExecutionContext.html" title="class in co.aikar.commands">JDACommandExecutionContext</a>,<a href="../../../co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands">JDAConditionContext</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
-<a name="createCommandContext-co.aikar.commands.RegisteredCommand-java.lang.reflect.Parameter-co.aikar.commands.CommandIssuer-java.util.List-int-java.util.Map-">
+<a name="createCommandContext-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandParameter-co.aikar.commands.CommandIssuer-java.util.List-int-java.util.Map-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createCommandContext</h4>
-<pre>public&nbsp;co.aikar.commands.CommandExecutionContext&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.198">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
-                                                                      <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html?is-external=true" title="class or interface in java.lang.reflect">Parameter</a>&nbsp;parameter,
+<pre>public&nbsp;co.aikar.commands.CommandExecutionContext&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.197">createCommandContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+                                                                      co.aikar.commands.CommandParameter&nbsp;parameter,
                                                                       co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                       <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;args,
                                                                       int&nbsp;i,
@@ -605,7 +605,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockList">
 <li class="blockList">
 <h4>createCompletionContext</h4>
-<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.203">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre>public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.202">createCompletionContext</a>(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                                           co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;input,
                                                                           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;config,
@@ -622,7 +622,7 @@ extends co.aikar.commands.CommandManager&lt;net.dv8tion.jda.core.events.message.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>log</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.210">log</a>(co.aikar.commands.LogLevel&nbsp;level,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandManager.html#line.209">log</a>(co.aikar.commands.LogLevel&nbsp;level,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;throwable)</pre>
 <dl>

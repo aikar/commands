@@ -90,19 +90,19 @@
 <span class="sourceLineNo">082</span>            if (paramIdx &gt;= command.parameters.length) {<a name="line.82"></a>
 <span class="sourceLineNo">083</span>                throw new IllegalArgumentException("Param index is higher than number of parameters");<a name="line.83"></a>
 <span class="sourceLineNo">084</span>            }<a name="line.84"></a>
-<span class="sourceLineNo">085</span>            Parameter param = command.parameters[paramIdx];<a name="line.85"></a>
+<span class="sourceLineNo">085</span>            CommandParameter param = command.parameters[paramIdx];<a name="line.85"></a>
 <span class="sourceLineNo">086</span>            Class&lt;?&gt; paramType = param.getType();<a name="line.86"></a>
 <span class="sourceLineNo">087</span>            if (!clazz.isAssignableFrom(paramType)) {<a name="line.87"></a>
 <span class="sourceLineNo">088</span>                throw new IllegalArgumentException(param.getName() +":" + paramType.getName() + " can not satisfy " + clazz.getName());<a name="line.88"></a>
 <span class="sourceLineNo">089</span>            }<a name="line.89"></a>
 <span class="sourceLineNo">090</span>            name = param.getName();<a name="line.90"></a>
 <span class="sourceLineNo">091</span>        } else {<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            Parameter[] parameters = command.parameters;<a name="line.92"></a>
+<span class="sourceLineNo">092</span>            CommandParameter[] parameters = command.parameters;<a name="line.92"></a>
 <span class="sourceLineNo">093</span>            for (int i = 0; i &lt; parameters.length; i++) {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                Parameter param = parameters[i];<a name="line.94"></a>
-<span class="sourceLineNo">095</span>                if (clazz.isAssignableFrom(param.getType())) {<a name="line.95"></a>
+<span class="sourceLineNo">094</span>                final CommandParameter parameter = parameters[i];<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                if (clazz.isAssignableFrom(parameter.getType())) {<a name="line.95"></a>
 <span class="sourceLineNo">096</span>                    paramIdx = i;<a name="line.96"></a>
-<span class="sourceLineNo">097</span>                    name = param.getName();<a name="line.97"></a>
+<span class="sourceLineNo">097</span>                    name = parameter.getName();<a name="line.97"></a>
 <span class="sourceLineNo">098</span>                    break;<a name="line.98"></a>
 <span class="sourceLineNo">099</span>                }<a name="line.99"></a>
 <span class="sourceLineNo">100</span>            }<a name="line.100"></a>

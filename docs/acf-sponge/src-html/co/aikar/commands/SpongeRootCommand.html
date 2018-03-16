@@ -74,7 +74,7 @@
 <span class="sourceLineNo">066</span><a name="line.66"></a>
 <span class="sourceLineNo">067</span>    @Override<a name="line.67"></a>
 <span class="sourceLineNo">068</span>    public List&lt;String&gt; getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location&lt;World&gt; location) throws CommandException {<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");<a name="line.69"></a>
+<span class="sourceLineNo">069</span>        String[] args = arguments.isEmpty() ? new String[]{""} : arguments.split(" ");<a name="line.69"></a>
 <span class="sourceLineNo">070</span>        return getTabCompletions(manager.getCommandIssuer(source), this.name, args);<a name="line.70"></a>
 <span class="sourceLineNo">071</span>    }<a name="line.71"></a>
 <span class="sourceLineNo">072</span><a name="line.72"></a>
