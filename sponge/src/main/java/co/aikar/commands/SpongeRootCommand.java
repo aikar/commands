@@ -66,7 +66,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
-        String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
+        String[] args = arguments.isEmpty() ? new String[]{""} : arguments.split(" ");
         return getTabCompletions(manager.getCommandIssuer(source), this.name, args);
     }
 

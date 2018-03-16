@@ -496,6 +496,7 @@ public abstract class BaseCommand {
 
     List<String> getCommandsForCompletion(CommandIssuer issuer, String[] args) {
         final Set<String> cmds = new HashSet<>();
+        final int cmdIndex = Math.max(0, args.length - 1);
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
@@ -506,7 +507,7 @@ public abstract class BaseCommand {
                 }
 
                 String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);
-                cmds.add(split[args.length - 1]);
+                cmds.add(split[cmdIndex]);
             }
         }
         return new ArrayList<>(cmds);
