@@ -31,7 +31,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -178,7 +177,7 @@ public class BungeeCommandManager extends CommandManager<
     }
 
     @Override
-    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);
     }
 

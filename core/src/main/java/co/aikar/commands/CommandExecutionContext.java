@@ -23,13 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Flags;
-import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.ContextResolver;
-import co.aikar.commands.contexts.IssuerAwareContextResolver;
-import co.aikar.commands.contexts.IssuerOnlyContextResolver;
-import com.google.common.collect.Maps;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
@@ -39,7 +33,7 @@ import java.util.Map;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class CommandExecutionContext <CEC extends CommandExecutionContext, I extends CommandIssuer> {
     private final RegisteredCommand cmd;
-    private final Parameter param;
+    private final CommandParameter param;
     protected final I issuer;
     private final List<String> args;
     private final int index;
@@ -47,8 +41,8 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     private final Map<String, String> flags;
     private final CommandManager manager;
 
-    CommandExecutionContext(RegisteredCommand cmd, Parameter param, I sender, List<String> args,
-                                   int index, Map<String, Object> passedArgs) {
+    CommandExecutionContext(RegisteredCommand cmd, CommandParameter param, I sender, List<String> args,
+                            int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
         this.manager = cmd.scope.manager;
         this.param = param;
@@ -56,35 +50,8 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
         this.args = args;
         this.index = index;
         this.passedArgs = passedArgs;
-        this.flags = Maps.newHashMap();
-        Flags flags = param.getAnnotation(Flags.class);
-        if (flags != null) {
-            parseFlags(flags.value());
-        }
-        inheritContextFlags(cmd.scope);
-    }
+        this.flags = param.getFlags();
 
-    private void inheritContextFlags(BaseCommand scope) {
-        if (!scope.contextFlags.isEmpty()) {
-            Class<?> pCls = param.getType();
-            do {
-                parseFlags(scope.contextFlags.get(pCls));
-            } while ((pCls = pCls.getSuperclass()) != null);
-        }
-        if (scope.parentCommand != null) {
-            inheritContextFlags(scope.parentCommand);
-        }
-    }
-
-    private void parseFlags(String flags) {
-        if (flags != null) {
-            for (String s : ACFPatterns.COMMA.split(manager.getCommandReplacements().replace(flags))) {
-                String[] v = ACFPatterns.EQUALS.split(s, 2);
-                if (!this.flags.containsKey(v[0])) {
-                    this.flags.put(v[0], v.length > 1 ? v[1] : null);
-                }
-            }
-        }
     }
 
     public String popFirstArg() {
@@ -112,19 +79,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public boolean canOverridePlayerContext() {
-        int numRequired = getNumParams();
-        for (int i = 0; i < cmd.resolvers.length; i++) {
-            Parameter parameter = cmd.parameters[i];
-            //noinspection unchecked
-            ContextResolver<?, ?> resolver = cmd.resolvers[i];
-            if (parameter.getAnnotation(Optional.class) != null || parameter.getAnnotation(Default.class) != null) {
-                numRequired--;
-            } else if (resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver) {
-                numRequired--;
-            }
-        }
-
-        return numRequired >= args.size();
+        return cmd.requiredResolvers >= args.size();
     }
 
     public Object getResolvedArg(String arg) {
@@ -156,7 +111,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public boolean isOptional() {
-        return param.getAnnotation(Optional.class) != null;
+        return param.isOptional();
     }
     public boolean hasFlag(String flag) {
         return flags.containsKey(flag);
@@ -171,11 +126,11 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> cls) {
-        return param.getAnnotation(cls);
+        return param.getParameter().getAnnotation(cls);
     }
 
     public <T extends Annotation> boolean hasAnnotation(Class<T> cls) {
-        return param.getAnnotation(cls) != null;
+        return param.getParameter().isAnnotationPresent(cls);
     }
 
     public RegisteredCommand getCmd() {
@@ -183,7 +138,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public Parameter getParam() {
-        return this.param;
+        return this.param.getParameter();
     }
 
     public I getIssuer() {

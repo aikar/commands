@@ -34,7 +34,6 @@ import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +145,7 @@ public class SpongeCommandManager extends CommandManager<
     }
 
     @Override
-    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
     }
 

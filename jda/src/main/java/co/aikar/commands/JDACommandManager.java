@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -195,7 +194,7 @@ public class JDACommandManager extends CommandManager<
     }
 
     @Override
-    public CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public CommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new JDACommandExecutionContext(command, parameter, (JDACommandEvent) sender, args, i, passedArgs);
     }
 

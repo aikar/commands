@@ -82,19 +82,19 @@ public class CommandCompletionContext <I extends CommandIssuer> {
             if (paramIdx >= command.parameters.length) {
                 throw new IllegalArgumentException("Param index is higher than number of parameters");
             }
-            Parameter param = command.parameters[paramIdx];
+            CommandParameter param = command.parameters[paramIdx];
             Class<?> paramType = param.getType();
             if (!clazz.isAssignableFrom(paramType)) {
                 throw new IllegalArgumentException(param.getName() +":" + paramType.getName() + " can not satisfy " + clazz.getName());
             }
             name = param.getName();
         } else {
-            Parameter[] parameters = command.parameters;
+            CommandParameter[] parameters = command.parameters;
             for (int i = 0; i < parameters.length; i++) {
-                Parameter param = parameters[i];
-                if (clazz.isAssignableFrom(param.getType())) {
+                final CommandParameter parameter = parameters[i];
+                if (clazz.isAssignableFrom(parameter.getType())) {
                     paramIdx = i;
-                    name = param.getName();
+                    name = parameter.getName();
                     break;
                 }
             }
