@@ -125,31 +125,78 @@ public abstract class BaseCommand {
     void onRegister(CommandManager manager, String cmd) {
         manager.injectDependencies(this);
         this.manager = manager;
+
         final Annotations annotations = manager.getAnnotations();
         final Class<? extends BaseCommand> self = this.getClass();
 
-        final String perm = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
-        String rootCmdAlias = annotations.getAnnotationValue(self, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE);
-        CommandReplacements commandReplacements = manager.getCommandReplacements();
+        String[] cmdAliases = annotations.getAnnotationValues(self, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE | Annotations.NO_EMPTY);
 
-        if (cmd == null && rootCmdAlias != null) {
-            cmd = ACFPatterns.PIPE.split(rootCmdAlias)[0];
+        if (cmd == null && cmdAliases != null) {
+            cmd = cmdAliases[0];
         }
-        this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
 
+        this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
+        this.permission = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
         this.description = this.commandName + " commands";
         this.usageMessage = "/" + this.commandName;
         this.parentSubcommand = getParentSubcommand(this.getClass());
 
-        if (perm != null) {
-            this.permission = perm;
+        registerSubcommands();
+
+        if (cmdAliases != null) {
+            Set<String> cmdList = new HashSet<>();
+            Collections.addAll(cmdList, cmdAliases);
+            cmdList.remove(cmd);
+            for (String cmdAlias : cmdList) {
+                register(cmdAlias, this);
+            }
         }
 
+        if (cmd != null) {
+            register(cmd, this);
+        }
+        registerSubclasses(cmd);
+
+    }
+
+    private void registerSubclasses(String cmd) {
+        for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
+            if (BaseCommand.class.isAssignableFrom(clazz)) {
+                try {
+                    BaseCommand subCommand = null;
+                    Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+                    for (Constructor<?> declaredConstructor : declaredConstructors) {
+
+                        declaredConstructor.setAccessible(true);
+                        Parameter[] parameters = declaredConstructor.getParameters();
+                        if (parameters.length == 1) {
+                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);
+                        } else {
+                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
+                        }
+                    }
+                    if (subCommand != null) {
+                        subCommand.setParentCommand(this);
+                        subCommand.onRegister(manager, cmd);
+                        this.subCommands.putAll(subCommand.subCommands);
+                        this.registeredCommands.putAll(subCommand.registeredCommands);
+                    } else {
+                        this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());
+                    }
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    this.manager.log(LogLevel.ERROR, "Error registering subclass", e);
+                }
+            }
+        }
+    }
+
+    private void registerSubcommands() {
+        final Annotations annotations = manager.getAnnotations();
         boolean foundDefault = false;
         boolean foundCatchUnknown = false;
         boolean isParentEmpty = parentSubcommand.isEmpty();
 
-        for (Method method : self.getMethods()) {
+        for (Method method : this.getClass().getMethods()) {
             method.setAccessible(true);
             String sublist = null;
             String sub = getSubcommandValue(method);
@@ -206,48 +253,6 @@ public abstract class BaseCommand {
                 registerSubcommand(method, sublist);
             }
         }
-
-        if (rootCmdAlias != null) {
-            Set<String> cmdList = new HashSet<>();
-            Collections.addAll(cmdList, ACFPatterns.PIPE.split(rootCmdAlias));
-            cmdList.remove(cmd);
-            for (String cmdAlias : cmdList) {
-                register(cmdAlias, this);
-            }
-        }
-
-        if (cmd != null) {
-            register(cmd, this);
-        }
-        for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
-            if (BaseCommand.class.isAssignableFrom(clazz)) {
-                try {
-                    BaseCommand subCommand = null;
-                    Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
-                    for (Constructor<?> declaredConstructor : declaredConstructors) {
-
-                        declaredConstructor.setAccessible(true);
-                        Parameter[] parameters = declaredConstructor.getParameters();
-                        if (parameters.length == 1) {
-                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);
-                        } else {
-                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
-                        }
-                    }
-                    if (subCommand != null) {
-                        subCommand.setParentCommand(this);
-                        subCommand.onRegister(manager, cmd);
-                        this.subCommands.putAll(subCommand.subCommands);
-                        this.registeredCommands.putAll(subCommand.registeredCommands);
-                    } else {
-                        this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());
-                    }
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
     private String getSubcommandValue(Method method) {
