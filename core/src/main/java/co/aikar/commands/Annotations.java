@@ -41,28 +41,41 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
     private final M manager;
 
     private Map<Class<? extends Annotation>, Method> valueMethods = new IdentityHashMap<>();
+    private Map<Class<? extends Annotation>, Void> noValueAnnotations = new IdentityHashMap<>();
 
     Annotations(M manager) {
         this.manager = manager;
     }
 
     String getValue(Annotation annotation, Class<? extends Annotation> annoClass, int options) {
-        if (annotation == null) {
-            // TODO: Alias support
-            return null;
-        }
-        try {
+        String value = null;
+
+        if (annotation != null) {
             Method valueMethod = valueMethods.get(annoClass);
             if (valueMethod == null) {
-                valueMethod = annoClass.getMethod("value");
-                valueMethod.setAccessible(true);
-                valueMethods.put(annoClass, valueMethod);
+                if (noValueAnnotations.containsKey(annoClass)) {
+                    value = "";
+                } else {
+                    try {
+                        valueMethod = annoClass.getMethod("value");
+                        value = (String) valueMethod.invoke(annotation);
+                        valueMethod.setAccessible(true);
+                        valueMethods.put(annoClass, valueMethod);
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                        if (!(e instanceof NoSuchMethodException)) {
+                            manager.log(LogLevel.ERROR, "Error getting annotation value", e);
+                        }
+                        noValueAnnotations.put(annoClass, null);
+                        value = "";
+                    }
+                }
             }
-            String value = (String) valueMethod.invoke(annotation);
-            if (value == null) {
-                // TODO: Alias support
-                return null;
-            }
+        }
+
+        // TODO: Aliases
+
+        // transforms
+        if (value != null) {
             if (hasOption(options, REPLACEMENTS)) {
                 value = manager.getCommandReplacements().replace(value);
             }
@@ -71,14 +84,13 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
             } else if (hasOption(options, UPPERCASE)) {
                 value = value.toUpperCase(manager.getLocales().getDefaultLocale());
             }
-            if (value.isEmpty() && hasOption(options, NO_EMPTY)) {
-                return null;
-            }
-            return value;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            manager.log(LogLevel.ERROR, "Error getting annotation value", e);
         }
-        return null;
+
+        // validation
+        if (value != null && value.isEmpty() && hasOption(options, NO_EMPTY)) {
+            value = null;
+        }
+        return value;
     }
 
     private static boolean hasOption(int options, int option) {
