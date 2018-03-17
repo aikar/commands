@@ -103,7 +103,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
                 this.syntax = replacements.replace(syntaxAnno.value());
             } else if (!requiresInput && canConsumeInput) {
                 this.syntax = "[" + name + "]";
-            } else if (!requiresInput) {
+            } else if (requiresInput) {
                 this.syntax = "<" + name + ">";
             }
         }
