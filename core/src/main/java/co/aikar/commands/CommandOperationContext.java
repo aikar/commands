@@ -79,8 +79,21 @@ public class CommandOperationContext <I extends CommandIssuer> {
         return registeredCommand;
     }
 
+    /**
+     * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     * @deprecated Use {@link #getAnnotationValue(Class)}
+     */
+    @Deprecated
     public <T extends Annotation> T getAnnotation(Class<T> anno) {
         return registeredCommand.method.getAnnotation(anno);
+    }
+
+    public <T extends Annotation> String getAnnotationValue(Class<T> cls) {
+        return manager.getAnnotations().getAnnotationValue(registeredCommand.method, cls);
+    }
+
+    public <T extends Annotation> String getAnnotationValue(Class<T> cls, int options) {
+        return manager.getAnnotations().getAnnotationValue(registeredCommand.method, cls, options);
     }
 
     public boolean hasAnnotation(Class<? extends Annotation> anno) {

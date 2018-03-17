@@ -27,7 +27,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         });
         this.registerIssuerOnlyContext(Guild.class, c -> {
             MessageReceivedEvent event = c.getIssuer().getIssuer();
-            if (event.isFromType(ChannelType.PRIVATE) && c.getAnnotation(Optional.class) == null) {
+            if (event.isFromType(ChannelType.PRIVATE) && !c.hasAnnotation(Optional.class)) {
                 throw new InvalidCommandArgument("This command can only be executed in a Guild.", false); // TODO: Message Keys
             } else {
                 return event.getGuild();

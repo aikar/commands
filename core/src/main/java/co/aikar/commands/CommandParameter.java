@@ -65,9 +65,10 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.manager = command.manager;
         this.paramIndex = paramIndex;
         CommandReplacements replacements = manager.getCommandReplacements();
+        Annotations annotations = manager.getAnnotations();
 
-        Default defaultAnno = param.getAnnotation(Default.class);
-        Description descAnno = param.getAnnotation(Description.class);
+        this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
+        this.description = annotations.getAnnotationValue(param, Description.class);
 
         //noinspection unchecked
         this.resolver = manager.getCommandContexts().getResolver(type);
@@ -77,41 +78,31 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
             ));
         }
 
-        this.description = descAnno != null ? descAnno.value() : null;
-        String defaultValue = defaultAnno != null ? replacements.replace(defaultAnno.value()) : null;
-        this.defaultValue = defaultValue != null && (type == String.class || !defaultValue.isEmpty()) ? defaultValue : null;
-
-
-        this.optional = param.isAnnotationPresent(Optional.class) || this.defaultValue != null;
+        this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null;
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
         this.commandIssuer = manager.isCommandIssuer(type);
         this.canConsumeInput = !(resolver instanceof IssuerOnlyContextResolver);
 
-        final Values values = param.getAnnotation(Values.class);
-        if (values != null) {
-            this.values = ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(values.value()));
-        } else {
-            this.values = null;
-        }
+        this.values = annotations.getAnnotationValues(param, Values.class);
 
         this.syntax = null;
         if (!commandIssuer) {
-            Syntax syntaxAnno = param.getAnnotation(Syntax.class);
-            if (syntaxAnno != null) {
-                this.syntax = replacements.replace(syntaxAnno.value());
-            } else if (!requiresInput && canConsumeInput) {
-                this.syntax = "[" + name + "]";
-            } else if (requiresInput) {
-                this.syntax = "<" + name + ">";
+            this.syntax = annotations.getAnnotationValue(param, Syntax.class);
+            if (syntax == null) {
+                if (!requiresInput && canConsumeInput) {
+                    this.syntax = "[" + name + "]";
+                } else if (requiresInput) {
+                    this.syntax = "<" + name + ">";
+                }
             }
         }
 
         this.flags = Maps.newHashMap();
-        Flags flags = param.getAnnotation(Flags.class);
+        String flags = annotations.getAnnotationValue(param, Flags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         if (flags != null) {
-            parseFlags(flags.value());
+            parseFlags(flags);
         }
         inheritContextFlags(command.scope);
     }

@@ -55,20 +55,19 @@ public class CommandConditions <
     }
 
     void validateConditions(CEC cec, Object value) throws InvalidCommandArgument {
-        Conditions conditions = cec.getParam().getAnnotation(Conditions.class);
+        String conditions = manager.getAnnotations().getAnnotationValue(cec.getParam(), Conditions.class);
         validateConditions(conditions, cec, value);
     }
 
     void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {
         RegisteredCommand cmd = context.getRegisteredCommand();
-        Conditions conditions = cmd.method.getAnnotation(Conditions.class);
+        String conditions = manager.getAnnotations().getAnnotationValue(cmd.method, Conditions.class);
         validateConditions(conditions, context);
         validateConditions(cmd.scope, context);
     }
 
-
     private void validateConditions(BaseCommand scope, CommandOperationContext operationContext) throws InvalidCommandArgument {
-        Conditions conditions = scope.getClass().getAnnotation(Conditions.class);
+        String conditions = manager.getAnnotations().getAnnotationValue(scope.getClass(), Conditions.class);
         validateConditions(conditions, operationContext);
 
         if (scope.parentCommand != null) {
@@ -76,12 +75,12 @@ public class CommandConditions <
         }
     }
 
-    private void validateConditions(Conditions condAnno, CommandOperationContext context) throws InvalidCommandArgument {
-        if (condAnno == null) {
+    private void validateConditions(String conditions, CommandOperationContext context) throws InvalidCommandArgument {
+        if (conditions == null) {
             return;
         }
 
-        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());
+        conditions = this.manager.getCommandReplacements().replace(conditions);
         CommandIssuer issuer = context.getCommandIssuer();
         for (String cond : ACFPatterns.PIPE.split(conditions)) {
             String[] split = ACFPatterns.COLON.split(cond, 2);
@@ -101,11 +100,11 @@ public class CommandConditions <
         }
     }
 
-    private void validateConditions(Conditions condAnno, CEC execContext, Object value) throws InvalidCommandArgument {
-        if (condAnno == null) {
+    private void validateConditions(String conditions, CEC execContext, Object value) throws InvalidCommandArgument {
+        if (conditions == null) {
             return;
         }
-        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());
+        conditions = this.manager.getCommandReplacements().replace(conditions);
         I issuer = execContext.getIssuer();
         for (String cond : ACFPatterns.PIPE.split(conditions)) {
             String[] split = ACFPatterns.COLON.split(cond, 2);

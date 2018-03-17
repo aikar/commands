@@ -125,9 +125,13 @@ public abstract class BaseCommand {
     void onRegister(CommandManager manager, String cmd) {
         manager.injectDependencies(this);
         this.manager = manager;
+        final Annotations annotations = manager.getAnnotations();
         final Class<? extends BaseCommand> self = this.getClass();
-        CommandAlias rootCmdAliasAnno = self.getAnnotation(CommandAlias.class);
-        String rootCmdAlias = rootCmdAliasAnno != null ? manager.getCommandReplacements().replace(rootCmdAliasAnno.value()).toLowerCase() : null;
+
+        final String perm = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
+        String rootCmdAlias = annotations.getAnnotationValue(self, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE);
+        CommandReplacements commandReplacements = manager.getCommandReplacements();
+
         if (cmd == null && rootCmdAlias != null) {
             cmd = ACFPatterns.PIPE.split(rootCmdAlias)[0];
         }
@@ -137,28 +141,28 @@ public abstract class BaseCommand {
         this.usageMessage = "/" + this.commandName;
         this.parentSubcommand = getParentSubcommand(this.getClass());
 
-        final CommandPermission perm = self.getAnnotation(CommandPermission.class);
         if (perm != null) {
-            this.permission = manager.getCommandReplacements().replace(perm.value());
+            this.permission = perm;
         }
 
         boolean foundDefault = false;
         boolean foundCatchUnknown = false;
         boolean isParentEmpty = parentSubcommand.isEmpty();
+
         for (Method method : self.getMethods()) {
             method.setAccessible(true);
             String sublist = null;
             String sub = getSubcommandValue(method);
-            final Default def = method.getAnnotation(Default.class);
-            final HelpCommand helpCommand = method.getAnnotation(HelpCommand.class);
-            final CommandAlias commandAliases = method.getAnnotation(CommandAlias.class);
+            final boolean def = annotations.hasAnnotation(method, Default.class);
+            final String helpCommand = annotations.getAnnotationValue(method, HelpCommand.class, Annotations.NOTHING);
+            final String commandAliases = annotations.getAnnotationValue(method, CommandAlias.class, Annotations.NOTHING);
 
-            if (!isParentEmpty && def != null) {
+            if (!isParentEmpty && def) {
                 sub = parentSubcommand;
             }
-            if (isParentEmpty && (def != null || (!foundDefault && helpCommand != null))) {
+            if (isParentEmpty && (def || (!foundDefault && helpCommand != null))) {
                 if (!foundDefault) {
-                    if (def != null) {
+                    if (def) {
                         this.subCommands.get(DEFAULT).clear();
                         foundDefault = true;
                     }
@@ -171,13 +175,16 @@ public abstract class BaseCommand {
             if (sub != null) {
                 sublist = sub;
             } else if (commandAliases != null) {
-                sublist = commandAliases.value();
+                sublist = commandAliases;
             } else if (helpCommand != null) {
-                sublist = helpCommand.value();
+                sublist = helpCommand;
             }
 
-            PreCommand     preCommand = method.getAnnotation(PreCommand.class);
-            boolean hasCatchUnknown = method.isAnnotationPresent(CatchUnknown.class) || method.isAnnotationPresent(CatchAll.class) || method.isAnnotationPresent(UnknownHandler.class);
+            boolean preCommand = annotations.hasAnnotation(method, PreCommand.class);
+            boolean hasCatchUnknown = annotations.hasAnnotation(method, CatchUnknown.class) ||
+                    annotations.hasAnnotation(method, CatchAll.class) ||
+                    annotations.hasAnnotation(method, UnknownHandler.class);
+
             if (hasCatchUnknown || (!foundCatchUnknown && helpCommand != null)) {
                 if (!foundCatchUnknown) {
                     if (hasCatchUnknown) {
@@ -188,7 +195,7 @@ public abstract class BaseCommand {
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
-            } else if (preCommand != null) {
+            } else if (preCommand) {
                 if (this.preCommandHandler == null) {
                     this.preCommandHandler = method;
                 } else {
@@ -244,21 +251,21 @@ public abstract class BaseCommand {
     }
 
     private String getSubcommandValue(Method method) {
-        final Subcommand sub = method.getAnnotation(Subcommand.class);
+        final String sub = manager.getAnnotations().getAnnotationValue(method, Subcommand.class, Annotations.NOTHING);
         if (sub == null) {
             return null;
         }
         Class<?> clazz = method.getDeclaringClass();
         String parent = getParentSubcommand(clazz);
-        return parent == null || parent.isEmpty() ? sub.value() : parent + " " + sub.value();
+        return parent == null || parent.isEmpty() ? sub : parent + " " + sub;
     }
 
     private String getParentSubcommand(Class<?> clazz) {
         List<String> subList = new ArrayList<>();
         while (clazz != null) {
-            Subcommand classSub = clazz.getAnnotation(Subcommand.class);
-            if (classSub != null) {
-                subList.add(classSub.value());
+            String sub = manager.getAnnotations().getAnnotationValue(clazz, Subcommand.class, Annotations.NOTHING);
+            if (sub != null) {
+                subList.add(sub);
             }
             clazz = clazz.getEnclosingClass();
         }
@@ -289,9 +296,8 @@ public abstract class BaseCommand {
             subCommandParts[i] = split[0];
         }
         String prefSubCommand = ApacheCommonsLangUtil.join(subCommandParts, " ");
-        final CommandAlias cmdAlias = method.getAnnotation(CommandAlias.class);
+        final String[] aliasNames = manager.getAnnotations().getAnnotationValues(method, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE);
 
-        final String[] aliasNames = cmdAlias != null ? ACFPatterns.PIPE.split(manager.getCommandReplacements().replace(cmdAlias.value().toLowerCase())) : null;
         String cmdName = aliasNames != null ? aliasNames[0] : this.commandName + " ";
         RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);
 

@@ -33,8 +33,7 @@ public class HelpEntry {
 
     HelpEntry(RegisteredCommand command) {
         this.command = command;
-        HelpSearchTags tagsAnno = command.method.getAnnotation(HelpSearchTags.class);
-        this.searchTags = tagsAnno != null ? tagsAnno.value() : null;
+        this.searchTags = command.manager.getAnnotations().getAnnotationValue(command.method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
     }
 
     RegisteredCommand getRegisteredCommand() {

@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
@@ -32,6 +33,7 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,6 +83,8 @@ public abstract class CommandManager <
     protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     private Set<String> unstableAPIs = Sets.newHashSet();
+
+    private Annotations annotations = new Annotations<>(this);
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
@@ -443,9 +447,9 @@ public abstract class CommandManager <
         Class clazz = baseCommand.getClass();
         do {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(Dependency.class)) {
-                    Dependency dependency = field.getAnnotation(Dependency.class);
-                    String key = (key = dependency.value()).equals("") ? field.getType().getName() : key;
+                if (annotations.hasAnnotation(field, Dependency.class)) {
+                    String dependency = annotations.getAnnotationValue(field, Dependency.class);
+                    String key = (key = dependency).equals("") ? field.getType().getName() : key;
                     Object object = dependencies.row(field.getType()).get(key);
                     if (object == null) {
                         throw new UnresolvedDependencyException("Could not find a registered instance of " +
@@ -485,5 +489,9 @@ public abstract class CommandManager <
 
     boolean hasUnstableAPI(String api) {
         return unstableAPIs.contains(api);
+    }
+
+    Annotations getAnnotations() {
+        return annotations;
     }
 }
