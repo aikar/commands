@@ -65,48 +65,50 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
+        CommandReplacements replacements = scope.manager.getCommandReplacements();
+
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
         }
-        this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
+        this.command = command + (!method.isAnnotationPresent(CommandAlias.class) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
-        CommandPermission permissionAnno = method.getAnnotation(CommandPermission.class);
-        this.permission = permissionAnno != null ? scope.manager.getCommandReplacements().replace(permissionAnno.value()) : null;
-        CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
-        this.complete = completionAnno != null ? scope.manager.getCommandReplacements().replace(completionAnno.value()) : null;
+
+        final CommandPermission permissionAnno = method.getAnnotation(CommandPermission.class);
+        final CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
+        final Description descriptionAnno = method.getAnnotation(Description.class);
+        final Syntax syntaxStr = method.getAnnotation(Syntax.class);
+
+        this.permission = permissionAnno != null ? replacements.replace(permissionAnno.value()) : null;
+        this.complete = completionAnno != null ? replacements.replace(completionAnno.value()) : null;
         Parameter[] parameters = method.getParameters();
         //noinspection unchecked
         this.parameters = new CommandParameter[parameters.length];
-
-        Description descriptionAnno = method.getAnnotation(Description.class);
         this.helpText = descriptionAnno != null ? descriptionAnno.value() : "";
-        final Syntax syntaxStr = method.getAnnotation(Syntax.class);
 
 
         int requiredResolvers = 0;
         int optionalResolvers = 0;
-        StringBuilder syntaxB = new StringBuilder(64);
+        StringBuilder syntaxBuilder = new StringBuilder(64);
 
         for (int i = 0; i < parameters.length; i++) {
             CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i);
-
             if (!parameter.isCommandIssuer()) {
-                String name = parameter.getName();
                 if (!parameter.requiresInput()) {
                     optionalResolvers++;
-                    if (parameter.canConsumeInput()) {
-                        syntaxB.append('[').append(name).append("] ");
-                    }
                 } else {
                     requiredResolvers++;
-                    syntaxB.append('<').append(name).append("> ");
                 }
             }
-
+            if (parameter.getSyntax() != null) {
+                if (syntaxBuilder.length() > 0) {
+                    syntaxBuilder.append(' ');
+                }
+                syntaxBuilder.append(parameter.getSyntax());
+            }
         }
-        String syntaxText = syntaxB.toString();
-        this.syntaxText = this.manager.getCommandReplacements().replace(syntaxStr != null ?
+        String syntaxText = syntaxBuilder.toString().trim();
+        this.syntaxText = replacements.replace(syntaxStr != null ?
                 ACFUtil.replace(syntaxStr.value(), "@syntax", syntaxText) : syntaxText);
         this.requiredResolvers = requiredResolvers;
         this.optionalResolvers = optionalResolvers;

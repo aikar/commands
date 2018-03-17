@@ -27,6 +27,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
@@ -43,10 +44,12 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
     private final String name;
     private final CommandManager manager;
     private final int paramIndex;
+
     private ContextResolver<?, CEC> resolver;
     private boolean optional;
     private String description;
     private String defaultValue;
+    private String syntax;
     private boolean requiresInput;
     private boolean commandIssuer;
     private String[] values;
@@ -92,6 +95,19 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         } else {
             this.values = null;
         }
+
+        this.syntax = null;
+        if (!commandIssuer) {
+            Syntax syntaxAnno = param.getAnnotation(Syntax.class);
+            if (syntaxAnno != null) {
+                this.syntax = replacements.replace(syntaxAnno.value());
+            } else if (!requiresInput && canConsumeInput) {
+                this.syntax = "[" + name + "]";
+            } else if (!requiresInput) {
+                this.syntax = "<" + name + ">";
+            }
+        }
+
         this.flags = Maps.newHashMap();
         Flags flags = param.getAnnotation(Flags.class);
         if (flags != null) {
@@ -230,4 +246,11 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.requiresInput = requiresInput;
     }
 
+    public String getSyntax() {
+        return syntax;
+    }
+
+    public void setSyntax(String syntax) {
+        this.syntax = syntax;
+    }
 }
