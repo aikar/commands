@@ -113,6 +113,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     public boolean isOptional() {
         return param.isOptional();
     }
+
     public boolean hasFlag(String flag) {
         return flags.containsKey(flag);
     }
@@ -123,6 +124,50 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
 
     public Integer getFlagValue(String flag, Integer def) {
         return ACFUtil.parseInt(this.flags.get(flag), def);
+    }
+
+    public Long getFlagValue(String flag, Long def) {
+        return ACFUtil.parseLong(this.flags.get(flag), def);
+    }
+
+    public Float getFlagValue(String flag, Float def) {
+        return ACFUtil.parseFloat(this.flags.get(flag), def);
+    }
+
+    public Double getFlagValue(String flag, Double def) {
+        return ACFUtil.parseDouble(this.flags.get(flag), def);
+    }
+
+    public Integer getIntFlagValue(String flag, Number def) {
+        return ACFUtil.parseInt(this.flags.get(flag), def != null ? def.intValue() : null);
+    }
+
+    public Long getLongFlagValue(String flag, Number def) {
+        return ACFUtil.parseLong(this.flags.get(flag), def != null ? def.longValue() : null);
+    }
+
+    public Float getFloatFlagValue(String flag, Number def) {
+        return ACFUtil.parseFloat(this.flags.get(flag), def != null ? def.floatValue() : null);
+    }
+
+    public Double getDoubleFlagValue(String flag, Number def) {
+        return ACFUtil.parseDouble(this.flags.get(flag), def != null ? def.doubleValue() : null);
+    }
+
+    public Boolean getBooleanFlagValue(String flag) {
+        return getBooleanFlagValue(flag, false);
+    }
+
+    public Boolean getBooleanFlagValue(String flag, Boolean def) {
+        String val = this.flags.get(flag);
+        if (val == null) {
+            return def;
+        }
+        return ACFUtil.isTruthy(val);
+    }
+
+    public Double getFlagValue(String flag, Number def) {
+        return ACFUtil.parseDouble(this.flags.get(flag), def != null ? def.doubleValue() : null);
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> cls) {

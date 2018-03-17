@@ -47,77 +47,77 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         this.manager = manager;
         registerContext(Short.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Short.MAX_VALUE).shortValue();
+                return parseAndValidateNumber(c, Short.MIN_VALUE, Short.MAX_VALUE).shortValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(short.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Short.MAX_VALUE).shortValue();
+                return parseAndValidateNumber(c, Short.MIN_VALUE, Short.MAX_VALUE).shortValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Integer.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Integer.MAX_VALUE).intValue();
+                return parseAndValidateNumber(c, Integer.MIN_VALUE, Integer.MAX_VALUE).intValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(int.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Integer.MAX_VALUE).intValue();
+                return parseAndValidateNumber(c, Integer.MIN_VALUE, Integer.MAX_VALUE).intValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Long.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Long.MAX_VALUE).longValue();
+                return parseAndValidateNumber(c, Long.MIN_VALUE, Long.MAX_VALUE).longValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(long.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Long.MAX_VALUE).longValue();
+                return parseAndValidateNumber(c, Long.MIN_VALUE, Long.MAX_VALUE).longValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Float.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Float.MAX_VALUE).floatValue();
+                return parseAndValidateNumber(c, Float.MIN_VALUE, Float.MAX_VALUE).floatValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(float.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Float.MAX_VALUE).floatValue();
+                return parseAndValidateNumber(c, Float.MIN_VALUE, Float.MAX_VALUE).floatValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Double.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MAX_VALUE).doubleValue();
+                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE).doubleValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(double.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MAX_VALUE).doubleValue();
+                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE).doubleValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Number.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MAX_VALUE);
+                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE);
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
@@ -125,7 +125,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         registerContext(BigDecimal.class, (c) -> {
             try {
                 BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
-                validateMinMax(c, number, null);
+                validateMinMax(c, number);
                 return number;
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
@@ -134,7 +134,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
         registerContext(BigInteger.class, (c) -> {
             try {
                 BigDecimal number = ACFUtil.parseBigNumber(c.popFirstArg(), c.hasFlag("suffixes"));
-                validateMinMax(c, number, null);
+                validateMinMax(c, number);
                 return number.toBigIntegerExact();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
@@ -242,16 +242,18 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
     }
 
     @NotNull
-    private Number parseAndValidateNumber(R c, Number maxValue) throws InvalidCommandArgument {
-        Number val = ACFUtil.parseNumber(c.getFirstArg(), c.hasFlag("suffixes"));
-        validateMinMax(c, val, maxValue);
-        c.popFirstArg(); // pop later so we can have a chance to display a nicer error message
+    private Number parseAndValidateNumber(R c, Number minValue, Number maxValue) throws InvalidCommandArgument {
+        final Number val = ACFUtil.parseNumber(c.popFirstArg(), c.hasFlag("suffixes"));
+        validateMinMax(c, val, minValue, maxValue);
         return val;
     }
 
-    private void validateMinMax(R c, Number val, Number maxValue) throws InvalidCommandArgument {
-        Number minValue = c.getFlagValue("min", (Integer) null);
-        maxValue = c.getFlagValue("max", maxValue != null ? maxValue.intValue() : null);
+    private void validateMinMax(R c, Number val) throws InvalidCommandArgument {
+        validateMinMax(c, val, null, null);
+    }
+    private void validateMinMax(R c, Number val, Number minValue, Number maxValue) throws InvalidCommandArgument {
+        minValue = c.getFlagValue("min", minValue);
+        maxValue = c.getFlagValue("max", maxValue);
         if (maxValue != null && val.doubleValue() > maxValue.doubleValue()) {
             throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_AT_MOST, "{max}", String.valueOf(maxValue));
         }
