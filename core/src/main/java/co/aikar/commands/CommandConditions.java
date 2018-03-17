@@ -54,21 +54,15 @@ public class CommandConditions <
         return this.paramConditions.put(clazz, id.toLowerCase(), handler);
     }
 
-    void validateConditions(CEC cec, Object value) throws InvalidCommandArgument {
-        String conditions = manager.getAnnotations().getAnnotationValue(cec.getParam(), Conditions.class);
-        validateConditions(conditions, cec, value);
-    }
-
     void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {
         RegisteredCommand cmd = context.getRegisteredCommand();
-        String conditions = manager.getAnnotations().getAnnotationValue(cmd.method, Conditions.class);
-        validateConditions(conditions, context);
+
+        validateConditions(cmd.conditions, context);
         validateConditions(cmd.scope, context);
     }
 
     private void validateConditions(BaseCommand scope, CommandOperationContext operationContext) throws InvalidCommandArgument {
-        String conditions = manager.getAnnotations().getAnnotationValue(scope.getClass(), Conditions.class);
-        validateConditions(conditions, operationContext);
+        validateConditions(scope.conditions, operationContext);
 
         if (scope.parentCommand != null) {
             validateConditions(scope.parentCommand, operationContext);
@@ -100,7 +94,8 @@ public class CommandConditions <
         }
     }
 
-    private void validateConditions(String conditions, CEC execContext, Object value) throws InvalidCommandArgument {
+    void validateConditions(CEC execContext, Object value) throws InvalidCommandArgument {
+        String conditions = execContext.getCommandParameter().getConditions();
         if (conditions == null) {
             return;
         }

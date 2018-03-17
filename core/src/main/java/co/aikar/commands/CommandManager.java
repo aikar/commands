@@ -449,7 +449,7 @@ public abstract class CommandManager <
             for (Field field : clazz.getDeclaredFields()) {
                 if (annotations.hasAnnotation(field, Dependency.class)) {
                     String dependency = annotations.getAnnotationValue(field, Dependency.class);
-                    String key = (key = dependency).equals("") ? field.getType().getName() : key;
+                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;
                     Object object = dependencies.row(field.getType()).get(key);
                     if (object == null) {
                         throw new UnresolvedDependencyException("Could not find a registered instance of " +

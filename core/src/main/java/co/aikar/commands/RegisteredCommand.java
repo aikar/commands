@@ -26,7 +26,9 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import com.google.common.collect.ImmutableSet;
@@ -48,19 +50,22 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
-    final String command;
     final Method method;
-    final String prefSubCommand;
     final CommandParameter<CEC>[] parameters;
-    final String syntaxText;
-    final String helpText;
+    final CommandManager manager;
+    final List<String> registeredSubcommands = new ArrayList<>();
 
-    private final String permission;
-    final String complete;
+    String command;
+    String prefSubCommand;
+    String syntaxText;
+    String helpText;
+    String permission;
+    String complete;
+    String conditions;
+
     final int requiredResolvers;
     final int optionalResolvers;
-    final List<String> registeredSubcommands = new ArrayList<>();
-    final CommandManager manager;
+    public String helpSearchTags;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -70,13 +75,15 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
         }
-        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
+        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
 
-        this.permission = annotations.getAnnotationValue(method, CommandPermission.class);
+        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.complete   = annotations.getAnnotationValue(method, CommandCompletion.class);
-        this.helpText = annotations.getAnnotationValue(method, Description.class);
+        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         Parameter[] parameters = method.getParameters();
         //noinspection unchecked

@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
@@ -50,6 +51,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
     private String description;
     private String defaultValue;
     private String syntax;
+    private String conditions;
     private boolean requiresInput;
     private boolean commandIssuer;
     private String[] values;
@@ -64,11 +66,11 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         //noinspection unchecked
         this.manager = command.manager;
         this.paramIndex = paramIndex;
-        CommandReplacements replacements = manager.getCommandReplacements();
         Annotations annotations = manager.getAnnotations();
 
         this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
         this.description = annotations.getAnnotationValue(param, Description.class);
+        this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         //noinspection unchecked
         this.resolver = manager.getCommandContexts().getResolver(type);
@@ -85,7 +87,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.commandIssuer = manager.isCommandIssuer(type);
         this.canConsumeInput = !(resolver instanceof IssuerOnlyContextResolver);
 
-        this.values = annotations.getAnnotationValues(param, Values.class);
+        this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         this.syntax = null;
         if (!commandIssuer) {
@@ -243,5 +245,13 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     public void setSyntax(String syntax) {
         this.syntax = syntax;
+    }
+
+    public String getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
     }
 }

@@ -27,6 +27,7 @@ import co.aikar.commands.annotation.CatchAll;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.PreCommand;
@@ -82,6 +83,7 @@ public abstract class BaseCommand {
     String commandName;
     String usageMessage;
     String permission;
+    String conditions;
 
     private ExceptionHandler exceptionHandler = null;
     CommandOperationContext lastCommandOperationContext;
@@ -139,7 +141,8 @@ public abstract class BaseCommand {
         this.permission = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
         this.description = this.commandName + " commands";
         this.usageMessage = "/" + this.commandName;
-        this.parentSubcommand = getParentSubcommand(this.getClass());
+        this.parentSubcommand = getParentSubcommand(self);
+        this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         registerSubcommands();
 

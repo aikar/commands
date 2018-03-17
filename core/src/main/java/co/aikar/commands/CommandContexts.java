@@ -184,7 +184,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             } else {
                 val = c.popFirstArg();
             }
-            String split = c.getAnnotationValue(Split.class);
+            String split = c.getAnnotationValue(Split.class, Annotations.NOTHING | Annotations.NO_EMPTY);
             if (split != null) {
                 if (val.isEmpty()) {
                     throw new InvalidCommandArgument();

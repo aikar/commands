@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -31,147 +32,41 @@ import java.util.regex.Pattern;
 
 abstract class AnnotationLookups {
 
-
-    //
-    // METHODS
-    //
-
-
-    boolean hasAnnotation(Method method, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(method, annoClass, Annotations.NOTHING) != null;
+    boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass) {
+        return getAnnotationValue(object, annoClass, Annotations.NOTHING) != null;
     }
 
-    String[] getAnnotationValues(Method method, Class<? extends Annotation> annoClass) {
-        return getAnnotationValues(method, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
-    }
-    String[] getAnnotationValues(Method method, Class<? extends Annotation> annoClass, Pattern pattern) {
-        return getAnnotationValues(method, annoClass, pattern, Annotations.REPLACEMENTS);
+    boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass, boolean allowEmpty) {
+        return getAnnotationValue(object, annoClass, Annotations.NOTHING | (allowEmpty ? 0 : Annotations.NO_EMPTY)) != null;
     }
 
-    String[] getAnnotationValues(Method method, Class<? extends Annotation> annoClass, int options) {
-        return getAnnotationValues(method, annoClass, ACFPatterns.PIPE, options);
+    String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass) {
+        return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
+    }
+    String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern) {
+        return getAnnotationValues(object, annoClass, pattern, Annotations.REPLACEMENTS);
     }
 
-    String[] getAnnotationValues(Method method, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
-        String value = getAnnotationValue(method, annoClass, options);
+    String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
+        return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, options);
+    }
+
+    String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
+        String value = getAnnotationValue(object, annoClass, options);
         if (value == null) {
             return null;
         }
         return pattern.split(value);
     }
 
-    String getAnnotationValue(Method method, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(method, annoClass, Annotations.REPLACEMENTS);
+    String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass) {
+        return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
     }
 
-    String getAnnotationValue(Method method, Class<? extends Annotation> annoClass, int options) {
-        return getValue(method.getAnnotation(annoClass), annoClass, options);
+    String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
+        return getValue(object.getAnnotation(annoClass), annoClass, options);
     }
 
-
-    //
-    // PARAMETERS
-    //
-
-
-    String[] getAnnotationValues(Parameter param, Class<? extends Annotation> annoClass) {
-        return getAnnotationValues(param, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
-    }
-    String[] getAnnotationValues(Parameter param, Class<? extends Annotation> annoClass, Pattern pattern) {
-        return getAnnotationValues(param, annoClass, pattern, Annotations.REPLACEMENTS);
-    }
-
-    String[] getAnnotationValues(Parameter param, Class<? extends Annotation> annoClass, int options) {
-        return getAnnotationValues(param, annoClass, ACFPatterns.PIPE, options);
-    }
-    String[] getAnnotationValues(Parameter param, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
-        String value = getAnnotationValue(param, annoClass, options);
-        if (value == null) {
-            return null;
-        }
-        return pattern.split(value);
-    }
-
-    boolean hasAnnotation(Parameter param, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(param, annoClass, Annotations.NOTHING) != null;
-    }
-
-    String getAnnotationValue(Parameter param, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(param, annoClass, Annotations.REPLACEMENTS);
-    }
-
-    String getAnnotationValue(Parameter param, Class<? extends Annotation> annoClass, int options) {
-        return getValue(param.getAnnotation(annoClass), annoClass, options);
-    }
-
-    //
-    // FIELDS
-    //
-
-    String[] getAnnotationValues(Field field, Class<? extends Annotation> annoClass) {
-        return getAnnotationValues(field, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
-    }
-    String[] getAnnotationValues(Field field, Class<? extends Annotation> annoClass, Pattern pattern) {
-        return getAnnotationValues(field, annoClass, pattern, Annotations.REPLACEMENTS);
-    }
-
-    String[] getAnnotationValues(Field field, Class<? extends Annotation> annoClass, int options) {
-        return getAnnotationValues(field, annoClass, ACFPatterns.PIPE, options);
-    }
-    String[] getAnnotationValues(Field field, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
-        String value = getAnnotationValue(field, annoClass, options);
-        if (value == null) {
-            return null;
-        }
-        return pattern.split(value);
-    }
-
-    boolean hasAnnotation(Field field, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(field, annoClass, Annotations.NOTHING) != null;
-    }
-
-    String getAnnotationValue(Field field, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(field, annoClass, Annotations.REPLACEMENTS);
-    }
-
-    String getAnnotationValue(Field field, Class<? extends Annotation> annoClass, int options) {
-        return getValue(field.getAnnotation(annoClass), annoClass, options);
-    }
-
-    //
-    // CLASSES
-    //
-
-
-    String[] getAnnotationValues(Class<? extends Object> clazz, Class<? extends Annotation> annoClass) {
-        return getAnnotationValues(clazz, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
-    }
-
-    String[] getAnnotationValues(Class<? extends Object> clazz, Class<? extends Annotation> annoClass, Pattern pattern) {
-        return getAnnotationValues(clazz, annoClass, pattern, Annotations.REPLACEMENTS);
-    }
-
-    String[] getAnnotationValues(Class<? extends Object> clazz, Class<? extends Annotation> annoClass, int options) {
-        return getAnnotationValues(clazz, annoClass, ACFPatterns.PIPE, options);
-    }
-    String[] getAnnotationValues(Class<? extends Object> clazz, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
-        String value = getAnnotationValue(clazz, annoClass, options);
-        if (value == null) {
-            return null;
-        }
-        return pattern.split(value);
-    }
-    boolean hasAnnotation(Class<? extends Object> clazz, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(clazz, annoClass, Annotations.NOTHING) != null;
-    }
-
-    String getAnnotationValue(Class<? extends Object> clazz, Class<? extends Annotation> annoClass) {
-        return getAnnotationValue(clazz, annoClass, Annotations.REPLACEMENTS);
-    }
-
-    String getAnnotationValue(Class<? extends Object> clazz, Class<? extends Annotation> annoClass, int options) {
-        return getValue(clazz.getAnnotation(annoClass), annoClass, options);
-    }
 
     abstract String getValue(Annotation annotation, Class<? extends Annotation> annoClass, int options);
 }
