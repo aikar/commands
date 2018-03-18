@@ -25,9 +25,6 @@ package co.aikar.commands;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.regex.Pattern;
 
 abstract class AnnotationLookups {
@@ -63,10 +60,5 @@ abstract class AnnotationLookups {
         return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
     }
 
-    String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
-        return getValue(object.getAnnotation(annoClass), annoClass, options);
-    }
-
-
-    abstract String getValue(Annotation annotation, Class<? extends Annotation> annoClass, int options);
+    abstract String getAnnotationValue(AnnotatedElement annotation, Class<? extends Annotation> annoClass, int options);
 }

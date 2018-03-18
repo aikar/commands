@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
@@ -47,49 +48,53 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         this.manager = manager;
     }
 
-    String getValue(Annotation annotation, Class<? extends Annotation> annoClass, int options) {
+    String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
+        Annotation annotation = element.getAnnotation(annoClass);
         String value = null;
 
         if (annotation != null) {
             Method valueMethod = valueMethods.get(annoClass);
-            if (valueMethod == null) {
-                if (noValueAnnotations.containsKey(annoClass)) {
-                    value = "";
-                } else {
-                    try {
+            if (noValueAnnotations.containsKey(annoClass)) {
+                value = "";
+            } else {
+                try {
+                    if (valueMethod == null) {
                         valueMethod = annoClass.getMethod("value");
-                        value = (String) valueMethod.invoke(annotation);
                         valueMethod.setAccessible(true);
                         valueMethods.put(annoClass, valueMethod);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        if (!(e instanceof NoSuchMethodException)) {
-                            manager.log(LogLevel.ERROR, "Error getting annotation value", e);
-                        }
-                        noValueAnnotations.put(annoClass, null);
-                        value = "";
                     }
+                    value = (String) valueMethod.invoke(annotation);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    if (!(e instanceof NoSuchMethodException)) {
+                        manager.log(LogLevel.ERROR, "Error getting annotation value", e);
+                    }
+                    noValueAnnotations.put(annoClass, null);
+                    value = "";
                 }
             }
         }
 
         // TODO: Aliases
 
+        if (value == null) {
+            return null;
+        }
+
         // transforms
-        if (value != null) {
-            if (hasOption(options, REPLACEMENTS)) {
-                value = manager.getCommandReplacements().replace(value);
-            }
-            if (hasOption(options, LOWERCASE)) {
-                value = value.toLowerCase(manager.getLocales().getDefaultLocale());
-            } else if (hasOption(options, UPPERCASE)) {
-                value = value.toUpperCase(manager.getLocales().getDefaultLocale());
-            }
+        if (hasOption(options, REPLACEMENTS)) {
+            value = manager.getCommandReplacements().replace(value);
+        }
+        if (hasOption(options, LOWERCASE)) {
+            value = value.toLowerCase(manager.getLocales().getDefaultLocale());
+        } else if (hasOption(options, UPPERCASE)) {
+            value = value.toUpperCase(manager.getLocales().getDefaultLocale());
         }
 
         // validation
-        if (value != null && value.isEmpty() && hasOption(options, NO_EMPTY)) {
+        if (value.isEmpty() && hasOption(options, NO_EMPTY)) {
             value = null;
         }
+
         return value;
     }
 
