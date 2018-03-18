@@ -92,8 +92,8 @@
 <span class="sourceLineNo">084</span>        this.optionalResolver = isOptionalResolver(resolver);<a name="line.84"></a>
 <span class="sourceLineNo">085</span>        this.requiresInput = !this.optional &amp;&amp; !this.optionalResolver;<a name="line.85"></a>
 <span class="sourceLineNo">086</span>        //noinspection unchecked<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        this.commandIssuer = manager.isCommandIssuer(type);<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        this.canConsumeInput = !(resolver instanceof IssuerOnlyContextResolver);<a name="line.88"></a>
+<span class="sourceLineNo">087</span>        this.commandIssuer = paramIndex == 0 &amp;&amp; manager.isCommandIssuer(type);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        this.canConsumeInput = !this.commandIssuer &amp;&amp; !(resolver instanceof IssuerOnlyContextResolver);<a name="line.88"></a>
 <span class="sourceLineNo">089</span><a name="line.89"></a>
 <span class="sourceLineNo">090</span>        this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.90"></a>
 <span class="sourceLineNo">091</span><a name="line.91"></a>
