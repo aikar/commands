@@ -129,7 +129,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 uuid = UUID.fromString(name);
             }
             OfflinePlayer offlinePlayer = uuid != null ? Bukkit.getOfflinePlayer(uuid) : Bukkit.getOfflinePlayer(name);
-            if (offlinePlayer == null) {
+            if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
                 throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,
                         "{search}", name);
             }
