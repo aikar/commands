@@ -150,11 +150,11 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             return s.charAt(0);
         });
         registerContext(String.class, (c) -> {
-            final Values values = c.getParam().getAnnotation(Values.class);
-            if (values != null) {
+            // This will fail fast, its either in the values or its not
+            if (c.hasAnnotation(Values.class)) {
                 return c.popFirstArg();
             }
-            String ret = (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) ?
+            String ret = (c.isLastArg() && !c.hasAnnotation(Single.class)) ?
                 ACFUtil.join(c.getArgs())
                 :
                 c.popFirstArg();
@@ -179,17 +179,17 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             // Go home IDEA, you're drunk
             //noinspection unchecked
             List<String> args = c.getArgs();
-            if (c.isLastArg() && c.getParam().getAnnotation(Single.class) == null) {
+            if (c.isLastArg() && !c.hasAnnotation(Single.class)) {
                 val = ACFUtil.join(args);
             } else {
                 val = c.popFirstArg();
             }
-            Split split = c.getParam().getAnnotation(Split.class);
+            String split = c.getAnnotationValue(Split.class, Annotations.NOTHING | Annotations.NO_EMPTY);
             if (split != null) {
                 if (val.isEmpty()) {
                     throw new InvalidCommandArgument();
                 }
-                return ACFPatterns.getPattern(split.value()).split(val);
+                return ACFPatterns.getPattern(split).split(val);
             } else if (!c.isLastArg()) {
                 ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));
             }

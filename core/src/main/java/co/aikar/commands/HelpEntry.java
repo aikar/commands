@@ -28,13 +28,10 @@ import co.aikar.commands.annotation.HelpSearchTags;
 public class HelpEntry {
 
     private final RegisteredCommand command;
-    private final String searchTags;
     private int searchScore = 1;
 
     HelpEntry(RegisteredCommand command) {
         this.command = command;
-        HelpSearchTags tagsAnno = command.method.getAnnotation(HelpSearchTags.class);
-        this.searchTags = tagsAnno != null ? tagsAnno.value() : null;
     }
 
     RegisteredCommand getRegisteredCommand() {
@@ -67,6 +64,6 @@ public class HelpEntry {
     }
 
     public String getSearchTags() {
-        return searchTags;
+        return command.helpSearchTags;
     }
 }

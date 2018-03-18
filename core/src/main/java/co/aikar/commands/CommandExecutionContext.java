@@ -170,18 +170,37 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
         return ACFUtil.parseDouble(this.flags.get(flag), def != null ? def.doubleValue() : null);
     }
 
+    /**
+     * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     * @deprecated Use {@link #getAnnotationValue(Class)}
+     */
+    @Deprecated
     public <T extends Annotation> T getAnnotation(Class<T> cls) {
         return param.getParameter().getAnnotation(cls);
     }
 
+    public <T extends Annotation> String getAnnotationValue(Class<T> cls) {
+        return manager.getAnnotations().getAnnotationValue(param.getParameter(), cls);
+    }
+
+    public <T extends Annotation> String getAnnotationValue(Class<T> cls, int options) {
+        return manager.getAnnotations().getAnnotationValue(param.getParameter(), cls, options);
+    }
+
     public <T extends Annotation> boolean hasAnnotation(Class<T> cls) {
-        return param.getParameter().isAnnotationPresent(cls);
+        return manager.getAnnotations().hasAnnotation(param.getParameter(), cls);
     }
 
     public RegisteredCommand getCmd() {
         return this.cmd;
     }
 
+    @UnstableAPI
+    CommandParameter getCommandParameter() {
+        return this.param;
+    }
+
+    @Deprecated
     public Parameter getParam() {
         return this.param.getParameter();
     }

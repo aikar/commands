@@ -26,7 +26,9 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import com.google.common.collect.ImmutableSet;
@@ -48,43 +50,44 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
-    final String command;
     final Method method;
-    final String prefSubCommand;
     final CommandParameter<CEC>[] parameters;
-    final String syntaxText;
-    final String helpText;
+    final CommandManager manager;
+    final List<String> registeredSubcommands = new ArrayList<>();
 
-    private final String permission;
-    final String complete;
+    String command;
+    String prefSubCommand;
+    String syntaxText;
+    String helpText;
+    String permission;
+    String complete;
+    String conditions;
+
     final int requiredResolvers;
     final int optionalResolvers;
-    final List<String> registeredSubcommands = new ArrayList<>();
-    final CommandManager manager;
+    public String helpSearchTags;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
-        CommandReplacements replacements = scope.manager.getCommandReplacements();
+        final Annotations annotations = this.manager.getAnnotations();
 
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
         }
-        this.command = command + (!method.isAnnotationPresent(CommandAlias.class) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
+        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
 
-        final CommandPermission permissionAnno = method.getAnnotation(CommandPermission.class);
-        final CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
-        final Description descriptionAnno = method.getAnnotation(Description.class);
-        final Syntax syntaxStr = method.getAnnotation(Syntax.class);
+        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.complete   = annotations.getAnnotationValue(method, CommandCompletion.class);
+        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
+        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
-        this.permission = permissionAnno != null ? replacements.replace(permissionAnno.value()) : null;
-        this.complete = completionAnno != null ? replacements.replace(completionAnno.value()) : null;
         Parameter[] parameters = method.getParameters();
         //noinspection unchecked
         this.parameters = new CommandParameter[parameters.length];
-        this.helpText = descriptionAnno != null ? descriptionAnno.value() : "";
 
 
         int requiredResolvers = 0;
@@ -108,8 +111,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             }
         }
         String syntaxText = syntaxBuilder.toString().trim();
-        this.syntaxText = replacements.replace(syntaxStr != null ?
-                ACFUtil.replace(syntaxStr.value(), "@syntax", syntaxText) : syntaxText);
+        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);
+        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;
         this.requiredResolvers = requiredResolvers;
         this.optionalResolvers = optionalResolvers;
     }
