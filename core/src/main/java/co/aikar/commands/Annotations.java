@@ -38,6 +38,7 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
     public static int LOWERCASE = 1 << 1;
     public static int UPPERCASE = 1 << 2;
     public static int NO_EMPTY = 1 << 3;
+    public static int DEFAULT_EMPTY = 1 << 4;
 
     private final M manager;
 
@@ -77,7 +78,11 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         // TODO: Aliases
 
         if (value == null) {
-            return null;
+            if (hasOption(options, DEFAULT_EMPTY)) {
+                value = "";
+            } else {
+                return null;
+            }
         }
 
         // transforms
