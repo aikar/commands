@@ -35,7 +35,7 @@
 <span class="sourceLineNo">027</span>        });<a name="line.27"></a>
 <span class="sourceLineNo">028</span>        this.registerIssuerOnlyContext(Guild.class, c -&gt; {<a name="line.28"></a>
 <span class="sourceLineNo">029</span>            MessageReceivedEvent event = c.getIssuer().getIssuer();<a name="line.29"></a>
-<span class="sourceLineNo">030</span>            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; c.getAnnotation(Optional.class) == null) {<a name="line.30"></a>
+<span class="sourceLineNo">030</span>            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; !c.hasAnnotation(Optional.class)) {<a name="line.30"></a>
 <span class="sourceLineNo">031</span>                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false); // TODO: Message Keys<a name="line.31"></a>
 <span class="sourceLineNo">032</span>            } else {<a name="line.32"></a>
 <span class="sourceLineNo">033</span>                return event.getGuild();<a name="line.33"></a>

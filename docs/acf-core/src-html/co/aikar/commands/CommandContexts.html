@@ -158,11 +158,11 @@
 <span class="sourceLineNo">150</span>            return s.charAt(0);<a name="line.150"></a>
 <span class="sourceLineNo">151</span>        });<a name="line.151"></a>
 <span class="sourceLineNo">152</span>        registerContext(String.class, (c) -&gt; {<a name="line.152"></a>
-<span class="sourceLineNo">153</span>            final Values values = c.getParam().getAnnotation(Values.class);<a name="line.153"></a>
-<span class="sourceLineNo">154</span>            if (values != null) {<a name="line.154"></a>
+<span class="sourceLineNo">153</span>            // This will fail fast, its either in the values or its not<a name="line.153"></a>
+<span class="sourceLineNo">154</span>            if (c.hasAnnotation(Values.class)) {<a name="line.154"></a>
 <span class="sourceLineNo">155</span>                return c.popFirstArg();<a name="line.155"></a>
 <span class="sourceLineNo">156</span>            }<a name="line.156"></a>
-<span class="sourceLineNo">157</span>            String ret = (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) ?<a name="line.157"></a>
+<span class="sourceLineNo">157</span>            String ret = (c.isLastArg() &amp;&amp; !c.hasAnnotation(Single.class)) ?<a name="line.157"></a>
 <span class="sourceLineNo">158</span>                ACFUtil.join(c.getArgs())<a name="line.158"></a>
 <span class="sourceLineNo">159</span>                :<a name="line.159"></a>
 <span class="sourceLineNo">160</span>                c.popFirstArg();<a name="line.160"></a>
@@ -187,17 +187,17 @@
 <span class="sourceLineNo">179</span>            // Go home IDEA, you're drunk<a name="line.179"></a>
 <span class="sourceLineNo">180</span>            //noinspection unchecked<a name="line.180"></a>
 <span class="sourceLineNo">181</span>            List&lt;String&gt; args = c.getArgs();<a name="line.181"></a>
-<span class="sourceLineNo">182</span>            if (c.isLastArg() &amp;&amp; c.getParam().getAnnotation(Single.class) == null) {<a name="line.182"></a>
+<span class="sourceLineNo">182</span>            if (c.isLastArg() &amp;&amp; !c.hasAnnotation(Single.class)) {<a name="line.182"></a>
 <span class="sourceLineNo">183</span>                val = ACFUtil.join(args);<a name="line.183"></a>
 <span class="sourceLineNo">184</span>            } else {<a name="line.184"></a>
 <span class="sourceLineNo">185</span>                val = c.popFirstArg();<a name="line.185"></a>
 <span class="sourceLineNo">186</span>            }<a name="line.186"></a>
-<span class="sourceLineNo">187</span>            Split split = c.getParam().getAnnotation(Split.class);<a name="line.187"></a>
+<span class="sourceLineNo">187</span>            String split = c.getAnnotationValue(Split.class, Annotations.NOTHING | Annotations.NO_EMPTY);<a name="line.187"></a>
 <span class="sourceLineNo">188</span>            if (split != null) {<a name="line.188"></a>
 <span class="sourceLineNo">189</span>                if (val.isEmpty()) {<a name="line.189"></a>
 <span class="sourceLineNo">190</span>                    throw new InvalidCommandArgument();<a name="line.190"></a>
 <span class="sourceLineNo">191</span>                }<a name="line.191"></a>
-<span class="sourceLineNo">192</span>                return ACFPatterns.getPattern(split.value()).split(val);<a name="line.192"></a>
+<span class="sourceLineNo">192</span>                return ACFPatterns.getPattern(split).split(val);<a name="line.192"></a>
 <span class="sourceLineNo">193</span>            } else if (!c.isLastArg()) {<a name="line.193"></a>
 <span class="sourceLineNo">194</span>                ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));<a name="line.194"></a>
 <span class="sourceLineNo">195</span>            }<a name="line.195"></a>

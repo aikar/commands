@@ -87,15 +87,28 @@
 <span class="sourceLineNo">079</span>        return registeredCommand;<a name="line.79"></a>
 <span class="sourceLineNo">080</span>    }<a name="line.80"></a>
 <span class="sourceLineNo">081</span><a name="line.81"></a>
-<span class="sourceLineNo">082</span>    public &lt;T extends Annotation&gt; T getAnnotation(Class&lt;T&gt; anno) {<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        return registeredCommand.method.getAnnotation(anno);<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    }<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    public boolean hasAnnotation(Class&lt;? extends Annotation&gt; anno) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        return getAnnotation(anno) != null;<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>}<a name="line.90"></a>
+<span class="sourceLineNo">082</span>    /**<a name="line.82"></a>
+<span class="sourceLineNo">083</span>     * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     * @deprecated Use {@link #getAnnotationValue(Class)}<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    @Deprecated<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    public &lt;T extends Annotation&gt; T getAnnotation(Class&lt;T&gt; anno) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        return registeredCommand.method.getAnnotation(anno);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>    }<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>    public &lt;T extends Annotation&gt; String getAnnotationValue(Class&lt;T&gt; cls) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        return manager.getAnnotations().getAnnotationValue(registeredCommand.method, cls);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>    public &lt;T extends Annotation&gt; String getAnnotationValue(Class&lt;T&gt; cls, int options) {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        return manager.getAnnotations().getAnnotationValue(registeredCommand.method, cls, options);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>    public boolean hasAnnotation(Class&lt;? extends Annotation&gt; anno) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        return getAnnotation(anno) != null;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    }<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>}<a name="line.103"></a>
 
 
 

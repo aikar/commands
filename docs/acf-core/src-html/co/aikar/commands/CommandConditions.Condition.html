@@ -62,96 +62,90 @@
 <span class="sourceLineNo">054</span>        return this.paramConditions.put(clazz, id.toLowerCase(), handler);<a name="line.54"></a>
 <span class="sourceLineNo">055</span>    }<a name="line.55"></a>
 <span class="sourceLineNo">056</span><a name="line.56"></a>
-<span class="sourceLineNo">057</span>    void validateConditions(CEC cec, Object value) throws InvalidCommandArgument {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        Conditions conditions = cec.getParam().getAnnotation(Conditions.class);<a name="line.58"></a>
-<span class="sourceLineNo">059</span>        validateConditions(conditions, cec, value);<a name="line.59"></a>
-<span class="sourceLineNo">060</span>    }<a name="line.60"></a>
-<span class="sourceLineNo">061</span><a name="line.61"></a>
-<span class="sourceLineNo">062</span>    void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        RegisteredCommand cmd = context.getRegisteredCommand();<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        Conditions conditions = cmd.method.getAnnotation(Conditions.class);<a name="line.64"></a>
-<span class="sourceLineNo">065</span>        validateConditions(conditions, context);<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        validateConditions(cmd.scope, context);<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    }<a name="line.67"></a>
-<span class="sourceLineNo">068</span><a name="line.68"></a>
-<span class="sourceLineNo">069</span><a name="line.69"></a>
-<span class="sourceLineNo">070</span>    private void validateConditions(BaseCommand scope, CommandOperationContext operationContext) throws InvalidCommandArgument {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        Conditions conditions = scope.getClass().getAnnotation(Conditions.class);<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        validateConditions(conditions, operationContext);<a name="line.72"></a>
-<span class="sourceLineNo">073</span><a name="line.73"></a>
-<span class="sourceLineNo">074</span>        if (scope.parentCommand != null) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            validateConditions(scope.parentCommand, operationContext);<a name="line.75"></a>
-<span class="sourceLineNo">076</span>        }<a name="line.76"></a>
-<span class="sourceLineNo">077</span>    }<a name="line.77"></a>
-<span class="sourceLineNo">078</span><a name="line.78"></a>
-<span class="sourceLineNo">079</span>    private void validateConditions(Conditions condAnno, CommandOperationContext context) throws InvalidCommandArgument {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        if (condAnno == null) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            return;<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());<a name="line.84"></a>
-<span class="sourceLineNo">085</span>        CommandIssuer issuer = context.getCommandIssuer();<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>            String[] split = ACFPatterns.COLON.split(cond, 2);<a name="line.87"></a>
-<span class="sourceLineNo">088</span>            String id = split[0].toLowerCase();<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            Condition&lt;I&gt; condition = this.conditions.get(id);<a name="line.89"></a>
-<span class="sourceLineNo">090</span>            if (condition == null) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                RegisteredCommand cmd = context.getRegisteredCommand();<a name="line.91"></a>
-<span class="sourceLineNo">092</span>                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName());<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                continue;<a name="line.93"></a>
-<span class="sourceLineNo">094</span>            }<a name="line.94"></a>
-<span class="sourceLineNo">095</span><a name="line.95"></a>
-<span class="sourceLineNo">096</span>            String config = split.length == 2 ? split[1] : null;<a name="line.96"></a>
-<span class="sourceLineNo">097</span>            //noinspection unchecked<a name="line.97"></a>
-<span class="sourceLineNo">098</span>            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);<a name="line.98"></a>
-<span class="sourceLineNo">099</span>            //noinspection unchecked<a name="line.99"></a>
-<span class="sourceLineNo">100</span>            condition.validateCondition(conditionContext);<a name="line.100"></a>
+<span class="sourceLineNo">057</span>    void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        RegisteredCommand cmd = context.getRegisteredCommand();<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>        validateConditions(cmd.conditions, context);<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        validateConditions(cmd.scope, context);<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    }<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>    private void validateConditions(BaseCommand scope, CommandOperationContext operationContext) throws InvalidCommandArgument {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        validateConditions(scope.conditions, operationContext);<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>        if (scope.parentCommand != null) {<a name="line.67"></a>
+<span class="sourceLineNo">068</span>            validateConditions(scope.parentCommand, operationContext);<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        }<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>    private void validateConditions(String conditions, CommandOperationContext context) throws InvalidCommandArgument {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        if (conditions == null) {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>            return;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        }<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>        conditions = this.manager.getCommandReplacements().replace(conditions);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        CommandIssuer issuer = context.getCommandIssuer();<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>            String[] split = ACFPatterns.COLON.split(cond, 2);<a name="line.80"></a>
+<span class="sourceLineNo">081</span>            String id = split[0].toLowerCase();<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            Condition&lt;I&gt; condition = this.conditions.get(id);<a name="line.82"></a>
+<span class="sourceLineNo">083</span>            if (condition == null) {<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                RegisteredCommand cmd = context.getRegisteredCommand();<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName());<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                continue;<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            }<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>            String config = split.length == 2 ? split[1] : null;<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            //noinspection unchecked<a name="line.90"></a>
+<span class="sourceLineNo">091</span>            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);<a name="line.91"></a>
+<span class="sourceLineNo">092</span>            //noinspection unchecked<a name="line.92"></a>
+<span class="sourceLineNo">093</span>            condition.validateCondition(conditionContext);<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        }<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    void validateConditions(CEC execContext, Object value) throws InvalidCommandArgument {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        String conditions = execContext.getCommandParameter().getConditions();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        if (conditions == null) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            return;<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        }<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    }<a name="line.102"></a>
-<span class="sourceLineNo">103</span><a name="line.103"></a>
-<span class="sourceLineNo">104</span>    private void validateConditions(Conditions condAnno, CEC execContext, Object value) throws InvalidCommandArgument {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        if (condAnno == null) {<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            return;<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        }<a name="line.107"></a>
-<span class="sourceLineNo">108</span>        String conditions = this.manager.getCommandReplacements().replace(condAnno.value());<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        I issuer = execContext.getIssuer();<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.110"></a>
-<span class="sourceLineNo">111</span>            String[] split = ACFPatterns.COLON.split(cond, 2);<a name="line.111"></a>
-<span class="sourceLineNo">112</span>            ParameterCondition condition;<a name="line.112"></a>
-<span class="sourceLineNo">113</span>            Class&lt;?&gt; cls = execContext.getParam().getType();<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            String id = split[0].toLowerCase();<a name="line.114"></a>
-<span class="sourceLineNo">115</span>            do {<a name="line.115"></a>
-<span class="sourceLineNo">116</span>                condition = this.paramConditions.get(cls, id);<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                if (condition == null &amp;&amp; cls.getSuperclass() != null &amp;&amp; cls.getSuperclass() != Object.class) {<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                    cls = cls.getSuperclass();<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                } else {<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                    break;<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                }<a name="line.121"></a>
-<span class="sourceLineNo">122</span>            } while (cls != null);<a name="line.122"></a>
-<span class="sourceLineNo">123</span><a name="line.123"></a>
-<span class="sourceLineNo">124</span><a name="line.124"></a>
-<span class="sourceLineNo">125</span>            if (condition == null) {<a name="line.125"></a>
-<span class="sourceLineNo">126</span>                RegisteredCommand cmd = execContext.getCmd();<a name="line.126"></a>
-<span class="sourceLineNo">127</span>                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" +execContext.getParam().getName());<a name="line.127"></a>
-<span class="sourceLineNo">128</span>                continue;<a name="line.128"></a>
-<span class="sourceLineNo">129</span>            }<a name="line.129"></a>
-<span class="sourceLineNo">130</span>            String config = split.length == 2 ? split[1] : null;<a name="line.130"></a>
-<span class="sourceLineNo">131</span>            //noinspection unchecked<a name="line.131"></a>
-<span class="sourceLineNo">132</span>            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);<a name="line.132"></a>
-<span class="sourceLineNo">133</span><a name="line.133"></a>
-<span class="sourceLineNo">134</span>            //noinspection unchecked<a name="line.134"></a>
-<span class="sourceLineNo">135</span>            condition.validateCondition(conditionContext, execContext, value);<a name="line.135"></a>
-<span class="sourceLineNo">136</span>        }<a name="line.136"></a>
-<span class="sourceLineNo">137</span>    }<a name="line.137"></a>
-<span class="sourceLineNo">138</span><a name="line.138"></a>
-<span class="sourceLineNo">139</span>    public interface Condition &lt;I extends CommandIssuer&gt; {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        void validateCondition(ConditionContext&lt;I&gt; context) throws InvalidCommandArgument;<a name="line.140"></a>
-<span class="sourceLineNo">141</span>    }<a name="line.141"></a>
-<span class="sourceLineNo">142</span><a name="line.142"></a>
-<span class="sourceLineNo">143</span>    public interface ParameterCondition &lt;P, CEC extends CommandExecutionContext, I extends CommandIssuer&gt; {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>        void validateCondition(ConditionContext&lt;I&gt; context, CEC execContext, P value) throws InvalidCommandArgument;<a name="line.144"></a>
-<span class="sourceLineNo">145</span>    }<a name="line.145"></a>
-<span class="sourceLineNo">146</span>}<a name="line.146"></a>
+<span class="sourceLineNo">102</span>        conditions = this.manager.getCommandReplacements().replace(conditions);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        I issuer = execContext.getIssuer();<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        for (String cond : ACFPatterns.PIPE.split(conditions)) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            String[] split = ACFPatterns.COLON.split(cond, 2);<a name="line.105"></a>
+<span class="sourceLineNo">106</span>            ParameterCondition condition;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>            Class&lt;?&gt; cls = execContext.getParam().getType();<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            String id = split[0].toLowerCase();<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            do {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                condition = this.paramConditions.get(cls, id);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                if (condition == null &amp;&amp; cls.getSuperclass() != null &amp;&amp; cls.getSuperclass() != Object.class) {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                    cls = cls.getSuperclass();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                } else {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                    break;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            } while (cls != null);<a name="line.116"></a>
+<span class="sourceLineNo">117</span><a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>            if (condition == null) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                RegisteredCommand cmd = execContext.getCmd();<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" +execContext.getParam().getName());<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                continue;<a name="line.122"></a>
+<span class="sourceLineNo">123</span>            }<a name="line.123"></a>
+<span class="sourceLineNo">124</span>            String config = split.length == 2 ? split[1] : null;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            //noinspection unchecked<a name="line.125"></a>
+<span class="sourceLineNo">126</span>            CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);<a name="line.126"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>            //noinspection unchecked<a name="line.128"></a>
+<span class="sourceLineNo">129</span>            condition.validateCondition(conditionContext, execContext, value);<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>    public interface Condition &lt;I extends CommandIssuer&gt; {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        void validateCondition(ConditionContext&lt;I&gt; context) throws InvalidCommandArgument;<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    }<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>    public interface ParameterCondition &lt;P, CEC extends CommandExecutionContext, I extends CommandIssuer&gt; {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        void validateCondition(ConditionContext&lt;I&gt; context, CEC execContext, P value) throws InvalidCommandArgument;<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    }<a name="line.139"></a>
+<span class="sourceLineNo">140</span>}<a name="line.140"></a>
 
 
 

@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":10,"i6":10,"i7":18,"i8":10,"i9":10,"i10":10,"i11":10,"i12":18,"i13":18,"i14":10,"i15":10};
+var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":10,"i6":10,"i7":18,"i8":10,"i9":18,"i10":10,"i11":10,"i12":18,"i13":18,"i14":18,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -191,7 +191,7 @@ extends org.bukkit.command.Command</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitRootCommand.html#getDefCommand--">getDefCommand</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colFirst"><code>default <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitRootCommand.html#getDescription--">getDescription</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i10" class="altColor">
@@ -216,7 +216,7 @@ extends org.bukkit.command.Command</pre>
                  boolean&nbsp;arg3)</code>&nbsp;</td>
 </tr>
 <tr id="i14" class="altColor">
-<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colFirst"><code>default <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BukkitRootCommand.html#getUsage--">getUsage</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i15" class="rowColor">
@@ -231,7 +231,7 @@ extends org.bukkit.command.Command</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.bukkit.command.Command</h3>
-<code>broadcastCommandMessage, broadcastCommandMessage, getAliases, getLabel, getName, getPermission, getPermissionMessage, isRegistered, register, setAliases, setDescription, setLabel, setName, setPermission, setPermissionMessage, setUsage, tabComplete, testPermission, testPermissionSilent, toString, unregister</code></li>
+<code>broadcastCommandMessage, broadcastCommandMessage, getAliases, getDescription, getLabel, getName, getPermission, getPermissionMessage, getUsage, isRegistered, register, setAliases, setDescription, setLabel, setName, setPermission, setPermissionMessage, setUsage, tabComplete, testPermission, testPermissionSilent, toString, unregister</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -341,32 +341,6 @@ extends org.bukkit.command.Command</pre>
 <pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.93">getDefCommand</a>()</pre>
 </li>
 </ul>
-<a name="getDescription--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDescription</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.98">getDescription</a>()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>getDescription</code>&nbsp;in class&nbsp;<code>org.bukkit.command.Command</code></dd>
-</dl>
-</li>
-</ul>
-<a name="getUsage--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getUsage</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.114">getUsage</a>()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>getUsage</code>&nbsp;in class&nbsp;<code>org.bukkit.command.Command</code></dd>
-</dl>
-</li>
-</ul>
 <a name="addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">
 <!--   -->
 </a>
@@ -424,10 +398,28 @@ extends org.bukkit.command.Command</pre>
 <a name="getDefaultRegisteredCommand--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getDefaultRegisteredCommand</h4>
 <pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDefaultRegisteredCommand</a>()</pre>
+</li>
+</ul>
+<a name="getDescription--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDescription</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDescription</a>()</pre>
+</li>
+</ul>
+<a name="getUsage--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getUsage</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getUsage</a>()</pre>
 </li>
 </ul>
 </li>
