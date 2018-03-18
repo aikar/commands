@@ -84,8 +84,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
-        this.commandIssuer = manager.isCommandIssuer(type);
-        this.canConsumeInput = !(resolver instanceof IssuerOnlyContextResolver);
+        this.commandIssuer = paramIndex == 0 && manager.isCommandIssuer(type);
+        this.canConsumeInput = !this.commandIssuer && !(resolver instanceof IssuerOnlyContextResolver);
 
         this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 

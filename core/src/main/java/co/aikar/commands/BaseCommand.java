@@ -438,8 +438,8 @@ public abstract class BaseCommand {
                         int optional = c.optionalResolvers;
                         return extraArgs <= required + optional && (completion || extraArgs >= required);
                     }).sorted((c1, c2) -> {
-                        int a = c1.requiredResolvers + c1.optionalResolvers;
-                        int b = c2.requiredResolvers + c2.optionalResolvers;
+                        int a = c1.consumeInputResolvers;
+                        int b = c2.consumeInputResolvers;
 
                         if (a == b) {
                             return 0;
@@ -528,14 +528,11 @@ public abstract class BaseCommand {
     }
 
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
-        if (!cmd.hasPermission(issuer) || args.length > cmd.requiredResolvers + cmd.optionalResolvers || args.length == 0
-                || cmd.complete == null) {
+        if (!cmd.hasPermission(issuer) || args.length > cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {
             return ImmutableList.of();
         }
 
-        String[] completions = ACFPatterns.SPACE.split(cmd.complete);
-
-        List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, completions, args, isAsync);
+        List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);
         return filterTabComplete(args[args.length-1], cmds);
     }
 

@@ -62,10 +62,12 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     String permission;
     String complete;
     String conditions;
+    public String helpSearchTags;
 
     final int requiredResolvers;
+    final int consumeInputResolvers;
+    final int doesNotConsumeInputResolvers;
     final int optionalResolvers;
-    public String helpSearchTags;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -91,6 +93,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
 
         int requiredResolvers = 0;
+        int consumeInputResolvers = 0;
+        int doesNotConsumeInputResolvers = 0;
         int optionalResolvers = 0;
         StringBuilder syntaxBuilder = new StringBuilder(64);
 
@@ -101,6 +105,11 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                     optionalResolvers++;
                 } else {
                     requiredResolvers++;
+                }
+                if (parameter.canConsumeInput()) {
+                    consumeInputResolvers++;
+                } else {
+                    doesNotConsumeInputResolvers++;
                 }
             }
             if (parameter.getSyntax() != null) {
@@ -114,6 +123,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);
         this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;
         this.requiredResolvers = requiredResolvers;
+        this.consumeInputResolvers = consumeInputResolvers;
+        this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
         this.optionalResolvers = optionalResolvers;
     }
 
@@ -186,6 +197,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
             final CommandParameter<CEC> parameter = parameters[i];
+            if (parameter.isCommandIssuer()) {
+                argLimit++;
+            }
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked
