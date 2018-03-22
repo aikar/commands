@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.HelpSearchTags;
-
 public class HelpEntry {
 
     private final RegisteredCommand command;
@@ -37,7 +35,6 @@ public class HelpEntry {
     RegisteredCommand getRegisteredCommand() {
         return this.command;
     }
-
 
     public String getCommand(){
         return "/" + this.command.command;
@@ -65,5 +62,9 @@ public class HelpEntry {
 
     public String getSearchTags() {
         return command.helpSearchTags;
+    }
+
+    public CommandParameter[] getParameters() {
+        return command.parameters;
     }
 }

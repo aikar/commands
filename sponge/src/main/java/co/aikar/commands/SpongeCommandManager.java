@@ -197,4 +197,9 @@ public class SpongeCommandManager extends CommandManager<
     public SpongeConditionContext createConditionContext(CommandIssuer issuer, String config) {
         return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);
     }
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
+    }
 }

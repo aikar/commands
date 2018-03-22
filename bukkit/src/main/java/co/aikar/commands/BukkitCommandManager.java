@@ -353,4 +353,9 @@ public class BukkitCommandManager extends CommandManager<
         this.autoDetectFromClient = autoDetectFromClient;
         return old;
     }
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
+    }
 }
