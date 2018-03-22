@@ -23,9 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.SetMultimap;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,6 +39,7 @@ public class CommandHelp {
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
     private final String commandName;
+    final String commandPrefix;
     private int page;
     private int perPage;
     private List<String> search;
@@ -50,7 +49,9 @@ public class CommandHelp {
         this.manager = manager;
         this.issuer = issuer;
         this.perPage = manager.defaultHelpPerPage;
-        this.commandName = manager.getCommandPrefix(issuer) + rootCommand.getCommandName();
+        this.commandPrefix = manager.getCommandPrefix(issuer);
+        this.commandName = this.commandPrefix + rootCommand.getCommandName();
+
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
@@ -62,7 +63,7 @@ public class CommandHelp {
 
             RegisteredCommand regCommand = e.getValue();
             if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
-                this.helpEntries.add(new HelpEntry(regCommand));
+                this.helpEntries.add(new HelpEntry(this, regCommand));
                 seen.add(regCommand);
             }
         });

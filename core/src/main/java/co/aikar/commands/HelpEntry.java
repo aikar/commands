@@ -25,10 +25,12 @@ package co.aikar.commands;
 
 public class HelpEntry {
 
+    private final CommandHelp commandHelp;
     private final RegisteredCommand command;
     private int searchScore = 1;
 
-    HelpEntry(RegisteredCommand command) {
+    HelpEntry(CommandHelp commandHelp, RegisteredCommand command) {
+        this.commandHelp = commandHelp;
         this.command = command;
     }
 
@@ -36,8 +38,8 @@ public class HelpEntry {
         return this.command;
     }
 
-    public String getCommand(){
-        return "/" + this.command.command;
+    public String getCommand() {
+        return this.commandHelp.commandPrefix + this.command.command;
     }
 
     public String getParameterSyntax(){

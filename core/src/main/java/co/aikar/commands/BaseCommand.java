@@ -81,7 +81,6 @@ public abstract class BaseCommand {
     Map<String, RootCommand> registeredCommands = new HashMap<>();
     String description;
     String commandName;
-    String usageMessage;
     String permission;
     String conditions;
 
@@ -140,7 +139,6 @@ public abstract class BaseCommand {
         this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
         this.permission = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
         this.description = this.commandName + " commands";
-        this.usageMessage = "/" + this.commandName;
         this.parentSubcommand = getParentSubcommand(self);
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
@@ -620,7 +618,7 @@ public abstract class BaseCommand {
 
     public void showSyntax(CommandIssuer issuer, RegisteredCommand<?> cmd) {
         issuer.sendMessage(MessageType.SYNTAX, MessageKeys.INVALID_SYNTAX,
-                "{command}", "/" + cmd.command,
+                "{command}", manager.getCommandPrefix(issuer) + cmd.command,
                 "{syntax}", cmd.syntaxText
         );
     }
