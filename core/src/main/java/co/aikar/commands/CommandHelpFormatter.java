@@ -103,7 +103,7 @@ public class CommandHelpFormatter {
 
     /**
      * Override this to control replacements
-     * 
+     *
      * @param help
      * @return
      */

@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public class CommandContexts <R extends CommandExecutionContext<?, ? extends CommandIssuer>> {
+public class CommandContexts<R extends CommandExecutionContext<?, ? extends CommandIssuer>> {
     protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
     protected final CommandManager manager;
 
@@ -155,9 +155,9 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
                 return c.popFirstArg();
             }
             String ret = (c.isLastArg() && !c.hasAnnotation(Single.class)) ?
-                ACFUtil.join(c.getArgs())
-                :
-                c.popFirstArg();
+                    ACFUtil.join(c.getArgs())
+                    :
+                    c.popFirstArg();
 
             Integer minLen = c.getFlagValue("minlen", (Integer) null);
             Integer maxLen = c.getFlagValue("maxlen", (Integer) null);
@@ -238,9 +238,9 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             }
 
             // check if we have an exact match and should display the help page for that sub command instead
-            if(search != null){
+            if (search != null) {
                 String cmd = String.join(" ", search);
-                if(commandHelp.isExactMatch(cmd)){
+                if (commandHelp.isExactMatch(cmd)) {
                     return commandHelp;
                 }
             }
@@ -260,6 +260,7 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
     private void validateMinMax(R c, Number val) throws InvalidCommandArgument {
         validateMinMax(c, val, null, null);
     }
+
     private void validateMinMax(R c, Number val, Number minValue, Number maxValue) throws InvalidCommandArgument {
         minValue = c.getFlagValue("min", minValue);
         maxValue = c.getFlagValue("max", maxValue);
@@ -273,9 +274,9 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
 
 
     /**
+     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)
      * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}
      * as the core wants to use the platform agnostic term of "Issuer" instead of Sender
-     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)
      */
     @Deprecated
     public <T> void registerSenderAwareContext(Class<T> context, IssuerAwareContextResolver<T, R> supplier) {
