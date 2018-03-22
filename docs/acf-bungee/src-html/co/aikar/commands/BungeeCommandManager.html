@@ -215,7 +215,13 @@
 <span class="sourceLineNo">207</span>            }<a name="line.207"></a>
 <span class="sourceLineNo">208</span>        }<a name="line.208"></a>
 <span class="sourceLineNo">209</span>    }<a name="line.209"></a>
-<span class="sourceLineNo">210</span>}<a name="line.210"></a>
+<span class="sourceLineNo">210</span><a name="line.210"></a>
+<span class="sourceLineNo">211</span><a name="line.211"></a>
+<span class="sourceLineNo">212</span>    @Override<a name="line.212"></a>
+<span class="sourceLineNo">213</span>    public String getCommandPrefix(CommandIssuer issuer) {<a name="line.213"></a>
+<span class="sourceLineNo">214</span>        return issuer.isPlayer() ? "/" : "";<a name="line.214"></a>
+<span class="sourceLineNo">215</span>    }<a name="line.215"></a>
+<span class="sourceLineNo">216</span>}<a name="line.216"></a>
 
 
 

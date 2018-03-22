@@ -90,7 +90,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandConditions.html#addCondition-java.lang.Class-java.lang.String-co.aikar.commands.CommandConditions.ParameterCondition-">addCondition(Class&lt;P&gt;, String, CommandConditions.ParameterCondition&lt;P, CEC, I&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessage-java.util.Locale-co.aikar.locales.MessageKey-java.lang.String-">addMessage(Locale, MessageKey, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessage-java.util.Locale-co.aikar.locales.MessageKeyProvider-java.lang.String-">addMessage(Locale, MessageKeyProvider, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessageBundle-java.lang.String-java.util.Locale-">addMessageBundle(String, Locale)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
@@ -98,7 +98,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessageBundles-java.lang.String...-">addMessageBundles(String...)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessages-java.util.Locale-java.util.Map-">addMessages(Locale, Map&lt;MessageKey, String&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessages-java.util.Locale-java.util.Map-">addMessages(Locale, Map&lt;? extends MessageKeyProvider, String&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#addMessageStrings-java.util.Locale-java.util.Map-">addMessageStrings(Locale, Map&lt;String, String&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
@@ -258,6 +258,10 @@
 <dt><a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandHelp</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#CommandHelp-co.aikar.commands.CommandManager-co.aikar.commands.RootCommand-co.aikar.commands.CommandIssuer-">CommandHelp(CommandManager, RootCommand, CommandIssuer)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandHelpFormatter</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#CommandHelpFormatter-co.aikar.commands.CommandManager-">CommandHelpFormatter(CommandManager)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands"><span class="typeNameLink">CommandIssuer</span></a> - Interface in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
@@ -525,6 +529,12 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandOperationContext.html#getCommandManager--">getCommandManager()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getCommandName--">getCommandName()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getCommandPrefix--">getCommandPrefix()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getCommandPrefix-co.aikar.commands.CommandIssuer-">getCommandPrefix(CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getCommandReplacements--">getCommandReplacements()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>
 <div class="block">Lets you add custom string replacements that can be applied to annotation values,
@@ -592,6 +602,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#getDoubleFlagValue-java.lang.String-java.lang.Number-">getDoubleFlagValue(String, Number)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#getEntryFormatReplacements-co.aikar.commands.CommandHelp-co.aikar.commands.HelpEntry-">getEntryFormatReplacements(CommandHelp, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>
+<div class="block">Override this to control replacements</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#getEnumFromName-T:A-java.lang.String-">getEnumFromName(T[], String)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#getEnumFromName-T:A-java.lang.String-T-">getEnumFromName(T[], String, T)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
@@ -630,16 +644,22 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getFormat-co.aikar.commands.MessageType-">getFormat(MessageType)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getFormatReplacements-co.aikar.commands.HelpEntry-">getFormatReplacements(HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
-<dd>
-<div class="block">Override this to control replacements</div>
-</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html#getFullStackTrace-java.lang.Throwable-">getFullStackTrace(Throwable)</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil</a></dt>
 <dd>
 <div class="block">A way to get the entire nested stack-trace of an throwable.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#getHeaderFooterFormatReplacements-co.aikar.commands.CommandHelp-">getHeaderFooterFormatReplacements(CommandHelp)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>
+<div class="block">Override this to control replacements</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getHelpEntries--">getHelpEntries()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getHelpFormatter--">getHelpFormatter()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">Unstable API</span></div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#getIndex--">getIndex()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletionContext.html#getInput--">getInput()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></dt>
@@ -649,6 +669,8 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletionContext.html#getIssuer--">getIssuer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#getIssuer--">getIssuer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getIssuer--">getIssuer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandIssuer.html#getIssuer--">getIssuer()</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></dt>
 <dd>
@@ -701,11 +723,19 @@
 <dd>
 <div class="block">Gets the actual args in string form the user typed</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getPage--">getPage()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#getParam--">getParam()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#getParameter--">getParameter()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#getParameterFormatReplacements-co.aikar.commands.CommandHelp-java.lang.String-java.lang.String-co.aikar.commands.HelpEntry-">getParameterFormatReplacements(CommandHelp, String, String, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>
+<div class="block">Override this to control replacements</div>
+</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/HelpEntry.html#getParameters--">getParameters()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/HelpEntry.html#getParameterSyntax--">getParameterSyntax()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a></dt>
 <dd>&nbsp;</dd>
@@ -717,6 +747,8 @@
 <dd>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getPerPage--">getPerPage()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#getPrefSubCommand--">getPrefSubCommand()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandOperationContext.html#getRegisteredCommand--">getRegisteredCommand()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></dt>
@@ -741,9 +773,13 @@
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getRootCommand-java.lang.String-">getRootCommand(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getSearch--">getSearch()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/HelpEntry.html#getSearchScore--">getSearchScore()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/HelpEntry.html#getSearchTags--">getSearchTags()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getSelectedEntry--">getSelectedEntry()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html#getStackTrace-java.lang.Throwable-">getStackTrace(Throwable)</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil</a></dt>
 <dd>
@@ -788,6 +824,10 @@
  in an array of <code>Throwable</code>s, one element for each
  <code>Throwable</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getTotalPages--">getTotalPages()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#getTotalResults--">getTotalResults()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#getType--">getType()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandIssuer.html#getUniqueId--">getUniqueId()</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></dt>
@@ -843,6 +883,8 @@
 <dt><a href="co/aikar/commands/annotation/HelpCommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">HelpCommand</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands"><span class="typeNameLink">HelpEntry</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#helpFormatter">helpFormatter</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/HelpSearchTags.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">HelpSearchTags</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
 <dd>&nbsp;</dd>
@@ -950,11 +992,15 @@
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#isDouble-java.lang.String-">isDouble(String)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#isExactMatch-java.lang.String-">isExactMatch(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#isFloat-java.lang.String-">isFloat(String)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#isInteger-java.lang.String-">isInteger(String)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#isLastArg--">isLastArg()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#isLastPage--">isLastPage()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html#isNestedThrowable-java.lang.Throwable-">isNestedThrowable(Throwable)</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil</a></dt>
 <dd>
@@ -1309,11 +1355,29 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#preCommand--">preCommand()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printDetailedHelpFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printDetailedHelpFooter(CommandHelp, CommandIssuer, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printDetailedHelpHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-java.lang.String-co.aikar.commands.HelpEntry-">printDetailedHelpHeader(CommandHelp, CommandIssuer, String, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printDetailedParameter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-co.aikar.commands.CommandParameter-">printDetailedParameter(CommandHelp, CommandIssuer, HelpEntry, CommandParameter)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printHelpEntry-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printHelpEntry(CommandHelp, CommandIssuer, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printHelpFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printHelpFooter(CommandHelp, CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printHelpHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printHelpHeader(CommandHelp, CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.Nestable.html#printPartialStackTrace-java.io.PrintWriter-">printPartialStackTrace(PrintWriter)</a></span> - Method in interface co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.Nestable.html" title="interface in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil.Nestable</a></dt>
 <dd>
 <div class="block">Prints the stack trace for this exception only--root cause not
  included--using the provided writer.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printSearchEntry-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printSearchEntry(CommandHelp, CommandIssuer, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printSearchFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printSearchFooter(CommandHelp, CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printSearchHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printSearchHeader(CommandHelp, CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.Nestable.html#printStackTrace-java.io.PrintWriter-">printStackTrace(PrintWriter)</a></span> - Method in interface co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.Nestable.html" title="interface in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil.Nestable</a></dt>
 <dd>
 <div class="block">Prints the stack trace of this exception to the specified print
@@ -1543,6 +1607,12 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#setFormat-co.aikar.commands.MessageType-int-FT-">setFormat(MessageType, int, FT)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#setHelpFormatter-co.aikar.commands.CommandHelpFormatter-">setHelpFormatter(CommandHelpFormatter)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">Unstable API</span></div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#setIssuerLocale-IT-java.util.Locale-">setIssuerLocale(IT, Locale)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#setOptional-boolean-">setOptional(boolean)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
@@ -1579,11 +1649,11 @@
 </dd>
 <dt><a href="co/aikar/commands/ShowCommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">ShowCommandHelp</span></a> - Exception in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#showDetailedHelp-co.aikar.commands.HelpEntry-co.aikar.commands.CommandIssuer-">showDetailedHelp(HelpEntry, CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#showHelp--">showHelp()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-">showHelp(CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-co.aikar.locales.MessageKeyProvider-">showHelp(CommandIssuer, MessageKeyProvider)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#showSyntax-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">showSyntax(CommandIssuer, RegisteredCommand&lt;?&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
 <dd>&nbsp;</dd>

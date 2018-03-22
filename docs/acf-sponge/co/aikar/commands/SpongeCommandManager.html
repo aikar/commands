@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -159,7 +159,7 @@ extends co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.Comman
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>conditions, defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, dependencies, formatters, issuersLocale, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
+<code>conditions, defaultExceptionHandler, defaultFormatter, defaultHelpPerPage, dependencies, formatters, helpFormatter, issuersLocale, localeChangedCallbacks, replacements, rootCommands, supportedLanguages, usePerIssuerLocale</code></li>
 </ul>
 </li>
 </ul>
@@ -242,28 +242,32 @@ extends co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.Comman
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#getCommandIssuer-java.lang.Object-">getCommandIssuer</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#getCommandPrefix-co.aikar.commands.CommandIssuer-">getCommandPrefix</a></span>(co.aikar.commands.CommandIssuer&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/SpongeLocales.html" title="class in co.aikar.commands">SpongeLocales</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#getLocales--">getLocales</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>org.spongepowered.api.plugin.PluginContainer</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#getPlugin--">getPlugin</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#hasRegisteredCommands--">hasRegisteredCommands</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#isCommandIssuer-java.lang.Class-">isCommandIssuer</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#log-co.aikar.commands.LogLevel-java.lang.String-java.lang.Throwable-">log</a></span>(co.aikar.commands.LogLevel&nbsp;level,
    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message,
    <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;throwable)</code>&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/SpongeCommandManager.html#registerCommand-co.aikar.commands.BaseCommand-">registerCommand</a></span>(co.aikar.commands.BaseCommand&nbsp;command)</code>&nbsp;</td>
 </tr>
@@ -273,7 +277,7 @@ extends co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.Comman
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.CommandManager</h3>
-<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandConditions, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getIssuerLocale, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, registerDependency, registerDependency, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, setIssuerLocale, usePerIssuerLocale, usingPerIssuerLocale</code></li>
+<code>addSupportedLanguage, enableUnstableAPI, formatMessage, generateCommandHelp, generateCommandHelp, generateCommandHelp, generateCommandHelp, getCommandConditions, getCommandReplacements, getCurrentCommandIssuer, getCurrentCommandManager, getCurrentCommandOperationContext, getDefaultExceptionHandler, getDefaultFormatter, getDefaultHelpPerPage, getFormat, getHelpFormatter, getIssuerLocale, getRootCommand, getSupportedLanguages, handleUncaughtException, hasPermission, log, notifyLocaleChange, obtainRootCommand, onLocaleChange, registerDependency, registerDependency, sendMessage, sendMessage, setDefaultExceptionHandler, setDefaultFormatter, setDefaultHelpPerPage, setFormat, setFormat, setFormat, setHelpFormatter, setIssuerLocale, usePerIssuerLocale, usingPerIssuerLocale</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -557,7 +561,7 @@ extends co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.Comman
 <a name="createConditionContext-co.aikar.commands.CommandIssuer-java.lang.String-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>createConditionContext</h4>
 <pre>public&nbsp;<a href="../../../co/aikar/commands/SpongeConditionContext.html" title="class in co.aikar.commands">SpongeConditionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandManager.html#line.197">createConditionContext</a>(co.aikar.commands.CommandIssuer&nbsp;issuer,
@@ -565,6 +569,19 @@ extends co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.Comman
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>createConditionContext</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.CommandSource,<a href="../../../co/aikar/commands/SpongeCommandIssuer.html" title="class in co.aikar.commands">SpongeCommandIssuer</a>,org.spongepowered.api.text.format.TextColor,<a href="../../../co/aikar/commands/SpongeMessageFormatter.html" title="class in co.aikar.commands">SpongeMessageFormatter</a>,<a href="../../../co/aikar/commands/SpongeCommandExecutionContext.html" title="class in co.aikar.commands">SpongeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/SpongeConditionContext.html" title="class in co.aikar.commands">SpongeConditionContext</a>&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getCommandPrefix-co.aikar.commands.CommandIssuer-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getCommandPrefix</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/SpongeCommandManager.html#line.202">getCommandPrefix</a>(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>getCommandPrefix</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;org.spongepowered.api.command.CommandSource,<a href="../../../co/aikar/commands/SpongeCommandIssuer.html" title="class in co.aikar.commands">SpongeCommandIssuer</a>,org.spongepowered.api.text.format.TextColor,<a href="../../../co/aikar/commands/SpongeMessageFormatter.html" title="class in co.aikar.commands">SpongeMessageFormatter</a>,<a href="../../../co/aikar/commands/SpongeCommandExecutionContext.html" title="class in co.aikar.commands">SpongeCommandExecutionContext</a>,<a href="../../../co/aikar/commands/SpongeConditionContext.html" title="class in co.aikar.commands">SpongeConditionContext</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>

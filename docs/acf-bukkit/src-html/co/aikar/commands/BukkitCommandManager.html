@@ -361,7 +361,12 @@
 <span class="sourceLineNo">353</span>        this.autoDetectFromClient = autoDetectFromClient;<a name="line.353"></a>
 <span class="sourceLineNo">354</span>        return old;<a name="line.354"></a>
 <span class="sourceLineNo">355</span>    }<a name="line.355"></a>
-<span class="sourceLineNo">356</span>}<a name="line.356"></a>
+<span class="sourceLineNo">356</span><a name="line.356"></a>
+<span class="sourceLineNo">357</span>    @Override<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    public String getCommandPrefix(CommandIssuer issuer) {<a name="line.358"></a>
+<span class="sourceLineNo">359</span>        return issuer.isPlayer() ? "/" : "";<a name="line.359"></a>
+<span class="sourceLineNo">360</span>    }<a name="line.360"></a>
+<span class="sourceLineNo">361</span>}<a name="line.361"></a>
 
 
 

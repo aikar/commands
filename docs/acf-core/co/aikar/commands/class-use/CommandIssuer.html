@@ -191,6 +191,10 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelp.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelp.html#getIssuer--">getIssuer</a></span>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandCompletionContext.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandCompletionContext.html#getIssuer--">getIssuer</a></span>()</code>&nbsp;</td>
 </tr>
 </tbody>
@@ -284,15 +288,19 @@
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#getCommandPrefix-co.aikar.commands.CommandIssuer-">getCommandPrefix</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#getIssuerLocale-co.aikar.commands.CommandIssuer-">getIssuerLocale</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><span class="typeNameLabel">Locales.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/Locales.html#getMessage-co.aikar.commands.CommandIssuer-co.aikar.locales.MessageKeyProvider-">getMessage</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
           co.aikar.locales.MessageKeyProvider&nbsp;key)</code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected boolean</code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#handleUncaughtException-co.aikar.commands.BaseCommand-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandIssuer-java.util.List-java.lang.Throwable-">handleUncaughtException</a></span>(<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;scope,
                        <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;registeredCommand,
@@ -300,23 +308,75 @@
                        <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;args,
                        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</a>&nbsp;t)</code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender)</code>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#hasPermission-co.aikar.commands.CommandIssuer-java.lang.String-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#help-co.aikar.commands.CommandIssuer-java.lang.String:A-">help</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
     <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printDetailedHelpFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printDetailedHelpFooter</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                       <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                       <a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printDetailedHelpHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-java.lang.String-co.aikar.commands.HelpEntry-">printDetailedHelpHeader</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                       <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                       <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;command,
+                       <a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printDetailedParameter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-co.aikar.commands.CommandParameter-">printDetailedParameter</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                      <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                      <a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry,
+                      <a href="../../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;param)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printHelpEntry-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printHelpEntry</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+              <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+              <a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printHelpFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printHelpFooter</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+               <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printHelpHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printHelpHeader</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+               <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printSearchEntry-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printSearchEntry</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                <a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;page)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printSearchFooter-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printSearchFooter</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                 <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">CommandHelpFormatter.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelpFormatter.html#printSearchHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printSearchHeader</a></span>(<a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                 <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -327,12 +387,12 @@
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><span class="typeNameLabel">CommandHelp.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-">showHelp</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">CommandHelp.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelp.html#showDetailedHelp-co.aikar.commands.HelpEntry-co.aikar.commands.CommandIssuer-">showDetailedHelp</a></span>(<a href="../../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry,
+                <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><span class="typeNameLabel">CommandHelp.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-co.aikar.locales.MessageKeyProvider-">showHelp</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
-        co.aikar.locales.MessageKeyProvider&nbsp;format)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">CommandHelp.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-">showHelp</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
