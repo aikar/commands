@@ -43,11 +43,11 @@ public class HelpEntry {
     }
 
     public String getParameterSyntax(){
-        return this.command.syntaxText;
+        return this.command.syntaxText != null ? this.command.syntaxText : "";
     }
 
     public String getDescription(){
-        return this.command.helpText;
+        return this.command.helpText != null ? this.command.helpText : "";
     }
 
     public void setSearchScore(int searchScore) {

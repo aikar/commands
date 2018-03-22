@@ -25,8 +25,6 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class CommandHelpFormatter {
 
     private final CommandManager manager;
@@ -39,54 +37,44 @@ public class CommandHelpFormatter {
     // # help #
     // ########
 
-    public void printHelpHeader(CommandIssuer issuer, String command, int page, int totalPages, int totalResults) {
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER,
-                "{page}", "" + page,
-                "{totalpages}", "" + totalPages,
-                "{results}", "" + totalResults,
-                "{command}", "" + command
-        );
+    public void printHelpHeader(CommandHelp help, CommandIssuer issuer) {
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER, getHeaderFooterFormatReplacements(help));
     }
 
-    public void printHelpLine(CommandIssuer issuer, String command, HelpEntry page) {
-        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page, command));
+    public void printHelpEntry(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
+        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getEntryFormatReplacements(help, entry));
         for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printHelpFooter(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, boolean lastPage) {
-        if (lastPage) {
+    public void printHelpFooter(CommandHelp help, CommandIssuer issuer) {
+        if (help.isLastPage()) {
             return;
         }
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
-                "{page}", "" + page,
-                "{totalpages}", "" + totalPages,
-                "{results}", "" + totalResults,
-                "{command}", "" + command
-        );
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));
     }
 
     // ##########
     // # search #
     // ##########
 
-    public void printSearchHeader(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, List<String> search) {
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_SEARCH_HEADER, getPaginationFormatReplacements(command, page, totalPages, totalResults, search));
+    public void printSearchHeader(CommandHelp help, CommandIssuer issuer) {
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_SEARCH_HEADER, getHeaderFooterFormatReplacements(help));
     }
 
-    public void printSearchLine(CommandIssuer issuer, String command, HelpEntry page, int score) {
-        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page, command));
+    public void printSearchEntry(CommandHelp help, CommandIssuer issuer, HelpEntry page) {
+        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getEntryFormatReplacements(help, page));
         for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printSearchFooter(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, List<String> search, boolean lastPage) {
-        if (lastPage) {
+    public void printSearchFooter(CommandHelp help, CommandIssuer issuer) {
+        if (help.isLastPage()) {
             return;
         }
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getPaginationFormatReplacements(command, page, totalPages, totalResults, search)
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help)
         );
     }
 
@@ -95,48 +83,53 @@ public class CommandHelpFormatter {
     // # detailed #
     // ############
 
-    public void printDetailedHelpHeader(CommandIssuer issuer, String command, HelpEntry entry) {
+    public void printDetailedHelpHeader(CommandHelp help, CommandIssuer issuer, String command, HelpEntry entry) {
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER,
                 "{command}", entry.getCommand(),
                 "{command}", command
         );
     }
 
-    public void printDetailedHelpLine(CommandIssuer issuer, String rootCommand, HelpEntry entry, String subCommand, String paramDescription) {
-        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_FORMAT, getDetailedFormatReplacements(subCommand, paramDescription, entry, rootCommand));
+    public void printDetailedParameter(CommandHelp help, CommandIssuer issuer, HelpEntry entry, CommandParameter param) {
+        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_PARAMETER_FORMAT, getParameterFormatReplacements(help, param.getName(), param.getDescription(), entry));
         for (String msg : ACFPatterns.NEWLINE.split(formattedMsg)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printDetailedHelpFooter(CommandIssuer issuer, String command, HelpEntry page) {
+    public void printDetailedHelpFooter(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
         // default doesn't have a footer
     }
 
-    @NotNull
-    public String[] getPaginationFormatReplacements(String command, int page, int totalPages, int totalResults, List<String> search) {
+    /**
+     * Override this to control replacements
+     * 
+     * @param help
+     * @return
+     */
+    public String[] getHeaderFooterFormatReplacements(CommandHelp help) {
         return new String[]{
-                "{search}", String.join(" ", search),
-                "{command}", command,
-                "{rootcommand}", command,
-                "{page}", "" + page,
-                "{totalpages}", "" + totalPages,
-                "{results}", "" + totalResults
+                "{search}", help.search != null ? String.join(" ", help.search) : "",
+                "{command}", help.getCommandName(),
+                "{rootcommand}", help.getCommandName(),
+                "{page}", "" + help.getPage(),
+                "{totalpages}", "" + help.getTotalPages(),
+                "{results}", "" + help.getTotalResults()
         };
     }
 
     /**
      * Override this to control replacements
      *
+     * @param help
      * @param e
-     * @param command
      * @return
      */
-    public String[] getFormatReplacements(HelpEntry e, String command) {
+    public String[] getEntryFormatReplacements(CommandHelp help, HelpEntry e) {
         //{command} {parameters} {separator} {description}
         return new String[]{
                 "{command}", e.getCommand(),
-                "{rootcommand}", command,
+                "{rootcommand}", help.getCommandName(),
                 "{parameters}", e.getParameterSyntax(),
                 "{separator}", e.getDescription().isEmpty() ? "" : "-",
                 "{description}", e.getDescription()
@@ -146,20 +139,20 @@ public class CommandHelpFormatter {
     /**
      * Override this to control replacements
      *
+     * @param help
      * @param name
      * @param description
      * @param page
-     * @param rootCommand
      * @return
      */
     @NotNull
-    public String[] getDetailedFormatReplacements(String name, String description, HelpEntry page, String rootCommand) {
+    public String[] getParameterFormatReplacements(CommandHelp help, String name, String description, HelpEntry page) {
         //{name} {description}
         return new String[]{
                 "{name}", name,
+                "{description}", description,
                 "{command}", page.getCommand(),
-                "{rootcommand}", rootCommand,
-                "{description}", description
+                "{rootcommand}", help.getCommandName()
         };
     }
 }

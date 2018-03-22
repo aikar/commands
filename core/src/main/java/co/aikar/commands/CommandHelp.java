@@ -42,8 +42,11 @@ public class CommandHelp {
     final String commandPrefix;
     private int page;
     private int perPage;
-    private List<String> search;
+    List<String> search;
     private HelpEntry selectedEntry;
+    private int totalResults;
+    private int totalPages;
+    private boolean lastPage;
 
     public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
         this.manager = manager;
@@ -136,22 +139,17 @@ public class CommandHelp {
             helpEntries = getHelpEntries();
             results = helpEntries.iterator();
         }
-        int totalResults = helpEntries.size();
+        this.totalResults = helpEntries.size();
         int min = (this.page - 1) * this.perPage; // TODO: per page configurable?
         int max = min + this.perPage;
-        int totalPages = (int) Math.ceil((float) totalResults / (float) this.perPage);
+        this.totalPages = (int) Math.ceil((float) totalResults / (float) this.perPage);
         int i = 0;
         if (min >= totalResults) {
             issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_NO_RESULTS);
             return;
         }
 
-        if (search == null) {
-            manager.getHelpFormatter().printHelpHeader(issuer, commandName, page, totalPages, totalResults);
-        } else {
-            manager.getHelpFormatter().printSearchHeader(issuer, commandName, page, totalPages, totalResults, search);
-        }
-
+        List<HelpEntry> printEntries = new ArrayList<>();
         while (results.hasNext()) {
             HelpEntry e = results.next();
             if (i >= max) {
@@ -160,40 +158,51 @@ public class CommandHelp {
             if (i++ < min) {
                 continue;
             }
+            printEntries.add(e);
+        }
+        this.lastPage = !(min > 0 || results.hasNext());
 
+        CommandHelpFormatter formatter = manager.getHelpFormatter();
+        if (search == null) {
+            formatter.printHelpHeader(this, issuer);
+        } else {
+            formatter.printSearchHeader(this, issuer);
+        }
+
+        for (HelpEntry e : printEntries) {
             if (search == null) {
-                manager.getHelpFormatter().printHelpLine(issuer, commandName, e);
+                formatter.printHelpEntry(this, issuer, e);
             } else {
-                manager.getHelpFormatter().printSearchLine(issuer, commandName, e, e.getSearchScore());
+                formatter.printSearchEntry(this, issuer, e);
             }
         }
 
-        boolean lastPage = !(min > 0 || results.hasNext());
+
         if (search == null) {
-            manager.getHelpFormatter().printHelpFooter(issuer, commandName, page, totalPages, totalResults, lastPage);
+            formatter.printHelpFooter(this, issuer);
         } else {
-            manager.getHelpFormatter().printSearchFooter(issuer, commandName, page, totalPages, totalResults, search, lastPage);
+            formatter.printSearchFooter(this, issuer);
         }
     }
 
     public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {
         // header
         CommandHelpFormatter formatter = manager.getHelpFormatter();
-        formatter.printDetailedHelpHeader(issuer, commandName, entry);
+        formatter.printDetailedHelpHeader(this, issuer, commandName, entry);
 
         // normal help line
-        formatter.printHelpLine(issuer, commandName, entry);
+        formatter.printHelpEntry(this, issuer, entry);
 
         // additionally detailed help for params
         for (CommandParameter param : entry.getParameters()) {
             String description = param.getDescription();
             if (description != null && !description.isEmpty()) {
-                formatter.printDetailedHelpLine(issuer, commandName, entry, param.getName(), description);
+                formatter.printDetailedParameter(this, issuer, entry, param);
             }
         }
 
         // footer
-        formatter.printDetailedHelpFooter(issuer, commandName, entry);
+        formatter.printDetailedHelpFooter(this, issuer, entry);
     }
 
     public List<HelpEntry> getHelpEntries() {
@@ -216,5 +225,45 @@ public class CommandHelp {
     public void setSearch(List<String> search) {
         this.search = search;
         getHelpEntries().forEach(this::updateSearchScore);
+    }
+
+    public CommandIssuer getIssuer() {
+        return issuer;
+    }
+
+    public String getCommandName() {
+        return commandName;
+    }
+
+    public String getCommandPrefix() {
+        return commandPrefix;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getPerPage() {
+        return perPage;
+    }
+
+    public List<String> getSearch() {
+        return search;
+    }
+
+    public HelpEntry getSelectedEntry() {
+        return selectedEntry;
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public boolean isLastPage() {
+        return lastPage;
     }
 }
