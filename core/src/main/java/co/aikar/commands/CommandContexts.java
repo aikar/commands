@@ -236,6 +236,15 @@ public class CommandContexts <R extends CommandExecutionContext<?, ? extends Com
             if (perPage != null) {
                 commandHelp.setPerPage(perPage);
             }
+
+            // check if we have an exact match and should display the help page for that sub command instead
+            if(search != null){
+                String cmd = String.join(" ", search);
+                if(commandHelp.isExactMatch(cmd)){
+                    return commandHelp;
+                }
+            }
+
             commandHelp.setSearch(search);
             return commandHelp;
         });

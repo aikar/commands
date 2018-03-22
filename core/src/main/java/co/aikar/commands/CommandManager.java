@@ -72,6 +72,7 @@ public abstract class CommandManager <
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Table<Class<?>, String, Object> dependencies = HashBasedTable.create();
+    protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = Lists.newArrayList();
@@ -187,6 +188,15 @@ public abstract class CommandManager <
     public void setDefaultHelpPerPage(int defaultHelpPerPage) {
         verifyUnstableAPI("help");
         this.defaultHelpPerPage = defaultHelpPerPage;
+    }
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public void setHelpFormatter(CommandHelpFormatter helpFormatter) {
+        this.helpFormatter = helpFormatter;
+    }
+
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public CommandHelpFormatter getHelpFormatter() {
+        return helpFormatter;
     }
 
     /**
