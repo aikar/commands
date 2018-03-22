@@ -52,6 +52,7 @@ public enum MessageKeys implements MessageKeyProvider {
     HELP_HEADER,
     HELP_FORMAT,
     HELP_DETAILED_HEADER,
+    HELP_DETAILED_COMMAND_FORMAT,
     HELP_DETAILED_PARAMETER_FORMAT,
     HELP_SEARCH_HEADER,
     ;

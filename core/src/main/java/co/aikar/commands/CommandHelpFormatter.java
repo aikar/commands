@@ -41,7 +41,7 @@ public class CommandHelpFormatter {
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER, getHeaderFooterFormatReplacements(help));
     }
 
-    public void printHelpEntry(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
+    public void printHelpCommand(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
         String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getEntryFormatReplacements(help, entry));
         for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
@@ -74,8 +74,7 @@ public class CommandHelpFormatter {
         if (help.isLastPage()) {
             return;
         }
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help)
-        );
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));
     }
 
 
@@ -83,11 +82,18 @@ public class CommandHelpFormatter {
     // # detailed #
     // ############
 
-    public void printDetailedHelpHeader(CommandHelp help, CommandIssuer issuer, String command, HelpEntry entry) {
+    public void printDetailedHelpHeader(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER,
-                "{command}", entry.getCommand(),
-                "{command}", command
+                "{command}", entry.getCommand()
         );
+    }
+
+
+    public void printDetailedHelpCommand(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
+        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_COMMAND_FORMAT, getEntryFormatReplacements(help, entry));
+        for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
+            issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+        }
     }
 
     public void printDetailedParameter(CommandHelp help, CommandIssuer issuer, HelpEntry entry, CommandParameter param) {

@@ -171,7 +171,7 @@ public class CommandHelp {
 
         for (HelpEntry e : printEntries) {
             if (search == null) {
-                formatter.printHelpEntry(this, issuer, e);
+                formatter.printHelpCommand(this, issuer, e);
             } else {
                 formatter.printSearchEntry(this, issuer, e);
             }
@@ -188,10 +188,10 @@ public class CommandHelp {
     public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {
         // header
         CommandHelpFormatter formatter = manager.getHelpFormatter();
-        formatter.printDetailedHelpHeader(this, issuer, commandName, entry);
+        formatter.printDetailedHelpHeader(this, issuer, entry);
 
         // normal help line
-        formatter.printHelpEntry(this, issuer, entry);
+        formatter.printDetailedHelpCommand(this, issuer, entry);
 
         // additionally detailed help for params
         for (CommandParameter param : entry.getParameters()) {
