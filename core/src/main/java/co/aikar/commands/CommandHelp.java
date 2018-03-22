@@ -53,7 +53,7 @@ public class CommandHelp {
         this.issuer = issuer;
         this.perPage = manager.defaultHelpPerPage;
         this.commandPrefix = manager.getCommandPrefix(issuer);
-        this.commandName = this.commandPrefix + rootCommand.getCommandName();
+        this.commandName = rootCommand.getCommandName();
 
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();

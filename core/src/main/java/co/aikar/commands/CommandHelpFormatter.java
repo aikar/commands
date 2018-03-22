@@ -84,7 +84,8 @@ public class CommandHelpFormatter {
 
     public void printDetailedHelpHeader(CommandHelp help, CommandIssuer issuer, HelpEntry entry) {
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER,
-                "{command}", entry.getCommand()
+                "{command}", entry.getCommand(),
+                "{commandprefix}", help.getCommandPrefix()
         );
     }
 
@@ -117,6 +118,7 @@ public class CommandHelpFormatter {
         return new String[]{
                 "{search}", help.search != null ? String.join(" ", help.search) : "",
                 "{command}", help.getCommandName(),
+                "{commandprefix}", help.getCommandPrefix(),
                 "{rootcommand}", help.getCommandName(),
                 "{page}", "" + help.getPage(),
                 "{totalpages}", "" + help.getTotalPages(),
@@ -128,17 +130,17 @@ public class CommandHelpFormatter {
      * Override this to control replacements
      *
      * @param help
-     * @param e
+     * @param entry
      * @return
      */
-    public String[] getEntryFormatReplacements(CommandHelp help, HelpEntry e) {
+    public String[] getEntryFormatReplacements(CommandHelp help, HelpEntry entry) {
         //{command} {parameters} {separator} {description}
         return new String[]{
-                "{command}", e.getCommand(),
-                "{rootcommand}", help.getCommandName(),
-                "{parameters}", e.getParameterSyntax(),
-                "{separator}", e.getDescription().isEmpty() ? "" : "-",
-                "{description}", e.getDescription()
+                "{command}", entry.getCommand(),
+                "{commandprefix}", help.getCommandPrefix(),
+                "{parameters}", entry.getParameterSyntax(),
+                "{separator}", entry.getDescription().isEmpty() ? "" : "-",
+                "{description}", entry.getDescription()
         };
     }
 
@@ -147,18 +149,19 @@ public class CommandHelpFormatter {
      *
      * @param help
      * @param param
-     * @param page
+     * @param entry
      * @return
      */
     @NotNull
-    public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry page) {
+    public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry entry) {
         //{name} {description}
         return new String[]{
                 "{name}", param.getName(),
                 "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),
                 "{description}", ACFUtil.nullDefault(param.getDescription(), ""),
-                "{command}", page.getCommand(),
-                "{rootcommand}", help.getCommandName()
+                "{command}", help.getCommandName(),
+                "{fullcommand}", entry.getCommand(),
+                "{commandprefix}", help.getCommandPrefix()
         };
     }
 }
