@@ -179,7 +179,7 @@
 <span class="sourceLineNo">171</span><a name="line.171"></a>
 <span class="sourceLineNo">172</span>        for (HelpEntry e : printEntries) {<a name="line.172"></a>
 <span class="sourceLineNo">173</span>            if (search == null) {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>                formatter.printHelpEntry(this, issuer, e);<a name="line.174"></a>
+<span class="sourceLineNo">174</span>                formatter.printHelpCommand(this, issuer, e);<a name="line.174"></a>
 <span class="sourceLineNo">175</span>            } else {<a name="line.175"></a>
 <span class="sourceLineNo">176</span>                formatter.printSearchEntry(this, issuer, e);<a name="line.176"></a>
 <span class="sourceLineNo">177</span>            }<a name="line.177"></a>
@@ -196,10 +196,10 @@
 <span class="sourceLineNo">188</span>    public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {<a name="line.188"></a>
 <span class="sourceLineNo">189</span>        // header<a name="line.189"></a>
 <span class="sourceLineNo">190</span>        CommandHelpFormatter formatter = manager.getHelpFormatter();<a name="line.190"></a>
-<span class="sourceLineNo">191</span>        formatter.printDetailedHelpHeader(this, issuer, commandName, entry);<a name="line.191"></a>
+<span class="sourceLineNo">191</span>        formatter.printDetailedHelpHeader(this, issuer, entry);<a name="line.191"></a>
 <span class="sourceLineNo">192</span><a name="line.192"></a>
 <span class="sourceLineNo">193</span>        // normal help line<a name="line.193"></a>
-<span class="sourceLineNo">194</span>        formatter.printHelpEntry(this, issuer, entry);<a name="line.194"></a>
+<span class="sourceLineNo">194</span>        formatter.printDetailedHelpCommand(this, issuer, entry);<a name="line.194"></a>
 <span class="sourceLineNo">195</span><a name="line.195"></a>
 <span class="sourceLineNo">196</span>        // additionally detailed help for params<a name="line.196"></a>
 <span class="sourceLineNo">197</span>        for (CommandParameter param : entry.getParameters()) {<a name="line.197"></a>
