@@ -91,7 +91,7 @@ public class CommandHelpFormatter {
     }
 
     public void printDetailedParameter(CommandHelp help, CommandIssuer issuer, HelpEntry entry, CommandParameter param) {
-        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_PARAMETER_FORMAT, getParameterFormatReplacements(help, param.getName(), param.getDescription(), entry));
+        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_PARAMETER_FORMAT, getParameterFormatReplacements(help, param, entry));
         for (String msg : ACFPatterns.NEWLINE.split(formattedMsg)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
@@ -140,17 +140,17 @@ public class CommandHelpFormatter {
      * Override this to control replacements
      *
      * @param help
-     * @param name
-     * @param description
+     * @param param
      * @param page
      * @return
      */
     @NotNull
-    public String[] getParameterFormatReplacements(CommandHelp help, String name, String description, HelpEntry page) {
+    public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry page) {
         //{name} {description}
         return new String[]{
-                "{name}", name,
-                "{description}", description,
+                "{name}", param.getName(),
+                "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),
+                "{description}", ACFUtil.nullDefault(param.getDescription(), ""),
                 "{command}", page.getCommand(),
                 "{rootcommand}", help.getCommandName()
         };
