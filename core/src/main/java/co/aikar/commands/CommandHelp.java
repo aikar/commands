@@ -50,7 +50,7 @@ public class CommandHelp {
         this.manager = manager;
         this.issuer = issuer;
         this.perPage = manager.defaultHelpPerPage;
-        this.commandName = "/" + rootCommand.getCommandName();
+        this.commandName = manager.getCommandPrefix(issuer) + rootCommand.getCommandName();
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
@@ -175,21 +175,24 @@ public class CommandHelp {
         }
     }
 
-    public void showDetailedHelp(HelpEntry page, CommandIssuer issuer) {
+    public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {
         // header
-        manager.getHelpFormatter().printDetailedHelpHeader(issuer, commandName, page);
+        CommandHelpFormatter formatter = manager.getHelpFormatter();
+        formatter.printDetailedHelpHeader(issuer, commandName, entry);
 
         // normal help line
-        manager.getHelpFormatter().printHelpLine(issuer, commandName, page);
+        formatter.printHelpLine(issuer, commandName, entry);
 
         // additionally detailed help for params
-        for (CommandParameter param : page.getParameters()) {
-            manager.getHelpFormatter().printDetailedHelpLine(issuer, commandName, page, param.getName(), param.getDescription());
+        for (CommandParameter param : entry.getParameters()) {
+            String description = param.getDescription();
+            if (description != null && !description.isEmpty()) {
+                formatter.printDetailedHelpLine(issuer, commandName, entry, param.getName(), description);
+            }
         }
 
-
         // footer
-        manager.getHelpFormatter().printDetailedHelpFooter(issuer, commandName, page);
+        formatter.printDetailedHelpFooter(issuer, commandName, entry);
     }
 
     public List<HelpEntry> getHelpEntries() {

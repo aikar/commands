@@ -504,4 +504,8 @@ public abstract class CommandManager <
     Annotations getAnnotations() {
         return annotations;
     }
+
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return "";
+    }
 }

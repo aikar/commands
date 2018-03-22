@@ -207,4 +207,10 @@ public class BungeeCommandManager extends CommandManager<
             }
         }
     }
+
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
+    }
 }

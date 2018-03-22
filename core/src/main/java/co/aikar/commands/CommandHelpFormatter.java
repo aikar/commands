@@ -39,23 +39,31 @@ public class CommandHelpFormatter {
     // # help #
     // ########
 
-    public void printHelpHeader(CommandIssuer issuer, String commandName, int page, int totalPages, int totalResults) {
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER, "{command}", commandName);
+    public void printHelpHeader(CommandIssuer issuer, String command, int page, int totalPages, int totalResults) {
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_HEADER,
+                "{page}", "" + page,
+                "{totalpages}", "" + totalPages,
+                "{results}", "" + totalResults,
+                "{command}", "" + command
+        );
     }
 
-    public void printHelpLine(CommandIssuer issuer, String commandName, HelpEntry page) {
-        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page));
+    public void printHelpLine(CommandIssuer issuer, String command, HelpEntry page) {
+        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page, command));
         for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printHelpFooter(CommandIssuer issuer, String commandName, int page, int totalPages, int totalResults, boolean lastPage) {
-        if(lastPage)return;
+    public void printHelpFooter(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, boolean lastPage) {
+        if (lastPage) {
+            return;
+        }
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
                 "{page}", "" + page,
-                "{totalpages}", ""+ totalPages,
-                "{results}", "" + totalResults
+                "{totalpages}", "" + totalPages,
+                "{results}", "" + totalResults,
+                "{command}", "" + command
         );
     }
 
@@ -63,57 +71,72 @@ public class CommandHelpFormatter {
     // # search #
     // ##########
 
-    public void printSearchHeader(CommandIssuer issuer, String commandName, int page, int totalPages, int totalResults, List<String> search) {
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_SEARCH_HEADER,
-                "{command}", commandName,
-                "{search}", String.join(" ", search));
+    public void printSearchHeader(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, List<String> search) {
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_SEARCH_HEADER, getPaginationFormatReplacements(command, page, totalPages, totalResults, search));
     }
 
-    public void printSearchLine(CommandIssuer issuer, String commandName, HelpEntry page, int score) {
-        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page));
+    public void printSearchLine(CommandIssuer issuer, String command, HelpEntry page, int score) {
+        String formatted = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_FORMAT, getFormatReplacements(page, command));
         for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printSearchFooter(CommandIssuer issuer, String commandName, int page, int totalPages, int totalResults, List<String> search, boolean lastPage) {
-        if(lastPage)return;
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
-                "{page}", "" + page,
-                "{totalpages}", ""+ totalPages,
-                "{results}", "" + totalResults
+    public void printSearchFooter(CommandIssuer issuer, String command, int page, int totalPages, int totalResults, List<String> search, boolean lastPage) {
+        if (lastPage) {
+            return;
+        }
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getPaginationFormatReplacements(command, page, totalPages, totalResults, search)
         );
     }
+
 
     // ############
     // # detailed #
     // ############
 
-    public void printDetailedHelpHeader(CommandIssuer issuer, String commandName, HelpEntry page) {
-        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER, "{command}", page.getCommand());
+    public void printDetailedHelpHeader(CommandIssuer issuer, String command, HelpEntry entry) {
+        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_DETAILED_HEADER,
+                "{command}", entry.getCommand(),
+                "{command}", command
+        );
     }
 
-    public void printDetailedHelpLine(CommandIssuer issuer, String commandName, HelpEntry page, String subCommand, String paramDescription) {
-        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_FORMAT, getDetailedFormatReplacements(subCommand, paramDescription, page));
+    public void printDetailedHelpLine(CommandIssuer issuer, String rootCommand, HelpEntry entry, String subCommand, String paramDescription) {
+        String formattedMsg = this.manager.formatMessage(issuer, MessageType.HELP, MessageKeys.HELP_DETAILED_FORMAT, getDetailedFormatReplacements(subCommand, paramDescription, entry, rootCommand));
         for (String msg : ACFPatterns.NEWLINE.split(formattedMsg)) {
             issuer.sendMessageInternal(ACFUtil.rtrim(msg));
         }
     }
 
-    public void printDetailedHelpFooter(CommandIssuer issuer, String commandName, HelpEntry page) {
+    public void printDetailedHelpFooter(CommandIssuer issuer, String command, HelpEntry page) {
         // default doesn't have a footer
+    }
+
+    @NotNull
+    public String[] getPaginationFormatReplacements(String command, int page, int totalPages, int totalResults, List<String> search) {
+        return new String[]{
+                "{search}", String.join(" ", search),
+                "{command}", command,
+                "{rootcommand}", command,
+                "{page}", "" + page,
+                "{totalpages}", "" + totalPages,
+                "{results}", "" + totalResults
+        };
     }
 
     /**
      * Override this to control replacements
+     *
      * @param e
+     * @param command
      * @return
      */
-    @NotNull
-    public String[] getFormatReplacements(HelpEntry e) {
+    public String[] getFormatReplacements(HelpEntry e, String command) {
         //{command} {parameters} {separator} {description}
-        return new String[] {
+        return new String[]{
                 "{command}", e.getCommand(),
+                "{rootcommand}", command,
                 "{parameters}", e.getParameterSyntax(),
                 "{separator}", e.getDescription().isEmpty() ? "" : "-",
                 "{description}", e.getDescription()
@@ -122,17 +145,21 @@ public class CommandHelpFormatter {
 
     /**
      * Override this to control replacements
-     * @param cmd
-     * @param help
+     *
+     * @param name
+     * @param description
      * @param page
+     * @param rootCommand
      * @return
      */
     @NotNull
-    public String[] getDetailedFormatReplacements(String cmd, String help, HelpEntry page) {
+    public String[] getDetailedFormatReplacements(String name, String description, HelpEntry page, String rootCommand) {
         //{name} {description}
-        return new String[] {
-                "{name}", cmd,
-                "{description}", help
+        return new String[]{
+                "{name}", name,
+                "{command}", page.getCommand(),
+                "{rootcommand}", rootCommand,
+                "{description}", description
         };
     }
 }
