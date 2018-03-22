@@ -160,9 +160,8 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#getParameterFormatReplacements-co.aikar.commands.CommandHelp-java.lang.String-java.lang.String-co.aikar.commands.HelpEntry-">getParameterFormatReplacements</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
-                              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name,
-                              <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#getParameterFormatReplacements-co.aikar.commands.CommandHelp-co.aikar.commands.CommandParameter-co.aikar.commands.HelpEntry-">getParameterFormatReplacements</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                              <a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;param,
                               <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;page)</code>
 <div class="block">Override this to control replacements</div>
 </td>
@@ -387,23 +386,21 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 </dl>
 </li>
 </ul>
-<a name="getParameterFormatReplacements-co.aikar.commands.CommandHelp-java.lang.String-java.lang.String-co.aikar.commands.HelpEntry-">
+<a name="getParameterFormatReplacements-co.aikar.commands.CommandHelp-co.aikar.commands.CommandParameter-co.aikar.commands.HelpEntry-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getParameterFormatReplacements</h4>
 <pre>@NotNull
-public&nbsp;@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.149">getParameterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
-                                                                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name,
-                                                                 <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;description,
+public&nbsp;@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.148">getParameterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+                                                                 <a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;param,
                                                                  <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;page)</pre>
 <div class="block">Override this to control replacements</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>help</code> - </dd>
-<dd><code>name</code> - </dd>
-<dd><code>description</code> - </dd>
+<dd><code>param</code> - </dd>
 <dd><code>page</code> - </dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 </dl>
