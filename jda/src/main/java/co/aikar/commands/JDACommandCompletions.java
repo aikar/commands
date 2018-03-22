@@ -30,7 +30,7 @@ public class JDACommandCompletions extends CommandCompletions<CommandCompletionC
 
     @NotNull
     @Override
-    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args, boolean isAsync) {
+    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] args, boolean isAsync) {
         return ImmutableList.of();
     }
 

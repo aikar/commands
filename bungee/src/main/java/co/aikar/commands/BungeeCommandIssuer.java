@@ -25,8 +25,11 @@ package co.aikar.commands;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.UUID;
 
 public class BungeeCommandIssuer implements CommandIssuer {
     private final BungeeCommandManager manager;
@@ -55,6 +58,16 @@ public class BungeeCommandIssuer implements CommandIssuer {
     @Override
     public boolean isPlayer() {
         return sender instanceof ProxiedPlayer;
+    }
+
+    @Override
+    public @NotNull UUID getUniqueId() {
+        if (isPlayer()) {
+            return ((ProxiedPlayer) sender).getUniqueId();
+        }
+
+        //generate a unique id based of the name (like for the console command sender)
+        return UUID.nameUUIDFromBytes(sender.getName().getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

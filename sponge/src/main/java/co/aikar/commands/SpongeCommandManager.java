@@ -34,7 +34,6 @@ import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +66,8 @@ public class SpongeCommandManager extends CommandManager<
         this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
         this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));
         getLocales(); // auto load locales
+
+        Sponge.getEventManager().registerListeners(plugin, new ACFSpongeListener(this));
 
         //TODO more default dependencies for sponge
         registerDependency(plugin.getClass(), plugin);
@@ -144,7 +145,7 @@ public class SpongeCommandManager extends CommandManager<
     }
 
     @Override
-    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
     }
 
@@ -197,4 +198,8 @@ public class SpongeCommandManager extends CommandManager<
         return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);
     }
 
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
+    }
 }

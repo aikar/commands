@@ -48,4 +48,10 @@ public class JDARootCommand implements RootCommand {
     public String getCommandName() {
         return this.name;
     }
+
+    @Override
+    public BaseCommand getDefCommand() {
+        return defCommand;
+    }
+
 }

@@ -26,13 +26,16 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +60,15 @@ public class BungeeCommandManager extends CommandManager<
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
+
         getLocales(); // auto load locales
+
+        plugin.getProxy().getPluginManager().registerListener(plugin, new ACFBungeeListener(this, plugin));
+
+        //BungeeCord has no event for listening for client setting changes
+        plugin.getProxy().getScheduler().schedule(plugin, () -> {
+            ProxyServer.getInstance().getPlayers().forEach(this::readLocale);
+        }, 5, 5, TimeUnit.SECONDS);
 
         // TODO more default dependencies for bungee
         registerDependency(plugin.getClass(), plugin);
@@ -93,6 +104,17 @@ public class BungeeCommandManager extends CommandManager<
         return locales;
     }
 
+    public void readLocale(ProxiedPlayer player) {
+        if (!player.isConnected()) {
+            return;
+        }
+
+        //This can be null if we didn't received a settings packet
+        Locale locale = player.getLocale();
+        if (locale != null) {
+            setIssuerLocale(player, player.getLocale());
+        }
+    }
 
     @Override
     public void registerCommand(BaseCommand command) {
@@ -155,7 +177,7 @@ public class BungeeCommandManager extends CommandManager<
     }
 
     @Override
-    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);
     }
 
@@ -184,5 +206,11 @@ public class BungeeCommandManager extends CommandManager<
                 logger.log(logLevel, LogLevel.LOG_PREFIX + line);
             }
         }
+    }
+
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
     }
 }

@@ -78,6 +78,7 @@ Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 
 ## Other projects by Aikar / Empire Minecraft
  - [TaskChain](https://taskchain.emc.gs) - Powerful context control to dispatch tasks Async, then access the result sync for API usage. Concurrency controls too.
+ - [IDB](https://idb.emc.gs) - Simple and Intuitive JDBC Wrapper for Java
  - [Minecraft Timings](https://github.com/aikar/minecraft-timings/) - Add Timings to your plugin in a safe way that works on all Bukkit platforms (CraftBukkit - no timings, Spigot - Timings v1, Paper and Paper forks - Timings v2)
 
 ## License

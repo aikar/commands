@@ -23,35 +23,31 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.HelpSearchTags;
-
 public class HelpEntry {
 
+    private final CommandHelp commandHelp;
     private final RegisteredCommand command;
-    private final String searchTags;
     private int searchScore = 1;
 
-    HelpEntry(RegisteredCommand command) {
+    HelpEntry(CommandHelp commandHelp, RegisteredCommand command) {
+        this.commandHelp = commandHelp;
         this.command = command;
-        HelpSearchTags tagsAnno = command.method.getAnnotation(HelpSearchTags.class);
-        this.searchTags = tagsAnno != null ? tagsAnno.value() : null;
     }
 
     RegisteredCommand getRegisteredCommand() {
         return this.command;
     }
 
-
-    public String getCommand(){
-        return "/" + this.command.command;
+    public String getCommand() {
+        return this.commandHelp.commandPrefix + this.command.command;
     }
 
     public String getParameterSyntax(){
-        return this.command.syntaxText;
+        return this.command.syntaxText != null ? this.command.syntaxText : "";
     }
 
     public String getDescription(){
-        return this.command.helpText;
+        return this.command.helpText != null ? this.command.helpText : "";
     }
 
     public void setSearchScore(int searchScore) {
@@ -67,6 +63,10 @@ public class HelpEntry {
     }
 
     public String getSearchTags() {
-        return searchTags;
+        return command.helpSearchTags;
+    }
+
+    public CommandParameter[] getParameters() {
+        return command.parameters;
     }
 }

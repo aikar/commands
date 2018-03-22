@@ -435,22 +435,20 @@ public final class ACFUtil {
 
 
     public static Number parseNumber(String num, boolean suffixes) {
-        double mod = 1;
-        if (suffixes) {
-            switch (num.charAt(num.length()-1)) {
-                case 'M':
-                case 'm':
-                    mod = 1000000D;
-                    num = num.substring(0, num.length()-1);
-                    break;
-                case 'K':
-                case 'k':
-                    mod = 1000D;
-                    num = num.substring(0, num.length()-1);
-            }
-        }
+        ApplyModifierToNumber applyModifierToNumber = new ApplyModifierToNumber(num, suffixes).invoke();
+        num = applyModifierToNumber.getNum();
+        double mod = applyModifierToNumber.getMod();
 
         return Double.parseDouble(num) * mod;
+    }
+
+    public static BigDecimal parseBigNumber(String num, boolean suffixes) {
+        ApplyModifierToNumber applyModifierToNumber = new ApplyModifierToNumber(num, suffixes).invoke();
+        num = applyModifierToNumber.getNum();
+        double mod = applyModifierToNumber.getMod();
+
+        BigDecimal big = new BigDecimal(num);
+        return (mod == 1) ? big : big.multiply(new BigDecimal(mod));
     }
 
     public static <T> boolean hasIntersection(Collection<T> list1, Collection<T> list2) {
@@ -578,4 +576,40 @@ public final class ACFUtil {
         throw (T) t;
     }
 
+    private static class ApplyModifierToNumber {
+        private String num;
+        private boolean suffixes;
+        private double mod;
+
+        public ApplyModifierToNumber(String num, boolean suffixes) {
+            this.num = num;
+            this.suffixes = suffixes;
+        }
+
+        public String getNum() {
+            return num;
+        }
+
+        public double getMod() {
+            return mod;
+        }
+
+        public ApplyModifierToNumber invoke() {
+            mod = 1;
+            if (suffixes) {
+                switch (num.charAt(num.length()-1)) {
+                    case 'M':
+                    case 'm':
+                        mod = 1000000D;
+                        num = num.substring(0, num.length()-1);
+                        break;
+                    case 'K':
+                    case 'k':
+                        mod = 1000D;
+                        num = num.substring(0, num.length()-1);
+                }
+            }
+            return this;
+        }
+    }
 }

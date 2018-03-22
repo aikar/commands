@@ -26,15 +26,11 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
-import co.aikar.commands.contexts.IssuerAwareContextResolver;
-import co.aikar.commands.contexts.IssuerOnlyContextResolver;
-import co.aikar.commands.contexts.OptionalContextResolver;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -54,92 +50,84 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
-    final String command;
     final Method method;
-    final String prefSubCommand;
-    final Parameter[] parameters;
-    final ContextResolver<?, CEC>[] resolvers;
-    final String syntaxText;
-    final String helpText;
-
-    private final String permission;
-    final String complete;
-    final int requiredResolvers;
-    final int optionalResolvers;
+    final CommandParameter<CEC>[] parameters;
+    final CommandManager manager;
     final List<String> registeredSubcommands = new ArrayList<>();
-    private final CommandManager manager;
+
+    String command;
+    String prefSubCommand;
+    String syntaxText;
+    String helpText;
+    String permission;
+    String complete;
+    String conditions;
+    public String helpSearchTags;
+
+    final int requiredResolvers;
+    final int consumeInputResolvers;
+    final int doesNotConsumeInputResolvers;
+    final int optionalResolvers;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
+        final Annotations annotations = this.manager.getAnnotations();
+
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
         }
-        this.command = command + (method.getAnnotation(CommandAlias.class) == null && !prefSubCommand.isEmpty() ? prefSubCommand : "");
+        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
         this.prefSubCommand = prefSubCommand;
-        CommandPermission permissionAnno = method.getAnnotation(CommandPermission.class);
-        this.permission = permissionAnno != null ? scope.manager.getCommandReplacements().replace(permissionAnno.value()) : null;
-        CommandCompletion completionAnno = method.getAnnotation(CommandCompletion.class);
-        this.complete = completionAnno != null ? scope.manager.getCommandReplacements().replace(completionAnno.value()) : null;
-        this.parameters = method.getParameters();
 
-        Description descriptionAnno = method.getAnnotation(Description.class);
-        this.helpText = descriptionAnno != null ? descriptionAnno.value() : "";
+        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.complete   = annotations.getAnnotationValue(method, CommandCompletion.class);
+        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
+        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+
+        Parameter[] parameters = method.getParameters();
         //noinspection unchecked
-        this.resolvers = new ContextResolver[this.parameters.length];
-        final Syntax syntaxStr = method.getAnnotation(Syntax.class);
-        //noinspection unchecked
-        final CommandContexts commandContexts = this.manager.getCommandContexts();
+        this.parameters = new CommandParameter[parameters.length];
+
 
         int requiredResolvers = 0;
+        int consumeInputResolvers = 0;
+        int doesNotConsumeInputResolvers = 0;
         int optionalResolvers = 0;
-        StringBuilder syntaxB = new StringBuilder(64);
+        StringBuilder syntaxBuilder = new StringBuilder(64);
 
         for (int i = 0; i < parameters.length; i++) {
-            final Parameter parameter = parameters[i];
-            final Class<?> type = parameter.getType();
-
-            //noinspection unchecked
-            final ContextResolver<?, CEC> resolver = commandContexts.getResolver(type);
-            if (resolver != null) {
-                resolvers[i] = resolver;
-
-                if (!scope.manager.isCommandIssuer(type)) {
-                    String name = parameter.getName();
-                    if (isOptionalResolver(resolver, parameter)) {
-                        optionalResolvers++;
-                        if (!(resolver instanceof IssuerOnlyContextResolver)) {
-                            syntaxB.append('[').append(name).append("] ");
-                        }
-                    } else {
-                        requiredResolvers++;
-                        syntaxB.append('<').append(name).append("> ");
-                    }
+            CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i);
+            if (!parameter.isCommandIssuer()) {
+                if (!parameter.requiresInput()) {
+                    optionalResolvers++;
+                } else {
+                    requiredResolvers++;
                 }
-            } else {
-                ACFUtil.sneaky(new InvalidCommandContextException(
-                    "Parameter " + type.getSimpleName() + " of " + this.command + " has no applicable context resolver"
-                ));
+                if (parameter.canConsumeInput()) {
+                    consumeInputResolvers++;
+                } else {
+                    doesNotConsumeInputResolvers++;
+                }
+            }
+            if (parameter.getSyntax() != null) {
+                if (syntaxBuilder.length() > 0) {
+                    syntaxBuilder.append(' ');
+                }
+                syntaxBuilder.append(parameter.getSyntax());
             }
         }
-        String syntaxText = syntaxB.toString();
-        this.syntaxText = this.manager.getCommandReplacements().replace(syntaxStr != null ?
-                ACFUtil.replace(syntaxStr.value(), "@syntax", syntaxText) : syntaxText);
+        String syntaxText = syntaxBuilder.toString().trim();
+        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);
+        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;
         this.requiredResolvers = requiredResolvers;
+        this.consumeInputResolvers = consumeInputResolvers;
+        this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
         this.optionalResolvers = optionalResolvers;
     }
 
-    private boolean isOptionalResolver(ContextResolver<?, CEC> resolver, Parameter parameter) {
-        return isOptionalResolver(resolver)
-                || parameter.getAnnotation(Optional.class) != null
-                || parameter.getAnnotation(Default.class) != null;
-    }
-
-    private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
-        return resolver instanceof IssuerAwareContextResolver || resolver instanceof IssuerOnlyContextResolver
-                || resolver instanceof OptionalContextResolver;
-    }
 
     void invoke(CommandIssuer sender, List<String> args, CommandOperationContext context) {
         if (!scope.canExecute(sender, this)) {
@@ -208,24 +196,25 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
-            final Parameter parameter = parameters[i];
+            final CommandParameter<CEC> parameter = parameters[i];
+            if (parameter.isCommandIssuer()) {
+                argLimit++;
+            }
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked
-            final ContextResolver<?, CEC> resolver = resolvers[i];
+            final ContextResolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
             CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
-            boolean isOptionalResolver = isOptionalResolver(resolver, parameter);
-            if (!isOptionalResolver) {
+            boolean requiresInput = parameter.requiresInput();
+            if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
             }
             if (args.isEmpty() && !(isLast && type == String[].class)) {
-                Default def = parameter.getAnnotation(Default.class);
-                Optional opt = parameter.getAnnotation(Optional.class);
-                if (allowOptional && def != null) {
-                    args.add(scope.manager.getCommandReplacements().replace(def.value()));
-                } else if (allowOptional && opt != null) {
-                    Object value = isOptionalResolver(resolver) ? resolver.getContext(context) : null;
+                if (allowOptional && parameter.getDefaultValue() != null) {
+                    args.add(parameter.getDefaultValue());
+                } else if (allowOptional && parameter.isOptional()) {
+                    Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
@@ -234,20 +223,19 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                     passedArgs.put(parameterName, value);
                     //noinspection UnnecessaryContinue
                     continue;
-                } else if (!isOptionalResolver) {
+                } else if (requiresInput) {
                     scope.showSyntax(sender, this);
                     return null;
                 }
             }
-            final Values values = parameter.getAnnotation(Values.class);
-            if (values != null) {
+            if (parameter.getValues() != null) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 
-                final String[] split = ACFPatterns.PIPE.split(scope.manager.getCommandReplacements().replace(values.value()));
                 Set<String> possible = Sets.newHashSet();
-                for (String s : split) {
+                CommandCompletions commandCompletions = this.manager.getCommandCompletions();
+                for (String s : parameter.getValues()) {
                     //noinspection unchecked
-                    List<String> check = this.manager.getCommandCompletions().getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
+                    List<String> check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
                         possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
                     } else {

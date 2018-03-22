@@ -26,13 +26,13 @@ package co.aikar.commands;
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
-import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
@@ -46,13 +46,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,7 +78,6 @@ public class BukkitCommandManager extends CommandManager<
     protected BukkitLocales locales;
     private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
-    protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
@@ -93,7 +90,9 @@ public class BukkitCommandManager extends CommandManager<
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
+
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
+
         getLocales(); // auto load locales
         this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (this.cantReadLocale || !this.autoDetectFromClient) {
@@ -187,8 +186,11 @@ public class BukkitCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase();
             BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();
             if (!bukkitCommand.isRegistered) {
-                if (force && knownCommands.containsKey(commandName)) {
-                    Command oldCommand = commandMap.getCommand(commandName);
+                Command oldCommand = commandMap.getCommand(commandName);
+                if (oldCommand instanceof PluginIdentifiableCommand && ((PluginIdentifiableCommand) oldCommand).getPlugin() == this.plugin) {
+                    knownCommands.remove(commandName);
+                    oldCommand.unregister(commandMap);
+                } else if (oldCommand != null && force) {
                     knownCommands.remove(commandName);
                     for (Map.Entry<String, Command> ce : knownCommands.entrySet()) {
                         String key = ce.getKey();
@@ -263,6 +265,10 @@ public class BukkitCommandManager extends CommandManager<
         return null;
     }
 
+    public Locale setPlayerLocale(Player player, Locale locale) {
+        return this.setIssuerLocale(player, locale);
+    }
+
     void readPlayerLocale(Player player) {
         if (!player.isOnline() || cantReadLocale) {
             return;
@@ -310,7 +316,7 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     @Override
-    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);
     }
 
@@ -341,30 +347,15 @@ public class BukkitCommandManager extends CommandManager<
         }
     }
 
-    public Locale setPlayerLocale(Player player, Locale locale) {
-        Locale old = this.issuersLocale.put(player.getUniqueId(), locale);
-        if (!Objects.equals(old, locale)) {
-            this.notifyLocaleChange(getCommandIssuer(player), old, locale);
-        }
-        return old;
-    }
-
-    @Override
-    public Locale getIssuerLocale(CommandIssuer issuer) {
-        if (usingPerIssuerLocale() && issuer.getIssuer() instanceof Player) {
-            UUID uniqueId = ((Player) issuer.getIssuer()).getUniqueId();
-            Locale locale = issuersLocale.get(uniqueId);
-            if (locale != null) {
-                return locale;
-            }
-        }
-        return super.getIssuerLocale(issuer);
-    }
-
     public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {
         boolean old = this.usePerIssuerLocale;
         this.usePerIssuerLocale = usePerIssuerLocale;
         this.autoDetectFromClient = autoDetectFromClient;
         return old;
+    }
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return issuer.isPlayer() ? "/" : "";
     }
 }

@@ -24,25 +24,29 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
+import java.util.UUID;
+
 
 @SuppressWarnings("WeakerAccess")
 public abstract class CommandManager <
@@ -68,15 +72,20 @@ public abstract class CommandManager <
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     protected Table<Class<?>, String, Object> dependencies = HashBasedTable.create();
+    protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = Lists.newArrayList();
-    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH, Locales.DUTCH);
+    protected Set<Locale> supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.DUTCH);
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
     protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
 
+    protected Map<UUID, Locale> issuersLocale = Maps.newConcurrentMap();
+
     private Set<String> unstableAPIs = Sets.newHashSet();
+
+    private Annotations annotations = new Annotations<>(this);
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
@@ -180,6 +189,15 @@ public abstract class CommandManager <
         verifyUnstableAPI("help");
         this.defaultHelpPerPage = defaultHelpPerPage;
     }
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public void setHelpFormatter(CommandHelpFormatter helpFormatter) {
+        this.helpFormatter = helpFormatter;
+    }
+
+    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    public CommandHelpFormatter getHelpFormatter() {
+        return helpFormatter;
+    }
 
     /**
      * Registers a command with ACF
@@ -191,7 +209,7 @@ public abstract class CommandManager <
     public abstract boolean hasRegisteredCommands();
     public abstract boolean isCommandIssuer(Class<?> type);
 
-    // TODO: Change this to I if we make a breaking change
+    // TODO: Change this to IT if we make a breaking change
     public abstract I getCommandIssuer(Object issuer);
 
     public abstract RootCommand createRootCommand(String cmd);
@@ -217,7 +235,7 @@ public abstract class CommandManager <
         return new ConditionContext(issuer, config);
     }
 
-    public abstract CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+    public abstract CommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
 
@@ -344,7 +362,25 @@ public abstract class CommandManager <
         });
     }
 
+    public Locale setIssuerLocale(IT issuer, Locale locale) {
+        I commandIssuer = getCommandIssuer(issuer);
+
+        Locale old = issuersLocale.put(commandIssuer.getUniqueId(), locale);
+        if (!Objects.equals(old, locale)) {
+            this.notifyLocaleChange(commandIssuer, old, locale);
+        }
+
+        return old;
+    }
+
     public Locale getIssuerLocale(CommandIssuer issuer) {
+        if (usingPerIssuerLocale()) {
+            Locale locale = issuersLocale.get(issuer.getUniqueId());
+            if (locale != null) {
+                return locale;
+            }
+        }
+
         return getLocales().getDefaultLocale();
     }
 
@@ -421,9 +457,9 @@ public abstract class CommandManager <
         Class clazz = baseCommand.getClass();
         do {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(Dependency.class)) {
-                    Dependency dependency = field.getAnnotation(Dependency.class);
-                    String key = (key = dependency.value()).equals("") ? field.getType().getName() : key;
+                if (annotations.hasAnnotation(field, Dependency.class)) {
+                    String dependency = annotations.getAnnotationValue(field, Dependency.class);
+                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;
                     Object object = dependencies.row(field.getType()).get(key);
                     if (object == null) {
                         throw new UnresolvedDependencyException("Could not find a registered instance of " +
@@ -463,5 +499,13 @@ public abstract class CommandManager <
 
     boolean hasUnstableAPI(String api) {
         return unstableAPIs.contains(api);
+    }
+
+    Annotations getAnnotations() {
+        return annotations;
+    }
+
+    public String getCommandPrefix(CommandIssuer issuer) {
+        return "";
     }
 }

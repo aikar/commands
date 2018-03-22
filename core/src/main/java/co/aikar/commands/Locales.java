@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -151,15 +152,20 @@ public class Locales {
     public void addMessageStrings(Locale locale, @NotNull Map<String, String> messages) {
         Map<MessageKey, String> map = new HashMap<>(messages.size());
         messages.forEach((key, value) -> map.put(MessageKey.of(key), value));
-        addMessages(locale, map);
+        this.localeManager.addMessages(locale, map);
     }
 
-    public void addMessages(Locale locale, @NotNull Map<MessageKey, String> messages) {
-        this.localeManager.addMessages(locale, messages);
+    public void addMessages(Locale locale, @NotNull Map<? extends MessageKeyProvider, String> messages) {
+        Map<MessageKey, String> messagesMap = new LinkedHashMap<>();
+        for (Map.Entry<? extends MessageKeyProvider, String> entry : messages.entrySet()) {
+            messagesMap.put(entry.getKey().getMessageKey(), entry.getValue());
+        }
+
+        this.localeManager.addMessages(locale, messagesMap);
     }
 
-    public String addMessage(Locale locale, MessageKey key, String message) {
-        return this.localeManager.addMessage(locale, key, message);
+    public String addMessage(Locale locale, MessageKeyProvider key, String message) {
+        return this.localeManager.addMessage(locale, key.getMessageKey(), message);
     }
 
     public String getMessage(CommandIssuer issuer, MessageKeyProvider key) {

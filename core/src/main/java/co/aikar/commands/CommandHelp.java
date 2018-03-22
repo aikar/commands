@@ -23,9 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.SetMultimap;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,26 +38,35 @@ public class CommandHelp {
     private final CommandManager manager;
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
+    private final String commandName;
+    final String commandPrefix;
     private int page;
     private int perPage;
-    private List<String> search;
+    List<String> search;
+    private HelpEntry selectedEntry;
+    private int totalResults;
+    private int totalPages;
+    private boolean lastPage;
 
     public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {
         this.manager = manager;
         this.issuer = issuer;
         this.perPage = manager.defaultHelpPerPage;
+        this.commandPrefix = manager.getCommandPrefix(issuer);
+        this.commandName = rootCommand.getCommandName();
+
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)){
+            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
                 return;
             }
 
             RegisteredCommand regCommand = e.getValue();
             if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
-                this.helpEntries.add(new HelpEntry(regCommand));
+                this.helpEntries.add(new HelpEntry(this, regCommand));
                 seen.add(regCommand);
             }
         });
@@ -103,15 +110,26 @@ public class CommandHelp {
         return manager;
     }
 
+    public boolean isExactMatch(String command) {
+        for (HelpEntry helpEntry : helpEntries) {
+            if (helpEntry.getCommand().endsWith(" " + command)) {
+                selectedEntry = helpEntry;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void showHelp() {
-        showHelp(issuer, MessageKeys.HELP_FORMAT);
+        showHelp(issuer);
     }
 
     public void showHelp(CommandIssuer issuer) {
-        showHelp(issuer, MessageKeys.HELP_FORMAT);
-    }
+        if (selectedEntry != null) {
+            showDetailedHelp(selectedEntry, issuer);
+            return;
+        }
 
-    public void showHelp(CommandIssuer issuer, MessageKeyProvider format) {
         List<HelpEntry> helpEntries = getHelpEntries();
         Iterator<HelpEntry> results = helpEntries.stream()
                 .filter(HelpEntry::shouldShow)
@@ -121,15 +139,17 @@ public class CommandHelp {
             helpEntries = getHelpEntries();
             results = helpEntries.iterator();
         }
-        int totalResults = helpEntries.size();
-        int min = (this.page-1) * this.perPage; // TODO: per page configurable?
+        this.totalResults = helpEntries.size();
+        int min = (this.page - 1) * this.perPage; // TODO: per page configurable?
         int max = min + this.perPage;
+        this.totalPages = (int) Math.ceil((float) totalResults / (float) this.perPage);
         int i = 0;
         if (min >= totalResults) {
             issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_NO_RESULTS);
             return;
         }
 
+        List<HelpEntry> printEntries = new ArrayList<>();
         while (results.hasNext()) {
             HelpEntry e = results.next();
             if (i >= max) {
@@ -138,35 +158,51 @@ public class CommandHelp {
             if (i++ < min) {
                 continue;
             }
+            printEntries.add(e);
+        }
+        this.lastPage = !(min > 0 || results.hasNext());
 
-            String formatted = this.manager.formatMessage(issuer, MessageType.HELP, format, getFormatReplacements(e));
-            for (String msg : ACFPatterns.NEWLINE.split(formatted)) {
-                issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+        CommandHelpFormatter formatter = manager.getHelpFormatter();
+        if (search == null) {
+            formatter.printHelpHeader(this, issuer);
+        } else {
+            formatter.printSearchHeader(this, issuer);
+        }
+
+        for (HelpEntry e : printEntries) {
+            if (search == null) {
+                formatter.printHelpCommand(this, issuer, e);
+            } else {
+                formatter.printSearchEntry(this, issuer, e);
             }
         }
-        if (min > 0 || results.hasNext()) {
-            issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION,
-                    "{page}", "" + this.page,
-                    "{totalpages}", ""+ (int)Math.ceil((float)totalResults / (float)this.perPage),
-                    "{results}", "" + totalResults
-            );
+
+
+        if (search == null) {
+            formatter.printHelpFooter(this, issuer);
+        } else {
+            formatter.printSearchFooter(this, issuer);
         }
     }
 
-    /**
-     * Override this to control replacements
-     * @param e
-     * @return
-     */
-    @NotNull
-    public String[] getFormatReplacements(HelpEntry e) {
-        //{command} {parameters} {separator} {description}
-        return new String[] {
-                "{command}", e.getCommand(),
-                "{parameters}", e.getParameterSyntax(),
-                "{separator}", e.getDescription().isEmpty() ? "" : "-",
-                "{description}", e.getDescription()
-        };
+    public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {
+        // header
+        CommandHelpFormatter formatter = manager.getHelpFormatter();
+        formatter.printDetailedHelpHeader(this, issuer, entry);
+
+        // normal help line
+        formatter.printDetailedHelpCommand(this, issuer, entry);
+
+        // additionally detailed help for params
+        for (CommandParameter param : entry.getParameters()) {
+            String description = param.getDescription();
+            if (description != null && !description.isEmpty()) {
+                formatter.printDetailedParameter(this, issuer, entry, param);
+            }
+        }
+
+        // footer
+        formatter.printDetailedHelpFooter(this, issuer, entry);
     }
 
     public List<HelpEntry> getHelpEntries() {
@@ -189,5 +225,45 @@ public class CommandHelp {
     public void setSearch(List<String> search) {
         this.search = search;
         getHelpEntries().forEach(this::updateSearchScore);
+    }
+
+    public CommandIssuer getIssuer() {
+        return issuer;
+    }
+
+    public String getCommandName() {
+        return commandName;
+    }
+
+    public String getCommandPrefix() {
+        return commandPrefix;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getPerPage() {
+        return perPage;
+    }
+
+    public List<String> getSearch() {
+        return search;
+    }
+
+    public HelpEntry getSelectedEntry() {
+        return selectedEntry;
+    }
+
+    public int getTotalResults() {
+        return totalResults;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public boolean isLastPage() {
+        return lastPage;
     }
 }

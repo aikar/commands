@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -111,7 +111,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.7">JDACommandEvent</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.10">JDACommandEvent</a>
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
 implements co.aikar.commands.CommandIssuer</pre>
 </li>
@@ -163,22 +163,26 @@ implements co.aikar.commands.CommandIssuer</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#hasPermission-java.lang.String-">hasPermission</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>&nbsp;</td>
+<td class="colFirst"><code>@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#getUniqueId--">getUniqueId</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#isPlayer--">isPlayer</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#hasPermission-java.lang.String-">hasPermission</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.Message-">sendMessage</a></span>(net.dv8tion.jda.core.entities.Message&nbsp;message)</code>&nbsp;</td>
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#isPlayer--">isPlayer</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.MessageEmbed-">sendMessage</a></span>(net.dv8tion.jda.core.entities.MessageEmbed&nbsp;message)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.Message-">sendMessage</a></span>(net.dv8tion.jda.core.entities.Message&nbsp;message)</code>&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.MessageEmbed-">sendMessage</a></span>(net.dv8tion.jda.core.entities.MessageEmbed&nbsp;message)</code>&nbsp;</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/JDACommandEvent.html#sendMessageInternal-java.lang.String-">sendMessageInternal</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>&nbsp;</td>
 </tr>
@@ -217,7 +221,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>JDACommandEvent</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.12">JDACommandEvent</a>(<a href="../../../co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a>&nbsp;manager,
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.15">JDACommandEvent</a>(<a href="../../../co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a>&nbsp;manager,
                        net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;event)</pre>
 </li>
 </ul>
@@ -235,7 +239,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getEvent</h4>
-<pre>public&nbsp;net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.18">getEvent</a>()</pre>
+<pre>public&nbsp;net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.21">getEvent</a>()</pre>
 </li>
 </ul>
 <a name="getIssuer--">
@@ -244,7 +248,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getIssuer</h4>
-<pre>public&nbsp;net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.23">getIssuer</a>()</pre>
+<pre>public&nbsp;net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.26">getIssuer</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getIssuer</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -257,7 +261,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.28">getManager</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.31">getManager</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -270,10 +274,24 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>isPlayer</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.33">isPlayer</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.36">isPlayer</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>isPlayer</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getUniqueId--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUniqueId</h4>
+<pre>@NotNull
+public&nbsp;@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.41">getUniqueId</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getUniqueId</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
 </dl>
 </li>
 </ul>
@@ -283,7 +301,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>hasPermission</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.38">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.49">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasPermission</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -296,7 +314,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessageInternal</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.44">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.55">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>sendMessageInternal</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.CommandIssuer</code></dd>
@@ -309,7 +327,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessage</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.48">sendMessage</a>(net.dv8tion.jda.core.entities.Message&nbsp;message)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.59">sendMessage</a>(net.dv8tion.jda.core.entities.Message&nbsp;message)</pre>
 </li>
 </ul>
 <a name="sendMessage-net.dv8tion.jda.core.entities.MessageEmbed-">
@@ -318,7 +336,7 @@ implements co.aikar.commands.CommandIssuer</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>sendMessage</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.51">sendMessage</a>(net.dv8tion.jda.core.entities.MessageEmbed&nbsp;message)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDACommandEvent.html#line.62">sendMessage</a>(net.dv8tion.jda.core.entities.MessageEmbed&nbsp;message)</pre>
 </li>
 </ul>
 </li>

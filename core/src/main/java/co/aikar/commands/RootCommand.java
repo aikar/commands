@@ -23,6 +23,8 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.SetMultimap;
 
@@ -107,5 +109,27 @@ interface RootCommand {
 
     default BaseCommand getDefCommand(){
         return null;
+    }
+
+
+    default String getDescription() {
+        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
+        if (cmd != null) {
+            return cmd.helpText != null ? cmd.helpText : "";
+        }
+        BaseCommand defCommand = getDefCommand();
+        if (defCommand != null && defCommand.description != null) {
+            return defCommand.description;
+        }
+        return "";
+    }
+
+
+    default String getUsage() {
+        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
+        if (cmd != null) {
+            return cmd.syntaxText != null ? cmd.syntaxText : "";
+        }
+        return "";
     }
 }

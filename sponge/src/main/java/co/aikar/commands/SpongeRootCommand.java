@@ -66,7 +66,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
-        String[] args = arguments.isEmpty() ? new String[0] : arguments.split(" ");
+        String[] args = arguments.isEmpty() ? new String[]{""} : arguments.split(" ");
         return getTabCompletions(manager.getCommandIssuer(source), this.name, args);
     }
 
@@ -77,7 +77,8 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public Optional<Text> getShortDescription(@NotNull CommandSource source) {
-        return Optional.empty();
+        String description = getDescription();
+        return description != null ? Optional.of(Text.of(description)) : Optional.empty();
     }
 
     @Override
@@ -87,7 +88,8 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public Text getUsage(@NotNull CommandSource source) {
-        return Text.of();
+        String usage = getUsage();
+        return usage != null ? Text.of(usage) : Text.of();
     }
 
     private CommandResult executeSponge(CommandIssuer sender, String commandLabel, String[] args) {

@@ -73,6 +73,7 @@
 <h2 title="Contents">Contents</h2>
 <ul>
 <li><a href="#interface">Deprecated Interfaces</a></li>
+<li><a href="#class">Deprecated Classes</a></li>
 <li><a href="#annotation.type">Deprecated Annotation Types</a></li>
 <li><a href="#method">Deprecated Methods</a></li>
 </ul>
@@ -89,9 +90,30 @@
 </tr>
 <tbody>
 <tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/AnnotationProcessor.html" title="interface in co.aikar.commands">co.aikar.commands.AnnotationProcessor</a></td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/contexts/SenderAwareContextResolver.html" title="interface in co.aikar.commands.contexts">co.aikar.commands.contexts.SenderAwareContextResolver</a>
 <div class="block"><span class="deprecationComment">Please use <a href="co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts"><code>IssuerAwareContextResolver</code></a></span></div>
 </td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a name="class">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary" border="0" cellpadding="3" cellspacing="0" summary="Deprecated Classes table, listing deprecated classes, and an explanation">
+<caption><span>Deprecated Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/processors/ConditionsProcessor.html" title="class in co.aikar.commands.processors">co.aikar.commands.processors.ConditionsProcessor</a></td>
 </tr>
 </tbody>
 </table>
@@ -163,6 +185,16 @@
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colOne"><a href="co/aikar/commands/CommandOperationContext.html#getAnnotation-java.lang.Class-">co.aikar.commands.CommandOperationContext.getAnnotation(Class&lt;T&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="co/aikar/commands/CommandOperationContext.html#getAnnotationValue-java.lang.Class-"><code>CommandOperationContext.getAnnotationValue(Class)</code></a></span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/CommandExecutionContext.html#getAnnotation-java.lang.Class-">co.aikar.commands.CommandExecutionContext.getAnnotation(Class&lt;T&gt;)</a>
+<div class="block"><span class="deprecationComment">Use <a href="co/aikar/commands/CommandExecutionContext.html#getAnnotationValue-java.lang.Class-"><code>CommandExecutionContext.getAnnotationValue(Class)</code></a></span></div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/BaseCommand.html#getCommandHelp--">co.aikar.commands.BaseCommand.getCommandHelp()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
@@ -171,6 +203,14 @@
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#getDefaultHelpPerPage--">co.aikar.commands.CommandManager.getDefaultHelpPerPage()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="co/aikar/commands/CommandManager.html#getHelpFormatter--">co.aikar.commands.CommandManager.getHelpFormatter()</a>
+<div class="block"><span class="deprecationComment">Unstable API</span></div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/CommandExecutionContext.html#getParam--">co.aikar.commands.CommandExecutionContext.getParam()</a></td>
 </tr>
 <tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/RegisteredCommand.html#getPermission--">co.aikar.commands.RegisteredCommand.getPermission()</a>&nbsp;</td>
@@ -195,6 +235,11 @@
 </td>
 </tr>
 <tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/CommandManager.html#setHelpFormatter-co.aikar.commands.CommandHelpFormatter-">co.aikar.commands.CommandManager.setHelpFormatter(CommandHelpFormatter)</a>
+<div class="block"><span class="deprecationComment">Unstable API</span></div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/BaseCommand.html#showCommandHelp--">co.aikar.commands.BaseCommand.showCommandHelp()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>

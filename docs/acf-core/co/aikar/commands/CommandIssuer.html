@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":18,"i5":18,"i6":18,"i7":18,"i8":18,"i9":18,"i10":18,"i11":38,"i12":18,"i13":18};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":18,"i6":18,"i7":18,"i8":18,"i9":18,"i10":18,"i11":18,"i12":38,"i13":18,"i14":18};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public interface <a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.29">CommandIssuer</a></pre>
+<pre>public interface <a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.32">CommandIssuer</a></pre>
 </li>
 </ul>
 </div>
@@ -130,56 +130,60 @@ var activeTableTab = "activeTableTab";
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#getUniqueId--">getUniqueId</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#hasPermission-java.lang.String-">hasPermission</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>
 <div class="block">Has permission node</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#isPlayer--">isPlayer</a></span>()</code>
 <div class="block">Is this issue a player, or server/console sender</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendError-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendError</a></span>(co.aikar.locales.MessageKeyProvider&nbsp;key,
          <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendError-co.aikar.locales.MessageKey-java.lang.String...-">sendError</a></span>(co.aikar.locales.MessageKey&nbsp;key,
          <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendInfo-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendInfo</a></span>(co.aikar.locales.MessageKeyProvider&nbsp;key,
         <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendInfo-co.aikar.locales.MessageKey-java.lang.String...-">sendInfo</a></span>(co.aikar.locales.MessageKey&nbsp;key,
         <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendMessage-co.aikar.commands.MessageType-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendMessage</a></span>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
            co.aikar.locales.MessageKeyProvider&nbsp;key,
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendMessage-co.aikar.commands.MessageType-co.aikar.locales.MessageKey-java.lang.String...-">sendMessage</a></span>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
            co.aikar.locales.MessageKey&nbsp;key,
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendMessage-java.lang.String-">sendMessage</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>
 <div class="block">Send the Command Issuer a message</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendMessageInternal-java.lang.String-">sendMessageInternal</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -187,12 +191,12 @@ var activeTableTab = "activeTableTab";
 </div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendSyntax-co.aikar.locales.MessageKeyProvider-java.lang.String...-">sendSyntax</a></span>(co.aikar.locales.MessageKeyProvider&nbsp;key,
           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>default void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandIssuer.html#sendSyntax-co.aikar.locales.MessageKey-java.lang.String...-">sendSyntax</a></span>(co.aikar.locales.MessageKey&nbsp;key,
           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</code>&nbsp;</td>
@@ -218,7 +222,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getIssuer</h4>
-<pre>&lt;T&gt;&nbsp;T&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.35">getIssuer</a>()</pre>
+<pre>&lt;T&gt;&nbsp;T&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.38">getIssuer</a>()</pre>
 <div class="block">Gets the issuer in the platforms native object</div>
 <dl>
 <dt><span class="paramLabel">Type Parameters:</span></dt>
@@ -233,7 +237,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.37">getManager</a>()</pre>
+<pre><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.40">getManager</a>()</pre>
 </li>
 </ul>
 <a name="isPlayer--">
@@ -242,7 +246,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>isPlayer</h4>
-<pre>boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.43">isPlayer</a>()</pre>
+<pre>boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.46">isPlayer</a>()</pre>
 <div class="block">Is this issue a player, or server/console sender</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -255,11 +259,25 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessage</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.49">sendMessage</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.52">sendMessage</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
 <div class="block">Send the Command Issuer a message</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>message</code> - </dd>
+</dl>
+</li>
+</ul>
+<a name="getUniqueId--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUniqueId</h4>
+<pre>@NotNull
+@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/util/UUID.html?is-external=true" title="class or interface in java.util">UUID</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.59">getUniqueId</a>()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the unique id of that issuer</dd>
 </dl>
 </li>
 </ul>
@@ -269,7 +287,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>hasPermission</h4>
-<pre>boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.58">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
+<pre>boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.66">hasPermission</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
 <div class="block">Has permission node</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -284,7 +302,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendError</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.60">sendError</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.68">sendError</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
                        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -294,7 +312,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendSyntax</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.63">sendSyntax</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.71">sendSyntax</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
                         <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -304,7 +322,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendInfo</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.66">sendInfo</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.74">sendInfo</a>(co.aikar.locales.MessageKeyProvider&nbsp;key,
                       <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -314,7 +332,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendError</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.69">sendError</a>(co.aikar.locales.MessageKey&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.77">sendError</a>(co.aikar.locales.MessageKey&nbsp;key,
                        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -324,7 +342,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendSyntax</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.72">sendSyntax</a>(co.aikar.locales.MessageKey&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.80">sendSyntax</a>(co.aikar.locales.MessageKey&nbsp;key,
                         <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -334,7 +352,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendInfo</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.75">sendInfo</a>(co.aikar.locales.MessageKey&nbsp;key,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.83">sendInfo</a>(co.aikar.locales.MessageKey&nbsp;key,
                       <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
 </ul>
@@ -344,7 +362,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessage</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.78">sendMessage</a>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.86">sendMessage</a>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
                          co.aikar.locales.MessageKeyProvider&nbsp;key,
                          <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
@@ -355,7 +373,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>sendMessage</h4>
-<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.81">sendMessage</a>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+<pre>default&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.89">sendMessage</a>(<a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
                          co.aikar.locales.MessageKey&nbsp;key,
                          <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;replacements)</pre>
 </li>
@@ -367,7 +385,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>sendMessageInternal</h4>
 <pre><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.90">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.98">sendMessageInternal</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Do not call this, for internal use. Not considered part of the API and may break.</span></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -402,7 +420,7 @@ void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandIssuer.html#line.9
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">

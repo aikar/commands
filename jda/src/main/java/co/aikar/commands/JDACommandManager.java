@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -195,7 +194,7 @@ public class JDACommandManager extends CommandManager<
     }
 
     @Override
-    public CommandExecutionContext createCommandContext(RegisteredCommand command, Parameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
+    public CommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
         return new JDACommandExecutionContext(command, parameter, (JDACommandEvent) sender, args, i, passedArgs);
     }
 
@@ -221,13 +220,7 @@ public class JDACommandManager extends CommandManager<
         Message message = event.getMessage();
         String msg = message.getContentDisplay();
 
-        CommandConfig config = this.defaultConfig;
-        if (this.configProvider != null) {
-            CommandConfig provided = this.configProvider.provide(event);
-            if (provided != null) {
-                config = provided;
-            }
-        }
+        CommandConfig config = getCommandConfig(event);
 
         String prefixFound = null;
         for (String prefix : config.getCommandPrefixes()) {
@@ -255,5 +248,25 @@ public class JDACommandManager extends CommandManager<
             args = new String[0];
         }
         rootCommand.execute(this.getCommandIssuer(event), cmd, args);
+    }
+
+    private CommandConfig getCommandConfig(MessageReceivedEvent event) {
+        CommandConfig config = this.defaultConfig;
+        if (this.configProvider != null) {
+            CommandConfig provided = this.configProvider.provide(event);
+            if (provided != null) {
+                config = provided;
+            }
+        }
+        return config;
+    }
+
+
+    @Override
+    public String getCommandPrefix(CommandIssuer issuer) {
+        MessageReceivedEvent event = ((JDACommandEvent) issuer).getEvent();
+        CommandConfig commandConfig = getCommandConfig(event);
+        List<String> prefixes = commandConfig.getCommandPrefixes();
+        return prefixes.isEmpty() ? "" : prefixes.get(0);
     }
 }

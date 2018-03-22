@@ -72,19 +72,21 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     }
 
     @NotNull
-    List<String> of(RegisteredCommand command, CommandIssuer sender, String[] completionInfo, String[] args, boolean isAsync) {
+    List<String> of(RegisteredCommand cmd, CommandIssuer sender, String[] args, boolean isAsync) {
+        String[] completions = ACFPatterns.SPACE.split(cmd.complete);
         final int argIndex = args.length - 1;
 
         String input = args[argIndex];
-        String completion = argIndex < completionInfo.length ? completionInfo[argIndex] : null;
-        if (completion == null && completionInfo.length > 0) {
-            completion = completionInfo[completionInfo.length - 1];
+
+        String completion = argIndex < completions.length ? completions[argIndex] : null;
+        if (completion == null && completions.length > 0) {
+            completion = completions[completions.length - 1];
         }
         if (completion == null) {
             return ImmutableList.of(input);
         }
 
-        return getCompletionValues(command, sender, completion, args, isAsync);
+        return getCompletionValues(cmd, sender, completion, args, isAsync);
     }
 
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {

@@ -137,7 +137,7 @@
 <span class="sourceLineNo">129</span>                uuid = UUID.fromString(name);<a name="line.129"></a>
 <span class="sourceLineNo">130</span>            }<a name="line.130"></a>
 <span class="sourceLineNo">131</span>            OfflinePlayer offlinePlayer = uuid != null ? Bukkit.getOfflinePlayer(uuid) : Bukkit.getOfflinePlayer(name);<a name="line.131"></a>
-<span class="sourceLineNo">132</span>            if (offlinePlayer == null) {<a name="line.132"></a>
+<span class="sourceLineNo">132</span>            if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() &amp;&amp; !offlinePlayer.isOnline())) {<a name="line.132"></a>
 <span class="sourceLineNo">133</span>                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,<a name="line.133"></a>
 <span class="sourceLineNo">134</span>                        "{search}", name);<a name="line.134"></a>
 <span class="sourceLineNo">135</span>            }<a name="line.135"></a>
