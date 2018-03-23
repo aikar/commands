@@ -34,7 +34,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,10 +44,18 @@ import java.util.stream.Stream;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class ACFUtil {
-
+    /**
+     * The static random to be used for all ACFUtil usage.
+     */
     public static final Random RANDOM = new Random();
 
-    private ACFUtil() {}
+    /**
+     * The constructor is not supposed to be used.
+     * If it is absolutely necessary to use, you'll need to obtain an instance of {@link sun.misc.Unsafe} on Java 8.
+     */
+    private ACFUtil() {
+        throw new SecurityException(); // deny all instances
+    }
 
     public static String padRight(String s, int n) {
         return String.format("%1$-" + n + "s", s);
@@ -498,42 +508,38 @@ public final class ACFUtil {
         return ApacheCommonsLangUtil.isNumeric(str);
     }
 
+    private static final TreeMap<Integer, String> romanMap = new TreeMap<Integer, String>()  {{
+        put(1_000, "M");
+        put(900, "CM");
+        put(500, "D");
+        put(400, "CD");
+        put(100, "C");
+        put(90, "XC");
+        put(50, "L");
+        put(40, "XL");
+        put(10, "X");
+        put(9, "IX");
+        put(5, "V");
+        put(4, "IV");
+        put(1, "I");
+    }};
+
     public static String intToRoman(int integer) {
-        if (integer == 1) {
-            return "I";
+        boolean useParens = integer > 1000; // e.g. (X) = 10*1000, as the parentheses is the "computerised" overbear
+        Map.Entry<Integer, String> lowest = romanMap.floorEntry(useParens ? (int) Math.floor(integer / 1000) : integer);
+        if (lowest.getKey() == integer) {
+            return useParens ? "(" + lowest.getValue() + ")" : lowest.getValue();
         }
-        if (integer == 2) {
-            return "II";
-        }
-        if (integer == 3) {
-            return "III";
-        }
-        if (integer == 4) {
-            return "IV";
-        }
-        if (integer == 5) {
-            return "V";
-        }
-        if (integer == 6) {
-            return "VI";
-        }
-        if (integer == 7) {
-            return "VII";
-        }
-        if (integer == 8) {
-            return "VIII";
-        }
-        if (integer == 9) {
-            return "IX";
-        }
-        if (integer == 10) {
-            return "X";
-        }
-        return null;
+        return (useParens ? "(" + lowest.getValue() + ")" : lowest.getValue()) + intToRoman(integer - lowest.getKey());
     }
 
     public static boolean isInteger(String string) {
-        return ACFPatterns.INTEGER.matcher(string).matches();
+        for (char c : string.toCharArray()) {
+            if ((int) c < (int) '0' || (int) c > (int) '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isFloat(String string) {
