@@ -74,7 +74,8 @@ public class Locales {
     public static final Locale UKRANIAN = new Locale("uk");
     public static final Locale ARABIC = new Locale("ar");
     public static final Locale WELSH = new Locale("cy");
-
+    public static final Locale NORWEGIAN_BOKMAAL = new Locale("nb");
+    public static final Locale NORWEGIAN_NYNORSK = new Locale("nn");
 
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
