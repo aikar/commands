@@ -34,18 +34,23 @@ public class InvalidCommandArgument extends Exception {
     public InvalidCommandArgument() {
         this(null, true);
     }
+
     public InvalidCommandArgument(boolean showSyntax) {
         this(null, showSyntax);
     }
+
     public InvalidCommandArgument(MessageKeyProvider key, String... replacements) {
         this(key.getMessageKey(), replacements);
     }
+
     public InvalidCommandArgument(MessageKey key, String... replacements) {
         this(key, true, replacements);
     }
+
     public InvalidCommandArgument(MessageKeyProvider key, boolean showSyntax, String... replacements) {
         this(key.getMessageKey(), showSyntax, replacements);
     }
+
     public InvalidCommandArgument(MessageKey key, boolean showSyntax, String... replacements) {
         super(key.getKey(), null, false, false);
         this.showSyntax = showSyntax;
@@ -54,7 +59,7 @@ public class InvalidCommandArgument extends Exception {
     }
 
     public InvalidCommandArgument(String message) {
-     this(message, true);
+        this(message, true);
     }
 
     public InvalidCommandArgument(String message, boolean showSyntax) {

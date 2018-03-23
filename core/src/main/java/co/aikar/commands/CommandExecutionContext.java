@@ -23,18 +23,16 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.contexts.ContextResolver;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class CommandExecutionContext <CEC extends CommandExecutionContext, I extends CommandIssuer> {
+public class CommandExecutionContext<CEC extends CommandExecutionContext, I extends CommandIssuer> {
+    protected final I issuer;
     private final RegisteredCommand cmd;
     private final CommandParameter param;
-    protected final I issuer;
     private final List<String> args;
     private final int index;
     private final Map<String, Object> passedArgs;
@@ -71,7 +69,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public boolean isLastArg() {
-        return cmd.parameters.length -1 == index;
+        return cmd.parameters.length - 1 == index;
     }
 
     public int getNumParams() {
@@ -172,6 +170,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
 
     /**
      * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     *
      * @deprecated Use {@link #getAnnotationValue(Class)}
      */
     @Deprecated
@@ -228,6 +227,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     public String joinArgs() {
         return ACFUtil.join(args, " ");
     }
+
     public String joinArgs(String sep) {
         return ACFUtil.join(args, sep);
     }

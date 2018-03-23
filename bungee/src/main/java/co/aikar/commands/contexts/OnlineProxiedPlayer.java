@@ -35,7 +35,7 @@ public class OnlineProxiedPlayer {
         this.player = player;
     }
 
-    public ProxiedPlayer getPlayer(){
+    public ProxiedPlayer getPlayer() {
         return player;
     }
 

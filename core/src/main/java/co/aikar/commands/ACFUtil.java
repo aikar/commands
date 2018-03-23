@@ -48,6 +48,21 @@ public final class ACFUtil {
      * The static random to be used for all ACFUtil usage.
      */
     public static final Random RANDOM = new Random();
+    private static final TreeMap<Integer, String> romanMap = new TreeMap<Integer, String>() {{
+        put(1_000, "M");
+        put(900, "CM");
+        put(500, "D");
+        put(400, "CD");
+        put(100, "C");
+        put(90, "XC");
+        put(50, "L");
+        put(40, "XL");
+        put(10, "X");
+        put(9, "IX");
+        put(5, "V");
+        put(4, "IV");
+        put(1, "I");
+    }};
 
     /**
      * The constructor is not supposed to be used.
@@ -72,6 +87,7 @@ public final class ACFUtil {
     public static <T extends Enum> T getEnumFromName(T[] types, String name) {
         return getEnumFromName(types, name, null);
     }
+
     public static <T extends Enum> T getEnumFromName(T[] types, String name, T def) {
         for (T type : types) {
             if (type.name().equalsIgnoreCase(name)) {
@@ -80,6 +96,7 @@ public final class ACFUtil {
         }
         return def;
     }
+
     public static <T extends Enum> T getEnumFromOrdinal(T[] types, int ordinal) {
         for (T type : types) {
             if (type.ordinal() == ordinal) {
@@ -103,45 +120,53 @@ public final class ACFUtil {
         }
         try {
             return Double.parseDouble(var);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
         return def;
     }
 
     public static Float parseFloat(String var) {
         return parseFloat(var, null);
     }
+
     public static Float parseFloat(String var, Float def) {
         if (var == null) {
             return def;
         }
         try {
             return Float.parseFloat(var);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
         return def;
     }
+
     public static Long parseLong(String var) {
         return parseLong(var, null);
     }
+
     public static Long parseLong(String var, Long def) {
         if (var == null) {
             return def;
         }
         try {
             return Long.parseLong(var);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
         return def;
     }
 
     public static Integer parseInt(String var) {
         return parseInt(var, null);
     }
+
     public static Integer parseInt(String var, Integer def) {
         if (var == null) {
             return def;
         }
         try {
             return Integer.parseInt(var);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
         return def;
     }
 
@@ -157,9 +182,11 @@ public final class ACFUtil {
     public static String join(Collection<String> args) {
         return ApacheCommonsLangUtil.join(args, " ");
     }
+
     public static String join(Collection<String> args, String sep) {
         return ApacheCommonsLangUtil.join(args, sep);
     }
+
     public static String join(String[] args) {
         return join(args, 0, ' ');
     }
@@ -167,6 +194,7 @@ public final class ACFUtil {
     public static String join(String[] args, String sep) {
         return ApacheCommonsLangUtil.join(args, sep);
     }
+
     public static String join(String[] args, char sep) {
         return join(args, 0, sep);
     }
@@ -200,8 +228,9 @@ public final class ACFUtil {
             }
         }
     }
+
     public static int roundUp(int num, int multiple) {
-        if(multiple == 0) {
+        if (multiple == 0) {
             return num;
         }
 
@@ -219,6 +248,7 @@ public final class ACFUtil {
 
     /**
      * Plain string replacement, escapes replace value.
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -230,6 +260,7 @@ public final class ACFUtil {
 
     /**
      * Regex version of {@link #replace(String, Pattern, String)}
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -241,6 +272,7 @@ public final class ACFUtil {
 
     /**
      * Plain String replacement. If you need regex patterns, see {@link #replacePattern(String, String, String)}
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -252,6 +284,7 @@ public final class ACFUtil {
 
     /**
      * Regex version of {@link #replace(String, String, String)}
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -260,8 +293,10 @@ public final class ACFUtil {
     public static String replacePattern(String string, String pattern, String repl) {
         return replace(string, ACFPatterns.getPattern(pattern), repl);
     }
+
     /**
      * Pure Regex Pattern matching and replacement, no escaping
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -273,6 +308,7 @@ public final class ACFUtil {
 
     /**
      * Pure Regex Pattern matching and replacement, no escaping
+     *
      * @param string
      * @param pattern
      * @param repl
@@ -288,19 +324,20 @@ public final class ACFUtil {
         }
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
-            String value = replacements[i+1];
+            String value = replacements[i + 1];
             if (value == null) value = "";
             string = replace(string, key, value);
         }
         return string;
     }
+
     public static String replacePatterns(String string, String... replacements) {
         if (replacements.length < 2 || replacements.length % 2 != 0) {
             throw new IllegalArgumentException("Invalid Replacements");
         }
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
-            String value = replacements[i+1];
+            String value = replacements[i + 1];
             if (value == null) value = "";
             string = replacePattern(string, key, value);
         }
@@ -310,6 +347,7 @@ public final class ACFUtil {
     public static String capitalize(String str, char[] delimiters) {
         return ApacheCommonsLangUtil.capitalize(str, delimiters);
     }
+
     private static boolean isDelimiter(char ch, char[] delimiters) {
         return ApacheCommonsLangUtil.isDelimiter(ch, delimiters);
     }
@@ -320,6 +358,7 @@ public final class ACFUtil {
         }
         return arr.get(RANDOM.nextInt(arr.size()));
     }
+
     public static <T> T random(T[] arr) {
         if (arr == null || arr.length == 0) {
             return null;
@@ -330,6 +369,7 @@ public final class ACFUtil {
     /**
      * Added as im sure we will try to "Find this" again. This is no different than Enum.values() passed to above method logically
      * but the array version is slightly faster.
+     *
      * @param enm
      * @param <T>
      * @return
@@ -383,11 +423,11 @@ public final class ACFUtil {
     }
 
     public static String rtrim(String s) {
-        int i = s.length()-1;
+        int i = s.length() - 1;
         while (i >= 0 && Character.isWhitespace(s.charAt(i))) {
             i--;
         }
-        return s.substring(0,i+1);
+        return s.substring(0, i + 1);
     }
 
     public static List<String> enumNames(Enum<?>[] values) {
@@ -401,6 +441,7 @@ public final class ACFUtil {
     public static String combine(String[] args) {
         return combine(args, 0);
     }
+
     public static String combine(String[] args, int start) {
         int size = 0;
         for (int i = start; i < args.length; i++) {
@@ -413,8 +454,8 @@ public final class ACFUtil {
         return sb.toString();
     }
 
-
-    @Nullable public static <E extends Enum<E>> E simpleMatch(Class<? extends Enum<?>> list, String item) {
+    @Nullable
+    public static <E extends Enum<E>> E simpleMatch(Class<? extends Enum<?>> list, String item) {
         if (item == null) {
             return null;
         }
@@ -442,7 +483,6 @@ public final class ACFUtil {
         }
         return false;
     }
-
 
     public static Number parseNumber(String num, boolean suffixes) {
         ApplyModifierToNumber applyModifierToNumber = new ApplyModifierToNumber(num, suffixes).invoke();
@@ -475,7 +515,7 @@ public final class ACFUtil {
         List<T> list = new ArrayList<>();
 
         for (T t : list1) {
-            if(list2.contains(t)) {
+            if (list2.contains(t)) {
                 list.add(t);
             }
         }
@@ -490,6 +530,7 @@ public final class ACFUtil {
     /**
      * Calculate random between 2 points, excluding a center
      * ex: Util.rand(-12, -6, 6, 12) would not return -5 to 5
+     *
      * @param min1
      * @param max1
      * @param min2
@@ -507,22 +548,6 @@ public final class ACFUtil {
     public static boolean isNumber(String str) {
         return ApacheCommonsLangUtil.isNumeric(str);
     }
-
-    private static final TreeMap<Integer, String> romanMap = new TreeMap<Integer, String>()  {{
-        put(1_000, "M");
-        put(900, "CM");
-        put(500, "D");
-        put(400, "CD");
-        put(100, "C");
-        put(90, "XC");
-        put(50, "L");
-        put(40, "XL");
-        put(10, "X");
-        put(9, "IX");
-        put(5, "V");
-        put(4, "IV");
-        put(1, "I");
-    }};
 
     public static String intToRoman(int integer) {
         boolean useParens = integer > 1000; // e.g. (X) = 10*1000, as the parentheses is the "computerised" overbear
@@ -574,7 +599,7 @@ public final class ACFUtil {
 
     public static void sneaky(Throwable t) {
         //noinspection RedundantTypeArguments
-        throw ACFUtil.<RuntimeException>superSneaky( t );
+        throw ACFUtil.<RuntimeException>superSneaky(t);
     }
 
     private static <T extends Throwable> T superSneaky(Throwable t) throws T {
@@ -603,16 +628,16 @@ public final class ACFUtil {
         public ApplyModifierToNumber invoke() {
             mod = 1;
             if (suffixes) {
-                switch (num.charAt(num.length()-1)) {
+                switch (num.charAt(num.length() - 1)) {
                     case 'M':
                     case 'm':
                         mod = 1000000D;
-                        num = num.substring(0, num.length()-1);
+                        num = num.substring(0, num.length() - 1);
                         break;
                     case 'K':
                     case 'k':
                         mod = 1000D;
-                        num = num.substring(0, num.length()-1);
+                        num = num.substring(0, num.length() - 1);
                 }
             }
             return this;

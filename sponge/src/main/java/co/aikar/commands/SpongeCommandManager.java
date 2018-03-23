@@ -46,14 +46,14 @@ public class SpongeCommandManager extends CommandManager<
         SpongeMessageFormatter,
         SpongeCommandExecutionContext,
         SpongeConditionContext
-    > {
+        > {
 
     protected final PluginContainer plugin;
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
     protected SpongeCommandContexts contexts;
     protected SpongeCommandCompletions completions;
-    private Timing commandTiming;
     protected SpongeLocales locales;
+    private Timing commandTiming;
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
@@ -162,7 +162,7 @@ public class SpongeCommandManager extends CommandManager<
     @Override
     public void log(final LogLevel level, final String message, final Throwable throwable) {
         Logger logger = this.plugin.getLogger();
-        switch(level) {
+        switch (level) {
             case INFO:
                 logger.info(LogLevel.LOG_PREFIX + message);
                 if (throwable != null) {

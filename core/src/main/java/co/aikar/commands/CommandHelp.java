@@ -35,14 +35,14 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHelp {
+    final String commandPrefix;
     private final CommandManager manager;
     private final CommandIssuer issuer;
     private final List<HelpEntry> helpEntries = new ArrayList<>();
     private final String commandName;
-    final String commandPrefix;
+    List<String> search;
     private int page;
     private int perPage;
-    List<String> search;
     private HelpEntry selectedEntry;
     private int totalResults;
     private int totalPages;
@@ -209,22 +209,9 @@ public class CommandHelp {
         return helpEntries;
     }
 
-    public void setPerPage(int perPage) {
-        this.perPage = perPage;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
     public void setPage(int page, int perPage) {
         this.setPage(page);
         this.setPerPage(perPage);
-    }
-
-    public void setSearch(List<String> search) {
-        this.search = search;
-        getHelpEntries().forEach(this::updateSearchScore);
     }
 
     public CommandIssuer getIssuer() {
@@ -243,12 +230,25 @@ public class CommandHelp {
         return page;
     }
 
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     public int getPerPage() {
         return perPage;
     }
 
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
+    }
+
     public List<String> getSearch() {
         return search;
+    }
+
+    public void setSearch(List<String> search) {
+        this.search = search;
+        getHelpEntries().forEach(this::updateSearchScore);
     }
 
     public HelpEntry getSelectedEntry() {

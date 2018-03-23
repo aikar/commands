@@ -36,10 +36,10 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     private final BungeeCommandManager manager;
     private final String name;
+    boolean isRegistered = false;
     private BaseCommand defCommand;
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
-    boolean isRegistered = false;
 
     BungeeRootCommand(BungeeCommandManager manager, String name) {
         super(name);

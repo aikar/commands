@@ -32,4 +32,5 @@ import co.aikar.commands.CommandIssuer;
  * @param <T> The type to be parsed.
  * @param <C> The type of the context which the resolver would get its data from.
  */
-public interface OptionalContextResolver <T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver <T, C> {}
+public interface OptionalContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver<T, C> {
+}

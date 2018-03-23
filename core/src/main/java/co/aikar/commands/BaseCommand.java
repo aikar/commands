@@ -69,14 +69,6 @@ public abstract class BaseCommand {
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     final Map<Class<?>, String> contextFlags = Maps.newHashMap();
-    private Method preCommandHandler;
-
-    @SuppressWarnings("WeakerAccess")
-    private String execLabel;
-    @SuppressWarnings("WeakerAccess")
-    private String execSubcommand;
-    @SuppressWarnings("WeakerAccess")
-    private String[] origArgs;
     CommandManager<?, ?, ?, ?, ?, ?> manager = null;
     BaseCommand parentCommand;
     Map<String, RootCommand> registeredCommands = new HashMap<>();
@@ -84,18 +76,72 @@ public abstract class BaseCommand {
     String commandName;
     String permission;
     String conditions;
-
-    private ExceptionHandler exceptionHandler = null;
     CommandOperationContext lastCommandOperationContext;
+    private Method preCommandHandler;
+    @SuppressWarnings("WeakerAccess")
+    private String execLabel;
+    @SuppressWarnings("WeakerAccess")
+    private String execSubcommand;
+    @SuppressWarnings("WeakerAccess")
+    private String[] origArgs;
+    private ExceptionHandler exceptionHandler = null;
     private String parentSubcommand;
 
-    public BaseCommand() {}
+    public BaseCommand() {
+    }
+
     public BaseCommand(String cmd) {
         this.commandName = cmd;
     }
 
     /**
+     * Takes a string like "foo|bar baz|qux" and generates a list of
+     * - foo baz
+     * - foo qux
+     * - bar baz
+     * - bar qux
+     * <p>
+     * For every possible sub command combination
+     *
+     * @param subCommandParts
+     * @return List of all sub command possibilities
+     */
+    private static Set<String> getSubCommandPossibilityList(String[] subCommandParts) {
+        int i = 0;
+        Set<String> current = null;
+        while (true) {
+            Set<String> newList = new HashSet<>();
+
+            if (i < subCommandParts.length) {
+                for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {
+                    if (current != null) {
+                        newList.addAll(current.stream().map(s -> s + " " + s1).collect(Collectors.toList()));
+                    } else {
+                        newList.add(s1);
+                    }
+                }
+            }
+
+            if (i + 1 < subCommandParts.length) {
+                current = newList;
+                i = i + 1;
+                continue;
+            }
+
+            return newList;
+        }
+    }
+
+    private static List<String> filterTabComplete(String arg, List<String> cmds) {
+        return cmds.stream()
+                .distinct()
+                .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Gets the root command name that the user actually typed
+     *
      * @return Name
      */
     public String getExecCommandLabel() {
@@ -104,6 +150,7 @@ public abstract class BaseCommand {
 
     /**
      * Gets the actual sub command name the user typed
+     *
      * @return Name
      */
     public String getExecSubcommand() {
@@ -112,6 +159,7 @@ public abstract class BaseCommand {
 
     /**
      * Gets the actual args in string form the user typed
+     *
      * @return Args
      */
     public String[] getOrigArgs() {
@@ -121,9 +169,11 @@ public abstract class BaseCommand {
     void setParentCommand(BaseCommand command) {
         this.parentCommand = command;
     }
+
     void onRegister(CommandManager manager) {
         onRegister(manager, this.commandName);
     }
+
     void onRegister(CommandManager manager, String cmd) {
         manager.injectDependencies(this);
         this.manager = manager;
@@ -324,44 +374,6 @@ public abstract class BaseCommand {
         }
     }
 
-    /**
-     * Takes a string like "foo|bar baz|qux" and generates a list of
-     * - foo baz
-     * - foo qux
-     * - bar baz
-     * - bar qux
-     *
-     * For every possible sub command combination
-     *
-     * @param subCommandParts
-     * @return List of all sub command possibilities
-     */
-    private static Set<String> getSubCommandPossibilityList(String[] subCommandParts) {
-        int i = 0;
-        Set<String> current = null;
-        while (true) {
-            Set<String> newList = new HashSet<>();
-
-            if (i < subCommandParts.length) {
-                for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {
-                    if (current != null) {
-                        newList.addAll(current.stream().map(s -> s + " " + s1).collect(Collectors.toList()));
-                    } else {
-                        newList.add(s1);
-                    }
-                }
-            }
-
-            if (i + 1 < subCommandParts.length) {
-                current = newList;
-                i = i + 1;
-                continue;
-            }
-
-            return newList;
-        }
-    }
-
     public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
         commandLabel = commandLabel.toLowerCase();
         try {
@@ -418,6 +430,7 @@ public abstract class BaseCommand {
     public CommandIssuer getCurrentCommandIssuer() {
         return CommandManager.getCurrentCommandIssuer();
     }
+
     public CommandManager getCurrentCommandManager() {
         return CommandManager.getCurrentCommandManager();
     }
@@ -425,6 +438,7 @@ public abstract class BaseCommand {
     private CommandSearch findSubCommand(String[] args) {
         return findSubCommand(args, false);
     }
+
     private CommandSearch findSubCommand(String[] args, boolean completion) {
         for (int i = args.length; i >= 0; i--) {
             String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
@@ -482,8 +496,9 @@ public abstract class BaseCommand {
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args) {
         return tabComplete(issuer, commandLabel, args, false);
     }
+
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
 
         commandLabel = commandLabel.toLowerCase();
         if (args.length == 0) {
@@ -536,14 +551,7 @@ public abstract class BaseCommand {
         }
 
         List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);
-        return filterTabComplete(args[args.length-1], cmds);
-    }
-
-    private static List<String> filterTabComplete(String arg, List<String> cmds) {
-        return cmds.stream()
-                   .distinct()
-                   .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
-                   .collect(Collectors.toList());
+        return filterTabComplete(args[args.length - 1], cmds);
     }
 
     RegisteredCommand getSubcommand(String subcommand) {
@@ -598,12 +606,20 @@ public abstract class BaseCommand {
         return false;
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelp getCommandHelp() {
-       return manager.generateCommandHelp();
+        return manager.generateCommandHelp();
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public void showCommandHelp() {
         getCommandHelp().showHelp();
     }
@@ -611,12 +627,15 @@ public abstract class BaseCommand {
     public void help(Object issuer, String[] args) {
         help(manager.getCommandIssuer(issuer), args);
     }
+
     public void help(CommandIssuer issuer, String[] args) {
         issuer.sendMessage(MessageType.ERROR, MessageKeys.UNKNOWN_COMMAND);
     }
+
     public void doHelp(Object issuer, String... args) {
         doHelp(manager.getCommandIssuer(issuer), args);
     }
+
     public void doHelp(CommandIssuer issuer, String... args) {
         help(issuer, args);
     }
@@ -673,7 +692,10 @@ public abstract class BaseCommand {
         return this.contextFlags.get(cls);
     }
 
-    private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;
+    private static class CommandSearch {
+        RegisteredCommand cmd;
+        int argIndex;
+        String checkSub;
 
         CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {
             this.cmd = cmd;

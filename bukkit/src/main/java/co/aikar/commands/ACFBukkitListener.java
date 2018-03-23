@@ -32,8 +32,8 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
 class ACFBukkitListener implements Listener {
-    private BukkitCommandManager manager;
     private final Plugin plugin;
+    private BukkitCommandManager manager;
 
     public ACFBukkitListener(BukkitCommandManager manager, Plugin plugin) {
         this.manager = manager;
@@ -47,10 +47,11 @@ class ACFBukkitListener implements Listener {
         }
         manager.unregisterCommands();
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if(this.manager.autoDetectFromClient) {
+        if (this.manager.autoDetectFromClient) {
             this.manager.readPlayerLocale(player);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> manager.readPlayerLocale(player), 20);
         } else {

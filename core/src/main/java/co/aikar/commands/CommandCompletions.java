@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
 
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
-public class CommandCompletions <C extends CommandCompletionContext> {
+public class CommandCompletions<C extends CommandCompletionContext> {
     private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
 
@@ -132,10 +132,14 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         return allCompletions;
     }
 
-    public interface CommandCompletionHandler <C extends CommandCompletionContext> {
+    public interface CommandCompletionHandler<C extends CommandCompletionContext> {
         Collection<String> getCompletions(C context) throws InvalidCommandArgument;
     }
-    public interface AsyncCommandCompletionHandler <C extends CommandCompletionContext> extends  CommandCompletionHandler <C> {}
-    public static class SyncCompletionRequired extends Exception {}
+
+    public interface AsyncCommandCompletionHandler<C extends CommandCompletionContext> extends CommandCompletionHandler<C> {
+    }
+
+    public static class SyncCompletionRequired extends Exception {
+    }
 
 }

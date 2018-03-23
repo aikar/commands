@@ -70,7 +70,8 @@ class PaperAsyncTabCompleteHandler implements Listener {
             }
             event.getCompletions().addAll(results);
             event.setHandled(true);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

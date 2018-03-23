@@ -65,7 +65,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
         });
         registerAsyncCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
         registerCompletion("worlds", c -> (
-            Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
+                Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
 
         registerCompletion("players", c -> {

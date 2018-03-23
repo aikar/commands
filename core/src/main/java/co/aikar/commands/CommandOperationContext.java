@@ -28,7 +28,7 @@ import java.lang.annotation.Annotation;
 /**
  * Holds information about the currently executing command on this thread
  */
-public class CommandOperationContext <I extends CommandIssuer> {
+public class CommandOperationContext<I extends CommandIssuer> {
 
     private final CommandManager manager;
     private final I issuer;
@@ -71,16 +71,17 @@ public class CommandOperationContext <I extends CommandIssuer> {
         return isAsync;
     }
 
-    public void setRegisteredCommand(RegisteredCommand registeredCommand) {
-        this.registeredCommand = registeredCommand;
-    }
-
     public RegisteredCommand getRegisteredCommand() {
         return registeredCommand;
     }
 
+    public void setRegisteredCommand(RegisteredCommand registeredCommand) {
+        this.registeredCommand = registeredCommand;
+    }
+
     /**
      * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     *
      * @deprecated Use {@link #getAnnotationValue(Class)}
      */
     @Deprecated

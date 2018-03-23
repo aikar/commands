@@ -30,7 +30,8 @@ import java.util.regex.Pattern;
 abstract class AnnotationLookups {
     /**
      * Checks whether or not the AnnotatedElement has an annotation of type annoClass.
-     * @param object The element to check
+     *
+     * @param object    The element to check
      * @param annoClass The class to check whether is attached to the element
      * @return Whether an annotation of annoClass is attached to object
      */
@@ -41,8 +42,8 @@ abstract class AnnotationLookups {
     /**
      * Checks whether the object has an annotation or not. If the value is empty and allowEmpty is true, it will return false.
      *
-     * @param object The element to check
-     * @param annoClass The class to check whether is attached or not
+     * @param object     The element to check
+     * @param annoClass  The class to check whether is attached or not
      * @param allowEmpty Whether or not to allow for empty values
      * @return Whether or not the annotation is present or empty with allowEmpty as true
      */
@@ -53,6 +54,7 @@ abstract class AnnotationLookups {
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
     }
+
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern) {
         return getAnnotationValues(object, annoClass, pattern, Annotations.REPLACEMENTS);
     }

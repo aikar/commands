@@ -39,7 +39,7 @@ import com.google.common.collect.Maps;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
+public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     private final Parameter parameter;
     private final Class<?> type;
     private final String name;
@@ -134,8 +134,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
         return resolver instanceof IssuerAwareContextResolver
-            || resolver instanceof IssuerOnlyContextResolver
-            || resolver instanceof OptionalContextResolver;
+                || resolver instanceof IssuerOnlyContextResolver
+                || resolver instanceof OptionalContextResolver;
     }
 
 
@@ -223,12 +223,12 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.canConsumeInput = canConsumeInput;
     }
 
-    public void setOptionalResolver(boolean optionalResolver) {
-        this.optionalResolver = optionalResolver;
-    }
-
     public boolean isOptionalResolver() {
         return optionalResolver;
+    }
+
+    public void setOptionalResolver(boolean optionalResolver) {
+        this.optionalResolver = optionalResolver;
     }
 
     public boolean requiresInput() {

@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 
 public class BukkitRegisteredCommand extends RegisteredCommand<BukkitCommandExecutionContext> {
     private final MCTiming timing;
+
     BukkitRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         super(scope, command, method, prefSubCommand);
         BukkitCommandManager manager = (BukkitCommandManager) scope.manager;

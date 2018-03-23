@@ -37,6 +37,7 @@ public class BukkitCommandCompletionContext extends CommandCompletionContext<Buk
 
     /**
      * Returns the Player object if this Issuer is a Player
+     *
      * @return
      */
     public Player getPlayer() {

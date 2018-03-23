@@ -32,6 +32,7 @@ import java.util.UUID;
 public interface CommandIssuer {
     /**
      * Gets the issuer in the platforms native object
+     *
      * @param <T>
      * @return
      */
@@ -41,12 +42,14 @@ public interface CommandIssuer {
 
     /**
      * Is this issue a player, or server/console sender
+     *
      * @return
      */
     boolean isPlayer();
 
     /**
      * Send the Command Issuer a message
+     *
      * @param message
      */
     default void sendMessage(String message) {
@@ -60,6 +63,7 @@ public interface CommandIssuer {
 
     /**
      * Has permission node
+     *
      * @param permission
      * @return
      */
@@ -68,31 +72,38 @@ public interface CommandIssuer {
     default void sendError(MessageKeyProvider key, String... replacements) {
         sendMessage(MessageType.ERROR, key.getMessageKey(), replacements);
     }
+
     default void sendSyntax(MessageKeyProvider key, String... replacements) {
         sendMessage(MessageType.SYNTAX, key.getMessageKey(), replacements);
     }
+
     default void sendInfo(MessageKeyProvider key, String... replacements) {
         sendMessage(MessageType.INFO, key.getMessageKey(), replacements);
     }
+
     default void sendError(MessageKey key, String... replacements) {
         sendMessage(MessageType.ERROR, key, replacements);
     }
+
     default void sendSyntax(MessageKey key, String... replacements) {
         sendMessage(MessageType.SYNTAX, key, replacements);
     }
+
     default void sendInfo(MessageKey key, String... replacements) {
         sendMessage(MessageType.INFO, key, replacements);
     }
+
     default void sendMessage(MessageType type, MessageKeyProvider key, String... replacements) {
         sendMessage(type, key.getMessageKey(), replacements);
     }
+
     default void sendMessage(MessageType type, MessageKey key, String... replacements) {
         getManager().sendMessage(this, type, key, replacements);
     }
 
     /**
-     * @deprecated Do not call this, for internal use. Not considered part of the API and may break.
      * @param message
+     * @deprecated Do not call this, for internal use. Not considered part of the API and may break.
      */
     @Deprecated
     void sendMessageInternal(String message);

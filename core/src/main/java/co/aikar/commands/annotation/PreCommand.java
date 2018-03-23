@@ -31,4 +31,5 @@ import java.lang.annotation.RetentionPolicy;
  * This runs before any other command method each time it is invoked.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PreCommand {}
+public @interface PreCommand {
+}

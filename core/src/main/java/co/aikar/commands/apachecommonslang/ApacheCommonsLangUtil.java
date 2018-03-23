@@ -1,19 +1,19 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package co.aikar.commands.apachecommonslang;
 
@@ -28,9 +28,17 @@ public class ApacheCommonsLangUtil {
 
     /**
      * The empty String {@code ""}.
+     *
      * @since 2.0
      */
     public static final String EMPTY = "";
+    /**
+     * The index value when an element is not found in a list or array: <code>-1</code>.
+     * This value is returned by methods in this class and can also be used in comparisons with values returned by
+     * various method from {@link java.util.List}.
+     */
+    public static final int INDEX_NOT_FOUND = -1;
+
     /**
      * <p>Shallow clones an array returning a typecast result and handling
      * {@code null}.
@@ -40,8 +48,8 @@ public class ApacheCommonsLangUtil {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param <T> the component type of the array
-     * @param array  the array to shallow clone, may be {@code null}
+     * @param <T>   the component type of the array
+     * @param array the array to shallow clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static <T> T[] clone(final T[] array) {
@@ -50,6 +58,8 @@ public class ApacheCommonsLangUtil {
         }
         return array.clone();
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * <p>Adds all the elements of the given arrays into a new array.
@@ -66,14 +76,14 @@ public class ApacheCommonsLangUtil {
      * ArrayUtils.addAll(["a", "b", "c"], ["1", "2", "3"]) = ["a", "b", "c", "1", "2", "3"]
      * </pre>
      *
-     * @param <T> the component type of the array
-     * @param array1  the first array whose elements are added to the new array, may be {@code null}
-     * @param array2  the second array whose elements are added to the new array, may be {@code null}
+     * @param <T>    the component type of the array
+     * @param array1 the first array whose elements are added to the new array, may be {@code null}
+     * @param array2 the second array whose elements are added to the new array, may be {@code null}
      * @return The new array, {@code null} if both arrays are {@code null}.
-     *      The type of the new array is the type of the first array,
-     *      unless the first array is null, in which case the type is the same as the second array.
-     * @since 2.1
+     * The type of the new array is the type of the first array,
+     * unless the first array is null, in which case the type is the same as the second array.
      * @throws IllegalArgumentException if the array types are incompatible
+     * @since 2.1
      */
     public static <T> T[] addAll(final T[] array1, final T... array2) {
         if (array1 == null) {
@@ -104,7 +114,6 @@ public class ApacheCommonsLangUtil {
         return joinedArray;
     }
 
-    //-----------------------------------------------------------------------
     /**
      * <p>Converts all the whitespace separated words in a String into capitalized words,
      * that is each word is made up of a titlecase character and then a series of
@@ -121,12 +130,15 @@ public class ApacheCommonsLangUtil {
      * WordUtils.capitalizeFully("i am FINE") = "I Am Fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
+     * @param str the String to capitalize, may be null
      * @return capitalized String, <code>null</code> if null String input
      */
     public static String capitalizeFully(final String str) {
         return capitalizeFully(str, null);
     }
+
+    // Capitalizing
+    //-----------------------------------------------------------------------
 
     /**
      * <p>Converts all the delimiter separated words in a String into capitalized words,
@@ -149,8 +161,8 @@ public class ApacheCommonsLangUtil {
      * WordUtils.capitalizeFully("i aM.fine", {'.'}) = "I am.Fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
-     * @param delimiters  set of characters to determine capitalization, null means whitespace
+     * @param str        the String to capitalize, may be null
+     * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, <code>null</code> if null String input
      * @since 2.1
      */
@@ -163,8 +175,6 @@ public class ApacheCommonsLangUtil {
         return capitalize(str, delimiters);
     }
 
-    // Capitalizing
-    //-----------------------------------------------------------------------
     /**
      * <p>Capitalizes all the whitespace separated words in a String.
      * Only the first character of each word is changed. To convert the
@@ -182,13 +192,14 @@ public class ApacheCommonsLangUtil {
      * WordUtils.capitalize("i am FINE") = "I Am FINE"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
+     * @param str the String to capitalize, may be null
      * @return capitalized String, <code>null</code> if null String input
      * @see #capitalizeFully(String)
      */
     public static String capitalize(final String str) {
         return capitalize(str, null);
     }
+    //-----------------------------------------------------------------------
 
     /**
      * <p>Capitalizes all the delimiter separated words in a String.
@@ -212,8 +223,8 @@ public class ApacheCommonsLangUtil {
      * WordUtils.capitalize("i aM.fine", {'.'}) = "I aM.Fine"
      * </pre>
      *
-     * @param str  the String to capitalize, may be null
-     * @param delimiters  set of characters to determine capitalization, null means whitespace
+     * @param str        the String to capitalize, may be null
+     * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, <code>null</code> if null String input
      * @see #capitalizeFully(String)
      * @since 2.1
@@ -236,12 +247,15 @@ public class ApacheCommonsLangUtil {
         }
         return new String(buffer);
     }
+
+    // Joining
     //-----------------------------------------------------------------------
+
     /**
      * Is the character a delimiter.
      *
-     * @param ch  the character to check
-     * @param delimiters  the delimiters
+     * @param ch         the character to check
+     * @param delimiters the delimiters
      * @return true if it is a delimiter
      */
     public static boolean isDelimiter(final char ch, final char[] delimiters) {
@@ -256,8 +270,6 @@ public class ApacheCommonsLangUtil {
         return false;
     }
 
-    // Joining
-    //-----------------------------------------------------------------------
     /**
      * <p>Joins the elements of the provided array into a single String
      * containing the provided list of elements.</p>
@@ -274,8 +286,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([null, "", "a"]) = "a"
      * </pre>
      *
-     * @param <T> the specific type of values to join together
-     * @param elements  the values to join together, may be null
+     * @param <T>      the specific type of values to join together
+     * @param elements the values to join together, may be null
      * @return the joined String, {@code null} if null array input
      * @since 2.0
      * @since 3.0 Changed signature to use varargs
@@ -302,8 +314,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([null, "", "a"], ';')  = ";;a"
      * </pre>
      *
-     * @param array  the array of values to join together, may be null
-     * @param separator  the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 2.0
      */
@@ -332,10 +344,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -364,10 +374,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -396,10 +404,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -428,10 +434,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -460,10 +464,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -492,10 +494,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -524,10 +524,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -537,7 +535,6 @@ public class ApacheCommonsLangUtil {
         }
         return join(array, separator, 0, array.length);
     }
-
 
     /**
      * <p>Joins the elements of the provided array into a single String
@@ -556,12 +553,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([null, "", "a"], ';')  = ";;a"
      * </pre>
      *
-     * @param array  the array of values to join together, may be null
+     * @param array      the array of values to join together, may be null
      * @param separator  the separator character to use
      * @param startIndex the first index to start joining from.  It is
-     * an error to pass in an end index past the end of the array
-     * @param endIndex the index to stop joining from (exclusive). It is
-     * an error to pass in an end index past the end of the array
+     *                   an error to pass in an end index past the end of the array
+     * @param endIndex   the index to stop joining from (exclusive). It is
+     *                   an error to pass in an end index past the end of the array
      * @return the joined String, {@code null} if null array input
      * @since 2.0
      */
@@ -603,16 +600,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -652,16 +645,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -701,16 +690,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -750,16 +735,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -799,16 +780,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -848,16 +825,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -897,16 +870,12 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([1, 2, 3], null) = "123"
      * </pre>
      *
-     * @param array
-     *            the array of values to join together, may be null
-     * @param separator
-     *            the separator character to use
-     * @param startIndex
-     *            the first index to start joining from. It is an error to pass in an end index past the end of the
-     *            array
-     * @param endIndex
-     *            the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
-     *            the array
+     * @param array      the array of values to join together, may be null
+     * @param separator  the separator character to use
+     * @param startIndex the first index to start joining from. It is an error to pass in an end index past the end of the
+     *                   array
+     * @param endIndex   the index to stop joining from (exclusive). It is an error to pass in an end index past the end of
+     *                   the array
      * @return the joined String, {@code null} if null array input
      * @since 3.2
      */
@@ -928,7 +897,6 @@ public class ApacheCommonsLangUtil {
         return buf.toString();
     }
 
-
     /**
      * <p>Joins the elements of the provided array into a single String
      * containing the provided list of elements.</p>
@@ -948,8 +916,8 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([null, "", "a"], ',')   = ",,a"
      * </pre>
      *
-     * @param array  the array of values to join together, may be null
-     * @param separator  the separator character to use, null treated as ""
+     * @param array     the array of values to join together, may be null
+     * @param separator the separator character to use, null treated as ""
      * @return the joined String, {@code null} if null array input
      */
     public static String join(final Object[] array, final String separator) {
@@ -981,18 +949,18 @@ public class ApacheCommonsLangUtil {
      * StringUtils.join([null, "", "a"], ',', 0, 3)   = ",,a"
      * </pre>
      *
-     * @param array  the array of values to join together, may be null
+     * @param array      the array of values to join together, may be null
      * @param separator  the separator character to use, null treated as ""
      * @param startIndex the first index to start joining from.
-     * @param endIndex the index to stop joining from (exclusive).
+     * @param endIndex   the index to stop joining from (exclusive).
      * @return the joined String, {@code null} if null array input; or the empty string
      * if {@code endIndex - startIndex <= 0}. The number of joined entries is given by
      * {@code endIndex - startIndex}
      * @throws ArrayIndexOutOfBoundsException ife<br>
-     * {@code startIndex < 0} or <br>
-     * {@code startIndex >= array.length()} or <br>
-     * {@code endIndex < 0} or <br>
-     * {@code endIndex > array.length()}
+     *                                        {@code startIndex < 0} or <br>
+     *                                        {@code startIndex >= array.length()} or <br>
+     *                                        {@code endIndex < 0} or <br>
+     *                                        {@code endIndex > array.length()}
      */
     public static String join(final Object[] array, String separator, final int startIndex, final int endIndex) {
         if (array == null) {
@@ -1029,10 +997,10 @@ public class ApacheCommonsLangUtil {
      * <p>No delimiter is added before or after the list. Null objects or empty
      * strings within the iteration are represented by empty strings.</p>
      *
-     * <p>See the examples here: {@link #join(Object[],char)}. </p>
+     * <p>See the examples here: {@link #join(Object[], char)}. </p>
      *
      * @param iterator  the {@code Iterator} of values to join together, may be null
-     * @param separator  the separator character to use
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null iterator input
      * @since 2.0
      */
@@ -1075,10 +1043,10 @@ public class ApacheCommonsLangUtil {
      * <p>No delimiter is added before or after the list.
      * A {@code null} separator is the same as an empty String ("").</p>
      *
-     * <p>See the examples here: {@link #join(Object[],String)}. </p>
+     * <p>See the examples here: {@link #join(Object[], String)}. </p>
      *
      * @param iterator  the {@code Iterator} of values to join together, may be null
-     * @param separator  the separator character to use, null treated as ""
+     * @param separator the separator character to use, null treated as ""
      * @return the joined String, {@code null} if null iterator input
      */
     public static String join(final Iterator<?> iterator, final String separator) {
@@ -1121,10 +1089,10 @@ public class ApacheCommonsLangUtil {
      * <p>No delimiter is added before or after the list. Null objects or empty
      * strings within the iteration are represented by empty strings.</p>
      *
-     * <p>See the examples here: {@link #join(Object[],char)}. </p>
+     * <p>See the examples here: {@link #join(Object[], char)}. </p>
      *
      * @param iterable  the {@code Iterable} providing the values to join together, may be null
-     * @param separator  the separator character to use
+     * @param separator the separator character to use
      * @return the joined String, {@code null} if null iterator input
      * @since 2.3
      */
@@ -1142,10 +1110,10 @@ public class ApacheCommonsLangUtil {
      * <p>No delimiter is added before or after the list.
      * A {@code null} separator is the same as an empty String ("").</p>
      *
-     * <p>See the examples here: {@link #join(Object[],String)}. </p>
+     * <p>See the examples here: {@link #join(Object[], String)}. </p>
      *
      * @param iterable  the {@code Iterable} providing the values to join together, may be null
-     * @param separator  the separator character to use, null treated as ""
+     * @param separator the separator character to use, null treated as ""
      * @return the joined String, {@code null} if null iterator input
      * @since 2.3
      */
@@ -1156,6 +1124,9 @@ public class ApacheCommonsLangUtil {
         return join(iterable.iterator(), separator);
     }
 
+
+    // startsWith
+    //-----------------------------------------------------------------------
 
     /**
      * <p>Checks if the CharSequence contains only Unicode digits.
@@ -1183,7 +1154,7 @@ public class ApacheCommonsLangUtil {
      * StringUtils.isNumeric("+123") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains digits, and is non-null
      * @since 3.0 Changed signature from isNumeric(String) to isNumeric(CharSequence)
      * @since 3.0 Changed "" to return false and not true
@@ -1201,10 +1172,6 @@ public class ApacheCommonsLangUtil {
         return true;
     }
 
-
-    // startsWith
-    //-----------------------------------------------------------------------
-
     /**
      * <p>Check if a CharSequence starts with a specified prefix.</p>
      *
@@ -1219,11 +1186,11 @@ public class ApacheCommonsLangUtil {
      * StringUtils.startsWith("ABCDEF", "abc") = false
      * </pre>
      *
-     * @see java.lang.String#startsWith(String)
-     * @param str  the CharSequence to check, may be null
+     * @param str    the CharSequence to check, may be null
      * @param prefix the prefix to find, may be null
      * @return {@code true} if the CharSequence starts with the prefix, case sensitive, or
-     *  both {@code null}
+     * both {@code null}
+     * @see java.lang.String#startsWith(String)
      * @since 2.4
      * @since 3.0 Changed signature from startsWith(String, String) to startsWith(CharSequence, CharSequence)
      */
@@ -1245,11 +1212,11 @@ public class ApacheCommonsLangUtil {
      * StringUtils.startsWithIgnoreCase("ABCDEF", "abc") = true
      * </pre>
      *
-     * @see java.lang.String#startsWith(String)
-     * @param str  the CharSequence to check, may be null
+     * @param str    the CharSequence to check, may be null
      * @param prefix the prefix to find, may be null
      * @return {@code true} if the CharSequence starts with the prefix, case insensitive, or
-     *  both {@code null}
+     * both {@code null}
+     * @see java.lang.String#startsWith(String)
      * @since 2.4
      * @since 3.0 Changed signature from startsWithIgnoreCase(String, String) to startsWithIgnoreCase(CharSequence, CharSequence)
      */
@@ -1260,13 +1227,13 @@ public class ApacheCommonsLangUtil {
     /**
      * <p>Check if a CharSequence starts with a specified prefix (optionally case insensitive).</p>
      *
-     * @see java.lang.String#startsWith(String)
-     * @param str  the CharSequence to check, may be null
-     * @param prefix the prefix to find, may be null
+     * @param str        the CharSequence to check, may be null
+     * @param prefix     the prefix to find, may be null
      * @param ignoreCase indicates whether the compare should ignore case
-     *  (case insensitive) or not.
+     *                   (case insensitive) or not.
      * @return {@code true} if the CharSequence starts with the prefix or
-     *  both {@code null}
+     * both {@code null}
+     * @see java.lang.String#startsWith(String)
      */
     private static boolean startsWith(final CharSequence str, final CharSequence prefix, final boolean ignoreCase) {
         if (str == null || prefix == null) {
@@ -1281,16 +1248,16 @@ public class ApacheCommonsLangUtil {
     /**
      * Green implementation of regionMatches.
      *
-     * @param cs the {@code CharSequence} to be processed
+     * @param cs         the {@code CharSequence} to be processed
      * @param ignoreCase whether or not to be case insensitive
-     * @param thisStart the index to start on the {@code cs} CharSequence
-     * @param substring the {@code CharSequence} to be looked for
-     * @param start the index to start on the {@code substring} CharSequence
-     * @param length character length of the region
+     * @param thisStart  the index to start on the {@code cs} CharSequence
+     * @param substring  the {@code CharSequence} to be looked for
+     * @param start      the index to start on the {@code substring} CharSequence
+     * @param length     character length of the region
      * @return whether the region matched
      */
     static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int thisStart,
-                                 final CharSequence substring, final int start, final int length)    {
+                                 final CharSequence substring, final int start, final int length) {
         if (cs instanceof String && substring instanceof String) {
             return ((String) cs).regionMatches(ignoreCase, thisStart, (String) substring, start, length);
         }
@@ -1334,27 +1301,21 @@ public class ApacheCommonsLangUtil {
         return true;
     }
 
-    /**
-     * The index value when an element is not found in a list or array: <code>-1</code>.
-     * This value is returned by methods in this class and can also be used in comparisons with values returned by
-     * various method from {@link java.util.List}.
-     */
-    public static final int INDEX_NOT_FOUND = -1;
-
     // IndexOf search
     // ----------------------------------------------------------------------
 
     // Object IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given object in the array.</p>
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} (<code>-1</code>) for a <code>null</code> input array.</p>
      *
-     * @param array  the array to search through for the object, may be <code>null</code>
-     * @param objectToFind  the object to find, may be <code>null</code>
+     * @param array        the array to search through for the object, may be <code>null</code>
+     * @param objectToFind the object to find, may be <code>null</code>
      * @return the index of the object within the array,
-     *  {@link #INDEX_NOT_FOUND} (<code>-1</code>) if not found or <code>null</code> array input
+     * {@link #INDEX_NOT_FOUND} (<code>-1</code>) if not found or <code>null</code> array input
      */
     public static int indexOf(Object[] array, Object objectToFind) {
         return indexOf(array, objectToFind, 0);
@@ -1368,11 +1329,11 @@ public class ApacheCommonsLangUtil {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} (<code>-1</code>).</p>
      *
-     * @param array  the array to search through for the object, may be <code>null</code>
-     * @param objectToFind  the object to find, may be <code>null</code>
-     * @param startIndex  the index to start searching at
+     * @param array        the array to search through for the object, may be <code>null</code>
+     * @param objectToFind the object to find, may be <code>null</code>
+     * @param startIndex   the index to start searching at
      * @return the index of the object within the array starting at the index,
-     *  {@link #INDEX_NOT_FOUND} (<code>-1</code>) if not found or <code>null</code> array input
+     * {@link #INDEX_NOT_FOUND} (<code>-1</code>) if not found or <code>null</code> array input
      */
     public static int indexOf(Object[] array, Object objectToFind, int startIndex) {
         if (array == null) {

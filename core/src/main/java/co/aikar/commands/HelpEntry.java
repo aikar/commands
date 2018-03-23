@@ -42,16 +42,12 @@ public class HelpEntry {
         return this.commandHelp.commandPrefix + this.command.command;
     }
 
-    public String getParameterSyntax(){
+    public String getParameterSyntax() {
         return this.command.syntaxText != null ? this.command.syntaxText : "";
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return this.command.helpText != null ? this.command.helpText : "";
-    }
-
-    public void setSearchScore(int searchScore) {
-        this.searchScore = searchScore;
     }
 
     public boolean shouldShow() {
@@ -60,6 +56,10 @@ public class HelpEntry {
 
     public int getSearchScore() {
         return searchScore;
+    }
+
+    public void setSearchScore(int searchScore) {
+        this.searchScore = searchScore;
     }
 
     public String getSearchTags() {

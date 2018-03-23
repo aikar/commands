@@ -31,9 +31,10 @@ import java.util.regex.Matcher;
 
 /**
  * Handles formatting Messages and managing colors
+ *
  * @param <FT> The platform specific color object
  */
-public abstract class MessageFormatter <FT> {
+public abstract class MessageFormatter<FT> {
 
     private final List<FT> colors = new ArrayList<>();
 
@@ -42,6 +43,7 @@ public abstract class MessageFormatter <FT> {
         this.colors.addAll(Arrays.asList(colors));
 
     }
+
     public FT setColor(int index, FT color) {
         if (index > 0) {
             index--;

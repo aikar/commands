@@ -30,4 +30,5 @@ import java.lang.annotation.RetentionPolicy;
  * Don't join remaining arguments
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Single {}
+public @interface Single {
+}

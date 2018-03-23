@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.SetMultimap;
 
@@ -35,12 +33,15 @@ import java.util.Set;
 
 interface RootCommand {
     void addChild(BaseCommand command);
+
     CommandManager getManager();
 
     SetMultimap<String, RegisteredCommand> getSubCommands();
+
     List<BaseCommand> getChildren();
 
     String getCommandName();
+
     default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
@@ -107,7 +108,7 @@ interface RootCommand {
         return null;
     }
 
-    default BaseCommand getDefCommand(){
+    default BaseCommand getDefCommand() {
         return null;
     }
 

@@ -43,10 +43,10 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     private final SpongeCommandManager manager;
     private final String name;
+    boolean isRegistered = false;
     private BaseCommand defCommand;
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
-    boolean isRegistered = false;
 
     SpongeRootCommand(SpongeCommandManager manager, String name) {
         this.manager = manager;
@@ -105,7 +105,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
-    public BaseCommand getDefCommand(){
+    public BaseCommand getDefCommand() {
         return defCommand;
     }
 
