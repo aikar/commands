@@ -26,6 +26,9 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * This is an internal annotation in order to use repeated {@link CommandAlias} annotations.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandAliases {
     CommandAlias[] value();
