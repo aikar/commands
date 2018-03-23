@@ -56,6 +56,8 @@ abstract class AnnotationLookups {
         return pattern.split(value);
     }
 
+    abstract String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options);
+
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
     }

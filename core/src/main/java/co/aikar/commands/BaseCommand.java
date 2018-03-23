@@ -26,6 +26,7 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CatchAll;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandAliases;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
@@ -130,7 +131,11 @@ public abstract class BaseCommand {
         final Annotations annotations = manager.getAnnotations();
         final Class<? extends BaseCommand> self = this.getClass();
 
-        String[] cmdAliases = annotations.getAnnotationValues(self, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE | Annotations.NO_EMPTY);
+        String[] cmdAliases = null;
+        CommandAliases aliasesAnnotation = self.getAnnotation(CommandAliases.class);
+        if (aliasesAnnotation != null) {
+            cmdAliases = Arrays.stream(aliasesAnnotation.value()).map(anno -> annotations.getAnnotationValue(self, anno, Annotations.REPLACEMENTS | Annotations.LOWERCASE | Annotations.NO_EMPTY)).toArray(String[]::new);
+        }
 
         if (cmd == null && cmdAliases != null) {
             cmd = cmdAliases[0];

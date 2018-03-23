@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -23,17 +23,10 @@
 
 package co.aikar.commands.annotation;
 
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Allows to add a single or several command alias(es).
- * In order to add more than one in a single go, use the syntax "alias|otheralias".
- * You can register as many aliases as wanted over as many annotations as wanted.
- */
-@Repeatable(CommandAliases.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CommandAlias {
-    String value();
+public @interface CommandAliases {
+    CommandAlias[] value();
 }

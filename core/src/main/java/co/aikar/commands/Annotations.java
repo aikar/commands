@@ -49,8 +49,15 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         this.manager = manager;
     }
 
+    @Override
     String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
         Annotation annotation = element.getAnnotation(annoClass);
+        return getAnnotationValue(element, annotation, options);
+    }
+
+    @Override
+    String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options) {
+        Class<? extends Annotation> annoClass = annotation.getClass();
         String value = null;
 
         if (annotation != null) {
