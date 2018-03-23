@@ -427,6 +427,13 @@ public abstract class CommandManager <
      */
     public <T> void registerDependency(Class<? extends T> clazz, T instance){
         registerDependency(clazz, clazz.getName(), instance);
+        if (!rootCommands.isEmpty()) {
+            rootCommands.values()
+                    .parallelStream()
+                    .map(RootCommand::getChildren)
+                    .flatMap(List::stream)
+                    .forEach(this::injectDependencies);
+        }
     }
 
     /**
