@@ -28,11 +28,24 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.regex.Pattern;
 
 abstract class AnnotationLookups {
-
+    /**
+     * Checks whether or not the AnnotatedElement has an annotation of type annoClass.
+     * @param object The element to check
+     * @param annoClass The class to check whether is attached to the element
+     * @return Whether an annotation of annoClass is attached to object
+     */
     boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.NOTHING) != null;
     }
 
+    /**
+     * Checks whether the object has an annotation or not. If the value is empty and allowEmpty is true, it will return false.
+     *
+     * @param object The element to check
+     * @param annoClass The class to check whether is attached or not
+     * @param allowEmpty Whether or not to allow for empty values
+     * @return Whether or not the annotation is present or empty with allowEmpty as true
+     */
     boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass, boolean allowEmpty) {
         return getAnnotationValue(object, annoClass, Annotations.NOTHING | (allowEmpty ? 0 : Annotations.NO_EMPTY)) != null;
     }
