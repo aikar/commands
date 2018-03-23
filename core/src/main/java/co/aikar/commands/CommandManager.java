@@ -421,25 +421,26 @@ public abstract class CommandManager <
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
+     * Whenever you register a dependency, it will re-inject any existing commands.
+     * It is recommended you run all your dependency registrations before registering commands for the sake
+     * of performance.
+     *
      * @param clazz the class the injector should look for when injecting
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, T instance){
         registerDependency(clazz, clazz.getName(), instance);
-        if (!rootCommands.isEmpty()) {
-            rootCommands.values()
-                    .parallelStream()
-                    .map(RootCommand::getChildren)
-                    .flatMap(List::stream)
-                    .forEach(this::injectDependencies);
-        }
     }
 
     /**
      * Registers an instance of a class to be registered as an injectable dependency.<br>
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
+     *
+     * Whenever you register a dependency, it will re-inject any existing commands.
+     * It is recommended you run all your dependency registrations before registering commands for the sake
+     * of performance.
      *
      * @param clazz the class the injector should look for when injecting
      * @param key the key which needs to be present if that
@@ -451,8 +452,15 @@ public abstract class CommandManager <
 //        if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
 //            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
 //        }
-
         dependencies.put(clazz, key, instance);
+
+        if (!rootCommands.isEmpty()) {
+            rootCommands.values()
+                    .parallelStream()
+                    .map(RootCommand::getChildren)
+                    .flatMap(List::stream)
+                    .forEach(this::injectDependencies);
+        }
     }
 
     /**
