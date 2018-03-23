@@ -440,9 +440,10 @@ public abstract class CommandManager <
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, String key, T instance){
-        if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
-            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
-        }
+//        Commented away due to closing issue #93 (https://github.com/aikar/commands/issues/93)
+//        if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
+//            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
+//        }
 
         dependencies.put(clazz, key, instance);
     }
