@@ -25,17 +25,15 @@ public class JDACommandManager extends CommandManager<
         > {
 
     private final JDA jda;
-
+    protected JDACommandCompletions completions;
+    protected JDACommandContexts contexts;
+    protected JDALocales locales;
+    protected Map<String, JDARootCommand> commands = Maps.newHashMap();
     private Logger logger;
     private CommandConfig defaultConfig;
     private CommandConfigProvider configProvider;
     private CommandPermissionResolver permissionResolver;
-    protected JDACommandCompletions completions;
-    protected JDACommandContexts contexts;
-    protected JDALocales locales;
     private long botOwner = 0L;
-
-    protected Map<String, JDARootCommand> commands = Maps.newHashMap();
 
     public JDACommandManager(JDA jda) {
         this(jda, null);
@@ -78,6 +76,10 @@ public class JDACommandManager extends CommandManager<
         });
     }
 
+    public static JDAOptions options() {
+        return new JDAOptions();
+    }
+
     void initializeBotOwner() {
         if (botOwner == 0L) {
             if (jda.getAccountType() == AccountType.BOT) {
@@ -92,11 +94,6 @@ public class JDACommandManager extends CommandManager<
         // Just in case initialization on ReadyEvent fails.
         initializeBotOwner();
         return botOwner;
-    }
-
-
-    public static JDAOptions options() {
-        return new JDAOptions();
     }
 
     public JDA getJDA() {
@@ -218,7 +215,7 @@ public class JDACommandManager extends CommandManager<
 
     void dispatchEvent(MessageReceivedEvent event) {
         Message message = event.getMessage();
-        String msg = message.getContentDisplay();
+        String msg = message.getContentRaw();
 
         CommandConfig config = getCommandConfig(event);
 

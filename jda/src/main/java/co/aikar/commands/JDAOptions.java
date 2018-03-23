@@ -8,7 +8,8 @@ public class JDAOptions {
     CommandConfigProvider configProvider = null;
     CommandPermissionResolver permissionResolver = null;
 
-    public JDAOptions() {}
+    public JDAOptions() {
+    }
 
     public JDAOptions defaultConfig(@NotNull CommandConfig defaultConfig) {
         this.defaultConfig = defaultConfig;

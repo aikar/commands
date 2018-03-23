@@ -8,12 +8,12 @@ import java.util.List;
 
 public class JDARootCommand implements RootCommand {
 
-    private JDACommandManager manager;
     private final String name;
+    boolean isRegistered = false;
+    private JDACommandManager manager;
     private BaseCommand defCommand;
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
-    boolean isRegistered = false;
 
     JDARootCommand(JDACommandManager manager, String name) {
         this.manager = manager;
