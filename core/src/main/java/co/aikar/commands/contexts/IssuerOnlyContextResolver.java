@@ -28,7 +28,8 @@ import co.aikar.commands.CommandIssuer;
 
 /**
  * A context resolver that will never consume input, and only resolves using the context of the issuer of the command
- * @param <T>
- * @param <C>
+ *
+ * @param <T> The type to be parsed.
+ * @param <C> The type of the context which the resolver would get its data from.
  */
 public interface IssuerOnlyContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver <T, C> {}

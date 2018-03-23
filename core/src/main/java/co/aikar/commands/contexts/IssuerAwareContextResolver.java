@@ -26,5 +26,10 @@ package co.aikar.commands.contexts;
 import co.aikar.commands.CommandExecutionContext;
 import co.aikar.commands.CommandIssuer;
 
-
+/**
+ * The very same as {@link ContextResolver} except it now also must know the issuer.
+ *
+ * @param <T> The type to be parsed.
+ * @param <C> The type of the context which the resolver would get its data from.
+ */
 public interface IssuerAwareContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver<T, C> {}
