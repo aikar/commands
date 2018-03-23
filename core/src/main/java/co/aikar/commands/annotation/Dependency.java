@@ -26,6 +26,10 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Injects a dependency into the field this is attached to.
+ * Any time a new dependency is registered, this will be overwritten.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dependency {
     /**

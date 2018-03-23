@@ -26,6 +26,10 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Defines the member this is attached to a subcommand of the parent.
+ * This is accessible with "/parent {@link #value()}".
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Subcommand {
     String value();

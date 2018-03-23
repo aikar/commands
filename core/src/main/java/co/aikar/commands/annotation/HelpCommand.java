@@ -26,7 +26,14 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Sets the help command handler. Whenever the help menu is invoked, this will be called.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HelpCommand {
+    /**
+     * The command aliases of the help command.
+     * This uses the format from {@link CommandAlias}.
+     */
     String value() default "help|?|-help|-h|-?";
 }

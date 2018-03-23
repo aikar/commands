@@ -26,6 +26,9 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Sets the flags each parameter uses in this method.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Flags {
     String value();
