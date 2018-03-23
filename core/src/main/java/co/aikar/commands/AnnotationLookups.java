@@ -51,18 +51,53 @@ abstract class AnnotationLookups {
         return getAnnotationValue(object, annoClass, Annotations.NOTHING | (allowEmpty ? 0 : Annotations.NO_EMPTY)) != null;
     }
 
+    /**
+     * Gets the values of the annotated object's annotation.
+     * It splits all values on a pipe.
+     *
+     * @param object    The element to check
+     * @param annoClass The attached annotation class to read
+     * @return All values split by a pipe
+     */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
     }
 
+    /**
+     * Gets all values of the annotated object's annotation.
+     * All values get split on a specific pattern.
+     *
+     * @param object    The object to check
+     * @param annoClass The annotation to read
+     * @param pattern   The pattern all values are split on
+     * @return All values found
+     */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern) {
         return getAnnotationValues(object, annoClass, pattern, Annotations.REPLACEMENTS);
     }
 
+    /**
+     * Gets all values of the annotated object's annotation.
+     * All values go through the specific set of options.
+     *
+     * @param object    The object to check
+     * @param annoClass The annotation to read
+     * @param options   Options passed to {@link #getAnnotationValues(AnnotatedElement, Class, Pattern, int)}
+     * @return All values found
+     */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
         return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, options);
     }
 
+    /**
+     * Gets all values of the annotated object's annotation.
+     *
+     * @param object    The object to check
+     * @param annoClass The annotation to read
+     * @param pattern   The pattern all options
+     * @param options   The options to follow during finding values
+     * @return null if no values were found, if not, all values found
+     */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
         String value = getAnnotationValue(object, annoClass, options);
         if (value == null) {
@@ -71,11 +106,22 @@ abstract class AnnotationLookups {
         return pattern.split(value);
     }
 
-    abstract String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options);
-
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
     }
 
-    abstract String getAnnotationValue(AnnotatedElement annotation, Class<? extends Annotation> annoClass, int options);
+    String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
+        Annotation annotation = element.getAnnotation(annoClass);
+        return getAnnotationValue(element, annotation, options);
+    }
+
+    /**
+     * Gets the value field of the annotated element's annotation with the specific set of options.
+     *
+     * @param object     The object to check
+     * @param annotation The annotation instance to read
+     * @param options    The options to follow
+     * @return
+     */
+    abstract String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options);
 }
