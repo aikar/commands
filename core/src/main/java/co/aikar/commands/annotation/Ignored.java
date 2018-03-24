@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,44 +21,14 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.annotation;
 
-import co.aikar.locales.MessageKey;
-import co.aikar.locales.MessageKeyProvider;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Enum Name = MessageKey in lowercase prefixed with acf-core.
+ * This is applied to any subcommands which are to be ignored when registering.
  */
-@SuppressWarnings("WeakerAccess")
-public enum MessageKeys implements MessageKeyProvider {
-    PERMISSION_DENIED,
-    ERROR_GENERIC_LOGGED,
-    UNKNOWN_COMMAND,
-    INVALID_SYNTAX,
-    ERROR_PREFIX,
-    ERROR_PERFORMING_COMMAND,
-    INFO_MESSAGE,
-    PLEASE_SPECIFY_ONE_OF,
-    MUST_BE_A_NUMBER,
-    MUST_BE_MIN_LENGTH,
-    MUST_BE_MAX_LENGTH,
-    PLEASE_SPECIFY_AT_LEAST,
-    PLEASE_SPECIFY_AT_MOST,
-    NOT_ALLOWED_ON_CONSOLE,
-    COULD_NOT_FIND_PLAYER,
-    NO_COMMAND_MATCHED_SEARCH,
-    HELP_PAGE_INFORMATION,
-    HELP_NO_RESULTS,
-    HELP_HEADER,
-    HELP_FORMAT,
-    HELP_DETAILED_HEADER,
-    HELP_DETAILED_COMMAND_FORMAT,
-    HELP_DETAILED_PARAMETER_FORMAT,
-    HELP_SEARCH_HEADER;
-
-    private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
-
-    public MessageKey getMessageKey() {
-        return key;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Ignored {
 }

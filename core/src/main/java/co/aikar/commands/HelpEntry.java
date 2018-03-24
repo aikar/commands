@@ -24,7 +24,6 @@
 package co.aikar.commands;
 
 public class HelpEntry {
-
     private final CommandHelp commandHelp;
     private final RegisteredCommand command;
     private int searchScore = 1;
@@ -39,7 +38,7 @@ public class HelpEntry {
     }
 
     public String getCommand() {
-        return this.commandHelp.commandPrefix + this.command.command;
+        return this.command.command;
     }
 
     public String getParameterSyntax() {
