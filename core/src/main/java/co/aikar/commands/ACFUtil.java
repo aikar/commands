@@ -480,16 +480,11 @@ public final class ACFUtil {
     }
 
     public static boolean isTruthy(String test) {
-        switch (test) {
-            case "t":
-            case "true":
-            case "on":
-            case "y":
-            case "yes":
-            case "1":
-                return true;
-        }
-        return false;
+        test = test.toLowerCase();
+        return test.startsWith("tr")
+                || test.startsWith("y")
+                || test.equals("1")
+                || test.equals("on");
     }
 
     public static Number parseNumber(String num, boolean suffixes) {

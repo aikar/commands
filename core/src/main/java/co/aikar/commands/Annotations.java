@@ -49,8 +49,8 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
         this.manager = manager;
     }
 
-    private static boolean hasOption(int options, int option) {
-        return (options & option) == option;
+    private static boolean hasOption(int bitmaskOptions, int option) {
+        return (bitmaskOptions & option) == option;
     }
 
     @Override

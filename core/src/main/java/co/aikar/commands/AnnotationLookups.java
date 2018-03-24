@@ -29,98 +29,107 @@ import java.util.regex.Pattern;
 
 abstract class AnnotationLookups {
     /**
-     * Checks whether or not the AnnotatedElement has an annotation of type annoClass.
+     * This checks whether the {@link AnnotatedElement} given has an annotation of the type given as annoClass.
      *
      * @param object
-     *         The element to check
+     *         The element to check whether has an annotation of annoClass.
      * @param annoClass
-     *         The class to check whether is attached to the element
+     *         The annotation type in form of a class.
      *
-     * @return Whether an annotation of annoClass is attached to object
+     * @return Whether an annotation of annoClass is attached to element.
+     *
+     * @see #hasAnnotation(AnnotatedElement, Class, boolean)
      */
     boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.NOTHING) != null;
     }
 
     /**
-     * Checks whether the object has an annotation or not. If the value is empty and allowEmpty is true, it will return
-     * false.
+     * This checks whether the {@link AnnotatedElement} given has an annotation of the type given as annoClass.
+     * If the value is empty/null and allowEmpty is false, it will return false.
      *
      * @param object
-     *         The element to check
+     *         The element to check whether has an annotation of annoClass.
      * @param annoClass
-     *         The class to check whether is attached or not
+     *         The annotation type in form of a class.
      * @param allowEmpty
-     *         Whether or not to allow for empty values
+     *         Whether or not to allow empty/null values.
      *
-     * @return Whether or not the annotation is present or empty with allowEmpty as true
+     * @return Whether an annotation of annoClass is attached to element, and if allowEmpty is false, whether it has a value.
      */
     boolean hasAnnotation(AnnotatedElement object, Class<? extends Annotation> annoClass, boolean allowEmpty) {
         return getAnnotationValue(object, annoClass, Annotations.NOTHING | (allowEmpty ? 0 : Annotations.NO_EMPTY)) != null;
     }
 
     /**
-     * Gets the values of the annotated object's annotation.
-     * It splits all values on a pipe.
+     * This fetches all the values the {@link AnnotatedElement}'s annotation of type annoClass has.
+     * If the value contains a pipe (|), it will split on this and return an array of more indicies than 1.
      *
      * @param object
-     *         The element to check
+     *         The element to check the value of the annotation of type annoClass.
      * @param annoClass
-     *         The attached annotation class to read
+     *         The annotation type in form of a class.
      *
-     * @return All values split by a pipe
+     * @return All the values of annoClass on the object split by pipe (|). If the value is empty, this is null.
+     *
+     * @see #getAnnotationValues(AnnotatedElement, Class, Pattern, int)
      */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, Annotations.REPLACEMENTS);
     }
 
     /**
-     * Gets all values of the annotated object's annotation.
-     * All values get split on a specific pattern.
+     * This fetches all the values the {@link AnnotatedElement}'s annotation of type annoClass has.
+     * The value is split by the pattern given and return an array of more indicies than 1.
      *
      * @param object
-     *         The object to check
+     *         The element to check the value of the annotation of type annoClass.
      * @param annoClass
-     *         The annotation to read
+     *         The annotation type in form of a class.
      * @param pattern
-     *         The pattern all values are split on
+     *         The pattern the value element is split on.
      *
-     * @return All values found
+     * @return All the values of annoClass on the object split by the pattern given. If the value is empty, this is null.
+     *
+     * @see #getAnnotationValues(AnnotatedElement, Class, Pattern, int)
      */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern) {
         return getAnnotationValues(object, annoClass, pattern, Annotations.REPLACEMENTS);
     }
 
     /**
-     * Gets all values of the annotated object's annotation.
-     * All values go through the specific set of options.
+     * This fetches all the values the {@link AnnotatedElement}'s annotation of type annoClass has.
+     * The value is split by all pipes (|), but must follow the options.
      *
      * @param object
-     *         The object to check
+     *         The element to check the value of the annotation of type annoClass.
      * @param annoClass
-     *         The annotation to read
+     *         The annotation type in form of a class.
      * @param options
-     *         Options passed to {@link #getAnnotationValues(AnnotatedElement, Class, Pattern, int)}
+     *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
      *
-     * @return All values found
+     * @return All the values of annoClass on the object split by a pipe (|). Nullability depends on options.
+     *
+     * @see #getAnnotationValues(AnnotatedElement, Class, Pattern, int)
      */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
         return getAnnotationValues(object, annoClass, ACFPatterns.PIPE, options);
     }
 
     /**
-     * Gets all values of the annotated object's annotation.
+     * This fetches all the values the {@link AnnotatedElement}'s annotation of type annoClass has.
+     * The value is split by the pattern given, and must also follow the options.
      *
      * @param object
-     *         The object to check
+     *         The element to check the value of the annotation of type annoClass.
      * @param annoClass
-     *         The annotation to read
-     * @param pattern
-     *         The pattern all options
+     *         The annotation type in form of a class.
      * @param options
-     *         The options to follow during finding values
+     *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
+     * @param pattern
+     *         The pattern to split by each occurrence of.
      *
-     * @return null if no values were found, if not, all values found
+     * @return All the values of annoClass on the object split by the pattern given. Nullability depends on options.
      */
     String[] getAnnotationValues(AnnotatedElement object, Class<? extends Annotation> annoClass, Pattern pattern, int options) {
         String value = getAnnotationValue(object, annoClass, options);
@@ -130,26 +139,53 @@ abstract class AnnotationLookups {
         return pattern.split(value);
     }
 
+    /**
+     * Gets the value of the {@link AnnotatedElement}'s annotation of type annoClass as a string.
+     *
+     * @param object
+     *         The element to check the value of the annotation of type annoClass.
+     * @param annoClass
+     *         The annotation type in form of a class.
+     *
+     * @return The value of the annotation on the object given.
+     *
+     * @see #getAnnotationValue(AnnotatedElement, Annotation, int)
+     */
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
     }
 
+    /**
+     * Gets the value of the {@link AnnotatedElement}'s annotation of type annoClass as a string.
+     * The value has to follow the given options.
+     *
+     * @param element
+     *         The element to check the value of the annotation of type annoClass.
+     * @param annoClass
+     *         The annotation type in form of a class.
+     * @param options
+     *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
+     *
+     * @return The value of the annotation on the object given. Nullability depends on options.
+     *
+     * @see #getAnnotationValue(AnnotatedElement, Annotation, int)
+     */
     String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
-        Annotation annotation = element.getAnnotation(annoClass);
-        return getAnnotationValue(element, annotation, options);
+        return getAnnotationValue(element, element.getAnnotation(annoClass), options);
     }
 
     /**
-     * Gets the value field of the annotated element's annotation with the specific set of options.
+     * Gets the value of the {@link AnnotatedElement}'s annotation as a string.
+     * The value has to follow the given options.
      *
      * @param object
-     *         The object to check
+     *         The element to check the value of the annotation of type annoClass.
      * @param annotation
-     *         The annotation instance to read
+     *         The annotation type in form of a class.
      * @param options
-     *         The options to follow
+     *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
      *
-     * @return
+     * @return The value of the annotation on the object given. Nullability depends on options.
      */
     abstract String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options);
 }

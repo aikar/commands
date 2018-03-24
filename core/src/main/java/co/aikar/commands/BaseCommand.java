@@ -43,6 +43,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -62,20 +63,66 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * BaseCommand stores data about a single command tree.
+ * This includes {@link CommandManager who} manages it, what {@link RegisteredCommand subcommands} it has and so on.
+ */
 @SuppressWarnings("unused")
 public abstract class BaseCommand {
-
+    /**
+     * This is a field which contains the key in the {@link #subCommands} map for the method to catch any unknown
+     * argument to command states.
+     */
     public static final String CATCHUNKNOWN = "__catchunknown";
+
+    /**
+     * This is a field which contains the key in the {@link #subCommands} map for the method which is default for the
+     * entire (sub)command.
+     */
     public static final String DEFAULT = "__default";
+
+    /**
+     * Stores all the subcommands of this command.
+     */
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
-    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
+
+    final Map<Class<?>, String> contextFlags = Maps.newHashMap(); // TODO: Unknown use-case
+
+    /**
+     * Contains the manager which owns and handles this command.
+     */
     CommandManager<?, ?, ?, ?, ?, ?> manager = null;
-    BaseCommand parentCommand;
+
+    /**
+     * The command which owns this. This may be null if there are no owners.
+     */
+    @Nullable BaseCommand parentCommand = null;
+
+    /**
+     * A map of all registered commands under this.
+     * A registered command is any subcommand.
+     */
     Map<String, RootCommand> registeredCommands = new HashMap<>();
-    String description;
-    String commandName;
-    String permission;
-    String conditions;
+
+    /**
+     * The description of the command. This may be null if no description has been provided.
+     */
+    @Nullable String description = null;
+
+    /**
+     * The name of the command. This may be null if no name has been provided.
+     */
+    @Nullable String commandName = null;
+
+    /**
+     * The permission of the command. This may be null if no permission has been provided.
+     */
+    @Nullable String permission = null;
+
+    /**
+     * The conditions of the command. This may be null if no conditions has been provided.
+     */
+    @Nullable String conditions = null;
     CommandOperationContext lastCommandOperationContext;
     private Method preCommandHandler;
     @SuppressWarnings("WeakerAccess")
@@ -90,7 +137,7 @@ public abstract class BaseCommand {
     public BaseCommand() {
     }
 
-    public BaseCommand(String cmd) {
+    public BaseCommand(@Nullable String cmd) {
         this.commandName = cmd;
     }
 
