@@ -47,21 +47,6 @@ public final class ACFUtil {
      * The static random to be used for all ACFUtil usage.
      */
     public static final Random RANDOM = new Random();
-    private static final TreeMap<Integer, String> romanMap = new TreeMap<Integer, String>() {{
-        put(1_000, "M");
-        put(900, "CM");
-        put(500, "D");
-        put(400, "CD");
-        put(100, "C");
-        put(90, "XC");
-        put(50, "L");
-        put(40, "XL");
-        put(10, "X");
-        put(9, "IX");
-        put(5, "V");
-        put(4, "IV");
-        put(1, "I");
-    }};
 
     /**
      * The constructor is not supposed to be used.
@@ -559,12 +544,30 @@ public final class ACFUtil {
     }
 
     public static String intToRoman(int integer) {
-        boolean useParens = integer > 1000; // e.g. (X) = 10*1000, as the parentheses is the "computerised" overbear
-        Map.Entry<Integer, String> lowest = romanMap.floorEntry(useParens ? (int) Math.floor(integer / 1000) : integer);
-        if (lowest.getKey() == integer) {
-            return useParens ? "(" + lowest.getValue() + ")" : lowest.getValue();
+        switch (integer) {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            case 6:
+                return "VI";
+            case 7:
+                return "VII";
+            case 8:
+                return "VIII";
+            case 9:
+                return "IX";
+            case 10:
+                return "X";
+            default:
+                return null;
         }
-        return (useParens ? "(" + lowest.getValue() + ")" : lowest.getValue()) + intToRoman(integer - lowest.getKey());
     }
 
     public static boolean isInteger(String string) {
