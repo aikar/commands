@@ -13,6 +13,7 @@
 **/*.iml
 # IntelliJ Plugins #
 /.idea/markdown-navigator*
+/.idea/coffeelintPlugin.xml
 
 # Package Files #
 *.jar
