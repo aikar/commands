@@ -123,7 +123,12 @@ public abstract class BaseCommand {
      * The conditions of the command. This may be null if no conditions has been provided.
      */
     @Nullable String conditions = null;
-    CommandOperationContext lastCommandOperationContext;
+
+    /**
+     * The last operative context data of this command. This may be null if this command hasn't been run yet.
+     */
+    @Nullable CommandOperationContext lastCommandOperationContext = null;
+
     private Method preCommandHandler;
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
