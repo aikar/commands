@@ -129,13 +129,12 @@ public abstract class BaseCommand {
      */
     @Nullable CommandOperationContext lastCommandOperationContext = null;
 
+    /**
+     * The precommand handler to be used. This may not be null if the command has been registered correctly and a handler
+     * has been created in the implementation.
+     */
     private Method preCommandHandler;
-    @SuppressWarnings("WeakerAccess")
-    private String execLabel;
-    @SuppressWarnings("WeakerAccess")
-    private String execSubcommand;
-    @SuppressWarnings("WeakerAccess")
-    private String[] origArgs;
+
     private ExceptionHandler exceptionHandler = null;
     private String parentSubcommand;
 
@@ -190,33 +189,6 @@ public abstract class BaseCommand {
                    .distinct()
                    .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
                    .collect(Collectors.toList());
-    }
-
-    /**
-     * Gets the root command name that the user actually typed
-     *
-     * @return Name
-     */
-    public String getExecCommandLabel() {
-        return execLabel;
-    }
-
-    /**
-     * Gets the actual sub command name the user typed
-     *
-     * @return Name
-     */
-    public String getExecSubcommand() {
-        return execSubcommand;
-    }
-
-    /**
-     * Gets the actual args in string form the user typed
-     *
-     * @return Args
-     */
-    public String[] getOrigArgs() {
-        return origArgs;
     }
 
     void setParentCommand(BaseCommand command) {
@@ -435,7 +407,6 @@ public abstract class BaseCommand {
             if (args.length > 0) {
                 CommandSearch cmd = findSubCommand(args);
                 if (cmd != null) {
-                    execSubcommand = cmd.getCheckSub();
                     final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
                     executeCommand(commandContext, issuer, execargs, cmd.cmd);
                     return;
@@ -464,9 +435,6 @@ public abstract class BaseCommand {
 
     private void postCommandOperation() {
         CommandManager.commandOperationContext.get().pop();
-        execSubcommand = null;
-        execLabel = null;
-        origArgs = new String[] {};
     }
 
     private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
@@ -474,9 +442,6 @@ public abstract class BaseCommand {
         CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);
         contexts.push(context);
         lastCommandOperationContext = context;
-        execSubcommand = null;
-        execLabel = commandLabel;
-        origArgs = args;
         return context;
     }
 
