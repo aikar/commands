@@ -51,10 +51,10 @@ final class ACFPatterns {
     public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
     @SuppressWarnings("Convert2MethodRef")
     static final Map<String, Pattern> patternCache = ExpiringMap.builder()
-            .maxSize(200)
-            .expiration(1, TimeUnit.HOURS)
-            .expirationPolicy(ExpirationPolicy.ACCESSED)
-            .build();
+                                                                .maxSize(200)
+                                                                .expiration(1, TimeUnit.HOURS)
+                                                                .expirationPolicy(ExpirationPolicy.ACCESSED)
+                                                                .build();
 
     private ACFPatterns() {
     }
@@ -66,7 +66,9 @@ final class ACFPatterns {
      * <p>
      * The {@link #patternCache} does not contain the constant patterns defined in this class.
      *
-     * @param pattern The raw pattern in a String.
+     * @param pattern
+     *         The raw pattern in a String.
+     *
      * @return The pattern which has been cached.
      */
     public static Pattern getPattern(String pattern) {

@@ -62,8 +62,6 @@ public class ACFBungeeUtil {
         return replaceChatString(message, Pattern.compile(Pattern.quote(replace), Pattern.CASE_INSENSITIVE), with);
     }
 
-    //Imported from org.bukkit.ChatColor
-
     public static String replaceChatString(String message, Pattern replace, String with) {
         final String[] split = replace.split(message + "1");
 

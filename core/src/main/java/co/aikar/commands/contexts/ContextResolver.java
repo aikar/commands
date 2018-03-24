@@ -30,17 +30,23 @@ import co.aikar.commands.InvalidCommandArgument;
 /**
  * This defines a context resolver, which parses {@link T} from {@link C}.
  *
- * @param <T> The type to be parsed.
- * @param <C> The type of the context which the resolver would get its data from.
+ * @param <T>
+ *         The type to be parsed.
+ * @param <C>
+ *         The type of the context which the resolver would get its data from.
  */
 @FunctionalInterface
 public interface ContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> {
     /**
      * Parses the context of type {@link C} into {@link T}, or throws an exception.
      *
-     * @param c The context to parse from.
+     * @param c
+     *         The context to parse from.
+     *
      * @return The parsed instance of the wanted type.
-     * @throws InvalidCommandArgument In case the context contains any discrepancies, it will throw this exception.
+     *
+     * @throws InvalidCommandArgument
+     *         In case the context contains any discrepancies, it will throw this exception.
      */
     T getContext(C c) throws InvalidCommandArgument;
 }

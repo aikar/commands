@@ -104,6 +104,7 @@ public abstract class BaseCommand {
      * For every possible sub command combination
      *
      * @param subCommandParts
+     *
      * @return List of all sub command possibilities
      */
     private static Set<String> getSubCommandPossibilityList(String[] subCommandParts) {
@@ -134,9 +135,9 @@ public abstract class BaseCommand {
 
     private static List<String> filterTabComplete(String arg, List<String> cmds) {
         return cmds.stream()
-                .distinct()
-                .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
-                .collect(Collectors.toList());
+                   .distinct()
+                   .filter(cmd -> cmd != null && (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))
+                   .collect(Collectors.toList());
     }
 
     /**
@@ -413,7 +414,7 @@ public abstract class BaseCommand {
         CommandManager.commandOperationContext.get().pop();
         execSubcommand = null;
         execLabel = null;
-        origArgs = new String[]{};
+        origArgs = new String[] {};
     }
 
     private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
@@ -502,7 +503,7 @@ public abstract class BaseCommand {
 
         commandLabel = commandLabel.toLowerCase();
         if (args.length == 0) {
-            args = new String[]{""};
+            args = new String[] {""};
         }
         try {
             CommandOperationContext commandOperationContext = preCommandOperation(issuer, commandLabel, args, isAsync);
@@ -709,8 +710,8 @@ public abstract class BaseCommand {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) { return true; }
+            if (o == null || getClass() != o.getClass()) { return false; }
             CommandSearch that = (CommandSearch) o;
             return argIndex == that.argIndex &&
                     Objects.equals(cmd, that.cmd) &&

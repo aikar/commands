@@ -235,7 +235,9 @@ public abstract class CommandManager<
     /**
      * Registers a command with ACF
      *
-     * @param command The command to register
+     * @param command
+     *         The command to register
+     *
      * @return boolean
      */
     public abstract void registerCommand(BaseCommand command);
@@ -337,9 +339,11 @@ public abstract class CommandManager<
     }
 
     /**
-     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if
+     * the command doesn't have it's own exception handler registered.
      *
-     * @param exceptionHandler the handler that should handle uncaught exceptions
+     * @param exceptionHandler
+     *         the handler that should handle uncaught exceptions
      */
     public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler) {
         defaultExceptionHandler = exceptionHandler;
@@ -459,9 +463,13 @@ public abstract class CommandManager<
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
-     * @param clazz    the class the injector should look for when injecting
-     * @param instance the instance of the class that should be injected
-     * @throws IllegalStateException when there is already an instance for the provided class registered
+     * @param clazz
+     *         the class the injector should look for when injecting
+     * @param instance
+     *         the instance of the class that should be injected
+     *
+     * @throws IllegalStateException
+     *         when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, T instance) {
         registerDependency(clazz, clazz.getName(), instance);
@@ -472,10 +480,15 @@ public abstract class CommandManager<
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
-     * @param clazz    the class the injector should look for when injecting
-     * @param key      the key which needs to be present if that
-     * @param instance the instance of the class that should be injected
-     * @throws IllegalStateException when there is already an instance for the provided class registered
+     * @param clazz
+     *         the class the injector should look for when injecting
+     * @param key
+     *         the key which needs to be present if that
+     * @param instance
+     *         the instance of the class that should be injected
+     *
+     * @throws IllegalStateException
+     *         when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, String key, T instance) {
         if (dependencies.containsRow(clazz) && dependencies.containsColumn(key)) {
@@ -489,7 +502,8 @@ public abstract class CommandManager<
      * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}
      * into all fields of the class and its superclasses that are marked with {@link Dependency}.
      *
-     * @param baseCommand the instance which fields should be filled
+     * @param baseCommand
+     *         the instance which fields should be filled
      */
     void injectDependencies(BaseCommand baseCommand) {
         Class clazz = baseCommand.getClass();

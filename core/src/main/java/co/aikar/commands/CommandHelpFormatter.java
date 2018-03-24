@@ -112,10 +112,11 @@ public class CommandHelpFormatter {
      * Override this to control replacements
      *
      * @param help
+     *
      * @return
      */
     public String[] getHeaderFooterFormatReplacements(CommandHelp help) {
-        return new String[]{
+        return new String[] {
                 "{search}", help.search != null ? String.join(" ", help.search) : "",
                 "{command}", help.getCommandName(),
                 "{commandprefix}", help.getCommandPrefix(),
@@ -131,11 +132,12 @@ public class CommandHelpFormatter {
      *
      * @param help
      * @param entry
+     *
      * @return
      */
     public String[] getEntryFormatReplacements(CommandHelp help, HelpEntry entry) {
         //{command} {parameters} {separator} {description}
-        return new String[]{
+        return new String[] {
                 "{command}", entry.getCommand(),
                 "{commandprefix}", help.getCommandPrefix(),
                 "{parameters}", entry.getParameterSyntax(),
@@ -150,12 +152,13 @@ public class CommandHelpFormatter {
      * @param help
      * @param param
      * @param entry
+     *
      * @return
      */
     @NotNull
     public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry entry) {
         //{name} {description}
-        return new String[]{
+        return new String[] {
                 "{name}", param.getName(),
                 "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),
                 "{description}", ACFUtil.nullDefault(param.getDescription(), ""),

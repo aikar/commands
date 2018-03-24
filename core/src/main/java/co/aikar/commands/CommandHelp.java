@@ -132,8 +132,8 @@ public class CommandHelp {
 
         List<HelpEntry> helpEntries = getHelpEntries();
         Iterator<HelpEntry> results = helpEntries.stream()
-                .filter(HelpEntry::shouldShow)
-                .sorted(Comparator.comparingInt(helpEntry -> helpEntry.getSearchScore() * -1)).iterator();
+                                                 .filter(HelpEntry::shouldShow)
+                                                 .sorted(Comparator.comparingInt(helpEntry -> helpEntry.getSearchScore() * -1)).iterator();
         if (!results.hasNext()) {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));
             helpEntries = getHelpEntries();

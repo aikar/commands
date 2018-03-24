@@ -252,6 +252,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replace(String string, Pattern pattern, String repl) {
@@ -264,6 +265,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replacePattern(String string, Pattern pattern, String repl) {
@@ -276,6 +278,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replace(String string, String pattern, String repl) {
@@ -288,6 +291,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replacePattern(String string, String pattern, String repl) {
@@ -300,6 +304,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replacePatternMatch(String string, Pattern pattern, String repl) {
@@ -312,6 +317,7 @@ public final class ACFUtil {
      * @param string
      * @param pattern
      * @param repl
+     *
      * @return
      */
     public static String replacePatternMatch(String string, String pattern, String repl) {
@@ -325,7 +331,7 @@ public final class ACFUtil {
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
             String value = replacements[i + 1];
-            if (value == null) value = "";
+            if (value == null) { value = ""; }
             string = replace(string, key, value);
         }
         return string;
@@ -338,7 +344,7 @@ public final class ACFUtil {
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
             String value = replacements[i + 1];
-            if (value == null) value = "";
+            if (value == null) { value = ""; }
             string = replacePattern(string, key, value);
         }
         return string;
@@ -367,11 +373,13 @@ public final class ACFUtil {
     }
 
     /**
-     * Added as im sure we will try to "Find this" again. This is no different than Enum.values() passed to above method logically
+     * Added as im sure we will try to "Find this" again. This is no different than Enum.values() passed to above method
+     * logically
      * but the array version is slightly faster.
      *
      * @param enm
      * @param <T>
+     *
      * @return
      */
     @Deprecated
@@ -535,6 +543,7 @@ public final class ACFUtil {
      * @param max1
      * @param min2
      * @param max2
+     *
      * @return
      */
     public static int rand(int min1, int max1, int min2, int max2) {

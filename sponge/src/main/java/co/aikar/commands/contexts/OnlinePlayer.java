@@ -40,8 +40,8 @@ public class OnlinePlayer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
         OnlinePlayer that = (OnlinePlayer) o;
         return Objects.equals(player, that.player);
     }

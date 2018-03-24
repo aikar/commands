@@ -27,7 +27,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Gets all subcommands which are unknown at the time. This means any arguments which are unresolved and have no matching
+ * Gets all subcommands which are unknown at the time. This means any arguments which are unresolved and have no
+ * matching
  * methods or other forms of subcommands are sent to the method annotated with this.
  * <p>
  * This is to be used instead of the deprecated {@link CatchAll} and {@link UnknownHandler}.

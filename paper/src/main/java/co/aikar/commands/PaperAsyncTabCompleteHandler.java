@@ -49,14 +49,16 @@ class PaperAsyncTabCompleteHandler implements Listener {
         }
         try {
             //noinspection ConstantConditions,ConstantIfStatement
-            if (false) throw new CommandCompletions.SyncCompletionRequired(); // fake compiler due to SneakyThrows
+            if (false) {
+                throw new CommandCompletions.SyncCompletionRequired(); // fake compiler due to SneakyThrows
+            }
             String[] args = ACFPatterns.SPACE.split(buffer, -1);
 
             String commandLabel = args[0];
             if (commandLabel.startsWith("/")) {
                 commandLabel = commandLabel.substring(1);
             }
-            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
+            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[] {""};
 
             BaseCommand cmd = this.manager.getBaseCommand(commandLabel, args);
             if (cmd == null) {
@@ -89,7 +91,7 @@ class PaperAsyncTabCompleteHandler implements Listener {
         RootCommand rootCommand = this.manager.getRootCommand(commandLabel);
 
         if (rootCommand != null) {
-            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
+            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[] {""};
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
             if (event.getCompletions() instanceof ImmutableList) {
                 event.setCompletions(new ArrayList<>(event.getCompletions()));

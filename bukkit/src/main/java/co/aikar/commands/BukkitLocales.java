@@ -54,7 +54,9 @@ public class BukkitLocales extends Locales {
      *
      * @param file
      * @param locale
+     *
      * @return If any language keys were added
+     *
      * @throws IOException
      * @throws InvalidConfigurationException
      */
@@ -69,7 +71,9 @@ public class BukkitLocales extends Locales {
      *
      * @param file
      * @param locale
+     *
      * @return If any language keys were added
+     *
      * @throws IOException
      * @throws InvalidConfigurationException
      */
@@ -85,6 +89,7 @@ public class BukkitLocales extends Locales {
      *
      * @param config
      * @param locale
+     *
      * @return If any language keys were added
      */
     public boolean loadLanguage(FileConfiguration config, Locale locale) {

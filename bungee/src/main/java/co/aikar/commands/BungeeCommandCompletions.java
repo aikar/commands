@@ -47,7 +47,7 @@ public class BungeeCommandCompletions extends CommandCompletions<BungeeCommandCo
             String filter = c.getConfig("filter");
             if (filter != null) {
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter))
-                        .map(ACFUtil::simplifyString).collect(Collectors.toSet());
+                                            .map(ACFUtil::simplifyString).collect(Collectors.toSet());
 
                 colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.name())));
             }

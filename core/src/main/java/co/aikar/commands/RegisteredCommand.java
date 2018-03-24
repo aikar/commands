@@ -135,7 +135,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         try {
             this.manager.conditions.validateConditions(context);
             Map<String, Object> passedArgs = resolveContexts(sender, args);
-            if (passedArgs == null) return;
+            if (passedArgs == null) { return; }
 
             method.invoke(scope, passedArgs.values().toArray());
         } catch (Exception e) {

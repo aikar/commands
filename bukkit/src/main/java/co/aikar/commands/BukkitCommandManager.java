@@ -231,6 +231,7 @@ public class BukkitCommandManager extends CommandManager<
 
     /**
      * @param command
+     *
      * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
      */
     @Deprecated

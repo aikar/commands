@@ -41,8 +41,8 @@ public class OnlineProxiedPlayer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
         OnlineProxiedPlayer that = (OnlineProxiedPlayer) o;
         return Objects.equals(player, that.player);
     }

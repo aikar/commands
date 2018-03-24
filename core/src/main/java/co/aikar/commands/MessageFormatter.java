@@ -32,7 +32,8 @@ import java.util.regex.Matcher;
 /**
  * Handles formatting Messages and managing colors
  *
- * @param <FT> The platform specific color object
+ * @param <FT>
+ *         The platform specific color object
  */
 public abstract class MessageFormatter<FT> {
 

@@ -34,6 +34,7 @@ public interface CommandIssuer {
      * Gets the issuer in the platforms native object
      *
      * @param <T>
+     *
      * @return
      */
     <T> T getIssuer();
@@ -65,6 +66,7 @@ public interface CommandIssuer {
      * Has permission node
      *
      * @param permission
+     *
      * @return
      */
     boolean hasPermission(String permission);
@@ -103,6 +105,7 @@ public interface CommandIssuer {
 
     /**
      * @param message
+     *
      * @deprecated Do not call this, for internal use. Not considered part of the API and may break.
      */
     @Deprecated

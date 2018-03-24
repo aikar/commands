@@ -29,8 +29,10 @@ import co.aikar.commands.CommandIssuer;
 /**
  * The same as {@link ContextResolver}, however it can accept a null context.
  *
- * @param <T> The type to be parsed.
- * @param <C> The type of the context which the resolver would get its data from.
+ * @param <T>
+ *         The type to be parsed.
+ * @param <C>
+ *         The type of the context which the resolver would get its data from.
  */
 public interface OptionalContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver<T, C> {
 }

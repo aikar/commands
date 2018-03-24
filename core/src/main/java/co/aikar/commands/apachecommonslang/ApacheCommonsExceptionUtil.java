@@ -73,7 +73,7 @@ public class ApacheCommonsExceptionUtil {
             "getNestedException",
             "getLinkedCause",
             "getThrowable",
-    };
+            };
 
     static {
         Method causeMethod;
@@ -84,7 +84,7 @@ public class ApacheCommonsExceptionUtil {
         }
         THROWABLE_CAUSE_METHOD = causeMethod;
         try {
-            causeMethod = Throwable.class.getMethod("initCause", new Class[]{Throwable.class});
+            causeMethod = Throwable.class.getMethod("initCause", new Class[] {Throwable.class});
         } catch (Exception e) {
             causeMethod = null;
         }
@@ -107,8 +107,10 @@ public class ApacheCommonsExceptionUtil {
      * <p>Adds to the list of method names used in the search for <code>Throwable</code>
      * objects.</p>
      *
-     * @param methodName the methodName to add to the list, <code>null</code>
-     *                   and empty strings are ignored
+     * @param methodName
+     *         the methodName to add to the list, <code>null</code>
+     *         and empty strings are ignored
+     *
      * @since 2.0
      */
     public static void addCauseMethodName(String methodName) {
@@ -124,8 +126,10 @@ public class ApacheCommonsExceptionUtil {
      * <p>Removes from the list of method names used in the search for <code>Throwable</code>
      * objects.</p>
      *
-     * @param methodName the methodName to remove from the list, <code>null</code>
-     *                   and empty strings are ignored
+     * @param methodName
+     *         the methodName to remove from the list, <code>null</code>
+     *         and empty strings are ignored
+     *
      * @since 2.1
      */
     public static void removeCauseMethodName(String methodName) {
@@ -160,16 +164,20 @@ public class ApacheCommonsExceptionUtil {
      * }
      * </pre>
      *
-     * @param target the target <code>Throwable</code>
-     * @param cause  the <code>Throwable</code> to set in the target
+     * @param target
+     *         the target <code>Throwable</code>
+     * @param cause
+     *         the <code>Throwable</code> to set in the target
+     *
      * @return a <code>true</code> if the target has been modified
+     *
      * @since 2.2
      */
     public static boolean setCause(Throwable target, Throwable cause) {
         if (target == null) {
             throw new IllegalArgumentException("target");
         }
-        Object[] causeArgs = new Object[]{cause};
+        Object[] causeArgs = new Object[] {cause};
         boolean modifiedTarget = false;
         if (THROWABLE_INITCAUSE_METHOD != null) {
             try {
@@ -182,7 +190,7 @@ public class ApacheCommonsExceptionUtil {
             }
         }
         try {
-            Method setCauseMethod = target.getClass().getMethod("setCause", new Class[]{Throwable.class});
+            Method setCauseMethod = target.getClass().getMethod("setCause", new Class[] {Throwable.class});
             setCauseMethod.invoke(target, causeArgs);
             modifiedTarget = true;
         } catch (NoSuchMethodException ignored) {
@@ -198,7 +206,9 @@ public class ApacheCommonsExceptionUtil {
     /**
      * Returns the given list as a <code>String[]</code>.
      *
-     * @param list a list to transform.
+     * @param list
+     *         a list to transform.
+     *
      * @return the given list as a <code>String[]</code>.
      */
     private static String[] toArray(List list) {
@@ -218,9 +228,12 @@ public class ApacheCommonsExceptionUtil {
      * <p>Tests if the list of method names used in the search for <code>Throwable</code>
      * objects include the given name.</p>
      *
-     * @param methodName the methodName to search in the list.
+     * @param methodName
+     *         the methodName to search in the list.
+     *
      * @return if the list of method names used in the search for <code>Throwable</code>
      * objects include the given name.
+     *
      * @since 2.1
      */
     public static boolean isCauseMethodName(String methodName) {
@@ -254,9 +267,12 @@ public class ApacheCommonsExceptionUtil {
      *
      * <p>If none of the above is found, returns <code>null</code>.</p>
      *
-     * @param throwable the throwable to introspect for a cause, may be null
+     * @param throwable
+     *         the throwable to introspect for a cause, may be null
+     *
      * @return the cause of the <code>Throwable</code>,
      * <code>null</code> if none found or null throwable input
+     *
      * @since 1.0
      */
     public static Throwable getCause(Throwable throwable) {
@@ -275,10 +291,14 @@ public class ApacheCommonsExceptionUtil {
      * <p>A <code>null</code> set of method names means use the default set.
      * A <code>null</code> in the set of method names will be ignored.</p>
      *
-     * @param throwable   the throwable to introspect for a cause, may be null
-     * @param methodNames the method names, null treated as default set
+     * @param throwable
+     *         the throwable to introspect for a cause, may be null
+     * @param methodNames
+     *         the method names, null treated as default set
+     *
      * @return the cause of the <code>Throwable</code>,
      * <code>null</code> if none found or null throwable input
+     *
      * @since 1.0
      */
     public static Throwable getCause(Throwable throwable, String[] methodNames) {
@@ -320,7 +340,9 @@ public class ApacheCommonsExceptionUtil {
      * parameter cause chain loops, the last element in the chain before the
      * loop is returned.</p>
      *
-     * @param throwable the throwable to get the root cause for, may be null
+     * @param throwable
+     *         the throwable to get the root cause for, may be null
+     *
      * @return the root cause of the <code>Throwable</code>,
      * <code>null</code> if none found or null throwable input
      */
@@ -336,7 +358,9 @@ public class ApacheCommonsExceptionUtil {
      * looking for well known types which could contain chained or
      * wrapped exceptions.</p>
      *
-     * @param throwable the exception to examine
+     * @param throwable
+     *         the exception to examine
+     *
      * @return the wrapped exception, or <code>null</code> if not found
      */
     private static Throwable getCauseUsingWellKnownTypes(Throwable throwable) {
@@ -354,8 +378,11 @@ public class ApacheCommonsExceptionUtil {
     /**
      * <p>Finds a <code>Throwable</code> by method name.</p>
      *
-     * @param throwable  the exception to examine
-     * @param methodName the name of the method to find and invoke
+     * @param throwable
+     *         the exception to examine
+     * @param methodName
+     *         the name of the method to find and invoke
+     *
      * @return the wrapped exception, or <code>null</code> if not found
      */
     private static Throwable getCauseUsingMethodName(Throwable throwable, String methodName) {
@@ -385,8 +412,11 @@ public class ApacheCommonsExceptionUtil {
     /**
      * <p>Finds a <code>Throwable</code> by field name.</p>
      *
-     * @param throwable the exception to examine
-     * @param fieldName the name of the attribute to examine
+     * @param throwable
+     *         the exception to examine
+     * @param fieldName
+     *         the name of the attribute to examine
+     *
      * @return the wrapped exception, or <code>null</code> if not found
      */
     private static Throwable getCauseUsingFieldName(Throwable throwable, String fieldName) {
@@ -419,6 +449,7 @@ public class ApacheCommonsExceptionUtil {
      * <p>This is true for JDK 1.4 and above.</p>
      *
      * @return true if Throwable is nestable
+     *
      * @since 2.0
      */
     public static boolean isThrowableNested() {
@@ -430,8 +461,11 @@ public class ApacheCommonsExceptionUtil {
      *
      * <p>This method does <b>not</b> check whether it actually does store a cause.<p>
      *
-     * @param throwable the <code>Throwable</code> to examine, may be null
+     * @param throwable
+     *         the <code>Throwable</code> to examine, may be null
+     *
      * @return boolean <code>true</code> if nested otherwise <code>false</code>
+     *
      * @since 2.0
      */
     public static boolean isNestedThrowable(Throwable throwable) {
@@ -492,7 +526,9 @@ public class ApacheCommonsExceptionUtil {
      * processed until the end is reached, or until the next item in the
      * chain is already in the result set.</p>
      *
-     * @param throwable the throwable to inspect, may be null
+     * @param throwable
+     *         the throwable to inspect, may be null
+     *
      * @return the count of throwables, zero if null input
      */
     public static int getThrowableCount(Throwable throwable) {
@@ -514,8 +550,11 @@ public class ApacheCommonsExceptionUtil {
      * processed until the end is reached, or until the next item in the
      * chain is already in the result set.</p>
      *
-     * @param throwable the throwable to inspect, may be null
+     * @param throwable
+     *         the throwable to inspect, may be null
+     *
      * @return the array of throwables, never null
+     *
      * @see #getThrowableList(Throwable)
      */
     public static Throwable[] getThrowables(Throwable throwable) {
@@ -538,8 +577,11 @@ public class ApacheCommonsExceptionUtil {
      * the end is reached, or until the next item in the chain is already
      * in the result set.</p>
      *
-     * @param throwable the throwable to inspect, may be null
+     * @param throwable
+     *         the throwable to inspect, may be null
+     *
      * @return the list of throwables, never null
+     *
      * @since Commons Lang 2.2
      */
     public static List getThrowableList(Throwable throwable) {
@@ -563,8 +605,11 @@ public class ApacheCommonsExceptionUtil {
      * A <code>null</code> type returns <code>-1</code>.
      * No match in the chain returns <code>-1</code>.</p>
      *
-     * @param throwable the throwable to inspect, may be null
-     * @param clazz     the class to search for, subclasses do not match, null returns -1
+     * @param throwable
+     *         the throwable to inspect, may be null
+     * @param clazz
+     *         the class to search for, subclasses do not match, null returns -1
+     *
      * @return the index into the throwable chain, -1 if no match or null input
      */
     public static int indexOfThrowable(Throwable throwable, Class clazz) {
@@ -584,10 +629,14 @@ public class ApacheCommonsExceptionUtil {
      * A negative start index is treated as zero.
      * A start index greater than the number of throwables returns <code>-1</code>.</p>
      *
-     * @param throwable the throwable to inspect, may be null
-     * @param clazz     the class to search for, subclasses do not match, null returns -1
-     * @param fromIndex the (zero based) index of the starting position,
-     *                  negative treated as zero, larger than chain size returns -1
+     * @param throwable
+     *         the throwable to inspect, may be null
+     * @param clazz
+     *         the class to search for, subclasses do not match, null returns -1
+     * @param fromIndex
+     *         the (zero based) index of the starting position,
+     *         negative treated as zero, larger than chain size returns -1
+     *
      * @return the index into the throwable chain, -1 if no match or null input
      */
     public static int indexOfThrowable(Throwable throwable, Class clazz, int fromIndex) {
@@ -606,9 +655,13 @@ public class ApacheCommonsExceptionUtil {
      * A <code>null</code> type returns <code>-1</code>.
      * No match in the chain returns <code>-1</code>.</p>
      *
-     * @param throwable the throwable to inspect, may be null
-     * @param type      the type to search for, subclasses match, null returns -1
+     * @param throwable
+     *         the throwable to inspect, may be null
+     * @param type
+     *         the type to search for, subclasses match, null returns -1
+     *
      * @return the index into the throwable chain, -1 if no match or null input
+     *
      * @since 2.1
      */
     public static int indexOfType(Throwable throwable, Class type) {
@@ -628,11 +681,16 @@ public class ApacheCommonsExceptionUtil {
      * A negative start index is treated as zero.
      * A start index greater than the number of throwables returns <code>-1</code>.</p>
      *
-     * @param throwable the throwable to inspect, may be null
-     * @param type      the type to search for, subclasses match, null returns -1
-     * @param fromIndex the (zero based) index of the starting position,
-     *                  negative treated as zero, larger than chain size returns -1
+     * @param throwable
+     *         the throwable to inspect, may be null
+     * @param type
+     *         the type to search for, subclasses match, null returns -1
+     * @param fromIndex
+     *         the (zero based) index of the starting position,
+     *         negative treated as zero, larger than chain size returns -1
+     *
      * @return the index into the throwable chain, -1 if no match or null input
+     *
      * @since 2.1
      */
     public static int indexOfType(Throwable throwable, Class type, int fromIndex) {
@@ -642,12 +700,17 @@ public class ApacheCommonsExceptionUtil {
     /**
      * <p>Worker method for the <code>indexOfType</code> methods.</p>
      *
-     * @param throwable the throwable to inspect, may be null
-     * @param type      the type to search for, subclasses match, null returns -1
-     * @param fromIndex the (zero based) index of the starting position,
-     *                  negative treated as zero, larger than chain size returns -1
-     * @param subclass  if <code>true</code>, compares with {@link Class#isAssignableFrom(Class)}, otherwise compares
-     *                  using references
+     * @param throwable
+     *         the throwable to inspect, may be null
+     * @param type
+     *         the type to search for, subclasses match, null returns -1
+     * @param fromIndex
+     *         the (zero based) index of the starting position,
+     *         negative treated as zero, larger than chain size returns -1
+     * @param subclass
+     *         if <code>true</code>, compares with {@link Class#isAssignableFrom(Class)}, otherwise compares
+     *         using references
+     *
      * @return index of the <code>type</code> within throwables nested withing the specified <code>throwable</code>
      */
     private static int indexOf(Throwable throwable, Class type, int fromIndex, boolean subclass) {
@@ -680,9 +743,13 @@ public class ApacheCommonsExceptionUtil {
     /**
      * <p>Removes common frames from the cause trace given the two stack traces.</p>
      *
-     * @param causeFrames   stack trace of a cause throwable
-     * @param wrapperFrames stack trace of a wrapper throwable
-     * @throws IllegalArgumentException if either argument is null
+     * @param causeFrames
+     *         stack trace of a cause throwable
+     * @param wrapperFrames
+     *         stack trace of a wrapper throwable
+     *
+     * @throws IllegalArgumentException
+     *         if either argument is null
      * @since 2.0
      */
     public static void removeCommonFrames(List causeFrames, List wrapperFrames) {
@@ -712,8 +779,11 @@ public class ApacheCommonsExceptionUtil {
      * <p>The result of this method is highly dependent on the JDK version
      * and whether the exceptions override printStackTrace or not.</p>
      *
-     * @param throwable the <code>Throwable</code> to be examined
+     * @param throwable
+     *         the <code>Throwable</code> to be examined
+     *
      * @return the nested stack trace, with the root cause first
+     *
      * @since 2.0
      */
     public static String getFullStackTrace(Throwable throwable) {
@@ -739,7 +809,9 @@ public class ApacheCommonsExceptionUtil {
      * On JDK1.3 and earlier, the cause exception will not be shown
      * unless the specified throwable alters printStackTrace.</p>
      *
-     * @param throwable the <code>Throwable</code> to be examined
+     * @param throwable
+     *         the <code>Throwable</code> to be examined
+     *
      * @return the stack trace as generated by the exception's
      * <code>printStackTrace(PrintWriter)</code> method
      */
@@ -802,7 +874,9 @@ public class ApacheCommonsExceptionUtil {
      * message contains a line that starts with:
      * <code>&quot;&nbsp;&nbsp;&nbsp;at&quot;.</code></p>
      *
-     * @param t is any throwable
+     * @param t
+     *         is any throwable
+     *
      * @return List of stack frames
      */
     static List getStackFrameList(Throwable t) {
@@ -896,13 +970,17 @@ public class ApacheCommonsExceptionUtil {
          * Returns the error message of the <code>Throwable</code> in the chain
          * of <code>Throwable</code>s at the specified index, numbered from 0.
          *
-         * @param index the index of the <code>Throwable</code> in the chain of
-         *              <code>Throwable</code>s
+         * @param index
+         *         the index of the <code>Throwable</code> in the chain of
+         *         <code>Throwable</code>s
+         *
          * @return the error message, or null if the <code>Throwable</code> at the
          * specified index in the chain does not contain a message
-         * @throws IndexOutOfBoundsException if the <code>index</code> argument is
-         *                                   negative or not less than the count of <code>Throwable</code>s in the
-         *                                   chain
+         *
+         * @throws IndexOutOfBoundsException
+         *         if the <code>index</code> argument is
+         *         negative or not less than the count of <code>Throwable</code>s in the
+         *         chain
          */
         public String getMessage(int index);
 
@@ -922,12 +1000,16 @@ public class ApacheCommonsExceptionUtil {
          * Returns the <code>Throwable</code> in the chain of
          * <code>Throwable</code>s at the specified index, numbered from 0.
          *
-         * @param index the index, numbered from 0, of the <code>Throwable</code> in
-         *              the chain of <code>Throwable</code>s
+         * @param index
+         *         the index, numbered from 0, of the <code>Throwable</code> in
+         *         the chain of <code>Throwable</code>s
+         *
          * @return the <code>Throwable</code>
-         * @throws IndexOutOfBoundsException if the <code>index</code> argument is
-         *                                   negative or not less than the count of <code>Throwable</code>s in the
-         *                                   chain
+         *
+         * @throws IndexOutOfBoundsException
+         *         if the <code>index</code> argument is
+         *         negative or not less than the count of <code>Throwable</code>s in the
+         *         chain
          */
         public Throwable getThrowable(int index);
 
@@ -958,7 +1040,9 @@ public class ApacheCommonsExceptionUtil {
          * If you want to NOT match subclasses, please use
          * (which is avaiable in all versions of lang).
          *
-         * @param type the type to find, subclasses match, null returns -1
+         * @param type
+         *         the type to find, subclasses match, null returns -1
+         *
          * @return index of the first occurrence of the type in the chain, or -1 if
          * the type is not found
          */
@@ -975,14 +1059,19 @@ public class ApacheCommonsExceptionUtil {
          * If you want to NOT match subclasses, please use
          * (which is avaiable in all versions of lang).
          *
-         * @param type      the type to find, subclasses match, null returns -1
-         * @param fromIndex the index, numbered from 0, of the starting position in
-         *                  the chain to be searched
+         * @param type
+         *         the type to find, subclasses match, null returns -1
+         * @param fromIndex
+         *         the index, numbered from 0, of the starting position in
+         *         the chain to be searched
+         *
          * @return index of the first occurrence of the type in the chain, or -1 if
          * the type is not found
-         * @throws IndexOutOfBoundsException if the <code>fromIndex</code> argument
-         *                                   is negative or not less than the count of <code>Throwable</code>s in the
-         *                                   chain
+         *
+         * @throws IndexOutOfBoundsException
+         *         if the <code>fromIndex</code> argument
+         *         is negative or not less than the count of <code>Throwable</code>s in the
+         *         chain
          */
         public int indexOfThrowable(Class type, int fromIndex);
 
@@ -991,7 +1080,8 @@ public class ApacheCommonsExceptionUtil {
          * writer.  Includes information from the exception, if any,
          * which caused this exception.
          *
-         * @param out <code>PrintWriter</code> to use for output.
+         * @param out
+         *         <code>PrintWriter</code> to use for output.
          */
         public void printStackTrace(PrintWriter out);
 
@@ -1000,7 +1090,8 @@ public class ApacheCommonsExceptionUtil {
          * stream.  Includes information from the exception, if any,
          * which caused this exception.
          *
-         * @param out <code>PrintStream</code> to use for output.
+         * @param out
+         *         <code>PrintStream</code> to use for output.
          */
         public void printStackTrace(PrintStream out);
 
@@ -1011,7 +1102,8 @@ public class ApacheCommonsExceptionUtil {
          * this method should call
          * <code>super.printStackTrace(out);</code> in most cases.
          *
-         * @param out The writer to use.
+         * @param out
+         *         The writer to use.
          */
         public void printPartialStackTrace(PrintWriter out);
 
