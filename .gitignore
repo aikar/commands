@@ -11,7 +11,8 @@
 .idea/kotlinc.xml
 .idea/modules.xml
 **/*.iml
-
+# IntelliJ Plugins #
+/.idea/markdown-navigator*
 
 # Package Files #
 *.jar
