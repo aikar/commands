@@ -139,6 +139,10 @@ public abstract class BaseCommand {
      */
     @Nullable private MethodHandle preCommandHandler = null;
 
+    /**
+     * The precommand handler to be used if {@link #preCommandHandler} is null. Everything should be the same
+     * except for performance, which would be slower with this.
+     */
     private Method preCommandReflectiveHandler = null;
 
     /**
@@ -300,7 +304,9 @@ public abstract class BaseCommand {
      */
     private void registerSubclasses(String cmd) {
         for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
-            if (clazz.isAnnotationPresent(Ignored.class)) { continue; }
+            if (clazz.isAnnotationPresent(Ignored.class)) {
+                continue;
+            }
             if (BaseCommand.class.isAssignableFrom(clazz)) {
                 try {
                     BaseCommand subCommand = null;
@@ -341,7 +347,9 @@ public abstract class BaseCommand {
 
         for (Method method : this.getClass().getMethods()) {
             method.setAccessible(true);
-            if (method.isAnnotationPresent(Ignored.class)) { continue; }
+            if (method.isAnnotationPresent(Ignored.class)) {
+                continue;
+            }
             String sublist = null;
             String sub = getSubcommandValue(method);
             final boolean def = annotations.hasAnnotation(method, Default.class);
@@ -887,12 +895,18 @@ public abstract class BaseCommand {
     }
 
     /**
-     * Checks whether the precommand returns true or not.
+     * Executes the precommand and sees whether something is wrong. Ideally, you get false from this.
+     *
      * @param commandOperationContext
+     *         The context to use.
      * @param cmd
+     *         The command executed.
      * @param issuer
+     *         The issuer who executed the command.
      * @param args
-     * @return
+     *         The arguments the issuer provided.
+     *
+     * @return Whether something went wrong.
      */
     private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {
         Method pre = this.preCommandReflectiveHandler;
@@ -1033,8 +1047,12 @@ public abstract class BaseCommand {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) { return true; }
-            if (!(o instanceof CommandSearch)) { return false; }
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof CommandSearch)) {
+                return false;
+            }
             CommandSearch that = (CommandSearch) o;
 
             return argIndex == that.argIndex &&

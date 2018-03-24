@@ -66,11 +66,8 @@ public final class ACFUtil {
 
     /**
      * The constructor is not supposed to be used.
-     * If it is absolutely necessary to use, you'll need to obtain an instance of {@link sun.misc.Unsafe} on Java 8.
      */
-    private ACFUtil() {
-        throw new SecurityException(); // deny all instances
-    }
+    private ACFUtil() {}
 
     public static String padRight(String s, int n) {
         return String.format("%1$-" + n + "s", s);
@@ -331,7 +328,9 @@ public final class ACFUtil {
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
             String value = replacements[i + 1];
-            if (value == null) { value = ""; }
+            if (value == null) {
+                value = "";
+            }
             string = replace(string, key, value);
         }
         return string;
@@ -344,7 +343,9 @@ public final class ACFUtil {
         for (int i = 0; i < replacements.length; i += 2) {
             String key = replacements[i];
             String value = replacements[i + 1];
-            if (value == null) { value = ""; }
+            if (value == null) {
+                value = "";
+            }
             string = replacePattern(string, key, value);
         }
         return string;
