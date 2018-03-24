@@ -39,7 +39,11 @@ public class HelpEntry {
     }
 
     public String getCommand() {
-        return this.commandHelp.commandPrefix + this.command.command;
+        return this.command.command;
+    }
+
+    public String getCommandPrefix() {
+        return this.commandHelp.getCommandPrefix();
     }
 
     public String getParameterSyntax(){
