@@ -59,6 +59,7 @@ public class JDACommandEvent implements CommandIssuer {
     public void sendMessage(Message message) {
         this.event.getChannel().sendMessage(message).queue();
     }
+
     public void sendMessage(MessageEmbed message) {
         this.event.getChannel().sendMessage(message).queue();
     }

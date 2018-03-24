@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JDACommandConfig implements CommandConfig {
-    protected @NotNull List<String> commandPrefixes = new CopyOnWriteArrayList<>(new String[] {"!"});
+    protected @NotNull List<String> commandPrefixes = new CopyOnWriteArrayList<>(new String[]{"!"});
 
     public JDACommandConfig() {
 

@@ -37,6 +37,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -51,6 +53,7 @@ import java.util.stream.Collectors;
 public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final Method method;
+    @Nullable final MethodHandle methodHandle;
     final CommandParameter<CEC>[] parameters;
     final CommandManager manager;
     final List<String> registeredSubcommands = new ArrayList<>();
@@ -79,6 +82,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         }
         this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
+        MethodHandle methodHandle = null;
+        try {
+            methodHandle = MethodHandles.lookup().unreflect(method);
+        } catch (IllegalAccessException ignored) {
+            // As the method has been found, it cannot not have permission for it.
+            // In the case that it does however manage to fail this, keep it null and handle it later on.
+        }
+        this.methodHandle = methodHandle;
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -139,9 +150,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
-            method.invoke(scope, passedArgs.values().toArray());
-        } catch (Exception e) {
-            handleException(sender, args, e);
+            if (methodHandle != null) {
+                methodHandle.invoke(passedArgs.values().toArray());
+            } else {
+                // The offchance the method handle wasn't unreflected, we're going to use the slower, working reflection.
+                method.invoke(passedArgs.values().toArray());
+            }
+        } catch (Throwable throwable) {
+            handleException(sender, args, throwable instanceof Exception ? (Exception) throwable : new Exception(throwable));
         }
         postCommand();
     }
