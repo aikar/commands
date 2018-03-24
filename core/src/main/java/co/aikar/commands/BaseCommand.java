@@ -817,10 +817,29 @@ public abstract class BaseCommand {
         return filterTabComplete(args[args.length - 1], cmds);
     }
 
+    /**
+     * Gets a subcommand under the given name.
+     *
+     * @param subcommand
+     *         The name of the subcommand requested.
+     *
+     * @return The subcommand found or null if none.
+     */
     RegisteredCommand getSubcommand(String subcommand) {
         return getSubcommand(subcommand, false);
     }
 
+    /**
+     * Gets a subcommand under the given name.
+     * If requireOne is true, it won't accept more than a single matching subcommand.
+     *
+     * @param subcommand
+     *         Name of the subcommand wanted.
+     * @param requireOne
+     *         Whether to only accept 1 result.
+     *
+     * @return The subcommand found, or null if none/too many.
+     */
     RegisteredCommand getSubcommand(String subcommand, boolean requireOne) {
         final Set<RegisteredCommand> commands = subCommands.get(subcommand);
         if (!commands.isEmpty() && (!requireOne || commands.size() == 1)) {
@@ -830,6 +849,25 @@ public abstract class BaseCommand {
         return null;
     }
 
+    /**
+     * Internally calls {@link #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)}
+     * and gets through {@link #getSubcommand(String)}.
+     *
+     * @param commandContext
+     *         The command context to use.
+     * @param subcommand
+     *         The subcommand to find the executor of.
+     * @param issuer
+     *         The issuer who executed the subcommand.
+     * @param args
+     *         All arguments given by the issuer.
+     *
+     * @return Whether it found a command or not.
+     *
+     * @see #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)
+     * @see #getSubcommand(String)
+     * @see RegisteredCommand#invoke(CommandIssuer, List, CommandOperationContext)
+     */
     private boolean executeSubcommand(CommandOperationContext commandContext, String subcommand, CommandIssuer issuer, String... args) {
         final RegisteredCommand cmd = this.getSubcommand(subcommand);
         if (cmd != null) {
@@ -840,6 +878,14 @@ public abstract class BaseCommand {
         return false;
     }
 
+    /**
+     * Checks whether the precommand returns true or not.
+     * @param commandOperationContext
+     * @param cmd
+     * @param issuer
+     * @param args
+     * @return
+     */
     private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {
         Method pre = this.preCommandHandler;
         if (pre != null) {
