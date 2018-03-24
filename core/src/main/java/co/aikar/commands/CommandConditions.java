@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
@@ -32,11 +31,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong
-public class CommandConditions <
+public class CommandConditions<
         I extends CommandIssuer,
         CEC extends CommandExecutionContext<CEC, I>,
         CC extends ConditionContext<I>
-    > {
+        > {
     private CommandManager manager;
     private Map<String, Condition<I>> conditions = Maps.newHashMap();
     private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = HashBasedTable.create();
@@ -118,7 +117,7 @@ public class CommandConditions <
 
             if (condition == null) {
                 RegisteredCommand cmd = execContext.getCmd();
-                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" +execContext.getParam().getName());
+                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" + execContext.getParam().getName());
                 continue;
             }
             String config = split.length == 2 ? split[1] : null;
@@ -130,11 +129,11 @@ public class CommandConditions <
         }
     }
 
-    public interface Condition <I extends CommandIssuer> {
+    public interface Condition<I extends CommandIssuer> {
         void validateCondition(ConditionContext<I> context) throws InvalidCommandArgument;
     }
 
-    public interface ParameterCondition <P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
+    public interface ParameterCondition<P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
         void validateCondition(ConditionContext<I> context, CEC execContext, P value) throws InvalidCommandArgument;
     }
 }

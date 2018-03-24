@@ -52,7 +52,7 @@ public class ForwardingCommand extends BaseCommand {
         command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 
-    BaseCommand getCommand(){
+    BaseCommand getCommand() {
         return command;
     }
 }

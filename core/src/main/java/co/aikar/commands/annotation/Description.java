@@ -26,6 +26,10 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Sets a description to the parameter or method this is attached to.
+ * This is used in the help menus.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Description {
 

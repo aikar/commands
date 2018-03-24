@@ -27,13 +27,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("WeakerAccess")
 public class MessageType {
-    private static final AtomicInteger counter = new AtomicInteger(1);
-
     public static final MessageType INFO = new MessageType();
     public static final MessageType SYNTAX = new MessageType();
     public static final MessageType ERROR = new MessageType();
     public static final MessageType HELP = new MessageType();
-
+    private static final AtomicInteger counter = new AtomicInteger(1);
     private final int id = counter.getAndIncrement();
 
     public int hashCode() {

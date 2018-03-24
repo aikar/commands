@@ -45,7 +45,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
         super(manager);
         registerAsyncCompletion("mobs", c -> {
             final Stream<String> normal = Stream.of(EntityType.values())
-                    .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
+                                                .map(entityType -> ACFUtil.simplifyString(entityType.getName()));
             return normal.collect(Collectors.toList());
         });
         registerAsyncCompletion("chatcolors", c -> {
@@ -56,7 +56,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
             String filter = c.getConfig("filter");
             if (filter != null) {
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter))
-                        .map(ACFUtil::simplifyString).collect(Collectors.toSet());
+                                            .map(ACFUtil::simplifyString).collect(Collectors.toSet());
 
                 colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.name())));
             }
@@ -65,7 +65,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
         });
         registerAsyncCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
         registerCompletion("worlds", c -> (
-            Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
+                Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
 
         registerCompletion("players", c -> {

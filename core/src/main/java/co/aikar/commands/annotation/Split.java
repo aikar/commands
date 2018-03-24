@@ -27,6 +27,9 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Joins arguments into a single piece of text with the specified separator.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Split {
     String value() default ",";

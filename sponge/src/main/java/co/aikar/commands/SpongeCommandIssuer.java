@@ -25,7 +25,6 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.util.Identifiable;
@@ -85,8 +84,12 @@ public class SpongeCommandIssuer implements CommandIssuer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SpongeCommandIssuer that = (SpongeCommandIssuer) o;
         return Objects.equals(source, that.source);
     }

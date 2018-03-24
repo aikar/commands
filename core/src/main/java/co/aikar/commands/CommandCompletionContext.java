@@ -26,13 +26,12 @@ package co.aikar.commands;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-public class CommandCompletionContext <I extends CommandIssuer> {
-    private final RegisteredCommand command;
+public class CommandCompletionContext<I extends CommandIssuer> {
     protected final I issuer;
+    private final RegisteredCommand command;
     private final String input;
     private final String config;
     private final Map<String, String> configs = Maps.newHashMap();
@@ -85,7 +84,7 @@ public class CommandCompletionContext <I extends CommandIssuer> {
             CommandParameter param = command.parameters[paramIdx];
             Class<?> paramType = param.getType();
             if (!clazz.isAssignableFrom(paramType)) {
-                throw new IllegalArgumentException(param.getName() +":" + paramType.getName() + " can not satisfy " + clazz.getName());
+                throw new IllegalArgumentException(param.getName() + ":" + paramType.getName() + " can not satisfy " + clazz.getName());
             }
             name = param.getName();
         } else {
@@ -105,7 +104,7 @@ public class CommandCompletionContext <I extends CommandIssuer> {
         //noinspection unchecked
         Map<String, Object> resolved = command.resolveContexts(issuer, args, args.size());
         if (resolved == null || paramIdx > resolved.size()) {
-            this.command.scope.manager.log(LogLevel.ERROR, "resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null ));
+            this.command.scope.manager.log(LogLevel.ERROR, "resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null));
             ACFUtil.sneaky(new CommandCompletionTextLookupException());
         }
 

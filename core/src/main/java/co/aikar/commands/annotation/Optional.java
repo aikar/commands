@@ -26,6 +26,13 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Marks the parameter this is attached to as optional.
+ * This will set the parameter as null if it was not provided.
+ * <p>
+ * In the case the language used is Kotlin, Ceylon or any other null-enforcing JVM language,
+ * you will need to allow for a nullable value.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Optional {
 }

@@ -49,17 +49,29 @@ final class ACFPatterns {
     public static final Pattern EQUALS = Pattern.compile("=");
     public static final Pattern FORMATTER = Pattern.compile("<c(?<color>\\d+)>(?<msg>.*?)</c\\1>", Pattern.CASE_INSENSITIVE);
     public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
-
-
-
-    private ACFPatterns() {}
     @SuppressWarnings("Convert2MethodRef")
-    static final Map<String, Pattern> patternCache = ExpiringMap.builder()
+    static final Map<String, Pattern> patternCache = ExpiringMap
+            .builder()
             .maxSize(200)
             .expiration(1, TimeUnit.HOURS)
             .expirationPolicy(ExpirationPolicy.ACCESSED)
             .build();
 
+    private ACFPatterns() {
+    }
+
+    /**
+     * Gets a pattern and compiles it.
+     * If the pattern is stored already in {@link #patternCache}, it will simply fetch it from there.
+     * If it is not, it will store it there for further use.
+     * <p>
+     * The {@link #patternCache} does not contain the constant patterns defined in this class.
+     *
+     * @param pattern
+     *         The raw pattern in a String.
+     *
+     * @return The pattern which has been cached.
+     */
     public static Pattern getPattern(String pattern) {
         return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
     }

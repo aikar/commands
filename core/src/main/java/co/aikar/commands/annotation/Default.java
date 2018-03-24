@@ -26,6 +26,10 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Sets a default value to use. If this is applied to a method, it'll be the default command handler.
+ * If the wanted type is not a string, it will try to parse it like it was input from a user as a String.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Default {
     String value() default "";

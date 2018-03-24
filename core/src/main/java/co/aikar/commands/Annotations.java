@@ -31,8 +31,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 @SuppressWarnings("TypeParameterExplicitlyExtendsObject")
-class Annotations <M extends CommandManager> extends AnnotationLookups {
-
+class Annotations<M extends CommandManager> extends AnnotationLookups {
     public static int NOTHING = 0;
     public static int REPLACEMENTS = 1;
     public static int LOWERCASE = 1 << 1;
@@ -49,8 +48,13 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         this.manager = manager;
     }
 
-    String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
-        Annotation annotation = element.getAnnotation(annoClass);
+    private static boolean hasOption(int bitmaskOptions, int option) {
+        return (bitmaskOptions & option) == option;
+    }
+
+    @Override
+    String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
+        Annotation annotation = object.getAnnotation(annoClass);
         String value = null;
 
         if (annotation != null) {
@@ -101,10 +105,6 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         }
 
         return value;
-    }
-
-    private static boolean hasOption(int options, int option) {
-        return (options & option) == option;
     }
 
 }

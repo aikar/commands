@@ -32,4 +32,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnknownHandler {}
+public @interface UnknownHandler {
+}

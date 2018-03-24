@@ -41,6 +41,7 @@ public enum MinecraftMessageKeys implements MessageKeyProvider {
     LOCATION_CONSOLE_NOT_RELATIVE;
 
     private final MessageKey key = MessageKey.of("acf-minecraft." + this.name().toLowerCase());
+
     public MessageKey getMessageKey() {
         return key;
     }

@@ -50,14 +50,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
-public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
+public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final Method method;
     @Nullable final MethodHandle methodHandle;
     final CommandParameter<CEC>[] parameters;
     final CommandManager manager;
     final List<String> registeredSubcommands = new ArrayList<>();
-
+    final int requiredResolvers;
+    final int consumeInputResolvers;
+    final int doesNotConsumeInputResolvers;
+    final int optionalResolvers;
+    public String helpSearchTags;
     String command;
     String prefSubCommand;
     String syntaxText;
@@ -65,12 +69,6 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     String permission;
     String complete;
     String conditions;
-    public String helpSearchTags;
-
-    final int requiredResolvers;
-    final int consumeInputResolvers;
-    final int doesNotConsumeInputResolvers;
-    final int optionalResolvers;
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -93,7 +91,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.complete   = annotations.getAnnotationValue(method, CommandCompletion.class);
+        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -148,7 +146,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         try {
             this.manager.conditions.validateConditions(context);
             Map<String, Object> passedArgs = resolveContexts(sender, args);
-            if (passedArgs == null) return;
+            if (passedArgs == null) {
+                return;
+            }
 
             if (methodHandle != null) {
                 methodHandle.invoke(passedArgs.values().toArray());
@@ -161,8 +161,12 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         }
         postCommand();
     }
-    public void preCommand() {}
-    public void postCommand() {}
+
+    public void preCommand() {
+    }
+
+    public void postCommand() {
+    }
 
     void handleException(CommandIssuer sender, List<String> args, Exception e) {
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
@@ -202,6 +206,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args) throws InvalidCommandArgument {
         return resolveContexts(sender, args, parameters.length);
     }
+
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = Lists.newArrayList(args);
@@ -315,6 +320,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     public void addSubcommand(String cmd) {
         this.registeredSubcommands.add(cmd);
     }
+
     public void addSubcommands(Collection<String> cmd) {
         this.registeredSubcommands.addAll(cmd);
     }

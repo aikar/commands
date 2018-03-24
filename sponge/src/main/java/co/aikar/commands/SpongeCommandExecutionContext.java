@@ -26,7 +26,6 @@ package co.aikar.commands;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
-import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 

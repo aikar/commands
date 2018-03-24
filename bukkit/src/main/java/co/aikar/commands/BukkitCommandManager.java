@@ -74,10 +74,10 @@ public class BukkitCommandManager extends CommandManager<
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
     protected BukkitCommandCompletions completions;
-    MCTiming commandTiming;
     protected BukkitLocales locales;
-    private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
+    MCTiming commandTiming;
+    private boolean cantReadLocale = false;
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
@@ -111,7 +111,8 @@ public class BukkitCommandManager extends CommandManager<
         registerDependency(ItemFactory.class, Bukkit.getItemFactory());
     }
 
-    @NotNull private CommandMap hookCommandMap() {
+    @NotNull
+    private CommandMap hookCommandMap() {
         CommandMap commandMap = null;
         try {
             Server server = Bukkit.getServer();
@@ -229,8 +230,9 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     /**
-     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
      * @param command
+     *
+     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
      */
     @Deprecated
     public void unregisterCommand(BukkitRootCommand command) {

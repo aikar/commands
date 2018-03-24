@@ -51,8 +51,8 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         registerContext(TextColor.class, c -> {
             String first = c.popFirstArg();
             Stream<TextColor> colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();
-            String filter = c.getFlagValue("filter", (String)null);
-            if(filter != null) {
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
                 colours = colours.filter(colour -> finalFilter.equals(ACFUtil.simplifyString(colour.getName())));
@@ -68,8 +68,8 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         registerContext(TextStyle.Base.class, c -> {
             String first = c.popFirstArg();
             Stream<TextStyle.Base> styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();
-            String filter = c.getFlagValue("filter", (String)null);
-            if(filter != null) {
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
                 styles = styles.filter(style -> finalFilter.equals(ACFUtil.simplifyString(style.getName())));
@@ -95,7 +95,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             }*/
             return player;
         });
-        registerContext(OnlinePlayer[].class, (c) ->  {
+        registerContext(OnlinePlayer[].class, (c) -> {
             SpongeCommandIssuer issuer = c.getIssuer();
             final String search = c.popFirstArg();
             boolean allowMissing = c.hasFlag("allowmissing");

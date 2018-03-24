@@ -28,4 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Deprecated
-public @interface UnstableAPI {}
+public @interface UnstableAPI {
+}

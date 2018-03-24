@@ -54,10 +54,10 @@ public enum MessageKeys implements MessageKeyProvider {
     HELP_DETAILED_HEADER,
     HELP_DETAILED_COMMAND_FORMAT,
     HELP_DETAILED_PARAMETER_FORMAT,
-    HELP_SEARCH_HEADER,
-    ;
+    HELP_SEARCH_HEADER;
 
     private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
+
     public MessageKey getMessageKey() {
         return key;
     }

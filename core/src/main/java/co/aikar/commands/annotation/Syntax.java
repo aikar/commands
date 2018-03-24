@@ -26,6 +26,11 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Specifies the syntax to be used when executing this command.
+ * It should not include any descriptions of the arguments nor when some are allowed and when they are not.
+ * Use {@link Description} together with the help menu for that purpose.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Syntax {
     String value();

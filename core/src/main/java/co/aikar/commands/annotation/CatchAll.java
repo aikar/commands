@@ -31,4 +31,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CatchAll {}
+public @interface CatchAll {
+}

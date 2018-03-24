@@ -30,12 +30,15 @@ import java.util.List;
 public class ShowCommandHelp extends InvalidCommandArgument {
     List<String> searchArgs = null;
     boolean search = false;
+
     ShowCommandHelp() {
 
     }
+
     ShowCommandHelp(boolean search) {
         this.search = search;
     }
+
     ShowCommandHelp(List<String> args) {
         this(true);
         this.searchArgs = Lists.newArrayList(args);

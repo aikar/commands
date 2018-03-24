@@ -52,7 +52,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         super(manager);
 
         registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
-        registerContext(OnlinePlayer[].class, (c) ->  {
+        registerContext(OnlinePlayer[].class, (c) -> {
             BukkitCommandIssuer issuer = c.getIssuer();
             final String search = c.popFirstArg();
             boolean allowMissing = c.hasFlag("allowmissing");

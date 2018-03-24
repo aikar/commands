@@ -43,10 +43,10 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     private final SpongeCommandManager manager;
     private final String name;
+    boolean isRegistered = false;
     private BaseCommand defCommand;
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
-    boolean isRegistered = false;
 
     SpongeRootCommand(SpongeCommandManager manager, String name) {
         this.manager = manager;
@@ -66,7 +66,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public List<String> getSuggestions(@NotNull CommandSource source, @NotNull String arguments, @Nullable Location<World> location) throws CommandException {
-        String[] args = arguments.isEmpty() ? new String[]{""} : arguments.split(" ");
+        String[] args = arguments.isEmpty() ? new String[] {""} : arguments.split(" ");
         return getTabCompletions(manager.getCommandIssuer(source), this.name, args);
     }
 
@@ -105,7 +105,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
-    public BaseCommand getDefCommand(){
+    public BaseCommand getDefCommand() {
         return defCommand;
     }
 

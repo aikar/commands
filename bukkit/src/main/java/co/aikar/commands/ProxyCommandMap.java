@@ -35,8 +35,8 @@ import java.util.Locale;
 
 class ProxyCommandMap extends SimpleCommandMap {
 
-    private BukkitCommandManager manager;
     CommandMap proxied;
+    private BukkitCommandManager manager;
 
     ProxyCommandMap(BukkitCommandManager manager, CommandMap proxied) {
         super(Bukkit.getServer());
@@ -63,6 +63,7 @@ class ProxyCommandMap extends SimpleCommandMap {
         return args.length != 0 && isOurCommand(knownCommands.get(args[0].toLowerCase(Locale.ENGLISH)));
 
     }
+
     boolean isOurCommand(Command command) {
         return command instanceof RootCommand && ((RootCommand) command).getManager() == manager;
     }

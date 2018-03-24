@@ -26,6 +26,11 @@ package co.aikar.commands.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * Allows to add a single or several command alias(es).
+ * In order to add more than one in a single go, use the syntax "alias|otheralias".
+ * You can register as many aliases as wanted in a single value.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandAlias {
     String value();

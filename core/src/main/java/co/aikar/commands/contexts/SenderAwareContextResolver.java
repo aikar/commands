@@ -29,8 +29,9 @@ import co.aikar.commands.CommandIssuer;
 /**
  * Wrapper for IssuerAwareContextResolver
  *
- * @deprecated Please use {@link IssuerAwareContextResolver}
  * @see IssuerAwareContextResolver
+ * @deprecated Please use {@link IssuerAwareContextResolver}
  */
 @Deprecated
-public interface SenderAwareContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends IssuerAwareContextResolver <T, C> {}
+public interface SenderAwareContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends IssuerAwareContextResolver<T, C> {
+}

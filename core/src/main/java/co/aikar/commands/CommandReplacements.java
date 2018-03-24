@@ -48,7 +48,7 @@ public class CommandReplacements {
             throw new IllegalArgumentException("Must pass a number of arguments divisible by 2.");
         }
         for (int i = 0; i < replacements.length; i += 2) {
-            addReplacement(replacements[i], replacements[i+1]);
+            addReplacement(replacements[i], replacements[i + 1]);
         }
     }
 

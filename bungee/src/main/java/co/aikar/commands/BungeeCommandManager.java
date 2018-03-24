@@ -46,7 +46,7 @@ public class BungeeCommandManager extends CommandManager<
         BungeeMessageFormatter,
         BungeeCommandExecutionContext,
         BungeeConditionContext
-    > {
+        > {
 
     protected final Plugin plugin;
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
@@ -135,7 +135,7 @@ public class BungeeCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase();
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
             bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());
-            if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered)  {
+            if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered) {
                 unregisterCommand(bungeeCommand);
                 bungeeCommand.isRegistered = false;
                 registeredCommands.remove(commandName);

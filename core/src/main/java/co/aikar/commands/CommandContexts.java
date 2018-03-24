@@ -155,9 +155,9 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
                 return c.popFirstArg();
             }
             String ret = (c.isLastArg() && !c.hasAnnotation(Single.class)) ?
-                    ACFUtil.join(c.getArgs())
-                    :
-                    c.popFirstArg();
+                         ACFUtil.join(c.getArgs())
+                                                                           :
+                         c.popFirstArg();
 
             Integer minLen = c.getFlagValue("minlen", (Integer) null);
             Integer maxLen = c.getFlagValue("maxlen", (Integer) null);
@@ -286,7 +286,8 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
     /**
      * Registers a context resolver that may conditionally consume input, falling back to using the context of the
      * issuer to potentially fulfill this context.
-     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link CommandExecutionContext#popFirstArg()}
+     * You may call {@link CommandExecutionContext#getFirstArg()} and then conditionally call {@link
+     * CommandExecutionContext#popFirstArg()}
      * if you want to consume that input.
      */
     public <T> void registerIssuerAwareContext(Class<T> context, IssuerAwareContextResolver<T, R> supplier) {
@@ -302,7 +303,8 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
     }
 
     /**
-     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always
+     * Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should
+     * always
      * call {@link CommandExecutionContext#popFirstArg()}
      */
     public <T> void registerOptionalContext(Class<T> context, OptionalContextResolver<T, R> supplier) {
