@@ -47,6 +47,8 @@ import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -133,10 +135,11 @@ public abstract class BaseCommand {
 
     /**
      * The precommand handler to be used. This may not be null if the command has been registered correctly and a
-     * handler
-     * has been created in the implementation.
+     * handler has been created in the implementation.
      */
-    private Method preCommandHandler;
+    @Nullable private MethodHandle preCommandHandler = null;
+
+    private Method preCommandReflectiveHandler = null;
 
     /**
      * The handler of all uncaught exceptions thrown by the user's command implementation.
@@ -385,7 +388,12 @@ public abstract class BaseCommand {
                 }
             } else if (preCommand) {
                 if (this.preCommandHandler == null) {
-                    this.preCommandHandler = method;
+                    this.preCommandReflectiveHandler = method;
+                    try {
+                        this.preCommandHandler = MethodHandles.lookup().unreflect(method);
+                    } catch (IllegalAccessException ignored) {
+                        // We use preCommandReflectiveHandler whenever the methodhandle is used instead
+                    }
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -841,7 +849,7 @@ public abstract class BaseCommand {
     }
 
     private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {
-        Method pre = this.preCommandHandler;
+        Method pre = this.preCommandReflectiveHandler;
         if (pre != null) {
             try {
                 Class<?>[] types = pre.getParameterTypes();
@@ -862,8 +870,11 @@ public abstract class BaseCommand {
                     }
                 }
 
+                if (preCommandHandler != null) {
+                    return (boolean) preCommandHandler.invoke(this, parameters);
+                }
                 return (boolean) pre.invoke(this, parameters);
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (Throwable e) {
                 this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);
             }
         }

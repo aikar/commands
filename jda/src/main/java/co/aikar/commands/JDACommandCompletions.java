@@ -7,6 +7,7 @@ import java.util.List;
 
 public class JDACommandCompletions extends CommandCompletions<CommandCompletionContext<?>> {
     private boolean initialized;
+
     public JDACommandCompletions(CommandManager manager) {
         super(manager);
         this.initialized = true;
