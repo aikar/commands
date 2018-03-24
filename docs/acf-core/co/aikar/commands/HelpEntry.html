@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -134,29 +134,33 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getDescription--">getDescription</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getCommandPrefix--">getCommandPrefix</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getDescription--">getDescription</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getParameters--">getParameters</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getParameterSyntax--">getParameterSyntax</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getSearchScore--">getSearchScore</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#getSearchTags--">getSearchTags</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#setSearchScore-int-">setSearchScore</a></span>(int&nbsp;searchScore)</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/HelpEntry.html#shouldShow--">shouldShow</a></span>()</code>&nbsp;</td>
 </tr>
@@ -191,13 +195,22 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.41">getCommand</a>()</pre>
 </li>
 </ul>
+<a name="getCommandPrefix--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCommandPrefix</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.45">getCommandPrefix</a>()</pre>
+</li>
+</ul>
 <a name="getParameterSyntax--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getParameterSyntax</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.45">getParameterSyntax</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.49">getParameterSyntax</a>()</pre>
 </li>
 </ul>
 <a name="getDescription--">
@@ -206,7 +219,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getDescription</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.49">getDescription</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.53">getDescription</a>()</pre>
 </li>
 </ul>
 <a name="setSearchScore-int-">
@@ -215,7 +228,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>setSearchScore</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.53">setSearchScore</a>(int&nbsp;searchScore)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.57">setSearchScore</a>(int&nbsp;searchScore)</pre>
 </li>
 </ul>
 <a name="shouldShow--">
@@ -224,7 +237,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>shouldShow</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.57">shouldShow</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.61">shouldShow</a>()</pre>
 </li>
 </ul>
 <a name="getSearchScore--">
@@ -233,7 +246,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getSearchScore</h4>
-<pre>public&nbsp;int&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.61">getSearchScore</a>()</pre>
+<pre>public&nbsp;int&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.65">getSearchScore</a>()</pre>
 </li>
 </ul>
 <a name="getSearchTags--">
@@ -242,7 +255,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getSearchTags</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.65">getSearchTags</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.69">getSearchTags</a>()</pre>
 </li>
 </ul>
 <a name="getParameters--">
@@ -251,7 +264,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getParameters</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.69">getParameters</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/HelpEntry.html#line.73">getParameters</a>()</pre>
 </li>
 </ul>
 </li>

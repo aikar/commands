@@ -16,12 +16,12 @@
 <span class="sourceLineNo">008</span><a name="line.8"></a>
 <span class="sourceLineNo">009</span>public class JDARootCommand implements RootCommand {<a name="line.9"></a>
 <span class="sourceLineNo">010</span><a name="line.10"></a>
-<span class="sourceLineNo">011</span>    private JDACommandManager manager;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>    private final String name;<a name="line.12"></a>
-<span class="sourceLineNo">013</span>    private BaseCommand defCommand;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>    private SetMultimap&lt;String, RegisteredCommand&gt; subCommands = HashMultimap.create();<a name="line.14"></a>
-<span class="sourceLineNo">015</span>    private List&lt;BaseCommand&gt; children = new ArrayList&lt;&gt;();<a name="line.15"></a>
-<span class="sourceLineNo">016</span>    boolean isRegistered = false;<a name="line.16"></a>
+<span class="sourceLineNo">011</span>    private final String name;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>    boolean isRegistered = false;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>    private JDACommandManager manager;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>    private BaseCommand defCommand;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>    private SetMultimap&lt;String, RegisteredCommand&gt; subCommands = HashMultimap.create();<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    private List&lt;BaseCommand&gt; children = new ArrayList&lt;&gt;();<a name="line.16"></a>
 <span class="sourceLineNo">017</span><a name="line.17"></a>
 <span class="sourceLineNo">018</span>    JDARootCommand(JDACommandManager manager, String name) {<a name="line.18"></a>
 <span class="sourceLineNo">019</span>        this.manager = manager;<a name="line.19"></a>
