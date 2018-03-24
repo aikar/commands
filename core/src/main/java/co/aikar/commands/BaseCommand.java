@@ -135,7 +135,14 @@ public abstract class BaseCommand {
      */
     private Method preCommandHandler;
 
+    /**
+     * The handler of all uncaught exceptions thrown by the user's command implementation.
+     */
     private ExceptionHandler exceptionHandler = null;
+
+    /**
+     * The name of the parenting subcommand.
+     */
     private String parentSubcommand;
 
     public BaseCommand() {
