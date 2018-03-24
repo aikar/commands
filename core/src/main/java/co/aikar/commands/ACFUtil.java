@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -481,11 +480,16 @@ public final class ACFUtil {
     }
 
     public static boolean isTruthy(String test) {
-        test = test.toLowerCase();
-        return test.startsWith("tr")
-                || test.startsWith("y")
-                || test.equals("1")
-                || test.equals("on");
+        switch (test) {
+            case "t":
+            case "true":
+            case "on":
+            case "y":
+            case "yes":
+            case "1":
+                return true;
+        }
+        return false;
     }
 
     public static Number parseNumber(String num, boolean suffixes) {

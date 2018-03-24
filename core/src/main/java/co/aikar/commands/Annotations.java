@@ -32,7 +32,6 @@ import java.util.Map;
 
 @SuppressWarnings("TypeParameterExplicitlyExtendsObject")
 class Annotations<M extends CommandManager> extends AnnotationLookups {
-
     public static int NOTHING = 0;
     public static int REPLACEMENTS = 1;
     public static int LOWERCASE = 1 << 1;
@@ -54,11 +53,8 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
     }
 
     @Override
-    String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options) {
-        if (annotation == null) { // allow for using a simple #getAnnotation instead of handling more in the usage
-            return null;
-        }
-        Class<? extends Annotation> annoClass = annotation.getClass();
+    String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
+        Annotation annotation = object.getAnnotation(annoClass);
         String value = null;
 
         if (annotation != null) {

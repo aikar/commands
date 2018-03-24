@@ -26,12 +26,10 @@ package co.aikar.commands;
 import co.aikar.commands.annotation.CatchAll;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandAliases;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.HelpCommand;
-import co.aikar.commands.annotation.Ignored;
 import co.aikar.commands.annotation.PreCommand;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
@@ -155,6 +153,13 @@ public abstract class BaseCommand {
      */
     private String parentSubcommand;
 
+    @SuppressWarnings("WeakerAccess")
+    private String execLabel;
+    @SuppressWarnings("WeakerAccess")
+    private String execSubcommand;
+    @SuppressWarnings("WeakerAccess")
+    private String[] origArgs;
+
     /**
      * Creates a new instance of {@link BaseCommand} without any settings applied.
      * You will have to manually write to {@link #commandName}.
@@ -204,6 +209,33 @@ public abstract class BaseCommand {
 
             return newList;
         }
+    }
+
+    /**
+     * Gets the root command name that the user actually typed
+     *
+     * @return Name
+     */
+    public String getExecCommandLabel() {
+        return execLabel;
+    }
+
+    /**
+     * Gets the actual args in string form the user typed
+     *
+     * @return Args
+     */
+    public String[] getOrigArgs() {
+        return origArgs;
+    }
+
+    /**
+     * Gets the actual sub command name the user typed
+     *
+     * @return Name
+     */
+    public String getExecSubcommand() {
+        return execSubcommand;
     }
 
     /**
@@ -262,11 +294,7 @@ public abstract class BaseCommand {
         final Annotations annotations = manager.getAnnotations();
         final Class<? extends BaseCommand> self = this.getClass();
 
-        String[] cmdAliases = null;
-        CommandAliases aliasesAnnotation = self.getAnnotation(CommandAliases.class);
-        if (aliasesAnnotation != null) {
-            cmdAliases = Arrays.stream(aliasesAnnotation.value()).map(anno -> annotations.getAnnotationValue(self, anno, Annotations.REPLACEMENTS | Annotations.LOWERCASE | Annotations.NO_EMPTY)).toArray(String[]::new);
-        }
+        String[] cmdAliases = annotations.getAnnotationValues(self, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE | Annotations.NO_EMPTY);
 
         if (cmd == null && cmdAliases != null) {
             cmd = cmdAliases[0];
@@ -297,16 +325,12 @@ public abstract class BaseCommand {
 
     /**
      * This recursively registers all subclasses of the command as subcommands, if they are of type {@link BaseCommand}.
-     * Any classes which are not annotated with {@link Ignored} are taken into account.
      *
      * @param cmd
      *         The command name of this command.
      */
     private void registerSubclasses(String cmd) {
         for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
-            if (clazz.isAnnotationPresent(Ignored.class)) {
-                continue;
-            }
             if (BaseCommand.class.isAssignableFrom(clazz)) {
                 try {
                     BaseCommand subCommand = null;
@@ -337,7 +361,6 @@ public abstract class BaseCommand {
 
     /**
      * This registers all subcommands of the command.
-     * Any methods which are not annotated with {@link Ignored} are taken into account.
      */
     private void registerSubcommands() {
         final Annotations annotations = manager.getAnnotations();
@@ -347,9 +370,6 @@ public abstract class BaseCommand {
 
         for (Method method : this.getClass().getMethods()) {
             method.setAccessible(true);
-            if (method.isAnnotationPresent(Ignored.class)) {
-                continue;
-            }
             String sublist = null;
             String sub = getSubcommandValue(method);
             final boolean def = annotations.hasAnnotation(method, Default.class);
@@ -533,6 +553,7 @@ public abstract class BaseCommand {
             if (args.length > 0) {
                 CommandSearch cmd = findSubCommand(args);
                 if (cmd != null) {
+                    execSubcommand = cmd.getCheckSub();
                     final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);
                     executeCommand(commandContext, issuer, execargs, cmd.cmd);
                     return;
@@ -574,6 +595,9 @@ public abstract class BaseCommand {
      */
     private void postCommandOperation() {
         CommandManager.commandOperationContext.get().pop();
+        execSubcommand = null;
+        execLabel = null;
+        origArgs = new String[] {};
     }
 
     /**
@@ -596,6 +620,9 @@ public abstract class BaseCommand {
         CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);
         contexts.push(context);
         lastCommandOperationContext = context;
+        execSubcommand = null;
+        execLabel = commandLabel;
+        origArgs = args;
         return context;
     }
 
@@ -705,6 +732,9 @@ public abstract class BaseCommand {
 
     /**
      * Whether the command can be executed by the issuer.
+     * <p>
+     * NOTE: This is part of an old API, and may be deprecated at any time, if not straight removed. It always returns
+     * true.
      *
      * @param issuer
      *         The issuer to take into account.
@@ -714,7 +744,7 @@ public abstract class BaseCommand {
      * @return Whether the issuer can execute the command.
      */
     public boolean canExecute(CommandIssuer issuer, RegisteredCommand<?> cmd) {
-        return cmd.hasPermission(issuer);
+        return true;
     }
 
     /**
@@ -749,9 +779,6 @@ public abstract class BaseCommand {
      * @return The possibilities to tab complete in no particular order.
      */
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {
-        if (!hasPermission(issuer)) {
-            return ImmutableList.of();
-        }
         commandLabel = commandLabel.toLowerCase();
         if (args.length == 0) {
             args = new String[] {""};
@@ -796,7 +823,7 @@ public abstract class BaseCommand {
             final String key = entry.getKey();
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
-                if (!canExecute(issuer, value)) {
+                if (!value.hasPermission(issuer)) {
                     continue;
                 }
 

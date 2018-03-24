@@ -148,8 +148,6 @@ abstract class AnnotationLookups {
      *         The annotation type in form of a class.
      *
      * @return The value of the annotation on the object given.
-     *
-     * @see #getAnnotationValue(AnnotatedElement, Annotation, int)
      */
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass) {
         return getAnnotationValue(object, annoClass, Annotations.REPLACEMENTS);
@@ -167,25 +165,6 @@ abstract class AnnotationLookups {
      *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
      *
      * @return The value of the annotation on the object given. Nullability depends on options.
-     *
-     * @see #getAnnotationValue(AnnotatedElement, Annotation, int)
      */
-    String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options) {
-        return getAnnotationValue(element, element.getAnnotation(annoClass), options);
-    }
-
-    /**
-     * Gets the value of the {@link AnnotatedElement}'s annotation as a string.
-     * The value has to follow the given options.
-     *
-     * @param object
-     *         The element to check the value of the annotation of type annoClass.
-     * @param annotation
-     *         The annotation type in form of a class.
-     * @param options
-     *         The options to use. If several options are wanted, use the OR operator (opt1 | opt2).
-     *
-     * @return The value of the annotation on the object given. Nullability depends on options.
-     */
-    abstract String getAnnotationValue(AnnotatedElement object, Annotation annotation, int options);
+    abstract String getAnnotationValue(AnnotatedElement element, Class<? extends Annotation> annoClass, int options);
 }
