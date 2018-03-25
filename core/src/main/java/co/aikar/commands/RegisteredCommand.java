@@ -151,7 +151,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             if (passedArgs == null) return;
 
             if (methodHandle != null) {
-                methodHandle.invoke(passedArgs.values().toArray());
+                methodHandle.invokeWithArguments(passedArgs.values().toArray());
             } else {
                 // The offchance the method handle wasn't unreflected, we're going to use the slower, working reflection.
                 method.invoke(passedArgs.values().toArray());
