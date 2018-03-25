@@ -594,8 +594,8 @@ public abstract class BaseCommand {
                     }
                 }
 
-                if (preCommandHandler != null) {
-                    return (boolean) preCommandHandler.invoke(this, parameters);
+                if (false) { // preCommandHandler != null) { //TODO: MethodHandle disabled due to WrongMethodTypeException
+                    return (boolean) preCommandHandler.invoke(parameters);
                 }
                 return (boolean) pre.invoke(this, parameters);
             } catch (Throwable e) {

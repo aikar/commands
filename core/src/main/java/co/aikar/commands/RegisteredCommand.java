@@ -150,11 +150,11 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
-            if (methodHandle != null) {
+            if (false) {// methodHandle != null) { //TODO: MethodHandle disabled due to WrongMethodTypeException
                 methodHandle.invokeWithArguments(passedArgs.values().toArray());
             } else {
                 // The offchance the method handle wasn't unreflected, we're going to use the slower, working reflection.
-                method.invoke(passedArgs.values().toArray());
+                method.invoke(scope, passedArgs.values().toArray());
             }
         } catch (Throwable throwable) {
             handleException(sender, args, throwable instanceof Exception ? (Exception) throwable : new Exception(throwable));
