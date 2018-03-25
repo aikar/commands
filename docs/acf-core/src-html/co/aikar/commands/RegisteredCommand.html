@@ -158,11 +158,11 @@
 <span class="sourceLineNo">150</span>            Map&lt;String, Object&gt; passedArgs = resolveContexts(sender, args);<a name="line.150"></a>
 <span class="sourceLineNo">151</span>            if (passedArgs == null) return;<a name="line.151"></a>
 <span class="sourceLineNo">152</span><a name="line.152"></a>
-<span class="sourceLineNo">153</span>            if (methodHandle != null) {<a name="line.153"></a>
-<span class="sourceLineNo">154</span>                methodHandle.invoke(passedArgs.values().toArray());<a name="line.154"></a>
+<span class="sourceLineNo">153</span>            if (false) {// methodHandle != null) { //TODO: MethodHandle disabled due to WrongMethodTypeException<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                methodHandle.invokeWithArguments(passedArgs.values().toArray());<a name="line.154"></a>
 <span class="sourceLineNo">155</span>            } else {<a name="line.155"></a>
 <span class="sourceLineNo">156</span>                // The offchance the method handle wasn't unreflected, we're going to use the slower, working reflection.<a name="line.156"></a>
-<span class="sourceLineNo">157</span>                method.invoke(passedArgs.values().toArray());<a name="line.157"></a>
+<span class="sourceLineNo">157</span>                method.invoke(scope, passedArgs.values().toArray());<a name="line.157"></a>
 <span class="sourceLineNo">158</span>            }<a name="line.158"></a>
 <span class="sourceLineNo">159</span>        } catch (Throwable throwable) {<a name="line.159"></a>
 <span class="sourceLineNo">160</span>            handleException(sender, args, throwable instanceof Exception ? (Exception) throwable : new Exception(throwable));<a name="line.160"></a>
