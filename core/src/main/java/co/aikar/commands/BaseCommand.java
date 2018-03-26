@@ -42,10 +42,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import org.jetbrains.annotations.Nullable;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -71,8 +68,7 @@ public abstract class BaseCommand {
     public static final String DEFAULT = "__default";
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     final Map<Class<?>, String> contextFlags = Maps.newHashMap();
-    @Nullable private MethodHandle preCommandHandler = null;
-    private Method preCommandReflectiveHandler = null;
+    private Method preCommandHandler;
 
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
@@ -249,12 +245,7 @@ public abstract class BaseCommand {
                 }
             } else if (preCommand) {
                 if (this.preCommandHandler == null) {
-                    this.preCommandReflectiveHandler = method;
-                    try {
-                        this.preCommandHandler = MethodHandles.lookup().unreflect(method);
-                    } catch (IllegalAccessException ignored) {
-                        // We use preCommandReflectiveHandler whenever the methodhandle is used instead
-                    }
+                    this.preCommandHandler = method;
                 } else {
                     ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));
                 }
@@ -573,7 +564,7 @@ public abstract class BaseCommand {
     }
 
     private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {
-        Method pre = this.preCommandReflectiveHandler;
+        Method pre = this.preCommandHandler;
         if (pre != null) {
             try {
                 Class<?>[] types = pre.getParameterTypes();
@@ -594,11 +585,8 @@ public abstract class BaseCommand {
                     }
                 }
 
-                if (false) { // preCommandHandler != null) { //TODO: MethodHandle disabled due to WrongMethodTypeException
-                    return (boolean) preCommandHandler.invoke(parameters);
-                }
                 return (boolean) pre.invoke(this, parameters);
-            } catch (Throwable e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);
             }
         }
