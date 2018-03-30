@@ -72,8 +72,15 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
-    public CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
+    /**
+     * @deprecated Feature Not done yet
+     * @param id
+     * @param classes
+     * @return
+     */
+    CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
         // get completion with specified id
+        id = id.toLowerCase();
         CommandCompletionHandler completion = completionMap.get(id);
 
         if(completion == null) {
