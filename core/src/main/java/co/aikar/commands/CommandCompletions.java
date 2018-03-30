@@ -39,6 +39,7 @@ import java.util.stream.IntStream;
 public class CommandCompletions <C extends CommandCompletionContext> {
     private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
+    private Map<Class, String> defaultCompletions = new HashMap<>();
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
@@ -69,6 +70,22 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
+    }
+
+    public CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
+        // get completion with specified id
+        CommandCompletionHandler completion = completionMap.get(id);
+
+        if(completion == null) {
+            // Throw something because no completion with specified id
+            ACFUtil.sneaky(new CommandCompletionTextLookupException());
+        }
+
+        for(Class clazz : classes) {
+            defaultCompletions.put(clazz, id);
+        }
+
+        return completion;
     }
 
     @NotNull
