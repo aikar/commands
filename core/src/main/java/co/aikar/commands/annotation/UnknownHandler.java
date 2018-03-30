@@ -28,7 +28,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * @deprecated Use {@link CatchAll instead, which is more accurately named}
+ * @deprecated Use {@link CatchUnknown instead, which is more accurately named}
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)
