@@ -25,12 +25,53 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class CommandHelpFormatter {
 
     private final CommandManager manager;
 
     public CommandHelpFormatter(CommandManager manager) {
         this.manager = manager;
+    }
+
+
+    public void showAllResults(CommandHelp commandHelp, List<HelpEntry> entries) {
+        CommandIssuer issuer = commandHelp.getIssuer();
+        printHelpHeader(commandHelp, issuer);
+        for (HelpEntry e : entries) {
+            printHelpCommand(commandHelp, issuer, e);
+        }
+        printHelpFooter(commandHelp, issuer);
+    }
+
+    public void showSearchResults(CommandHelp commandHelp, List<HelpEntry> entries) {
+        CommandIssuer issuer = commandHelp.getIssuer();
+        printSearchHeader(commandHelp, issuer);
+        for (HelpEntry e : entries) {
+            printSearchEntry(commandHelp, issuer, e);
+        }
+        printSearchFooter(commandHelp, issuer);
+    }
+
+    public void showDetailedHelp(CommandHelp commandHelp, HelpEntry entry) {
+        CommandIssuer issuer = commandHelp.getIssuer();
+        // header
+        printDetailedHelpHeader(commandHelp, issuer, entry);
+
+        // normal help line
+        printDetailedHelpCommand(commandHelp, issuer, entry);
+
+        // additionally detailed help for params
+        for (CommandParameter param : entry.getParameters()) {
+            String description = param.getDescription();
+            if (description != null && !description.isEmpty()) {
+                printDetailedParameter(commandHelp, issuer, entry, param);
+            }
+        }
+
+        // footer
+        printDetailedHelpFooter(commandHelp, issuer, entry);
     }
 
     // ########

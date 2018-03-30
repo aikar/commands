@@ -125,8 +125,9 @@ public class CommandHelp {
     }
 
     public void showHelp(CommandIssuer issuer) {
+        CommandHelpFormatter formatter = manager.getHelpFormatter();
         if (selectedEntry != null) {
-            showDetailedHelp(selectedEntry, issuer);
+            formatter.showDetailedHelp(this, selectedEntry);
             return;
         }
 
@@ -162,47 +163,12 @@ public class CommandHelp {
         }
         this.lastPage = !(min > 0 || results.hasNext());
 
-        CommandHelpFormatter formatter = manager.getHelpFormatter();
         if (search == null) {
-            formatter.printHelpHeader(this, issuer);
+            formatter.showAllResults(this, printEntries);
         } else {
-            formatter.printSearchHeader(this, issuer);
+            formatter.showSearchResults(this, printEntries);
         }
 
-        for (HelpEntry e : printEntries) {
-            if (search == null) {
-                formatter.printHelpCommand(this, issuer, e);
-            } else {
-                formatter.printSearchEntry(this, issuer, e);
-            }
-        }
-
-
-        if (search == null) {
-            formatter.printHelpFooter(this, issuer);
-        } else {
-            formatter.printSearchFooter(this, issuer);
-        }
-    }
-
-    public void showDetailedHelp(HelpEntry entry, CommandIssuer issuer) {
-        // header
-        CommandHelpFormatter formatter = manager.getHelpFormatter();
-        formatter.printDetailedHelpHeader(this, issuer, entry);
-
-        // normal help line
-        formatter.printDetailedHelpCommand(this, issuer, entry);
-
-        // additionally detailed help for params
-        for (CommandParameter param : entry.getParameters()) {
-            String description = param.getDescription();
-            if (description != null && !description.isEmpty()) {
-                formatter.printDetailedParameter(this, issuer, entry, param);
-            }
-        }
-
-        // footer
-        formatter.printDetailedHelpFooter(this, issuer, entry);
     }
 
     public List<HelpEntry> getHelpEntries() {
