@@ -27,17 +27,24 @@ import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -68,6 +75,7 @@ public abstract class CommandManager <
         }
     });
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
+    protected Table<Class<?>, Class<?>, Set<MethodHandle>> dependencyFields = HashBasedTable.create();
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
@@ -421,6 +429,10 @@ public abstract class CommandManager <
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
+     * Whenever you register a dependency, it will re-inject any existing commands.
+     * It is recommended you run all your dependency registrations before registering commands for the sake
+     * of performance.
+     *
      * @param clazz the class the injector should look for when injecting
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
@@ -434,17 +446,23 @@ public abstract class CommandManager <
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
+     * Whenever you register a dependency, it will re-inject any existing commands.
+     * It is recommended you run all your dependency registrations before registering commands for the sake
+     * of performance.
+     *
      * @param clazz the class the injector should look for when injecting
      * @param key the key which needs to be present if that
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, String key, T instance){
-        if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
-            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
-        }
-
         dependencies.put(clazz, key, instance);
+
+        if (!dependencyFields.isEmpty()) {
+            for (RootCommand cmd : rootCommands.values()) {
+                reinjectDependencies(clazz, cmd.getClass(), cmd, instance);
+            }
+        }
     }
 
     /**
@@ -454,7 +472,7 @@ public abstract class CommandManager <
      * @param baseCommand the instance which fields should be filled
      */
     void injectDependencies(BaseCommand baseCommand) {
-        Class clazz = baseCommand.getClass();
+        Class<?> clazz = baseCommand.getClass();
         do {
             for (Field field : clazz.getDeclaredFields()) {
                 if (annotations.hasAnnotation(field, Dependency.class)) {
@@ -473,6 +491,15 @@ public abstract class CommandManager <
                             field.setAccessible(true);
                         }
                         field.set(baseCommand, object);
+                        {
+                            MethodHandle methodHandle = MethodHandles.publicLookup().unreflectSetter(field);
+                            Set<MethodHandle> handles = dependencyFields.get(field.getType(), clazz);
+                            if (handles == null) {
+                                handles = new HashSet<>();
+                            }
+                            handles.add(methodHandle);
+                            dependencyFields.put(field.getType(), clazz, handles);
+                        }
                         field.setAccessible(accessible);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?
@@ -481,6 +508,20 @@ public abstract class CommandManager <
             }
             clazz = clazz.getSuperclass();
         } while (!clazz.equals(BaseCommand.class));
+    }
+
+    protected <T> void reinjectDependencies(Class<? extends T> type, Class<?> owner, Object instance, T newValue) {
+        Set<MethodHandle> handles = dependencyFields.get(type, owner);
+        if (handles.isEmpty()) {
+            return;
+        }
+        for (MethodHandle handle : handles) {
+            try {
+                handle.invoke(instance, newValue);
+            } catch (Throwable throwable) {
+                throwable.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?
+            }
+        }
     }
 
     /**
