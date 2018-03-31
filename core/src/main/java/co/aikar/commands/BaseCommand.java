@@ -34,13 +34,11 @@ import co.aikar.commands.annotation.PreCommand;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import com.google.common.collect.HashMultimap;
+import co.aikar.util.MapSet;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Constructor;
@@ -66,7 +64,7 @@ public abstract class BaseCommand {
 
     public static final String CATCHUNKNOWN = "__catchunknown";
     public static final String DEFAULT = "__default";
-    final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    final MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
     final Map<Class<?>, String> contextFlags = Maps.newHashMap();
     private Method preCommandHandler;
 
@@ -91,6 +89,10 @@ public abstract class BaseCommand {
     public BaseCommand() {}
     public BaseCommand(String cmd) {
         this.commandName = cmd;
+    }
+
+    static boolean isSpecial(String key) {
+        return key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN);
     }
 
     /**
@@ -211,7 +213,7 @@ public abstract class BaseCommand {
             if (isParentEmpty && (def || (!foundDefault && helpCommand != null))) {
                 if (!foundDefault) {
                     if (def) {
-                        this.subCommands.get(DEFAULT).clear();
+                        this.subCommands.remove(DEFAULT);
                         foundDefault = true;
                     }
                     registerSubcommand(method, DEFAULT);
@@ -236,7 +238,7 @@ public abstract class BaseCommand {
             if (hasCatchUnknown || (!foundCatchUnknown && helpCommand != null)) {
                 if (!foundCatchUnknown) {
                     if (hasCatchUnknown) {
-                        this.subCommands.get(CATCHUNKNOWN).clear();
+                        this.subCommands.remove(CATCHUNKNOWN);
                         foundCatchUnknown = true;
                     }
                     registerSubcommand(method, CATCHUNKNOWN);
@@ -308,7 +310,7 @@ public abstract class BaseCommand {
         RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);
 
         for (String subcmd : cmdList) {
-            subCommands.put(subcmd, cmd);
+            subCommands.add(subcmd, cmd);
         }
         cmd.addSubcommands(cmdList);
 
@@ -372,13 +374,13 @@ public abstract class BaseCommand {
                 }
             }
 
-            if (subCommands.get(DEFAULT) != null && args.length == 0) {
+            if (subCommands.has(DEFAULT) && args.length == 0) {
                 executeSubcommand(commandContext, DEFAULT, issuer, args);
-            } else if (subCommands.get(CATCHUNKNOWN) != null) {
+            } else if (subCommands.has(CATCHUNKNOWN)) {
                 if (!executeSubcommand(commandContext, CATCHUNKNOWN, issuer, args)) {
                     help(issuer, args);
                 }
-            } else if (subCommands.get(DEFAULT) != null) {
+            } else if (subCommands.has(DEFAULT)) {
                 executeSubcommand(commandContext, DEFAULT, issuer, args);
             }
 
@@ -429,13 +431,13 @@ public abstract class BaseCommand {
             if (!cmds.isEmpty()) {
                 RegisteredCommand cmd = null;
                 if (cmds.size() == 1) {
-                    cmd = Iterables.getOnlyElement(cmds);
+                    cmd = ACFUtil.getFirstElement(cmds);
                 } else {
                     Optional<RegisteredCommand> optCmd = cmds.stream().filter(c -> {
                         int required = c.requiredResolvers;
                         int optional = c.optionalResolvers;
                         return extraArgs <= required + optional && (completion || extraArgs >= required);
-                    }).sorted((c1, c2) -> {
+                    }).min((c1, c2) -> {
                         int a = c1.consumeInputResolvers;
                         int b = c2.consumeInputResolvers;
 
@@ -443,7 +445,7 @@ public abstract class BaseCommand {
                             return 0;
                         }
                         return a < b ? 1 : -1;
-                    }).findFirst();
+                    });
                     if (optCmd.isPresent()) {
                         cmd = optCmd.get();
                     }
@@ -494,10 +496,10 @@ public abstract class BaseCommand {
 
             if (search != null) {
                 cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));
-            } else if (subCommands.get(CATCHUNKNOWN).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));
-            } else if (subCommands.get(DEFAULT).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
+            } else if (subCommands.size(CATCHUNKNOWN) == 1) {
+                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));
+            } else if (subCommands.size(DEFAULT) == 1) {
+                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
             }
 
             return filterTabComplete(args[args.length - 1], cmds);
@@ -510,7 +512,7 @@ public abstract class BaseCommand {
         final Set<String> cmds = new HashSet<>();
         final int cmdIndex = Math.max(0, args.length - 1);
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
-        for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
+        for (MapSet.Entry<String, RegisteredCommand> entry : subCommands) {
             final String key = entry.getKey();
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();

@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -44,7 +43,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     private final SpongeCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
-    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    private MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -98,7 +97,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     public void addChild(BaseCommand command) {
-        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
+        if (this.defCommand == null || command.subCommands.has(BaseCommand.DEFAULT)) {
             this.defCommand = command;
         }
         addChildShared(this.children, this.subCommands, command);
@@ -115,7 +114,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
-    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+    public MapSet<String, RegisteredCommand> getSubCommands() {
         return subCommands;
     }
 

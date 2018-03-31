@@ -134,7 +134,7 @@ public class BungeeCommandManager extends CommandManager<
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String commandName = entry.getKey().toLowerCase();
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
-            bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());
+            bungeeCommand.getSubCommands().removeAll(command.subCommands.allValues());
             if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered)  {
                 unregisterCommand(bungeeCommand);
                 bungeeCommand.isRegistered = false;

@@ -220,7 +220,7 @@ public class BukkitCommandManager extends CommandManager<
     public void unregisterCommand(BaseCommand command) {
         for (RootCommand rootcommand : command.registeredCommands.values()) {
             BukkitRootCommand bukkitCommand = (BukkitRootCommand) rootcommand;
-            bukkitCommand.getSubCommands().values().removeAll(command.subCommands.values());
+            bukkitCommand.getSubCommands().removeAll(command.subCommands.allValues());
             if (bukkitCommand.isRegistered && bukkitCommand.getSubCommands().isEmpty()) {
                 unregisterCommand(bukkitCommand);
                 bukkitCommand.isRegistered = false;

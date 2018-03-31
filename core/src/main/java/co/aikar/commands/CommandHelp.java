@@ -23,7 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -56,18 +56,16 @@ public class CommandHelp {
         this.commandName = rootCommand.getCommandName();
 
 
-        SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
+        MapSet<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
-        subCommands.entries().forEach(e -> {
-            String key = e.getKey();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
+        subCommands.forEachEntry((key, command) -> {
+            if (BaseCommand.isSpecial(key)) {
                 return;
             }
 
-            RegisteredCommand regCommand = e.getValue();
-            if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
-                this.helpEntries.add(new HelpEntry(this, regCommand));
-                seen.add(regCommand);
+            if (command.hasPermission(issuer) && !seen.contains(command)) {
+                this.helpEntries.add(new HelpEntry(this, command));
+                seen.add(command);
             }
         });
     }

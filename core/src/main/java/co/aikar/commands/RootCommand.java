@@ -23,10 +23,8 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,15 +35,13 @@ interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
 
-    SetMultimap<String, RegisteredCommand> getSubCommands();
+    MapSet<String, RegisteredCommand> getSubCommands();
     List<BaseCommand> getChildren();
 
     String getCommandName();
-    default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
-        command.subCommands.entries().forEach(e -> {
-            String key = e.getKey();
-            RegisteredCommand registeredCommand = e.getValue();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
+    default void addChildShared(List<BaseCommand> children, MapSet<String, RegisteredCommand> subCommands, BaseCommand command) {
+        command.subCommands.forEachEntry((key, registeredCommand) -> {
+            if (BaseCommand.isSpecial(key)) {
                 return;
             }
             Set<RegisteredCommand> registered = subCommands.get(key);
@@ -57,7 +53,7 @@ interface RootCommand {
                     return;
                 }
             }
-            subCommands.put(key, registeredCommand);
+            subCommands.add(key, registeredCommand);
         });
 
         children.add(command);

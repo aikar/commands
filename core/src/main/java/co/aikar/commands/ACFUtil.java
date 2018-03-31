@@ -576,6 +576,10 @@ public final class ACFUtil {
         throw (T) t;
     }
 
+    public static <T> T getFirstElement(Iterable<T> col) {
+        return col.iterator().next();
+    }
+
     private static class ApplyModifierToNumber {
         private String num;
         private boolean suffixes;

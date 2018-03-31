@@ -1,7 +1,6 @@
 package co.aikar.commands;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ public class JDARootCommand implements RootCommand {
     boolean isRegistered = false;
     private JDACommandManager manager;
     private BaseCommand defCommand;
-    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    private MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
     private List<BaseCommand> children = new ArrayList<>();
 
     JDARootCommand(JDACommandManager manager, String name) {
@@ -23,7 +22,7 @@ public class JDARootCommand implements RootCommand {
     @Override
 
     public void addChild(BaseCommand command) {
-        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
+        if (this.defCommand == null || command.subCommands.has(BaseCommand.DEFAULT)) {
             this.defCommand = command;
         }
         addChildShared(this.children, this.subCommands, command);
@@ -35,7 +34,7 @@ public class JDARootCommand implements RootCommand {
     }
 
     @Override
-    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+    public MapSet<String, RegisteredCommand> getSubCommands() {
         return this.subCommands;
     }
 

@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -37,7 +36,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     private final BungeeCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
-    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    private MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -54,7 +53,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     @Override
     public void addChild(BaseCommand command) {
-        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
+        if (this.defCommand == null || command.subCommands.has(BaseCommand.DEFAULT)) {
             this.defCommand = command;
 
         }
@@ -67,7 +66,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     }
 
     @Override
-    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+    public MapSet<String, RegisteredCommand> getSubCommands() {
         return subCommands;
     }
 
