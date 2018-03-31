@@ -23,10 +23,8 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Conditions;
-import com.google.common.collect.HashBasedTable;
+import co.aikar.util.Table;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -39,7 +37,7 @@ public class CommandConditions <
     > {
     private CommandManager manager;
     private Map<String, Condition<I>> conditions = Maps.newHashMap();
-    private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = HashBasedTable.create();
+    private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = new Table<>();
 
     CommandConditions(CommandManager manager) {
         this.manager = manager;

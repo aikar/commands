@@ -24,16 +24,13 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.locales.MessageKeyProvider;
-import com.google.common.collect.HashBasedTable;
+import co.aikar.util.Table;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -71,7 +68,7 @@ public abstract class CommandManager <
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
-    protected Table<Class<?>, String, Object> dependencies = HashBasedTable.create();
+    protected Table<Class<?>, String, Object> dependencies = new Table<>();
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
@@ -440,7 +437,7 @@ public abstract class CommandManager <
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, String key, T instance){
-        if(dependencies.containsRow(clazz) && dependencies.containsColumn(key)){
+        if (dependencies.containsKey(clazz, key)) {
             throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
         }
 
