@@ -31,6 +31,7 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.PreCommand;
+import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
@@ -515,6 +516,10 @@ public abstract class BaseCommand {
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(issuer)) {
+                    continue;
+                }
+
+                if(value.method.isAnnotationPresent(Private.class)){
                     continue;
                 }
 

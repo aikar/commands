@@ -44,6 +44,9 @@ public final class ACFExample extends JavaPlugin {
         // 1: Create Command Manager for your respective platform
         commandManager = new BukkitCommandManager(this);
 
+        // optional: enable unstable api to use help
+        commandManager.enableUnstableAPI("help");
+
         // 2: Setup some replacement values that may be used inside of the annotations dynamically.
         commandManager.getCommandReplacements().addReplacements(
                 // key - value
