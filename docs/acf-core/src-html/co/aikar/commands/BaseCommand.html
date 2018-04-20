@@ -522,7 +522,7 @@
 <span class="sourceLineNo">514</span>            final String key = entry.getKey();<a name="line.514"></a>
 <span class="sourceLineNo">515</span>            if (key.startsWith(argString) &amp;&amp; !CATCHUNKNOWN.equals(key) &amp;&amp; !DEFAULT.equals(key)) {<a name="line.515"></a>
 <span class="sourceLineNo">516</span>                final RegisteredCommand value = entry.getValue();<a name="line.516"></a>
-<span class="sourceLineNo">517</span>                if (!value.hasPermission(issuer)) {<a name="line.517"></a>
+<span class="sourceLineNo">517</span>                if (!value.hasPermission(issuer) || value.isPrivate) {<a name="line.517"></a>
 <span class="sourceLineNo">518</span>                    continue;<a name="line.518"></a>
 <span class="sourceLineNo">519</span>                }<a name="line.519"></a>
 <span class="sourceLineNo">520</span><a name="line.520"></a>

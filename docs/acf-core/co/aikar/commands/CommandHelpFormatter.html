@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -108,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.28">CommandHelpFormatter</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.30">CommandHelpFormatter</a>
 extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
@@ -223,6 +223,21 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#printSearchHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">printSearchHeader</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                  <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#showAllResults-co.aikar.commands.CommandHelp-java.util.List-">showAllResults</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+              <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&gt;&nbsp;entries)</code>&nbsp;</td>
+</tr>
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#showDetailedHelp-co.aikar.commands.CommandHelp-co.aikar.commands.HelpEntry-">showDetailedHelp</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+                <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</code>&nbsp;</td>
+</tr>
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelpFormatter.html#showSearchResults-co.aikar.commands.CommandHelp-java.util.List-">showSearchResults</a></span>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+                 <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&gt;&nbsp;entries)</code>&nbsp;</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -251,7 +266,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CommandHelpFormatter</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.32">CommandHelpFormatter</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.34">CommandHelpFormatter</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
 </li>
 </ul>
 </li>
@@ -262,13 +277,43 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="showAllResults-co.aikar.commands.CommandHelp-java.util.List-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>showAllResults</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.39">showAllResults</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+                           <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&gt;&nbsp;entries)</pre>
+</li>
+</ul>
+<a name="showSearchResults-co.aikar.commands.CommandHelp-java.util.List-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>showSearchResults</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.48">showSearchResults</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+                              <a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&gt;&nbsp;entries)</pre>
+</li>
+</ul>
+<a name="showDetailedHelp-co.aikar.commands.CommandHelp-co.aikar.commands.HelpEntry-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>showDetailedHelp</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.57">showDetailedHelp</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;commandHelp,
+                             <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
+</li>
+</ul>
 <a name="printHelpHeader-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>printHelpHeader</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.40">printHelpHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.81">printHelpHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                             <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
@@ -278,7 +323,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printHelpCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.44">printHelpCommand</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.85">printHelpCommand</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                              <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                              <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 </li>
@@ -289,7 +334,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printHelpFooter</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.51">printHelpFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.92">printHelpFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                             <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
@@ -299,7 +344,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printSearchHeader</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.62">printSearchHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.103">printSearchHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                               <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
@@ -309,7 +354,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printSearchEntry</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.66">printSearchEntry</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.107">printSearchEntry</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                              <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                              <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;page)</pre>
 </li>
@@ -320,7 +365,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printSearchFooter</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.73">printSearchFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.114">printSearchFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                               <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
@@ -330,7 +375,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printDetailedHelpHeader</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.85">printDetailedHelpHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.126">printDetailedHelpHeader</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                     <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                                     <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 </li>
@@ -341,7 +386,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printDetailedHelpCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.93">printDetailedHelpCommand</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.134">printDetailedHelpCommand</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                      <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                                      <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 </li>
@@ -352,7 +397,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printDetailedParameter</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.100">printDetailedParameter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.141">printDetailedParameter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                    <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                                    <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry,
                                    <a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;param)</pre>
@@ -364,7 +409,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>printDetailedHelpFooter</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.107">printDetailedHelpFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.148">printDetailedHelpFooter</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                     <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                                     <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 </li>
@@ -375,7 +420,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getHeaderFooterFormatReplacements</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.117">getHeaderFooterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help)</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.158">getHeaderFooterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help)</pre>
 <div class="block">Override this to control replacements</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -390,7 +435,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>getEntryFormatReplacements</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.136">getEntryFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.177">getEntryFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                            <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 <div class="block">Override this to control replacements</div>
 <dl>
@@ -408,7 +453,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <li class="blockList">
 <h4>getParameterFormatReplacements</h4>
 <pre>@NotNull
-public&nbsp;@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.156">getParameterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
+public&nbsp;@NotNull <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelpFormatter.html#line.197">getParameterFormatReplacements</a>(<a href="../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;help,
                                                                  <a href="../../../co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;param,
                                                                  <a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;entry)</pre>
 <div class="block">Override this to control replacements</div>
