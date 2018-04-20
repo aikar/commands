@@ -514,11 +514,7 @@ public abstract class BaseCommand {
             final String key = entry.getKey();
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
                 final RegisteredCommand value = entry.getValue();
-                if (!value.hasPermission(issuer)) {
-                    continue;
-                }
-
-                if(value.isPrivate){
+                if (!value.hasPermission(issuer) || value.isPrivate) {
                     continue;
                 }
 
