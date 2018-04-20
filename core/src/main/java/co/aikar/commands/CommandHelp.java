@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Private;
 import com.google.common.collect.SetMultimap;
 
 import java.util.ArrayList;
@@ -67,11 +66,7 @@ public class CommandHelp {
 
             RegisteredCommand regCommand = e.getValue();
 
-            if(regCommand.method.isAnnotationPresent(Private.class)){
-                return;
-            }
-
-            if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
+            if (!regCommand.isPrivate && regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
                 this.helpEntries.add(new HelpEntry(this, regCommand));
                 seen.add(regCommand);
             }

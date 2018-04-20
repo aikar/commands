@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpSearchTags;
+import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import com.google.common.collect.ImmutableSet;
@@ -64,6 +65,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     String conditions;
     public String helpSearchTags;
 
+    boolean isPrivate;
+
     final int requiredResolvers;
     final int consumeInputResolvers;
     final int doesNotConsumeInputResolvers;
@@ -82,7 +85,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.complete   = annotations.getAnnotationValue(method, CommandCompletion.class);
+        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -91,6 +94,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         //noinspection unchecked
         this.parameters = new CommandParameter[parameters.length];
 
+        this.isPrivate = annotations.hasAnnotation(method, Private.class);
 
         int requiredResolvers = 0;
         int consumeInputResolvers = 0;
