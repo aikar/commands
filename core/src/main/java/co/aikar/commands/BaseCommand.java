@@ -518,6 +518,10 @@ public abstract class BaseCommand {
                     continue;
                 }
 
+                if(value.isPrivate){
+                    continue;
+                }
+
                 String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);
                 cmds.add(split[cmdIndex]);
             }

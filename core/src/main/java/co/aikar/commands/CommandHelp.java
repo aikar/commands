@@ -65,7 +65,8 @@ public class CommandHelp {
             }
 
             RegisteredCommand regCommand = e.getValue();
-            if (regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
+
+            if (!regCommand.isPrivate && regCommand.hasPermission(issuer) && !seen.contains(regCommand)) {
                 this.helpEntries.add(new HelpEntry(this, regCommand));
                 seen.add(regCommand);
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,34 +21,14 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.acfexample;
+package co.aikar.commands.annotation;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.HelpCommand;
-import co.aikar.commands.annotation.Private;
-import co.aikar.commands.annotation.Subcommand;
-import org.bukkit.command.CommandSender;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-@CommandAlias("acf")
-public class SomeCommand_ExtraSubs extends BaseCommand {
-
-    @Subcommand("testsub test2")
-    @CommandCompletion("Foo2")
-    public void onTestSub2(CommandSender sender, String hi) {
-        sender.sendMessage(hi);
-    }
-
-    @Private
-    @Subcommand("testsub private")
-    public void privateSub(CommandSender sender){
-        sender.sendMessage("Am a sneaky ninja!");
-    }
-
-    @HelpCommand
-    public void help(CommandSender sender, CommandHelp help){
-        help.showHelp();
-    }
+/**
+ * Marks a command to not be included in stuff like tab completion and help pages
+ */
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Private {
 }
