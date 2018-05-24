@@ -89,35 +89,35 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
         });
         registerContext(Float.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Float.MIN_VALUE, Float.MAX_VALUE).floatValue();
+                return parseAndValidateNumber(c, -Float.MAX_VALUE, Float.MAX_VALUE).floatValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(float.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Float.MIN_VALUE, Float.MAX_VALUE).floatValue();
+                return parseAndValidateNumber(c, -Float.MAX_VALUE, Float.MAX_VALUE).floatValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Double.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE).doubleValue();
+                return parseAndValidateNumber(c, -Double.MAX_VALUE, Double.MAX_VALUE).doubleValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(double.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE).doubleValue();
+                return parseAndValidateNumber(c, -Double.MAX_VALUE, Double.MAX_VALUE).doubleValue();
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
         });
         registerContext(Number.class, (c) -> {
             try {
-                return parseAndValidateNumber(c, Double.MIN_VALUE, Double.MAX_VALUE);
+                return parseAndValidateNumber(c, -Double.MAX_VALUE, Double.MAX_VALUE);
             } catch (NumberFormatException e) {
                 throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", c.getFirstArg());
             }
