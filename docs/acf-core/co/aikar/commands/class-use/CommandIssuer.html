@@ -182,12 +182,12 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
-<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#getCurrentCommandIssuer--">getCurrentCommandIssuer</a></span>()</code>&nbsp;</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#getCurrentCommandIssuer--">getCurrentCommandIssuer</a></span>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
+<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#getCurrentCommandIssuer--">getCurrentCommandIssuer</a></span>()</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></code></td>
@@ -252,13 +252,13 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
        <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
 </tr>
@@ -310,11 +310,11 @@
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender)</code>&nbsp;</td>
+<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -401,14 +401,14 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
-<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
-           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
+<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="http://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
-<td class="colLast"><span class="typeNameLabel">ForwardingCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/ForwardingCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
-           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
+<td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+           <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
            <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
