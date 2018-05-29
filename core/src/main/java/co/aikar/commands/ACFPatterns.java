@@ -44,7 +44,7 @@ final class ACFPatterns {
     public static final Pattern PIPE = Pattern.compile("\\|");
     public static final Pattern NON_ALPHA_NUMERIC = Pattern.compile("[^a-zA-Z0-9]");
     public static final Pattern INTEGER = Pattern.compile("^[0-9]+$");
-    public static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{2,16}$");
+    public static final Pattern VALID_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_$]{1,16}$");
     public static final Pattern NON_PRINTABLE_CHARACTERS = Pattern.compile("[^\\x20-\\x7F]");
     public static final Pattern EQUALS = Pattern.compile("=");
     public static final Pattern FORMATTER = Pattern.compile("<c(?<color>\\d+)>(?<msg>.*?)</c\\1>", Pattern.CASE_INSENSITIVE);
