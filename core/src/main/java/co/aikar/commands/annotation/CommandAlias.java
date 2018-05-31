@@ -28,6 +28,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Allows to add a single or several command alias(es).
+ * In order to add more than one in a single go, use the syntax "alias|otheralias".
+ * You can register as many aliases as wanted in a single value.
+ *
+ * Used on a Class, defines the root command for all subcommands in the base command.
+ * Used on a method, defines a root command alias to that specific command
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface CommandAlias {
