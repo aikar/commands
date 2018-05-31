@@ -28,8 +28,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * A Shortcut for specifying {@link CatchUnknown}, {@link Default} and {@link Subcommand} on a method.
+ * Subcommand carries the same value as this annotations value to define the list of subcommands to register for.
+ *
+ * a method marked with this annotation should also use a {@link co.aikar.commands.CommandHelp} context parameter to show help.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface HelpCommand {
+    /**
+     * The value to forward to the @Subcommand annotation. Lists which subcommands to register to trigger help
+     * @return
+     */
     String value() default "help|?|-help|-h|-?";
 }

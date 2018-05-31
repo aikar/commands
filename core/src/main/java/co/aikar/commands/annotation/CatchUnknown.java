@@ -28,6 +28,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Defines a method that should receive any unknown command for the related root command.
+ *
+ * For example, if a BaseCommand /foo has a method with this, and /foo someunknowncommand is used
+ *
+ * If a method is tagged with this annotation, it will catch unknown commands and let you react to them.
+ *
+ * Only one instance of this annotation can be used per root command.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface CatchUnknown {

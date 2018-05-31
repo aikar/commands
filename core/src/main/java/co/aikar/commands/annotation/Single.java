@@ -29,9 +29,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Don't join remaining arguments
+ * Don't join remaining arguments. Used on String parameters, which normally would combine the remaining arguments
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface Single {}

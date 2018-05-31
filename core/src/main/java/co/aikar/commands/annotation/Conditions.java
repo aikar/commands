@@ -28,6 +28,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Specifies conditions that must be met in order to execute this command.
+ *
+ * If used on a method or a class, will be checked before parameter context is resolved
+ * If used on a parameter, will be checked after the context is resolved
+ *
+ * @see {@link co.aikar.commands.CommandConditions}
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
 public @interface Conditions {

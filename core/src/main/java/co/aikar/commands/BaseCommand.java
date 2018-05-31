@@ -62,6 +62,17 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * A Base command is defined as a command group of related commands.
+ * A BaseCommand does not imply nor enforce that they use the same root command.
+ *
+ * It is up to the end user how to organize their command. you could use 1 base command per
+ * command in your application.
+ *
+ * Optionally (and encouraged), you can use the base command to represent a root command, and
+ * then each actionable command is a sub command
+ */
+
 @SuppressWarnings("unused")
 public abstract class BaseCommand {
 
@@ -76,16 +87,40 @@ public abstract class BaseCommand {
      */
     static final String DEFAULT = "__default";
 
+    /**
+     * A map of all the registered commands for this base command, keyed to each potential subcommand to access it.
+     */
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
-    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
-    private Method preCommandHandler;
 
+    /**
+     * A map of flags to pass to Context Resolution for every parameter of the type. This is like an automatic @Flags on each.
+     */
+    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
+
+    /**
+     * What method was annoated with {@link PreCommand} to execute before commands.
+     */
+    @Nullable private Method preCommandHandler;
+
+    /**
+     * What root command the user actually entered to access the currently executing command
+     */
     @SuppressWarnings("WeakerAccess")
     private String execLabel;
+    /**
+     * What subcommand the user actually entered to access the currently executing command
+     */
     @SuppressWarnings("WeakerAccess")
     private String execSubcommand;
+    /**
+     * What arguments the user actually entered after the root command to access the currently executing command
+     */
     @SuppressWarnings("WeakerAccess")
     private String[] origArgs;
+
+    /**
+     * The manager this is registered to
+     */
     CommandManager<?, ?, ?, ?, ?, ?> manager = null;
 
     /**
@@ -125,7 +160,14 @@ public abstract class BaseCommand {
     @Nullable private String parentSubcommand;
 
     public BaseCommand() {}
-    public BaseCommand(String cmd) {
+
+    /**
+     * Constructor based defining of commands will be removed in the next version bump.
+     * @deprecated Please switch to {@link CommandAlias} for defining all root commands.
+     * @param cmd
+     */
+    @Deprecated
+    public BaseCommand(@Nullable String cmd) {
         this.commandName = cmd;
     }
 
@@ -153,10 +195,6 @@ public abstract class BaseCommand {
         return origArgs;
     }
 
-    void setParentCommand(BaseCommand command) {
-        this.parentCommand = command;
-    }
-
     /**
      * This should be called whenever the command gets registered.
      * It sets all required fields correctly and injects dependencies.
@@ -177,7 +215,7 @@ public abstract class BaseCommand {
      * @param cmd
      *         The command name to use register with.
      */
-    void onRegister(CommandManager manager, String cmd) {
+    private void onRegister(CommandManager manager, String cmd) {
         manager.injectDependencies(this);
         this.manager = manager;
 
@@ -237,7 +275,7 @@ public abstract class BaseCommand {
                         }
                     }
                     if (subCommand != null) {
-                        subCommand.setParentCommand(this);
+                        subCommand.parentCommand = this;
                         subCommand.onRegister(manager, cmd);
                         this.subCommands.putAll(subCommand.subCommands);
                         this.registeredCommands.putAll(subCommand.registeredCommands);
@@ -258,7 +296,7 @@ public abstract class BaseCommand {
         final Annotations annotations = manager.getAnnotations();
         boolean foundDefault = false;
         boolean foundCatchUnknown = false;
-        boolean isParentEmpty = parentSubcommand.isEmpty();
+        boolean isParentEmpty = parentSubcommand == null || parentSubcommand.isEmpty();
 
         for (Method method : this.getClass().getMethods()) {
             method.setAccessible(true);
@@ -582,7 +620,7 @@ public abstract class BaseCommand {
                         int required = c.requiredResolvers;
                         int optional = c.optionalResolvers;
                         return extraArgs <= required + optional && (completion || extraArgs >= required);
-                    }).sorted((c1, c2) -> {
+                    }).min((c1, c2) -> {
                         int a = c1.consumeInputResolvers;
                         int b = c2.consumeInputResolvers;
 
@@ -590,7 +628,7 @@ public abstract class BaseCommand {
                             return 0;
                         }
                         return a < b ? 1 : -1;
-                    }).findFirst();
+                    });
                     if (optCmd.isPresent()) {
                         cmd = optCmd.get();
                     }
@@ -624,6 +662,7 @@ public abstract class BaseCommand {
      * @param cmd
      * @return
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     public boolean canExecute(CommandIssuer issuer, RegisteredCommand<?> cmd) {
         return true;
@@ -660,6 +699,7 @@ public abstract class BaseCommand {
      *
      * @return The possibilities to tab complete in no particular order.
      */
+    @SuppressWarnings("WeakerAccess")
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)
         throws IllegalArgumentException {
 
