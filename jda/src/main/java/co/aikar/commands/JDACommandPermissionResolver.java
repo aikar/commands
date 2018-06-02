@@ -24,6 +24,10 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
             return false;
         }
 
+        if (guildMember.isOwner()) {
+            return true;
+        }
+
         Integer permissionOffset = discordPermissionOffsets.get(permission);
         if (permissionOffset == null) {
             return false;
