@@ -3,10 +3,8 @@ package co.aikar.commands;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class JDACommandPermissionResolver implements CommandPermissionResolver {
@@ -26,20 +24,13 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
             return false;
         }
 
-        // TODO: regex
-        if (permission.startsWith("role.")) {
-            String perm = permission.split("role.")[1];
-            List<Role> roles = event.getIssuer().getJDA().getRolesByName(perm, true);
-            if (roles.size() == 1) {
-                return guildMember.getRoles().contains(roles.get(0));
-            }
-
+        Integer permissionOffset = discordPermissionOffsets.get(permission);
+        if (permissionOffset == null) {
             return false;
         }
 
-        // TODO: We need to check if the event is for a specific channel
-        int permissionOffset = discordPermissionOffsets.get(permission);
-        Permission discordPermission = Permission.getFromOffset(permissionOffset);
-        return guildMember.hasPermission(discordPermission);
+        return guildMember.hasPermission(
+                Permission.getFromOffset(permissionOffset)
+        );
     }
 }
