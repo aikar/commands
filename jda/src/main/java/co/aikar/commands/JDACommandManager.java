@@ -48,6 +48,7 @@ public class JDACommandManager extends CommandManager<
         jda.addEventListener(new JDAListener(this));
         this.defaultConfig = options.defaultConfig == null ? new JDACommandConfig() : options.defaultConfig;
         this.configProvider = options.configProvider;
+        this.defaultFormatter = new JDAMessageFormatter();
         this.completions = new JDACommandCompletions(this);
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
 
