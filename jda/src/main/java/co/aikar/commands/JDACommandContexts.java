@@ -86,7 +86,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         });
         this.registerContext(Role.class, c -> {
             boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);
-            String arg = c.popFirstArg(); // not issuer aware
+            String arg = c.popFirstArg();
             Role role = null;
             if (arg.startsWith("<@&")) {
                 String id = arg.substring(3, arg.length() - 1);

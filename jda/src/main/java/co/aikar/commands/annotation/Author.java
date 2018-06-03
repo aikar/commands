@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
  * The {@link Author} annotation is to define whether the parameter should be the author object from the event or
  * parsed from the user's input.
  * <p>
- * Using this on a User/Member will fetch the author, while if not, it'll parse the input.
- * The same happens with channels, guilds, and so on.
+ *      Using this on a User/Member will fetch the author and otherwise it'll parse the input.
+ * </p>
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
