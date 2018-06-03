@@ -68,7 +68,9 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             }
             String arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
             User user = null;
-            if (arg.startsWith("<@")) {
+            if (arg.startsWith("<@!")) { // for some reason a ! is added when @'ing and clicking their name.
+                user = jda.getUserById(arg.substring(3, arg.length() - 1));
+            } else if (arg.startsWith("<@")) { // users can /also/ be mentioned like this...
                 user = jda.getUserById(arg.substring(2, arg.length() - 1));
             } else {
                 List<User> users = jda.getUsersByName(arg, true);
