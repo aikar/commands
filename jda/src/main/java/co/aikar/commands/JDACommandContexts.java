@@ -43,7 +43,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
                 return c.issuer.getIssuer().getChannel();
             }
             boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);
-            String argument = c.popFirstArg();
+            String argument = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
             MessageChannel channel = null;
             if (argument.startsWith("<#")) {
                 String id = argument.substring(2, argument.length() - 1);
@@ -66,7 +66,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             if (c.hasAnnotation(SelfUser.class)) {
                 return jda.getSelfUser();
             }
-            String arg = c.popFirstArg();
+            String arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
             User user = null;
             if (arg.startsWith("<@")) {
                 user = jda.getUserById(arg.substring(2, arg.length() - 1));
@@ -86,7 +86,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         });
         this.registerContext(Role.class, c -> {
             boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);
-            String arg = c.popFirstArg();
+            String arg = c.popFirstArg(); // not issuer aware
             Role role = null;
             if (arg.startsWith("<@&")) {
                 String id = arg.substring(3, arg.length() - 1);
