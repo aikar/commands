@@ -90,7 +90,7 @@ public class JDACommandManager extends CommandManager<
         }
     }
 
-    private long getBotOwnerId() {
+    public long getBotOwnerId() {
         // Just in case initialization on ReadyEvent fails.
         initializeBotOwner();
         return botOwner;
