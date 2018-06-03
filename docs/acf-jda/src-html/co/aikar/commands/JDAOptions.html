@@ -14,7 +14,7 @@
 <span class="sourceLineNo">006</span>public class JDAOptions {<a name="line.6"></a>
 <span class="sourceLineNo">007</span>    CommandConfig defaultConfig = new JDACommandConfig();<a name="line.7"></a>
 <span class="sourceLineNo">008</span>    CommandConfigProvider configProvider = null;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>    CommandPermissionResolver permissionResolver = null;<a name="line.9"></a>
+<span class="sourceLineNo">009</span>    CommandPermissionResolver permissionResolver = new JDACommandPermissionResolver();<a name="line.9"></a>
 <span class="sourceLineNo">010</span><a name="line.10"></a>
 <span class="sourceLineNo">011</span>    public JDAOptions() {<a name="line.11"></a>
 <span class="sourceLineNo">012</span>    }<a name="line.12"></a>
