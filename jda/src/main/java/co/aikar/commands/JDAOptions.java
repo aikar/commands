@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class JDAOptions {
     CommandConfig defaultConfig = new JDACommandConfig();
     CommandConfigProvider configProvider = null;
-    CommandPermissionResolver permissionResolver = new JDACommandPermissionResolver();
+    CommandPermissionResolver permissionResolver = null;
 
     public JDAOptions() {
     }
