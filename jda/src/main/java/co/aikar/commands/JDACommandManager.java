@@ -42,7 +42,6 @@ public class JDACommandManager extends CommandManager<
     public JDACommandManager(JDA jda, JDAOptions options) {
         if (options == null) {
             options = new JDAOptions();
-            options.permissionResolver = new JDACommandPermissionResolver(this); // I do not like this here. Suggestions please.
         }
         this.jda = jda;
         this.permissionResolver = options.permissionResolver;

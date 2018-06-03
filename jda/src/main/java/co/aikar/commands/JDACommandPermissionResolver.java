@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JDACommandPermissionResolver implements CommandPermissionResolver {
-    private JDACommandManager jdaCommandManager;
     private Map<String, Integer> discordPermissionOffsets;
 
-    public JDACommandPermissionResolver(JDACommandManager jdaCommandManager) {
-        this.jdaCommandManager = jdaCommandManager;
+    public JDACommandPermissionResolver() {
         discordPermissionOffsets = new HashMap<>();
         for (Permission permission : Permission.values()) {
             discordPermissionOffsets.put(permission.name().toLowerCase().replaceAll("_", "-"), permission.getOffset());
@@ -18,9 +16,9 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
     }
 
     @Override
-    public boolean hasPermission(JDACommandEvent event, String permission) {
+    public boolean hasPermission(JDACommandManager manager, JDACommandEvent event, String permission) {
         // Explicitly return true if the issuer is the bot's owner. They are always allowed.
-        if (jdaCommandManager.getBotOwnerId() == event.getIssuer().getAuthor().getIdLong()) {
+        if (manager.getBotOwnerId() == event.getIssuer().getAuthor().getIdLong()) {
             return true;
         }
 
