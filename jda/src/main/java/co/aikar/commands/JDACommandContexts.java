@@ -1,6 +1,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Author;
+import co.aikar.commands.annotation.CrossGuild;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.SelfUser;
 import net.dv8tion.jda.core.JDA;
@@ -42,12 +43,15 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             if (c.hasAnnotation(Author.class)) {
                 return c.issuer.getIssuer().getChannel();
             }
+            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);
             String argument = c.popFirstArg();
             MessageChannel channel = null;
             if (argument.startsWith("<#")) {
-                channel = jda.getTextChannelById(argument.substring(2, argument.length() - 1));
+                String id = argument.substring(2, argument.length() - 1);
+                channel = isCrossGuild ? jda.getTextChannelById(id) : c.issuer.getIssuer().getGuild().getTextChannelById(id);
             } else {
-                List<TextChannel> channelList = c.issuer.getEvent().getGuild().getTextChannelsByName(argument, true);
+                List<TextChannel> channelList = isCrossGuild ? jda.getTextChannelsByName(argument, true) :
+                        c.issuer.getEvent().getGuild().getTextChannelsByName(argument, true);
                 if (channelList.size() > 1) {
                     throw new InvalidCommandArgument("Too many channels were found with the given name. Try with the `#channelname` syntax.", false);
                 } else if (channelList.size() == 1) {
@@ -82,12 +86,15 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             return user;
         });
         this.registerContext(Role.class, c -> {
+            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);
             String arg = c.popFirstArg();
             Role role = null;
             if (arg.startsWith("<@&")) {
-                role = jda.getRoleById(Long.parseLong(arg.substring(3, arg.length() - 1)));
+                String id = arg.substring(3, arg.length() - 1);
+                role = isCrossGuild ? jda.getRoleById(id) : c.issuer.getIssuer().getGuild().getRoleById(id);
             } else {
-                List<Role> roles = jda.getRolesByName(arg, true);
+                List<Role> roles = isCrossGuild ? jda.getRolesByName(arg, true)
+                        : c.issuer.getIssuer().getGuild().getRolesByName(arg, true);
                 if (roles.size() > 1) {
                     throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);
                 }
