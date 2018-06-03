@@ -13,10 +13,14 @@
 <span class="sourceLineNo">005</span>import java.lang.annotation.RetentionPolicy;<a name="line.5"></a>
 <span class="sourceLineNo">006</span>import java.lang.annotation.Target;<a name="line.6"></a>
 <span class="sourceLineNo">007</span><a name="line.7"></a>
-<span class="sourceLineNo">008</span>@Target(ElementType.PARAMETER)<a name="line.8"></a>
-<span class="sourceLineNo">009</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.9"></a>
-<span class="sourceLineNo">010</span>public @interface SelfUser {<a name="line.10"></a>
-<span class="sourceLineNo">011</span>}<a name="line.11"></a>
+<span class="sourceLineNo">008</span>/**<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * The {@link SelfUser} annotation is to define whether the parameter should be represented by JDA's user object<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * or if it should be parsed from command input.<a name="line.10"></a>
+<span class="sourceLineNo">011</span> */<a name="line.11"></a>
+<span class="sourceLineNo">012</span>@Target(ElementType.PARAMETER)<a name="line.12"></a>
+<span class="sourceLineNo">013</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.13"></a>
+<span class="sourceLineNo">014</span>public @interface SelfUser {<a name="line.14"></a>
+<span class="sourceLineNo">015</span>}<a name="line.15"></a>
 
 
 
