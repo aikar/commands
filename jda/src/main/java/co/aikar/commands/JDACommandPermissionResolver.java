@@ -1,6 +1,5 @@
 package co.aikar.commands;
 
-
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 
@@ -8,9 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JDACommandPermissionResolver implements CommandPermissionResolver {
+    private JDACommandManager jdaCommandManager;
     private Map<String, Integer> discordPermissionOffsets;
 
-    public JDACommandPermissionResolver() {
+    public JDACommandPermissionResolver(JDACommandManager jdaCommandManager) {
+        this.jdaCommandManager = jdaCommandManager;
         discordPermissionOffsets = new HashMap<>();
         for (Permission permission : Permission.values()) {
             discordPermissionOffsets.put(permission.name().toLowerCase().replaceAll("_", "-"), permission.getOffset());
@@ -19,12 +20,8 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
 
     @Override
     public boolean hasPermission(JDACommandEvent event, String permission) {
-        Member guildMember = event.getIssuer().getMember();
-        if (guildMember == null) {
-            return false;
-        }
-
-        if (guildMember.isOwner()) {
+        // Explicitly return true if the issuer is the bot's owner. They are always allowed.
+        if (jdaCommandManager.getBotOwnerId() == event.getIssuer().getAuthor().getIdLong()) {
             return true;
         }
 
@@ -33,7 +30,7 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
             return false;
         }
 
-        return guildMember.hasPermission(
+        return event.getIssuer().getMember().hasPermission(
                 Permission.getFromOffset(permissionOffset)
         );
     }
