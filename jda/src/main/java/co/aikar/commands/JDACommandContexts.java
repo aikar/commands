@@ -5,15 +5,18 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.SelfUser;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
+// TODO: Message Keys !!!
 public class JDACommandContexts extends CommandContexts<JDACommandExecutionContext> {
     private final JDACommandManager manager;
     private final JDA jda;
@@ -30,12 +33,12 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         this.registerIssuerOnlyContext(Guild.class, c -> {
             MessageReceivedEvent event = c.getIssuer().getIssuer();
             if (event.isFromType(ChannelType.PRIVATE) && !c.hasAnnotation(Optional.class)) {
-                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false); // TODO: Message Keys
+                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);
             } else {
                 return event.getGuild();
             }
         });
-        this.registerIssuerOnlyContext(MessageChannel.class, c -> {
+        this.registerIssuerAwareContext(MessageChannel.class, c -> {
             if (c.hasAnnotation(Author.class)) {
                 return c.issuer.getIssuer().getChannel();
             }
@@ -44,7 +47,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             if (argument.startsWith("<#")) {
                 channel = jda.getTextChannelById(argument.substring(2, argument.length() - 1));
             } else {
-                List<TextChannel> channelList = c.issuer.getEvent().getGuild().getTextChannelsByName(argument.toLowerCase(), true);
+                List<TextChannel> channelList = c.issuer.getEvent().getGuild().getTextChannelsByName(argument, true);
                 if (channelList.size() > 1) {
                     throw new InvalidCommandArgument("Too many channels were found with the given name. Try with the `#channelname` syntax.", false);
                 } else if (channelList.size() == 1) {
@@ -52,11 +55,11 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
                 }
             }
             if (channel == null) {
-                throw new InvalidCommandArgument("Couldn't find the channel with that name or ID.");
+                throw new InvalidCommandArgument("Couldn't find a channel with that name or ID.");
             }
             return channel;
         });
-        this.registerContext(User.class, c -> {
+        this.registerIssuerAwareContext(User.class, c -> {
             if (c.hasAnnotation(SelfUser.class)) {
                 return jda.getSelfUser();
             }
@@ -74,9 +77,28 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
                 }
             }
             if (user == null) {
-                throw new InvalidCommandArgument("Could not find a user with that name or ID"); // TODO: Message keys
+                throw new InvalidCommandArgument("Could not find a user with that name or ID.");
             }
             return user;
+        });
+        this.registerContext(Role.class, c -> {
+            String arg = c.popFirstArg();
+            Role role = null;
+            if (arg.startsWith("<@&")) {
+                role = jda.getRoleById(Long.parseLong(arg.substring(3, arg.length() - 1)));
+            } else {
+                List<Role> roles = jda.getRolesByName(arg, true);
+                if (roles.size() > 1) {
+                    throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);
+                }
+                if (!roles.isEmpty()) {
+                    role = roles.get(0);
+                }
+            }
+            if (role == null) {
+                throw new InvalidCommandArgument("Could not find a role with that name or ID.");
+            }
+            return role;
         });
     }
 }
