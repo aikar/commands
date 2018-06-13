@@ -10,6 +10,7 @@
 .idea/uiDesigner.xml
 .idea/kotlinc.xml
 .idea/modules.xml
+.idea/usage.statistics.xml
 **/*.iml
 
 
