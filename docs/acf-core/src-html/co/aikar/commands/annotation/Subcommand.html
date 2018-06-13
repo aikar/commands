@@ -36,11 +36,18 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target({ElementType.METHOD, ElementType.TYPE})<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface Subcommand {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    String value();<a name="line.34"></a>
-<span class="sourceLineNo">035</span>}<a name="line.35"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Defines the subcommand that can be used to execute this command.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * This is appended onto the root command for the command group,<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * as well as any parent command groups subcommand base.<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * Defines the part after root command like so: "/rootcommand {@link #value()}".<a name="line.36"></a>
+<span class="sourceLineNo">037</span> */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.38"></a>
+<span class="sourceLineNo">039</span>@Target({ElementType.METHOD, ElementType.TYPE})<a name="line.39"></a>
+<span class="sourceLineNo">040</span>public @interface Subcommand {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    String value();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>}<a name="line.42"></a>
 
 
 

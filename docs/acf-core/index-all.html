@@ -153,11 +153,17 @@
 <h2 class="title">B</h2>
 <dl>
 <dt><a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands"><span class="typeNameLink">BaseCommand</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A Base command is defined as a command group of related commands.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#BaseCommand--">BaseCommand()</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#BaseCommand-java.lang.String-">BaseCommand(String)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">Please switch to <a href="co/aikar/commands/annotation/CommandAlias.html" title="annotation in co.aikar.commands.annotation"><code>CommandAlias</code></a> for defining all root commands.</span></div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#BULGARIAN">BULGARIAN</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -169,7 +175,11 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#canConsumeInput--">canConsumeInput()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#canExecute-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">canExecute(CommandIssuer, RegisteredCommand&lt;?&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>
+<div class="block"><span class="deprecationComment">See <a href="co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands"><code>CommandConditions</code></a></span></div>
+</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#canOverridePlayerContext--">canOverridePlayerContext()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#capitalize-java.lang.String-char:A-">capitalize(String, char[])</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
@@ -205,9 +215,9 @@
 </div>
 </dd>
 <dt><a href="co/aikar/commands/annotation/CatchUnknown.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CatchUnknown</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#CATCHUNKNOWN">CATCHUNKNOWN</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Defines a method that should receive any unknown command for the related root command.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#CHINESE">CHINESE</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsLangUtil.html#clone-T:A-">clone(T[])</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsLangUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsLangUtil</a></dt>
@@ -230,9 +240,14 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#combine-java.lang.String:A-int-">combine(String[], int)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/CommandAlias.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CommandAlias</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Allows to add a single or several command alias(es).</div>
+</dd>
 <dt><a href="co/aikar/commands/annotation/CommandCompletion.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CommandCompletion</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Many implementation platforms have a concept of "Tab Completions",
+ where pressing tab will give suggestions on what you can input.</div>
+</dd>
 <dt><a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandCompletionContext</span></a>&lt;<a href="co/aikar/commands/CommandCompletionContext.html" title="type parameter in CommandCompletionContext">I</a> extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt; - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandCompletions</span></a>&lt;<a href="co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a> extends <a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>&gt; - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
@@ -278,7 +293,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#CommandParameter-co.aikar.commands.RegisteredCommand-java.lang.reflect.Parameter-int-">CommandParameter(RegisteredCommand&lt;CEC&gt;, Parameter, int)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/CommandPermission.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CommandPermission</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Sets the permission required to perform this command.</div>
+</dd>
 <dt><a href="co/aikar/commands/CommandReplacements.html" title="class in co.aikar.commands"><span class="typeNameLink">CommandReplacements</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>
 <div class="block">Manages replacement template strings</div>
@@ -296,7 +313,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ConditionFailedException.html#ConditionFailedException-java.lang.String-">ConditionFailedException(String)</a></span> - Constructor for exception co.aikar.commands.<a href="co/aikar/commands/ConditionFailedException.html" title="class in co.aikar.commands">ConditionFailedException</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Conditions.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Conditions</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies conditions that must be met in order to execute this command.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#conditions">conditions</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/processors/ConditionsProcessor.html" title="class in co.aikar.commands.processors"><span class="typeNameLink">ConditionsProcessor</span></a> - Class in <a href="co/aikar/commands/processors/package-summary.html">co.aikar.commands.processors</a></dt>
@@ -310,7 +329,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandContexts.html#contextMap">contextMap</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands">CommandContexts</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts"><span class="typeNameLink">ContextResolver</span></a>&lt;<a href="co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">T</a>,<a href="co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">C</a> extends <a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt; - Interface in <a href="co/aikar/commands/contexts/package-summary.html">co.aikar.commands.contexts</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">This defines a context resolver, which parses <code>T</code> from <code>C</code>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#createCommandContext-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandParameter-co.aikar.commands.CommandIssuer-java.util.List-int-java.util.Map-">createCommandContext(RegisteredCommand, CommandParameter, CommandIssuer, List&lt;String&gt;, int, Map&lt;String, Object&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#createCompletionContext-co.aikar.commands.RegisteredCommand-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String-java.lang.String:A-">createCompletionContext(RegisteredCommand, CommandIssuer, String, String, String[])</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
@@ -332,9 +353,10 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#DANISH">DANISH</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Default.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Default</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#DEFAULT">DEFAULT</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">If used on a method, sets default command handler for the root command of this group
+ If used on a parameter, sets the value to be used for context resolution</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#defaultExceptionHandler">defaultExceptionHandler</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#defaultFormatter">defaultFormatter</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
@@ -344,9 +366,13 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#dependencies">dependencies</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Dependency.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Dependency</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Injects a dependency into the field this is attached to.</div>
+</dd>
 <dt><a href="co/aikar/commands/annotation/Description.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Description</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Sets a description to the parameter or method this is attached to.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#doHelp-java.lang.Object-java.lang.String...-">doHelp(Object, String...)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#doHelp-co.aikar.commands.CommandIssuer-java.lang.String...-">doHelp(CommandIssuer, String...)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
@@ -403,7 +429,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#FINNISH">FINNISH</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Flags.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Flags</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Provides configuration options for <a href="co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts"><code>ContextResolver</code></a>'s to change how they resolve context.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/MessageFormatter.html#format-int-java.lang.String-">format(int, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/MessageFormatter.html#format-java.lang.String-">format(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a></dt>
@@ -561,7 +589,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ConditionContext.html#getConfigValue-java.lang.String-java.lang.Integer-">getConfigValue(String, Integer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/contexts/ContextResolver.html#getContext-C-">getContext(C)</a></span> - Method in interface co.aikar.commands.contexts.<a href="co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Parses the context of type <code>C</code> into <code>T</code>, or throws an exception.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#getContextFlags-java.lang.Class-">getContextFlags(Class&lt;?&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletionContext.html#getContextValue-java.lang.Class-">getContextValue(Class&lt;? extends T&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></dt>
@@ -569,11 +599,15 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletionContext.html#getContextValue-java.lang.Class-java.lang.Integer-">getContextValue(Class&lt;? extends T&gt;, Integer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#getCurrentCommandIssuer--">getCurrentCommandIssuer()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets the current command issuer.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getCurrentCommandIssuer--">getCurrentCommandIssuer()</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#getCurrentCommandManager--">getCurrentCommandManager()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets the current command manager.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getCurrentCommandManager--">getCurrentCommandManager()</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getCurrentCommandOperationContext--">getCurrentCommandOperationContext()</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
@@ -883,13 +917,17 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/MessageType.html#HELP">HELP</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/HelpCommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">HelpCommand</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">A Shortcut for specifying <a href="co/aikar/commands/annotation/CatchUnknown.html" title="annotation in co.aikar.commands.annotation"><code>CatchUnknown</code></a>, <a href="co/aikar/commands/annotation/Default.html" title="annotation in co.aikar.commands.annotation"><code>Default</code></a> and <a href="co/aikar/commands/annotation/Subcommand.html" title="annotation in co.aikar.commands.annotation"><code>Subcommand</code></a> on a method.</div>
+</dd>
 <dt><a href="co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands"><span class="typeNameLink">HelpEntry</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#helpFormatter">helpFormatter</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/HelpSearchTags.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">HelpSearchTags</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Defines additional keywords to feed into the search help system.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#helpSearchTags">helpSearchTags</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#HINDI">HINDI</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
@@ -1310,10 +1348,12 @@
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 &nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Optional.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Optional</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Marks the parameter this is attached to as optional.</div>
+</dd>
 <dt><a href="co/aikar/commands/contexts/OptionalContextResolver.html" title="interface in co.aikar.commands.contexts"><span class="typeNameLink">OptionalContextResolver</span></a>&lt;<a href="co/aikar/commands/contexts/OptionalContextResolver.html" title="type parameter in OptionalContextResolver">T</a>,<a href="co/aikar/commands/contexts/OptionalContextResolver.html" title="type parameter in OptionalContextResolver">C</a> extends <a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt; - Interface in <a href="co/aikar/commands/contexts/package-summary.html">co.aikar.commands.contexts</a></dt>
 <dd>
-<div class="block">Context Resolver that can accept null input</div>
+<div class="block">The same as <a href="co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts"><code>ContextResolver</code></a>, however it can accept a null context.</div>
 </dd>
 </dl>
 <a name="I:P">
@@ -1358,7 +1398,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#precision-double-int-">precision(double, int)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/PreCommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">PreCommand</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">This runs before any other command method each time it is invoked.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#preCommand--">preCommand()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandHelpFormatter.html#printDetailedHelpCommand-co.aikar.commands.CommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.HelpEntry-">printDetailedHelpCommand(CommandHelp, CommandIssuer, HelpEntry)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></dt>
@@ -1428,13 +1470,17 @@
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">registerAsyncCompletion(String, CommandCompletions.AsyncCommandCompletionHandler&lt;C&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Registr a completion handler to provide command completions based on the user input.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#registerCommand-co.aikar.commands.BaseCommand-">registerCommand(BaseCommand)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>
 <div class="block">Registers a command with ACF</div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerCompletion-java.lang.String-co.aikar.commands.CommandCompletions.CommandCompletionHandler-">registerCompletion(String, CommandCompletions.CommandCompletionHandler&lt;C&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Registr a completion handler to provide command completions based on the user input.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandContexts.html#registerContext-java.lang.Class-co.aikar.commands.contexts.ContextResolver-">registerContext(Class&lt;T&gt;, ContextResolver&lt;T, R&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandContexts.html" title="class in co.aikar.commands">CommandContexts</a></dt>
 <dd>
 <div class="block">Registers a context that requires input from the command issuer to resolve.</div>
@@ -1472,6 +1518,22 @@
 <div class="block"><span class="deprecationComment">Please switch to <a href="co/aikar/commands/CommandContexts.html#registerIssuerAwareContext-java.lang.Class-co.aikar.commands.contexts.IssuerAwareContextResolver-"><code>CommandContexts.registerIssuerAwareContext(Class, IssuerAwareContextResolver)</code></a>
  as the core wants to use the platform agnostic term of "Issuer" instead of Sender</span></div>
 </div>
+</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.lang.String-">registerStaticCompletion(String, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
+<dd>
+<div class="block">Register a static list of command completions that will never change.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.lang.String:A-">registerStaticCompletion(String, String[])</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
+<dd>
+<div class="block">Register a static list of command completions that will never change</div>
+</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.util.function.Supplier-">registerStaticCompletion(String, Supplier&lt;List&lt;String&gt;&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
+<dd>
+<div class="block">Register a static list of command completions that will never change.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.util.List-">registerStaticCompletion(String, List&lt;String&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a></dt>
+<dd>
+<div class="block">Register a static list of command completions that will never change</div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html#removeCauseMethodName-java.lang.String-">removeCauseMethodName(String)</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsExceptionUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsExceptionUtil</a></dt>
 <dd>
@@ -1681,14 +1743,16 @@
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Single.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Single</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
 <dd>
-<div class="block">Don't join remaining arguments</div>
+<div class="block">Don't join remaining arguments.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ACFUtil.html#sneaky-java.lang.Throwable-">sneaky(Throwable)</a></span> - Static method in class co.aikar.commands.<a href="co/aikar/commands/ACFUtil.html" title="class in co.aikar.commands">ACFUtil</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#SPANISH">SPANISH</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Split.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Split</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Joins arguments into a single piece of text with the specified separator.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/apachecommonslang/ApacheCommonsLangUtil.html#startsWith-java.lang.CharSequence-java.lang.CharSequence-">startsWith(CharSequence, CharSequence)</a></span> - Static method in class co.aikar.commands.apachecommonslang.<a href="co/aikar/commands/apachecommonslang/ApacheCommonsLangUtil.html" title="class in co.aikar.commands.apachecommonslang">ApacheCommonsLangUtil</a></dt>
 <dd>
 <div class="block">Check if a CharSequence starts with a specified prefix.</div>
@@ -1698,7 +1762,9 @@
 <div class="block">Case insensitive check if a CharSequence starts with a specified prefix.</div>
 </dd>
 <dt><a href="co/aikar/commands/annotation/Subcommand.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Subcommand</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Defines the subcommand that can be used to execute this command.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#supportedLanguages">supportedLanguages</a></span> - Variable in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#SWEDISH">SWEDISH</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
@@ -1706,7 +1772,9 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletions.SyncCompletionRequired.html#SyncCompletionRequired--">SyncCompletionRequired()</a></span> - Constructor for exception co.aikar.commands.<a href="co/aikar/commands/CommandCompletions.SyncCompletionRequired.html" title="class in co.aikar.commands">CommandCompletions.SyncCompletionRequired</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/annotation/Syntax.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Syntax</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies the syntax to be used when executing this command.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/MessageType.html#SYNTAX">SYNTAX</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/MessageType.html" title="class in co.aikar.commands">MessageType</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -1716,9 +1784,13 @@
 <h2 class="title">T</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete(CommandIssuer, String, String[])</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets tab completed data from the given command from the user.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">tabComplete(CommandIssuer, String, String[], boolean)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets the tab complete suggestions from a given command.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete(CommandIssuer, String, String[])</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/Locales.html#THAI">THAI</a></span> - Static variable in class co.aikar.commands.<a href="co/aikar/commands/Locales.html" title="class in co.aikar.commands">Locales</a></dt>
@@ -1775,7 +1847,9 @@
 <div class="block">Returns the enum constant of this type with the specified name.</div>
 </dd>
 <dt><a href="co/aikar/commands/annotation/Values.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">Values</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Specifies a list of values that the command input should be validated against, or else show an error.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/MessageKeys.html#values--">values()</a></span> - Static method in enum co.aikar.commands.<a href="co/aikar/commands/MessageKeys.html" title="enum in co.aikar.commands">MessageKeys</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum type, in

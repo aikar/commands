@@ -36,11 +36,21 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target({ElementType.METHOD})<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface CommandCompletion {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    String value();<a name="line.34"></a>
-<span class="sourceLineNo">035</span>}<a name="line.35"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Many implementation platforms have a concept of "Tab Completions",<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * where pressing tab will give suggestions on what you can input.<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * This annotation specifies either static completion values,<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * or special @codes that let you define Completion Handlers to dynamically<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * populate completion values.<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * @see {@link co.aikar.commands.CommandCompletions}<a name="line.39"></a>
+<span class="sourceLineNo">040</span> */<a name="line.40"></a>
+<span class="sourceLineNo">041</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.41"></a>
+<span class="sourceLineNo">042</span>@Target({ElementType.METHOD})<a name="line.42"></a>
+<span class="sourceLineNo">043</span>public @interface CommandCompletion {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    String value();<a name="line.44"></a>
+<span class="sourceLineNo">045</span>}<a name="line.45"></a>
 
 
 

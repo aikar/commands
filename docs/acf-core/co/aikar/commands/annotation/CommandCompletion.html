@@ -94,7 +94,17 @@
 <br>
 <pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true" title="class or interface in java.lang.annotation">@Retention</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html?is-external=true#RUNTIME" title="class or interface in java.lang.annotation">RUNTIME</a>)
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true" title="class or interface in java.lang.annotation">@Target</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html?is-external=true#METHOD" title="class or interface in java.lang.annotation">METHOD</a>)
-public @interface <a href="../../../../src-html/co/aikar/commands/annotation/CommandCompletion.html#line.33">CommandCompletion</a></pre>
+public @interface <a href="../../../../src-html/co/aikar/commands/annotation/CommandCompletion.html#line.43">CommandCompletion</a></pre>
+<div class="block">Many implementation platforms have a concept of "Tab Completions",
+ where pressing tab will give suggestions on what you can input.
+
+ This annotation specifies either static completion values,
+ or special @codes that let you define Completion Handlers to dynamically
+ populate completion values.</div>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><code>co.aikar.commands.CommandCompletions}</code></dd>
+</dl>
 </li>
 </ul>
 </div>
@@ -138,7 +148,7 @@ public @interface <a href="../../../../src-html/co/aikar/commands/annotation/Com
 <ul class="blockListLast">
 <li class="blockList">
 <h4>value</h4>
-<pre>public abstract&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/annotation/CommandCompletion.html#line.34">value</a></pre>
+<pre>public abstract&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/annotation/CommandCompletion.html#line.44">value</a></pre>
 </li>
 </ul>
 </li>

@@ -36,11 +36,18 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target({ElementType.PARAMETER})<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface Flags {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    String value();<a name="line.34"></a>
-<span class="sourceLineNo">035</span>}<a name="line.35"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Provides configuration options for {@link co.aikar.commands.contexts.ContextResolver}'s to change how they resolve context.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * Example: Searching for a player, you might use @Flags("loose") to indicate a fuzzy match instead of an exact match.<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * If you want to restrict if an issuer can use the command, please use {@link co.aikar.commands.CommandConditions.Condition} instead.<a name="line.36"></a>
+<span class="sourceLineNo">037</span> */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.38"></a>
+<span class="sourceLineNo">039</span>@Target({ElementType.PARAMETER})<a name="line.39"></a>
+<span class="sourceLineNo">040</span>public @interface Flags {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    String value();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>}<a name="line.42"></a>
 
 
 

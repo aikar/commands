@@ -35,10 +35,29 @@
 <span class="sourceLineNo">027</span>import co.aikar.commands.CommandIssuer;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import co.aikar.commands.InvalidCommandArgument;<a name="line.28"></a>
 <span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>@FunctionalInterface<a name="line.30"></a>
-<span class="sourceLineNo">031</span>public interface ContextResolver &lt;T, C extends CommandExecutionContext&lt;?, ? extends CommandIssuer&gt;&gt; {<a name="line.31"></a>
-<span class="sourceLineNo">032</span>    T getContext(C c) throws InvalidCommandArgument;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>}<a name="line.33"></a>
+<span class="sourceLineNo">030</span>/**<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * This defines a context resolver, which parses {@link T} from {@link C}.<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * @param &lt;T&gt;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *         The type to be parsed.<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * @param &lt;C&gt;<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *         The type of the context which the resolver would get its data from.<a name="line.36"></a>
+<span class="sourceLineNo">037</span> */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>@FunctionalInterface<a name="line.38"></a>
+<span class="sourceLineNo">039</span>public interface ContextResolver &lt;T, C extends CommandExecutionContext&lt;?, ? extends CommandIssuer&gt;&gt; {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    /**<a name="line.40"></a>
+<span class="sourceLineNo">041</span>     * Parses the context of type {@link C} into {@link T}, or throws an exception.<a name="line.41"></a>
+<span class="sourceLineNo">042</span>     *<a name="line.42"></a>
+<span class="sourceLineNo">043</span>     * @param c<a name="line.43"></a>
+<span class="sourceLineNo">044</span>     *         The context to parse from.<a name="line.44"></a>
+<span class="sourceLineNo">045</span>     *<a name="line.45"></a>
+<span class="sourceLineNo">046</span>     * @return The parsed instance of the wanted type.<a name="line.46"></a>
+<span class="sourceLineNo">047</span>     *<a name="line.47"></a>
+<span class="sourceLineNo">048</span>     * @throws InvalidCommandArgument<a name="line.48"></a>
+<span class="sourceLineNo">049</span>     *         In case the context contains any discrepancies, it will throw this exception.<a name="line.49"></a>
+<span class="sourceLineNo">050</span>     */<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    T getContext(C c) throws InvalidCommandArgument;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>}<a name="line.52"></a>
 
 
 
