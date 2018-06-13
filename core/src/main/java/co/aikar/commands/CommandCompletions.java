@@ -128,7 +128,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
      * @param supplier
      * @return
      */
-    public CommandCompletionHandler registerStaticCompletion(String id, Supplier<List<String>> supplier) {
+    public CommandCompletionHandler registerStaticCompletion(String id, Supplier<Collection<String>> supplier) {
         return registerStaticCompletion(id, supplier.get());
     }
 
@@ -139,7 +139,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
      * @param completions
      * @return
      */
-    public CommandCompletionHandler registerStaticCompletion(String id, List<String> completions) {
+    public CommandCompletionHandler registerStaticCompletion(String id, Collection<String> completions) {
         return registerAsyncCompletion(id, x -> completions);
     }
 
