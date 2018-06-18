@@ -83,6 +83,7 @@ public abstract class BaseCommand {
     String commandName;
     String permission;
     String conditions;
+    boolean hasHelpCommand;
 
     private ExceptionHandler exceptionHandler = null;
     CommandOperationContext lastCommandOperationContext;
@@ -226,6 +227,7 @@ public abstract class BaseCommand {
                 sublist = commandAliases;
             } else if (helpCommand != null) {
                 sublist = helpCommand;
+                hasHelpCommand = true;
             }
 
             boolean preCommand = annotations.hasAnnotation(method, PreCommand.class);

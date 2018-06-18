@@ -58,6 +58,12 @@ public class CommandHelp {
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
+        
+        if (!rootCommand.getDefCommand().hasHelpCommand) {
+            helpEntries.add(new HelpEntry(this, rootCommand.getDefaultRegisteredCommand()));
+            seen.add(rootCommand.getDefaultRegisteredCommand());
+        }
+        
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
             if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
@@ -162,7 +168,7 @@ public class CommandHelp {
             }
             printEntries.add(e);
         }
-        this.lastPage = !(min > 0 || results.hasNext());
+        this.lastPage = max >= totalResults;
 
         if (search == null) {
             formatter.showAllResults(this, printEntries);
