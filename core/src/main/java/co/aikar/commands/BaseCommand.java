@@ -145,6 +145,10 @@ public abstract class BaseCommand {
      * The conditions of the command. This may be null if no conditions has been provided.
      */
     @Nullable String conditions;
+    /**
+     * Identifies if the command has an explicit help command annotated with {@link HelpCommand}
+     */
+    boolean hasHelpCommand;
 
     /**
      * The handler of all uncaught exceptions thrown by the user's command implementation.
@@ -327,6 +331,7 @@ public abstract class BaseCommand {
                 sublist = commandAliases;
             } else if (helpCommand != null) {
                 sublist = helpCommand;
+                hasHelpCommand = true;
             }
 
             boolean preCommand = annotations.hasAnnotation(method, PreCommand.class);

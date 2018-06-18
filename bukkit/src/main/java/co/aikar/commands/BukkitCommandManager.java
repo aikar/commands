@@ -46,6 +46,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -307,6 +309,11 @@ public class BukkitCommandManager extends CommandManager<
         return new BukkitRootCommand(this, cmd);
     }
 
+    @Override
+    public Collection<RootCommand> getRegisteredRootCommands() {
+        return Collections.unmodifiableCollection(registeredCommands.values());
+    }
+    
     @Override
     public BukkitCommandIssuer getCommandIssuer(Object issuer) {
         if (!(issuer instanceof CommandSender)) {

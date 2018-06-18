@@ -79,6 +79,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
+            command = command.trim();
         }
         this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
@@ -294,6 +295,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
     public String getSyntaxText() {
         return syntaxText;
+    }
+    
+    public String getHelpText() {
+        return helpText;
+    }
+    
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
     public String getCommand() {
