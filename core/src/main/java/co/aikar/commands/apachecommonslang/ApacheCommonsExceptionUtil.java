@@ -88,7 +88,7 @@ public class ApacheCommonsExceptionUtil {
         }
         THROWABLE_CAUSE_METHOD = causeMethod;
         try {
-            causeMethod = Throwable.class.getMethod("initCause", new Class[]{Throwable.class});
+            causeMethod = Throwable.class.getMethod("initCause", Throwable.class);
         } catch (Exception e) {
             causeMethod = null;
         }
@@ -185,7 +185,7 @@ public class ApacheCommonsExceptionUtil {
             }
         }
         try {
-            Method setCauseMethod = target.getClass().getMethod("setCause", new Class[]{Throwable.class});
+            Method setCauseMethod = target.getClass().getMethod("setCause", Throwable.class);
             setCauseMethod.invoke(target, causeArgs);
             modifiedTarget = true;
         } catch (NoSuchMethodException ignored) {
@@ -342,7 +342,7 @@ public class ApacheCommonsExceptionUtil {
      */
     private static Throwable getCauseUsingWellKnownTypes(Throwable throwable) {
         if (throwable instanceof Nestable) {
-            return ((Nestable) throwable).getCause();
+            return throwable.getCause();
         } else if (throwable instanceof SQLException) {
             return ((SQLException) throwable).getNextException();
         } else if (throwable instanceof InvocationTargetException) {
@@ -877,7 +877,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @return throwable that caused the original exception
          */
-        public Throwable getCause();
+        Throwable getCause();
 
         /**
          * Returns the error message of this and any nested
@@ -885,7 +885,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @return the error message
          */
-        public String getMessage();
+        String getMessage();
 
         /**
          * Returns the error message of the <code>Throwable</code> in the chain
@@ -899,7 +899,7 @@ public class ApacheCommonsExceptionUtil {
          * negative or not less than the count of <code>Throwable</code>s in the
          * chain
          */
-        public String getMessage(int index);
+        String getMessage(int index);
 
         /**
          * Returns the error message of this and any nested <code>Throwable</code>s
@@ -911,7 +911,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @return the error messages
          */
-        public String[] getMessages();
+        String[] getMessages();
 
         /**
          * Returns the <code>Throwable</code> in the chain of
@@ -924,7 +924,7 @@ public class ApacheCommonsExceptionUtil {
          * negative or not less than the count of <code>Throwable</code>s in the
          * chain
          */
-        public Throwable getThrowable(int index);
+        Throwable getThrowable(int index);
 
         /**
          * Returns the number of nested <code>Throwable</code>s represented by
@@ -932,7 +932,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @return the throwable count
          */
-        public int getThrowableCount();
+        int getThrowableCount();
 
         /**
          * Returns this <code>Nestable</code> and any nested <code>Throwable</code>s
@@ -941,7 +941,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @return the <code>Throwable</code>s
          */
-        public Throwable[] getThrowables();
+        Throwable[] getThrowables();
 
         /**
          * Returns the index, numbered from 0, of the first occurrence of the
@@ -957,7 +957,7 @@ public class ApacheCommonsExceptionUtil {
          * @return index of the first occurrence of the type in the chain, or -1 if
          * the type is not found
          */
-        public int indexOfThrowable(Class type);
+        int indexOfThrowable(Class type);
 
         /**
          * Returns the index, numbered from 0, of the first <code>Throwable</code>
@@ -979,7 +979,7 @@ public class ApacheCommonsExceptionUtil {
          * is negative or not less than the count of <code>Throwable</code>s in the
          * chain
          */
-        public int indexOfThrowable(Class type, int fromIndex);
+        int indexOfThrowable(Class type, int fromIndex);
 
         /**
          * Prints the stack trace of this exception to the specified print
@@ -988,7 +988,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @param out <code>PrintWriter</code> to use for output.
          */
-        public void printStackTrace(PrintWriter out);
+        void printStackTrace(PrintWriter out);
 
         /**
          * Prints the stack trace of this exception to the specified print
@@ -997,7 +997,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @param out <code>PrintStream</code> to use for output.
          */
-        public void printStackTrace(PrintStream out);
+        void printStackTrace(PrintStream out);
 
         /**
          * Prints the stack trace for this exception only--root cause not
@@ -1008,7 +1008,7 @@ public class ApacheCommonsExceptionUtil {
          *
          * @param out The writer to use.
          */
-        public void printPartialStackTrace(PrintWriter out);
+        void printPartialStackTrace(PrintWriter out);
 
     }
 }

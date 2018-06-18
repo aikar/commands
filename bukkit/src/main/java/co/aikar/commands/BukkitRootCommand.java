@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Syntax;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import org.bukkit.command.Command;
