@@ -24,10 +24,17 @@
 package co.aikar.commands.annotation;
 
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Joins arguments into a single piece of text with the specified separator.
+ * For array based parameters, defines the regex pattern to split on
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PARAMETER})
 public @interface Split {
     String value() default ",";
 }

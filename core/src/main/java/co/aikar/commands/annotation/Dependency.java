@@ -23,10 +23,17 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Injects a dependency into the field this is attached to.
+ * Any time a new dependency is registered, this will be overwritten.
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface Dependency {
     /**
      * The key that should be used to lookup the instances, defaults to \"\"

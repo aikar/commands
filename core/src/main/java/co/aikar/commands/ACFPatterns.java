@@ -60,6 +60,18 @@ final class ACFPatterns {
             .expirationPolicy(ExpirationPolicy.ACCESSED)
             .build();
 
+    /**
+     * Gets a pattern and compiles it.
+     * If the pattern is stored already in {@link #patternCache}, it will simply fetch it from there.
+     * If it is not, it will store it there for further use.
+     * <p>
+     * The {@link #patternCache} does not contain the constant patterns defined in this class.
+     *
+     * @param pattern
+     *         The raw pattern in a String.
+     *
+     * @return The pattern which has been cached.
+     */
     public static Pattern getPattern(String pattern) {
         return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
     }

@@ -32,13 +32,20 @@
 <span class="sourceLineNo">024</span>package co.aikar.commands.annotation;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
 <span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>import java.lang.annotation.Retention;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.30"></a>
-<span class="sourceLineNo">031</span>public @interface Split {<a name="line.31"></a>
-<span class="sourceLineNo">032</span>    String value() default ",";<a name="line.32"></a>
-<span class="sourceLineNo">033</span>}<a name="line.33"></a>
+<span class="sourceLineNo">027</span>import java.lang.annotation.ElementType;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.lang.annotation.Retention;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.lang.annotation.RetentionPolicy;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.lang.annotation.Target;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>/**<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Joins arguments into a single piece of text with the specified separator.<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * For array based parameters, defines the regex pattern to split on<a name="line.34"></a>
+<span class="sourceLineNo">035</span> */<a name="line.35"></a>
+<span class="sourceLineNo">036</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.36"></a>
+<span class="sourceLineNo">037</span>@Target({ElementType.PARAMETER})<a name="line.37"></a>
+<span class="sourceLineNo">038</span>public @interface Split {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    String value() default ",";<a name="line.39"></a>
+<span class="sourceLineNo">040</span>}<a name="line.40"></a>
 
 
 

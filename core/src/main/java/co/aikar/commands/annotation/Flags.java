@@ -23,10 +23,20 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Provides configuration options for {@link co.aikar.commands.contexts.ContextResolver}'s to change how they resolve context.
+ *
+ * Example: Searching for a player, you might use @Flags("loose") to indicate a fuzzy match instead of an exact match.
+ *
+ * If you want to restrict if an issuer can use the command, please use {@link co.aikar.commands.CommandConditions.Condition} instead.
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PARAMETER})
 public @interface Flags {
     String value();
 }

@@ -114,6 +114,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#createRootCommand-java.lang.String-">createRootCommand(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="co/aikar/commands/annotation/CrossGuild.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">CrossGuild</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
+<dd>
+<div class="block">The <a href="co/aikar/commands/annotation/CrossGuild.html" title="annotation in co.aikar.commands.annotation"><code>CrossGuild</code></a> annotation is to define whether the parameter should be guild-specific or global.</div>
+</dd>
 </dl>
 <a name="I:D">
 <!--   -->
@@ -128,6 +132,8 @@
 </a>
 <h2 class="title">G</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#getBotOwnerId--">getBotOwnerId()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDARootCommand.html#getChildren--">getChildren()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDARootCommand.html" title="class in co.aikar.commands">JDARootCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#getCommandCompletions--">getCommandCompletions()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
@@ -176,9 +182,11 @@
 </a>
 <h2 class="title">H</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandPermissionResolver.html#hasPermission-co.aikar.commands.JDACommandEvent-java.lang.String-">hasPermission(JDACommandEvent, String)</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a></dt>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/CommandPermissionResolver.html#hasPermission-co.aikar.commands.JDACommandManager-co.aikar.commands.JDACommandEvent-java.lang.String-">hasPermission(JDACommandManager, JDACommandEvent, String)</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/CommandPermissionResolver.html" title="interface in co.aikar.commands">CommandPermissionResolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandEvent.html#hasPermission-java.lang.String-">hasPermission(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandPermissionResolver.html#hasPermission-co.aikar.commands.JDACommandManager-co.aikar.commands.JDACommandEvent-java.lang.String-">hasPermission(JDACommandManager, JDACommandEvent, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandPermissionResolver.html" title="class in co.aikar.commands">JDACommandPermissionResolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#hasRegisteredCommands--">hasRegisteredCommands()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
 <dd>&nbsp;</dd>
@@ -221,6 +229,10 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#JDACommandManager-net.dv8tion.jda.core.JDA-">JDACommandManager(JDA)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandManager.html#JDACommandManager-net.dv8tion.jda.core.JDA-co.aikar.commands.JDAOptions-">JDACommandManager(JDA, JDAOptions)</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/JDACommandManager.html" title="class in co.aikar.commands">JDACommandManager</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="co/aikar/commands/JDACommandPermissionResolver.html" title="class in co.aikar.commands"><span class="typeNameLink">JDACommandPermissionResolver</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandPermissionResolver.html#JDACommandPermissionResolver--">JDACommandPermissionResolver()</a></span> - Constructor for class co.aikar.commands.<a href="co/aikar/commands/JDACommandPermissionResolver.html" title="class in co.aikar.commands">JDACommandPermissionResolver</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="co/aikar/commands/JDAConditionContext.html" title="class in co.aikar.commands"><span class="typeNameLink">JDAConditionContext</span></a> - Class in <a href="co/aikar/commands/package-summary.html">co.aikar.commands</a></dt>
 <dd>&nbsp;</dd>
@@ -293,7 +305,10 @@
 <h2 class="title">S</h2>
 <dl>
 <dt><a href="co/aikar/commands/annotation/SelfUser.html" title="annotation in co.aikar.commands.annotation"><span class="typeNameLink">SelfUser</span></a> - Annotation Type in <a href="co/aikar/commands/annotation/package-summary.html">co.aikar.commands.annotation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">The <a href="co/aikar/commands/annotation/SelfUser.html" title="annotation in co.aikar.commands.annotation"><code>SelfUser</code></a> annotation is to define whether the parameter should be represented by JDA's user object
+ or if it should be parsed from command input.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.Message-">sendMessage(Message)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/JDACommandEvent.html#sendMessage-net.dv8tion.jda.core.entities.MessageEmbed-">sendMessage(MessageEmbed)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/JDACommandEvent.html" title="class in co.aikar.commands">JDACommandEvent</a></dt>

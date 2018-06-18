@@ -27,6 +27,11 @@ import co.aikar.commands.CommandExecutionContext;
 import co.aikar.commands.CommandIssuer;
 
 /**
- * Context Resolver that can accept null input
+ * The same as {@link ContextResolver}, however it can accept a null context.
+ *
+ * If the parameter was marked optional, will still be called with an empty args list
+ *
+ * @param <T>
+ * @param <C>
  */
 public interface OptionalContextResolver <T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> extends ContextResolver <T, C> {}

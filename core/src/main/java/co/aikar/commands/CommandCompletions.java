@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -64,12 +65,82 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         registerAsyncCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
     }
 
+    /**
+     * Registr a completion handler to provide command completions based on the user input.
+     *
+     * @param id
+     * @param handler
+     * @return
+     */
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
+    /**
+     * Registr a completion handler to provide command completions based on the user input.
+     * This handler is declared to be safe to be executed asynchronously.
+     * <p>
+     * Not all platforms support this, so if the platform does not support asynchronous execution,
+     * your handler will be executed on the main thread.
+     * <p>
+     * Use this anytime your handler does not need to access state that is not considered thread safe.
+     * <p>
+     * Use context.isAsync() to determine if you are async or not.
+     *
+     * @param id
+     * @param handler
+     * @return
+     */
     public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
+    }
+
+    /**
+     * Register a static list of command completions that will never change.
+     * Like @CommandCompletion, values are | (PIPE) separated.
+     * <p>
+     * Example: foo|bar|baz
+     *
+     * @param id
+     * @param list
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String list) {
+        return registerStaticCompletion(id, ACFPatterns.PIPE.split(list));
+    }
+
+    /**
+     * Register a static list of command completions that will never change
+     *
+     * @param id
+     * @param completions
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String[] completions) {
+        return registerStaticCompletion(id, Lists.newArrayList(completions));
+    }
+
+    /**
+     * Register a static list of command completions that will never change. The list is obtained from the supplier
+     * immediately as part of this method call.
+     *
+     * @param id
+     * @param supplier
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Supplier<Collection<String>> supplier) {
+        return registerStaticCompletion(id, supplier.get());
+    }
+
+    /**
+     * Register a static list of command completions that will never change
+     *
+     * @param id
+     * @param completions
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Collection<String> completions) {
+        return registerAsyncCompletion(id, x -> completions);
     }
 
     /**

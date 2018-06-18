@@ -2,5 +2,5 @@ package co.aikar.commands;
 
 
 public interface CommandPermissionResolver {
-    boolean hasPermission(JDACommandEvent event, String permission);
+    boolean hasPermission(JDACommandManager manager, JDACommandEvent event, String permission);
 }

@@ -23,10 +23,23 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Many implementation platforms have a concept of "Tab Completions",
+ * where pressing tab will give suggestions on what you can input.
+ *
+ * This annotation specifies either static completion values,
+ * or special @codes that let you define Completion Handlers to dynamically
+ * populate completion values.
+ *
+ * @see {@link co.aikar.commands.CommandCompletions}
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface CommandCompletion {
     String value();
 }

@@ -23,10 +23,20 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Defines the subcommand that can be used to execute this command.
+ * This is appended onto the root command for the command group,
+ * as well as any parent command groups subcommand base.
+ *
+ * Defines the part after root command like so: "/rootcommand {@link #value()}".
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Subcommand {
     String value();
 }

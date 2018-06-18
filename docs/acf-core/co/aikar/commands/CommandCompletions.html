@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -96,7 +96,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
 <li>co.aikar.commands.CommandCompletions&lt;C&gt;</li>
@@ -108,8 +108,8 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.39">CommandCompletions</a>&lt;C extends <a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>&gt;
-extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<pre>public class <a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.40">CommandCompletions</a>&lt;C extends <a href="../../../co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a>&gt;
+extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
 </div>
@@ -174,21 +174,53 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">registerAsyncCompletion</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
-                       <a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">registerAsyncCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                       <a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>
+<div class="block">Registr a completion handler to provide command completions based on the user input.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerCompletion-java.lang.String-co.aikar.commands.CommandCompletions.CommandCompletionHandler-">registerCompletion</a></span>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
-                  <a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerCompletion-java.lang.String-co.aikar.commands.CommandCompletions.CommandCompletionHandler-">registerCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                  <a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</code>
+<div class="block">Registr a completion handler to provide command completions based on the user input.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.util.Collection-">registerStaticCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                        <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;completions)</code>
+<div class="block">Register a static list of command completions that will never change</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.lang.String-">registerStaticCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;list)</code>
+<div class="block">Register a static list of command completions that will never change.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.lang.String:A-">registerStaticCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;completions)</code>
+<div class="block">Register a static list of command completions that will never change</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code><a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandCompletions.html#registerStaticCompletion-java.lang.String-java.util.function.Supplier-">registerStaticCompletion</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                        <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html?is-external=true" title="class or interface in java.util.function">Supplier</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&gt;&nbsp;supplier)</code>
+<div class="block">Register a static list of command completions that will never change.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
-<code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#equals-java.lang.Object-" title="class or interface in java.lang">equals</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#hashCode--" title="class or interface in java.lang">hashCode</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#toString--" title="class or interface in java.lang">toString</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -210,7 +242,7 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CommandCompletions</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.44">CommandCompletions</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.45">CommandCompletions</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager)</pre>
 </li>
 </ul>
 </li>
@@ -227,18 +259,112 @@ extends <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?
 <ul class="blockList">
 <li class="blockList">
 <h4>registerCompletion</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.67">registerCompletion</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.75">registerCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
                                                                       <a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</pre>
+<div class="block">Registr a completion handler to provide command completions based on the user input.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>handler</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
 </li>
 </ul>
 <a name="registerAsyncCompletion-java.lang.String-co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>registerAsyncCompletion</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.71">registerAsyncCompletion</a>(<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.94">registerAsyncCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
                                                                            <a href="../../../co/aikar/commands/CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="../../../co/aikar/commands/CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</pre>
+<div class="block">Registr a completion handler to provide command completions based on the user input.
+ This handler is declared to be safe to be executed asynchronously.
+ <p>
+ Not all platforms support this, so if the platform does not support asynchronous execution,
+ your handler will be executed on the main thread.
+ <p>
+ Use this anytime your handler does not need to access state that is not considered thread safe.
+ <p>
+ Use context.isAsync() to determine if you are async or not.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>handler</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
+</li>
+</ul>
+<a name="registerStaticCompletion-java.lang.String-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>registerStaticCompletion</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.108">registerStaticCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;list)</pre>
+<div class="block">Register a static list of command completions that will never change.
+ Like @CommandCompletion, values are | (PIPE) separated.
+ <p>
+ Example: foo|bar|baz</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>list</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
+</li>
+</ul>
+<a name="registerStaticCompletion-java.lang.String-java.lang.String:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>registerStaticCompletion</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.119">registerStaticCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;completions)</pre>
+<div class="block">Register a static list of command completions that will never change</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>completions</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
+</li>
+</ul>
+<a name="registerStaticCompletion-java.lang.String-java.util.function.Supplier-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>registerStaticCompletion</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.131">registerStaticCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html?is-external=true" title="class or interface in java.util.function">Supplier</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&gt;&nbsp;supplier)</pre>
+<div class="block">Register a static list of command completions that will never change. The list is obtained from the supplier
+ immediately as part of this method call.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>supplier</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
+</li>
+</ul>
+<a name="registerStaticCompletion-java.lang.String-java.util.Collection-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>registerStaticCompletion</h4>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line.142">registerStaticCompletion</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;id,
+                                                                            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;completions)</pre>
+<div class="block">Register a static list of command completions that will never change</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>id</code> - </dd>
+<dd><code>completions</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
 </li>
 </ul>
 </li>

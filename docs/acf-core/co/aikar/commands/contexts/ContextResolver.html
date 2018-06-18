@@ -99,6 +99,11 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>T</code> - The type to be parsed.</dd>
+<dd><code>C</code> - The type of the context which the resolver would get its data from.</dd>
+</dl>
+<dl>
 <dt>All Known Subinterfaces:</dt>
 <dd><a href="../../../../co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts">IssuerAwareContextResolver</a>&lt;T,C&gt;, <a href="../../../../co/aikar/commands/contexts/IssuerOnlyContextResolver.html" title="interface in co.aikar.commands.contexts">IssuerOnlyContextResolver</a>&lt;T,C&gt;, <a href="../../../../co/aikar/commands/contexts/OptionalContextResolver.html" title="interface in co.aikar.commands.contexts">OptionalContextResolver</a>&lt;T,C&gt;, <a href="../../../../co/aikar/commands/contexts/SenderAwareContextResolver.html" title="interface in co.aikar.commands.contexts">SenderAwareContextResolver</a>&lt;T,C&gt;</dd>
 </dl>
@@ -108,8 +113,9 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html?is-external=true" title="class or interface in java.lang">@FunctionalInterface</a>
-public interface <a href="../../../../src-html/co/aikar/commands/contexts/ContextResolver.html#line.31">ContextResolver</a>&lt;T,C extends <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</pre>
+<pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html?is-external=true" title="class or interface in java.lang">@FunctionalInterface</a>
+public interface <a href="../../../../src-html/co/aikar/commands/contexts/ContextResolver.html#line.39">ContextResolver</a>&lt;T,C extends <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</pre>
+<div class="block">This defines a context resolver, which parses <code>T</code> from <code>C</code>.</div>
 </li>
 </ul>
 </div>
@@ -130,7 +136,9 @@ public interface <a href="../../../../src-html/co/aikar/commands/contexts/Contex
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">T</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/contexts/ContextResolver.html#getContext-C-">getContext</a></span>(<a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">C</a>&nbsp;c)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/contexts/ContextResolver.html#getContext-C-">getContext</a></span>(<a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">C</a>&nbsp;c)</code>
+<div class="block">Parses the context of type <code>C</code> into <code>T</code>, or throws an exception.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -155,11 +163,16 @@ public interface <a href="../../../../src-html/co/aikar/commands/contexts/Contex
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getContext</h4>
-<pre><a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">T</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/contexts/ContextResolver.html#line.32">getContext</a>(<a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">C</a>&nbsp;c)
+<pre><a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">T</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/contexts/ContextResolver.html#line.51">getContext</a>(<a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="type parameter in ContextResolver">C</a>&nbsp;c)
       throws <a href="../../../../co/aikar/commands/InvalidCommandArgument.html" title="class in co.aikar.commands">InvalidCommandArgument</a></pre>
+<div class="block">Parses the context of type <code>C</code> into <code>T</code>, or throws an exception.</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>c</code> - The context to parse from.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The parsed instance of the wanted type.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../co/aikar/commands/InvalidCommandArgument.html" title="class in co.aikar.commands">InvalidCommandArgument</a></code></dd>
+<dd><code><a href="../../../../co/aikar/commands/InvalidCommandArgument.html" title="class in co.aikar.commands">InvalidCommandArgument</a></code> - In case the context contains any discrepancies, it will throw this exception.</dd>
 </dl>
 </li>
 </ul>

@@ -23,10 +23,19 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Defines additional keywords to feed into the search help system.
+ *
+ * For example, if a specific word doesn't make sense to use in the command name or description, but should
+ * be used for help in discovering the correct command, then you can add it as a tag.
+ */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface HelpSearchTags {
     String value();
 }

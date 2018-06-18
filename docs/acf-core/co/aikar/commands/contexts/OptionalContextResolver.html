@@ -93,14 +93,21 @@
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>T</code> - </dd>
+<dd><code>C</code> - </dd>
+</dl>
+<dl>
 <dt>All Superinterfaces:</dt>
 <dd><a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a>&lt;T,C&gt;</dd>
 </dl>
 <hr>
 <br>
-<pre>public interface <a href="../../../../src-html/co/aikar/commands/contexts/OptionalContextResolver.html#line.32">OptionalContextResolver</a>&lt;T,C extends <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;
+<pre>public interface <a href="../../../../src-html/co/aikar/commands/contexts/OptionalContextResolver.html#line.37">OptionalContextResolver</a>&lt;T,C extends <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;?,? extends <a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;
 extends <a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a>&lt;T,C&gt;</pre>
-<div class="block">Context Resolver that can accept null input</div>
+<div class="block">The same as <a href="../../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts"><code>ContextResolver</code></a>, however it can accept a null context.
+
+ If the parameter was marked optional, will still be called with an empty args list</div>
 </li>
 </ul>
 </div>

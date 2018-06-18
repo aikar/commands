@@ -23,10 +23,22 @@
 
 package co.aikar.commands.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+/**
+ * Specifies the syntax to be used when executing this command.
+ * It should not include any descriptions of the arguments nor when some are allowed and when they are not.
+ *
+ * Use of this annotation is not necessary. Syntax will be automatically generated for you.
+ * Use this annotation to override automatic syntax
+ *
+ * Use {@link Description} together with the help menu for that purpose.
+ **/
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.PARAMETER})
 public @interface Syntax {
     String value();
 }
