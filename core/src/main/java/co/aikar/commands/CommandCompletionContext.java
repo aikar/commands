@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Lists;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class CommandCompletionContext <I extends CommandIssuer> {
             this.config = null;
         }
 
-        this.args = Lists.newArrayList(args);
+        this.args = Arrays.asList(args);
     }
 
     public Map<String, String> getConfigs() {

@@ -36,7 +36,6 @@ import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
@@ -650,7 +649,7 @@ public abstract class BaseCommand {
             if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {
                 return;
             }
-            List<String> sargs = Lists.newArrayList(args);
+            List<String> sargs = Arrays.asList(args);
             cmd.invoke(issuer, sargs, commandOperationContext);
         } else {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);

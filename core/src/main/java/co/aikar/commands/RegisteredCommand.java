@@ -32,7 +32,6 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
@@ -196,7 +195,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
-        args = Lists.newArrayList(args);
+        args = new ArrayList<>(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;

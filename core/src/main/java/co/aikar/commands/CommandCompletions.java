@@ -23,9 +23,9 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -119,7 +119,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerStaticCompletion(String id, String[] completions) {
-        return registerStaticCompletion(id, Lists.newArrayList(completions));
+        return registerStaticCompletion(id, Arrays.asList(completions));
     }
 
     /**
@@ -189,7 +189,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
         completion = manager.getCommandReplacements().replace(completion);
 
-        List<String> allCompletions = Lists.newArrayList();
+        List<String> allCompletions = new ArrayList<>();
         String input = args.length > 0 ? args[args.length - 1] : "";
 
         for (String value : ACFPatterns.PIPE.split(completion)) {
@@ -217,7 +217,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
                 } catch (CommandCompletionTextLookupException ignored) {
                     // This should only happen if some other feedback error occured.
                 } catch (Exception e) {
-                    command.handleException(sender, Lists.newArrayList(args), e);
+                    command.handleException(sender, Arrays.asList(args), e);
                 }
                 // Something went wrong in lookup, fall back to input
                 return Collections.singletonList(input);
