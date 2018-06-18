@@ -28,11 +28,11 @@ import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -108,7 +108,7 @@ public class Locales {
         Set<Locale> supportedLanguages = manager.getSupportedLanguages();
         for (Locale locale : supportedLanguages) {
             for(SetMultimap<String, Locale> localeData: this.loadedBundles.values()) {
-                for (String bundleName : Sets.newHashSet(localeData.keys())) {
+                for (String bundleName : new HashSet<>(localeData.keys())) {
                     addMessageBundle(bundleName, locale);
                 }
             }

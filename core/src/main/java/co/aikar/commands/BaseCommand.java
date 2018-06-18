@@ -37,7 +37,6 @@ import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
@@ -947,7 +946,7 @@ public abstract class BaseCommand {
         if (this.permission == null || this.permission.isEmpty()) {
             return Collections.emptySet();
         }
-        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
     }
 
     public boolean requiresPermission(String permission) {
