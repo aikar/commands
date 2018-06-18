@@ -34,9 +34,9 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
-import com.google.common.collect.Maps;
 
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
@@ -101,7 +101,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
             }
         }
 
-        this.flags = Maps.newHashMap();
+        this.flags = new HashMap<>();
         String flags = annotations.getAnnotationValue(param, Flags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         if (flags != null) {
             parseFlags(flags);

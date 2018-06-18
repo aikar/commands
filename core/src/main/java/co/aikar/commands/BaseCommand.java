@@ -37,7 +37,6 @@ import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
@@ -93,7 +92,7 @@ public abstract class BaseCommand {
     /**
      * A map of flags to pass to Context Resolution for every parameter of the type. This is like an automatic @Flags on each.
      */
-    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
+    final Map<Class<?>, String> contextFlags = new HashMap<>();
 
     /**
      * What method was annoated with {@link PreCommand} to execute before commands.

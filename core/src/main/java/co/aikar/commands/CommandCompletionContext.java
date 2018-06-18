@@ -24,8 +24,8 @@
 package co.aikar.commands;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class CommandCompletionContext <I extends CommandIssuer> {
     protected final I issuer;
     private final String input;
     private final String config;
-    private final Map<String, String> configs = Maps.newHashMap();
+    private final Map<String, String> configs = new HashMap<>();
     private final List<String> args;
 
     CommandCompletionContext(RegisteredCommand command, I issuer, String input, String config, String[] args) {

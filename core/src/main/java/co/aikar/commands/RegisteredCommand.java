@@ -33,7 +33,6 @@ import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +42,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -198,7 +198,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = Lists.newArrayList(args);
         String[] origArgs = args.toArray(new String[args.size()]);
-        Map<String, Object> passedArgs = Maps.newLinkedHashMap();
+        Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
