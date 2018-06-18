@@ -10,6 +10,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -179,6 +181,11 @@ public class JDACommandManager extends CommandManager<
     @Override
     public RootCommand createRootCommand(String cmd) {
         return new JDARootCommand(this, cmd);
+    }
+    
+    @Override
+    public Collection<RootCommand> getRegisteredRootCommands() {
+        return Collections.unmodifiableCollection(commands.values());
     }
 
     @Override

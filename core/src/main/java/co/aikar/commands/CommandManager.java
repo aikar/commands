@@ -34,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -283,6 +285,8 @@ public abstract class CommandManager <
         return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0], this::createRootCommand);
     }
 
+    public abstract Collection<RootCommand> getRegisteredRootCommands();
+    
     public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {
         return new RegisteredCommand(command, cmdName, method, prefSubCommand);
     }

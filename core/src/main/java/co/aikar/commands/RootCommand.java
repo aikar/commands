@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-interface RootCommand {
+public interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
 
