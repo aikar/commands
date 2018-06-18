@@ -23,11 +23,12 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +45,11 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
-        registerAsyncCompletion("nothing", c -> ImmutableList.of());
+        registerAsyncCompletion("nothing", c -> Collections.emptyList());
         registerAsyncCompletion("range", (c) -> {
             String config = c.getConfig();
             if (config == null) {
-                return ImmutableList.of();
+                return Collections.emptyList();
             }
             final String[] ranges = ACFPatterns.DASH.split(config);
             int start;
@@ -62,7 +63,8 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        registerAsyncCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
+        List<String> timeunits = Arrays.asList("minutes", "hours", "days", "weeks", "months", "years");
+        registerAsyncCompletion("timeunits", (c) -> timeunits);
     }
 
     /**
@@ -178,7 +180,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             completion = completions[completions.length - 1];
         }
         if (completion == null) {
-            return ImmutableList.of(input);
+            return Collections.singletonList(input);
         }
 
         return getCompletionValues(cmd, sender, completion, args, isAsync);
@@ -218,7 +220,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
                     command.handleException(sender, Lists.newArrayList(args), e);
                 }
                 // Something went wrong in lookup, fall back to input
-                return ImmutableList.of(input);
+                return Collections.singletonList(input);
             } else {
                 // Plaintext value
                 allCompletions.add(value);

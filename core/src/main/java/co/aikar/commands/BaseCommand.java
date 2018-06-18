@@ -35,8 +35,6 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -780,7 +778,7 @@ public abstract class BaseCommand {
      */
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
         if (!cmd.hasPermission(issuer) || args.length > cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {
-            return ImmutableList.of();
+            return Collections.emptyList();
         }
 
         List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);
@@ -949,7 +947,7 @@ public abstract class BaseCommand {
 
     public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         }
         return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
     }

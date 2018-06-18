@@ -32,7 +32,6 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -43,6 +42,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -283,7 +283,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
     public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         }
         return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
     }

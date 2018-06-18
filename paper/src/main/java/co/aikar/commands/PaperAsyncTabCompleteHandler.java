@@ -24,12 +24,10 @@
 package co.aikar.commands;
 
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
-import com.google.common.collect.ImmutableList;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.TabCompleteEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,9 +63,6 @@ class PaperAsyncTabCompleteHandler implements Listener {
 
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
             List<String> results = cmd.tabComplete(issuer, commandLabel, args, true);
-            if (event.getCompletions() instanceof ImmutableList) {
-                event.setCompletions(new ArrayList<>(event.getCompletions()));
-            }
             event.getCompletions().addAll(results);
             event.setHandled(true);
         } catch (Exception ignored) {}
@@ -90,9 +85,6 @@ class PaperAsyncTabCompleteHandler implements Listener {
         if (rootCommand != null) {
             args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
-            if (event.getCompletions() instanceof ImmutableList) {
-                event.setCompletions(new ArrayList<>(event.getCompletions()));
-            }
             event.getCompletions().addAll(rootCommand.getTabCompletions(issuer, commandLabel, args, true));
         }
     }
