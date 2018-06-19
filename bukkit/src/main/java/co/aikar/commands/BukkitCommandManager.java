@@ -30,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
@@ -364,5 +365,13 @@ public class BukkitCommandManager extends CommandManager<
     @Override
     public String getCommandPrefix(CommandIssuer issuer) {
         return issuer.isPlayer() ? "/" : "";
+    }
+
+    @Override
+    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List<String> args, Throwable t) {
+        if (t instanceof CommandException && t.getCause() != null && t.getMessage().startsWith("Unhandled exception")) {
+            t = t.getCause();
+        }
+        return super.handleUncaughtException(scope, registeredCommand, sender, args, t);
     }
 }
