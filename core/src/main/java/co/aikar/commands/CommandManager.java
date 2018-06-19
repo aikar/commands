@@ -70,6 +70,7 @@ public abstract class CommandManager <
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
+    boolean logUnhandledExceptions = true;
     protected Table<Class<?>, String, Object> dependencies = new Table<>();
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
@@ -294,10 +295,33 @@ public abstract class CommandManager <
     /**
      * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
      *
-     * @param exceptionHandler the handler that should handle uncaught exceptions
+     * @param exceptionHandler the handler that should handle uncaught exceptions.  May not be null if logExceptions is false
      */
     public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler) {
+        if (exceptionHandler == null && !this.logUnhandledExceptions) {
+            throw new IllegalArgumentException("You may not disable the default exception handler and have logging of unhandled exceptions disabled");
+        }
         defaultExceptionHandler = exceptionHandler;
+    }
+
+    /**
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered, and lets you control if ACF should also log the exception still.
+     * <p>
+     * If you disable logging, you need to log it yourself in your handler.
+     *
+     * @param exceptionHandler the handler that should handle uncaught exceptions. May not be null if logExceptions is false
+     * @param logExceptions    Whether or not to log exceptions.
+     */
+    public void setDefaultExceptionHandler(ExceptionHandler exceptionHandler, boolean logExceptions) {
+        if (exceptionHandler == null && !logExceptions) {
+            throw new IllegalArgumentException("You may not disable the default exception handler and have logging of unhandled exceptions disabled");
+        }
+        this.logUnhandledExceptions = logExceptions;
+        this.defaultExceptionHandler = exceptionHandler;
+    }
+
+    public boolean isLoggingUnhandledExceptions() {
+        return this.logUnhandledExceptions;
     }
 
     /**

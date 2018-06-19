@@ -179,7 +179,10 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                 if (!this.manager.handleUncaughtException(scope, this, sender, args, e)) {
                     sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);
                 }
-                this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
+                boolean hasExceptionHandler = this.manager.defaultExceptionHandler != null || this.scope.getExceptionHandler() != null;
+                if (!hasExceptionHandler || this.manager.logUnhandledExceptions) {
+                    this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
+                }
             } catch (Exception e2) {
                 this.manager.log(LogLevel.ERROR, "Exception in handleException for command: " + command + " " + ACFUtil.join(args), e);
                 this.manager.log(LogLevel.ERROR, "Exception triggered by exception handler:", e2);
