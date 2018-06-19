@@ -63,7 +63,8 @@ class PaperAsyncTabCompleteHandler implements Listener {
 
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
             List<String> results = cmd.tabComplete(issuer, commandLabel, args, true);
-            event.getCompletions().addAll(results);
+            event.setCompletions(ACFUtil.preformOnImmutable(
+                    event.getCompletions(), (list) -> list.addAll(results)));
             event.setHandled(true);
         } catch (Exception ignored) {}
     }
@@ -85,7 +86,9 @@ class PaperAsyncTabCompleteHandler implements Listener {
         if (rootCommand != null) {
             args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
             BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
-            event.getCompletions().addAll(rootCommand.getTabCompletions(issuer, commandLabel, args, true));
+            List<String> tabCompletions = rootCommand.getTabCompletions(issuer, commandLabel, args, true);
+            event.setCompletions(ACFUtil.preformOnImmutable(
+                    event.getCompletions(), (list) -> list.addAll(tabCompletions)));
         }
     }
 }

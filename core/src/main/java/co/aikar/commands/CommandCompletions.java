@@ -64,7 +64,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
         List<String> timeunits = Arrays.asList("minutes", "hours", "days", "weeks", "months", "years");
-        registerAsyncCompletion("timeunits", (c) -> Collections.unmodifiableList(timeunits));
+        registerAsyncCompletion("timeunits", (c) -> timeunits);
     }
 
     /**
