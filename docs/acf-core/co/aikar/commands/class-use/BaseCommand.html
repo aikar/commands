@@ -115,12 +115,39 @@
 </tr>
 <tbody>
 <tr class="altColor">
+<td class="colFirst"><code>default <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
+       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>default <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#getBaseCommand-java.lang.String:A-">getBaseCommand</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandOperationContext.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandOperationContext.html#getCommand--">getCommand</a></span>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>default <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#getDefCommand--">getDefCommand</a></span>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#setExceptionHandler-co.aikar.commands.ExceptionHandler-">setExceptionHandler</a></span>(<a href="../../../../co/aikar/commands/ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</code>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Methods in <a href="../../../../co/aikar/commands/package-summary.html">co.aikar.commands</a> that return types with arguments of type <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&gt;</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#getChildren--">getChildren</a></span>()</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>
@@ -131,6 +158,16 @@
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tbody>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#addChild-co.aikar.commands.BaseCommand-">addChild</a></span>(<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>default void</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">addChildShared</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&gt;&nbsp;children,
+              com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;subCommands,
+              <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</code>&nbsp;</td>
+</tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#createRegisteredCommand-co.aikar.commands.BaseCommand-java.lang.String-java.lang.reflect.Method-java.lang.String-">createRegisteredCommand</a></span>(<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command,
@@ -170,6 +207,21 @@
 <td class="colLast"><span class="typeNameLabel">CommandManager.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandManager.html#registerCommand-co.aikar.commands.BaseCommand-">registerCommand</a></span>(<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</code>
 <div class="block">Registers a command with ACF</div>
 </td>
+</tr>
+</tbody>
+</table>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Method parameters in <a href="../../../../co/aikar/commands/package-summary.html">co.aikar.commands</a> with type arguments of type <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>default void</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">addChildShared</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&gt;&nbsp;children,
+              com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;subCommands,
+              <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>
