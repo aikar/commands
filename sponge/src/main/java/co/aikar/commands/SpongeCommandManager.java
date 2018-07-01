@@ -152,8 +152,11 @@ public class SpongeCommandManager extends CommandManager<
     }
 
     @Override
-    public SpongeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args, i, passedArgs);
+    public SpongeCommandExecutionContext createCommandContext
+            (RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args,
+             Map<String, String> commandFlags, int i, Map<String, Object> passedArgs) {
+        return new SpongeCommandExecutionContext(command, parameter, (SpongeCommandIssuer) sender, args,
+                commandFlags, i, passedArgs);
     }
 
     @Override

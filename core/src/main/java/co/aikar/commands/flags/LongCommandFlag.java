@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,11 +21,37 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.flags;
 
-public enum LogLevel {
-    INFO,
-    ERROR;
+public class LongCommandFlag extends AbstractCommandFlag<LongCommandFlag.LongCommandFlagType, Long> {
 
-    static final String LOG_PREFIX = "[ACF] ";
+    public static final LongCommandFlagType TYPE = new LongCommandFlagType();
+
+    public LongCommandFlag() {
+        super();
+    }
+
+    public LongCommandFlag(Long value) {
+        super(value);
+    }
+
+    @Override
+    public LongCommandFlagType getType() {
+        return TYPE;
+    }
+
+    static class LongCommandFlagType implements CommandFlagType<LongCommandFlagType, Long> {
+
+        @Override
+        public CommandFlag<LongCommandFlagType, Long> create(Long value) {
+            return new LongCommandFlag(value);
+        }
+
+        @Override
+        public Class<Long> getValueType() {
+            return Long.class;
+        }
+
+    }
+
 }

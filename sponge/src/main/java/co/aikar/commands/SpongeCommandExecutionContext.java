@@ -33,8 +33,8 @@ import java.util.Map;
 public class SpongeCommandExecutionContext extends CommandExecutionContext<SpongeCommandExecutionContext, SpongeCommandIssuer> {
 
     SpongeCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, SpongeCommandIssuer sender, List<String> args,
-                                  int index, Map<String, Object> passedArgs) {
-        super(cmd, param, sender, args, index, passedArgs);
+                                  Map<String, String> commandFlags, int index, Map<String, Object> passedArgs) {
+        super(cmd, param, sender, args, commandFlags, index, passedArgs);
     }
 
     public CommandSource getSource() {

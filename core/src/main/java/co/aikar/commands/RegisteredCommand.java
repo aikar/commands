@@ -32,6 +32,10 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
+import co.aikar.commands.flags.CommandFlag;
+import co.aikar.commands.flags.CommandFlagResolver;
+import co.aikar.commands.flags.CommandFlagType;
+import co.aikar.commands.resolver.Resolver;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -197,7 +201,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = Lists.newArrayList(args);
-        String[] origArgs = args.toArray(new String[args.size()]);
+        String[] origArgs = args.toArray(new String[0]);
         Map<String, Object> passedArgs = Maps.newLinkedHashMap();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
@@ -211,18 +215,20 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked
-            final ContextResolver<?, CEC> resolver = parameter.getResolver();
+            final Resolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
-            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args,
+                    opContext.getCommandFlags(), i, passedArgs);
             boolean requiresInput = parameter.requiresInput();
-            if (requiresInput && remainingRequired > 0) {
+
+            if (requiresInput && remainingRequired > 0)
                 remainingRequired--;
-            }
-            if (args.isEmpty() && !(isLast && type == String[].class)) {
+
+            if (args.isEmpty() && !(isLast && type == String[].class) && !parameter.isFlag()) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
-                    Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
+                    Object value = parameter.isOptionalResolver() ? resolver.get(context) : null;
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
@@ -236,7 +242,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                     return null;
                 }
             }
-            if (parameter.getValues() != null) {
+            if (parameter.getValues() != null && !parameter.isFlag()) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 
                 Set<String> possible = Sets.newHashSet();
@@ -256,7 +262,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                             "{valid}", ACFUtil.join(possible, ", "));
                 }
             }
-            Object paramValue = resolver.getContext(context);
+            Object paramValue = resolver.get(context);
             //noinspection unchecked
             this.manager.conditions.validateConditions(context, paramValue);
             passedArgs.put(parameterName, paramValue);

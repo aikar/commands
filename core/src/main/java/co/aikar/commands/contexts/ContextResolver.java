@@ -26,6 +26,7 @@ package co.aikar.commands.contexts;
 import co.aikar.commands.CommandExecutionContext;
 import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.resolver.Resolver;
 
 /**
  * This defines a context resolver, which parses {@link T} from {@link C}.
@@ -36,7 +37,8 @@ import co.aikar.commands.InvalidCommandArgument;
  *         The type of the context which the resolver would get its data from.
  */
 @FunctionalInterface
-public interface ContextResolver <T, C extends CommandExecutionContext<?, ? extends CommandIssuer>> {
+public interface ContextResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>>
+        extends Resolver<T, C> {
     /**
      * Parses the context of type {@link C} into {@link T}, or throws an exception.
      *
@@ -48,5 +50,5 @@ public interface ContextResolver <T, C extends CommandExecutionContext<?, ? exte
      * @throws InvalidCommandArgument
      *         In case the context contains any discrepancies, it will throw this exception.
      */
-    T getContext(C c) throws InvalidCommandArgument;
+    T get(C c) throws InvalidCommandArgument;
 }

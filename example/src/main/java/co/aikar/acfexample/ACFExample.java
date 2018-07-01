@@ -27,8 +27,13 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import co.aikar.commands.flags.PlayerCommandFlag;
+import co.aikar.commands.flags.StringCommandFlag;
 import com.google.common.collect.Lists;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Map;
 
 public final class ACFExample extends JavaPlugin {
 
@@ -105,6 +110,16 @@ public final class ACFExample extends JavaPlugin {
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             getLogger().warning("Error occured while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
+        });
+
+        // 10: Register flags
+        commandManager.getCommandFlags().registerFlag("message", StringCommandFlag.TYPE, c -> {
+            return c.getCommandFlags().get("message");
+        });
+        commandManager.getCommandFlags().registerFlag("player", PlayerCommandFlag.TYPE, c -> {
+            Map<String, String> flags = c.getCommandFlags();
+
+            return flags.containsKey("player") ? Bukkit.getPlayer(flags.get("player")) : null;
         });
     }
 

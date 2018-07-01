@@ -30,10 +30,13 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.OnlinePlayer;
+import co.aikar.commands.flags.PlayerCommandFlag;
+import co.aikar.commands.flags.StringCommandFlag;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,6 +72,19 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("Test String 1: " + testString);
         sender.sendMessage("Test String 2: " + testString2);
         sender.sendMessage("Test String 3: " + testString3);
+    }
+
+    // Simple example for use flags
+    @Subcommand("hello")
+    public void flagTest(CommandSender sender,
+                         @Flags("message") StringCommandFlag helloMessage) {
+        sender.sendMessage(helloMessage.getValue().orElse("Hello, my friend!"));
+    }
+    
+    @Subcommand("name")
+    public void flagTest2(Player sender,
+                          @Flags("player") PlayerCommandFlag playerFlag) {
+        sender.sendMessage("name: " + playerFlag.getValue().orElse(sender).getName());
     }
 
     // %testcmd was defined in ACFExample plugin and defined as "test4|foobar|barbaz"

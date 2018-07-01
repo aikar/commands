@@ -184,8 +184,11 @@ public class BungeeCommandManager extends CommandManager<
     }
 
     @Override
-    public BungeeCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args, i, passedArgs);
+    public BungeeCommandExecutionContext createCommandContext
+            (RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args,
+             Map<String, String> commandFlags, int i, Map<String, Object> passedArgs) {
+        return new BungeeCommandExecutionContext(command, parameter, (BungeeCommandIssuer) sender, args,
+                commandFlags, i, passedArgs);
     }
 
     @Override

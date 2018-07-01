@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,11 +21,8 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.resolver;
 
-public enum LogLevel {
-    INFO,
-    ERROR;
+public class Test {
 
-    static final String LOG_PREFIX = "[ACF] ";
 }

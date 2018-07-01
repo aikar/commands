@@ -24,6 +24,10 @@
 package co.aikar.commands;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Holds information about the currently executing command on this thread
@@ -35,6 +39,7 @@ public class CommandOperationContext <I extends CommandIssuer> {
     private final BaseCommand command;
     private final String commandLabel;
     private final String[] args;
+    private final Map<String, String> commandFlags;
     private final boolean isAsync;
     private RegisteredCommand registeredCommand;
 
@@ -43,8 +48,12 @@ public class CommandOperationContext <I extends CommandIssuer> {
         this.issuer = issuer;
         this.command = command;
         this.commandLabel = commandLabel;
-        this.args = args;
         this.isAsync = isAsync;
+
+        List<String> argList = new ArrayList<>(Arrays.asList(args));
+        //noinspection unchecked
+        this.commandFlags = manager.separateFlags(argList);
+        this.args = argList.toArray(new String[0]);
     }
 
     public CommandManager getCommandManager() {
@@ -61,6 +70,10 @@ public class CommandOperationContext <I extends CommandIssuer> {
 
     public String getCommandLabel() {
         return commandLabel;
+    }
+
+    public Map<String, String> getCommandFlags() {
+        return this.commandFlags;
     }
 
     public String[] getArgs() {

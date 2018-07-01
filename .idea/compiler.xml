@@ -15,7 +15,6 @@
         <module name="acf-jda" />
         <module name="acf-paper" />
         <module name="acf-sponge" />
-        <module name="commands" />
         <module name="example-plugin" />
       </profile>
     </annotationProcessing>

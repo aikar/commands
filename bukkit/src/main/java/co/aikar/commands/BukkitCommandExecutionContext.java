@@ -32,8 +32,8 @@ import java.util.Map;
 
 public class BukkitCommandExecutionContext extends CommandExecutionContext<BukkitCommandExecutionContext, BukkitCommandIssuer> {
     BukkitCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, BukkitCommandIssuer sender, List<String> args,
-                                  int index, Map<String, Object> passedArgs) {
-        super(cmd, param, sender, args, index, passedArgs);
+                                  Map<String, String> commandFlags, int index, Map<String, Object> passedArgs) {
+        super(cmd, param, sender, args, commandFlags, index, passedArgs);
     }
 
     public CommandSender getSender() {

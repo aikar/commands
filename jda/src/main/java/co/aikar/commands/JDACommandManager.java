@@ -199,8 +199,11 @@ public class JDACommandManager extends CommandManager<
     }
 
     @Override
-    public CommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new JDACommandExecutionContext(command, parameter, (JDACommandEvent) sender, args, i, passedArgs);
+    public CommandExecutionContext createCommandContext
+            (RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args,
+             Map<String, String> commandFlags, int i, Map<String, Object> passedArgs) {
+        return new JDACommandExecutionContext(command, parameter, (JDACommandEvent) sender, args,
+                commandFlags, i, passedArgs);
     }
 
     @Override

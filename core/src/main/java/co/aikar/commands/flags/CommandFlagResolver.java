@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,11 +21,13 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.flags;
 
-public enum LogLevel {
-    INFO,
-    ERROR;
+import co.aikar.commands.CommandExecutionContext;
+import co.aikar.commands.CommandIssuer;
+import co.aikar.commands.resolver.Resolver;
 
-    static final String LOG_PREFIX = "[ACF] ";
+@FunctionalInterface
+public interface CommandFlagResolver<T, C extends CommandExecutionContext<?, ? extends CommandIssuer>>
+        extends Resolver<T, C> {
 }

@@ -24,6 +24,8 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.flags.CommandFlagType;
+import co.aikar.commands.flags.CommandFlags;
 import co.aikar.locales.MessageKeyProvider;
 import co.aikar.util.Table;
 import com.google.common.collect.Lists;
@@ -34,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,6 +76,7 @@ public abstract class CommandManager <
     boolean logUnhandledExceptions = true;
     protected Table<Class<?>, String, Object> dependencies = new Table<>();
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
+    protected CommandFlags<CEC> commandFlags = new CommandFlags<>(this);
 
     protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = Lists.newArrayList();
@@ -235,7 +239,9 @@ public abstract class CommandManager <
         return new ConditionContext(issuer, config);
     }
 
-    public abstract CommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs);
+    public abstract CommandExecutionContext createCommandContext
+            (RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args,
+             Map<String, String> commandFlags, int i, Map<String, Object> passedArgs);
 
     public abstract CommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args);
 
@@ -256,6 +262,10 @@ public abstract class CommandManager <
      */
     public CommandReplacements getCommandReplacements() {
         return replacements;
+    }
+
+    public CommandFlags<CEC> getCommandFlags() {
+        return this.commandFlags;
     }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
@@ -533,4 +543,61 @@ public abstract class CommandManager <
     public String getCommandPrefix(CommandIssuer issuer) {
         return "";
     }
+
+    public Map<String, String> separateFlags(List<String> args) {
+        Map<String, String> flags = new HashMap<>();
+        List<String> temp = new ArrayList<>(args);
+
+        label0:
+        for (int i = 0; i < temp.size(); i++) {
+            try {
+                String flag = temp.get(i);
+
+                if (!flag.startsWith("-") || ACFUtil.isNumber(flag.replaceFirst("-", "")))
+                    continue;
+
+                flag = flag.substring(1).toLowerCase();
+                CommandFlagType<?, ?> type = this.getCommandFlags().getType(flag);
+                String value = null;
+
+                if (temp.size() > i + 1 && !temp.get(i + 1).startsWith("-") && !type.isState()) {
+                    value = temp.get(++i);
+
+                    if (value.equals("{}"))
+                        value = "";
+                    else if (value.startsWith("{") && value.endsWith("}")) {
+                        value = value.substring(1, value.length() - 1);
+                    } else if (value.startsWith("{")) {
+                        StringBuilder sb = new StringBuilder(value.replaceFirst("\\{", "").trim()).append(" ");
+
+                        for (int b = i + 1; temp.get(b).endsWith("}"); b++) {
+                            String argB = temp.get(b);
+
+                            if (argB.startsWith("-") || (b == temp.size() - 1 && !argB.endsWith("}")))
+                                continue label0;
+
+                            if (argB.endsWith("}")) {
+                                i = b;
+                                sb.append(argB.replace("}", ""));
+                                break;
+                            }
+
+                            sb.append(argB).append(" ");
+                        }
+
+                        value = sb.toString();
+                    }
+                }
+
+                flags.put(flag, value);
+            } catch (Exception ignore) {
+            }
+        }
+
+        args.clear();
+        args.addAll(temp);
+
+        return flags;
+    }
+
 }
