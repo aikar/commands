@@ -9,15 +9,15 @@
 <pre><span class="sourceLineNo">001</span>package co.aikar.commands;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import com.google.common.collect.Maps;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import net.dv8tion.jda.core.AccountType;<a name="line.5"></a>
-<span class="sourceLineNo">006</span>import net.dv8tion.jda.core.JDA;<a name="line.6"></a>
-<span class="sourceLineNo">007</span>import net.dv8tion.jda.core.entities.ChannelType;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import net.dv8tion.jda.core.entities.Message;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>import net.dv8tion.jda.core.events.message.MessageReceivedEvent;<a name="line.9"></a>
-<span class="sourceLineNo">010</span>import org.jetbrains.annotations.NotNull;<a name="line.10"></a>
-<span class="sourceLineNo">011</span><a name="line.11"></a>
-<span class="sourceLineNo">012</span>import java.util.Arrays;<a name="line.12"></a>
+<span class="sourceLineNo">004</span>import net.dv8tion.jda.core.AccountType;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import net.dv8tion.jda.core.JDA;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import net.dv8tion.jda.core.entities.ChannelType;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import net.dv8tion.jda.core.entities.Message;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import net.dv8tion.jda.core.events.message.MessageReceivedEvent;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import org.jetbrains.annotations.NotNull;<a name="line.9"></a>
+<span class="sourceLineNo">010</span><a name="line.10"></a>
+<span class="sourceLineNo">011</span>import java.util.Arrays;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import java.util.HashMap;<a name="line.12"></a>
 <span class="sourceLineNo">013</span>import java.util.Collection;<a name="line.13"></a>
 <span class="sourceLineNo">014</span>import java.util.Collections;<a name="line.14"></a>
 <span class="sourceLineNo">015</span>import java.util.List;<a name="line.15"></a>
@@ -38,7 +38,7 @@
 <span class="sourceLineNo">030</span>    protected JDACommandCompletions completions;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>    protected JDACommandContexts contexts;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>    protected JDALocales locales;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>    protected Map&lt;String, JDARootCommand&gt; commands = Maps.newHashMap();<a name="line.33"></a>
+<span class="sourceLineNo">033</span>    protected Map&lt;String, JDARootCommand&gt; commands = new HashMap&lt;&gt;();<a name="line.33"></a>
 <span class="sourceLineNo">034</span>    private Logger logger;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>    private CommandConfig defaultConfig;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>    private CommandConfigProvider configProvider;<a name="line.36"></a>
@@ -191,7 +191,7 @@
 <span class="sourceLineNo">183</span>    public RootCommand createRootCommand(String cmd) {<a name="line.183"></a>
 <span class="sourceLineNo">184</span>        return new JDARootCommand(this, cmd);<a name="line.184"></a>
 <span class="sourceLineNo">185</span>    }<a name="line.185"></a>
-<span class="sourceLineNo">186</span>    <a name="line.186"></a>
+<span class="sourceLineNo">186</span><a name="line.186"></a>
 <span class="sourceLineNo">187</span>    @Override<a name="line.187"></a>
 <span class="sourceLineNo">188</span>    public Collection&lt;RootCommand&gt; getRegisteredRootCommands() {<a name="line.188"></a>
 <span class="sourceLineNo">189</span>        return Collections.unmodifiableCollection(commands.values());<a name="line.189"></a>

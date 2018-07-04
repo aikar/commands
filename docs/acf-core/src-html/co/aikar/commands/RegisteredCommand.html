@@ -40,17 +40,17 @@
 <span class="sourceLineNo">032</span>import co.aikar.commands.annotation.Private;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import co.aikar.commands.annotation.Syntax;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import co.aikar.commands.contexts.ContextResolver;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.google.common.collect.ImmutableSet;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.google.common.collect.Lists;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.google.common.collect.Maps;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.google.common.collect.Sets;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import org.jetbrains.annotations.Nullable;<a name="line.39"></a>
-<span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>import java.lang.reflect.InvocationTargetException;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import java.lang.reflect.Method;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import java.lang.reflect.Parameter;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import java.util.ArrayList;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import java.util.Collection;<a name="line.45"></a>
+<span class="sourceLineNo">035</span>import org.jetbrains.annotations.Nullable;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.lang.reflect.InvocationTargetException;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.lang.reflect.Method;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import java.lang.reflect.Parameter;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import java.util.ArrayList;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import java.util.Arrays;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import java.util.Collection;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import java.util.Collections;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import java.util.HashSet;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.util.LinkedHashMap;<a name="line.45"></a>
 <span class="sourceLineNo">046</span>import java.util.List;<a name="line.46"></a>
 <span class="sourceLineNo">047</span>import java.util.Map;<a name="line.47"></a>
 <span class="sourceLineNo">048</span>import java.util.Set;<a name="line.48"></a>
@@ -204,9 +204,9 @@
 <span class="sourceLineNo">196</span>    }<a name="line.196"></a>
 <span class="sourceLineNo">197</span>    @Nullable<a name="line.197"></a>
 <span class="sourceLineNo">198</span>    Map&lt;String, Object&gt; resolveContexts(CommandIssuer sender, List&lt;String&gt; args, int argLimit) throws InvalidCommandArgument {<a name="line.198"></a>
-<span class="sourceLineNo">199</span>        args = Lists.newArrayList(args);<a name="line.199"></a>
+<span class="sourceLineNo">199</span>        args = new ArrayList&lt;&gt;(args);<a name="line.199"></a>
 <span class="sourceLineNo">200</span>        String[] origArgs = args.toArray(new String[args.size()]);<a name="line.200"></a>
-<span class="sourceLineNo">201</span>        Map&lt;String, Object&gt; passedArgs = Maps.newLinkedHashMap();<a name="line.201"></a>
+<span class="sourceLineNo">201</span>        Map&lt;String, Object&gt; passedArgs = new LinkedHashMap&lt;&gt;();<a name="line.201"></a>
 <span class="sourceLineNo">202</span>        int remainingRequired = requiredResolvers;<a name="line.202"></a>
 <span class="sourceLineNo">203</span>        CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();<a name="line.203"></a>
 <span class="sourceLineNo">204</span>        for (int i = 0; i &lt; parameters.length &amp;&amp; i &lt; argLimit; i++) {<a name="line.204"></a>
@@ -247,7 +247,7 @@
 <span class="sourceLineNo">239</span>            if (parameter.getValues() != null) {<a name="line.239"></a>
 <span class="sourceLineNo">240</span>                String arg = !args.isEmpty() ? args.get(0) : "";<a name="line.240"></a>
 <span class="sourceLineNo">241</span><a name="line.241"></a>
-<span class="sourceLineNo">242</span>                Set&lt;String&gt; possible = Sets.newHashSet();<a name="line.242"></a>
+<span class="sourceLineNo">242</span>                Set&lt;String&gt; possible = new HashSet&lt;&gt;();<a name="line.242"></a>
 <span class="sourceLineNo">243</span>                CommandCompletions commandCompletions = this.manager.getCommandCompletions();<a name="line.243"></a>
 <span class="sourceLineNo">244</span>                for (String s : parameter.getValues()) {<a name="line.244"></a>
 <span class="sourceLineNo">245</span>                    //noinspection unchecked<a name="line.245"></a>
@@ -291,9 +291,9 @@
 <span class="sourceLineNo">283</span><a name="line.283"></a>
 <span class="sourceLineNo">284</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.284"></a>
 <span class="sourceLineNo">285</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.285"></a>
-<span class="sourceLineNo">286</span>            return ImmutableSet.of();<a name="line.286"></a>
+<span class="sourceLineNo">286</span>            return Collections.emptySet();<a name="line.286"></a>
 <span class="sourceLineNo">287</span>        }<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));<a name="line.288"></a>
+<span class="sourceLineNo">288</span>        return new HashSet&lt;&gt;(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));<a name="line.288"></a>
 <span class="sourceLineNo">289</span>    }<a name="line.289"></a>
 <span class="sourceLineNo">290</span><a name="line.290"></a>
 <span class="sourceLineNo">291</span>    public boolean requiresPermission(String permission) {<a name="line.291"></a>

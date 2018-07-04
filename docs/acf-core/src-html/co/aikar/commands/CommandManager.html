@@ -34,25 +34,25 @@
 <span class="sourceLineNo">026</span>import co.aikar.commands.annotation.Dependency;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>import co.aikar.locales.MessageKeyProvider;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import co.aikar.util.Table;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import com.google.common.collect.Lists;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.google.common.collect.Maps;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.google.common.collect.Sets;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.jetbrains.annotations.NotNull;<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>import java.lang.reflect.Field;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import java.lang.reflect.InvocationTargetException;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import java.lang.reflect.Method;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import java.util.Collection;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import java.util.Collections;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import java.util.HashMap;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import java.util.IdentityHashMap;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import java.util.List;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import java.util.Locale;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import java.util.Map;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import java.util.Objects;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import java.util.Set;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>import java.util.Stack;<a name="line.46"></a>
-<span class="sourceLineNo">047</span>import java.util.UUID;<a name="line.47"></a>
+<span class="sourceLineNo">029</span>import org.jetbrains.annotations.NotNull;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.lang.reflect.Field;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.lang.reflect.InvocationTargetException;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.lang.reflect.Method;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.ArrayList;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.util.Arrays;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.util.Collection;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.HashMap;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.util.HashSet;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import java.util.IdentityHashMap;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import java.util.List;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import java.util.Locale;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import java.util.Map;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import java.util.Objects;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import java.util.Set;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.util.Stack;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.util.UUID;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.concurrent.ConcurrentHashMap;<a name="line.47"></a>
 <span class="sourceLineNo">048</span><a name="line.48"></a>
 <span class="sourceLineNo">049</span><a name="line.49"></a>
 <span class="sourceLineNo">050</span>@SuppressWarnings("WeakerAccess")<a name="line.50"></a>
@@ -83,15 +83,15 @@
 <span class="sourceLineNo">075</span>    protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);<a name="line.75"></a>
 <span class="sourceLineNo">076</span><a name="line.76"></a>
 <span class="sourceLineNo">077</span>    protected boolean usePerIssuerLocale = false;<a name="line.77"></a>
-<span class="sourceLineNo">078</span>    protected List&lt;IssuerLocaleChangedCallback&lt;I&gt;&gt; localeChangedCallbacks = Lists.newArrayList();<a name="line.78"></a>
-<span class="sourceLineNo">079</span>    protected Set&lt;Locale&gt; supportedLanguages = Sets.newHashSet(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN);<a name="line.79"></a>
+<span class="sourceLineNo">078</span>    protected List&lt;IssuerLocaleChangedCallback&lt;I&gt;&gt; localeChangedCallbacks = new ArrayList&lt;&gt;();<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    protected Set&lt;Locale&gt; supportedLanguages = new HashSet&lt;&gt;(Arrays.asList(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN));<a name="line.79"></a>
 <span class="sourceLineNo">080</span>    protected Map&lt;MessageType, MF&gt; formatters = new IdentityHashMap&lt;&gt;();<a name="line.80"></a>
 <span class="sourceLineNo">081</span>    protected MF defaultFormatter;<a name="line.81"></a>
 <span class="sourceLineNo">082</span>    protected int defaultHelpPerPage = 10;<a name="line.82"></a>
 <span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>    protected Map&lt;UUID, Locale&gt; issuersLocale = Maps.newConcurrentMap();<a name="line.84"></a>
+<span class="sourceLineNo">084</span>    protected Map&lt;UUID, Locale&gt; issuersLocale = new ConcurrentHashMap&lt;&gt;();<a name="line.84"></a>
 <span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    private Set&lt;String&gt; unstableAPIs = Sets.newHashSet();<a name="line.86"></a>
+<span class="sourceLineNo">086</span>    private Set&lt;String&gt; unstableAPIs = new HashSet&lt;&gt;();<a name="line.86"></a>
 <span class="sourceLineNo">087</span><a name="line.87"></a>
 <span class="sourceLineNo">088</span>    private Annotations annotations = new Annotations&lt;&gt;(this);<a name="line.88"></a>
 <span class="sourceLineNo">089</span><a name="line.89"></a>
@@ -295,7 +295,7 @@
 <span class="sourceLineNo">287</span>    }<a name="line.287"></a>
 <span class="sourceLineNo">288</span><a name="line.288"></a>
 <span class="sourceLineNo">289</span>    public abstract Collection&lt;RootCommand&gt; getRegisteredRootCommands();<a name="line.289"></a>
-<span class="sourceLineNo">290</span>    <a name="line.290"></a>
+<span class="sourceLineNo">290</span><a name="line.290"></a>
 <span class="sourceLineNo">291</span>    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {<a name="line.291"></a>
 <span class="sourceLineNo">292</span>        return new RegisteredCommand(command, cmdName, method, prefSubCommand);<a name="line.292"></a>
 <span class="sourceLineNo">293</span>    }<a name="line.293"></a>

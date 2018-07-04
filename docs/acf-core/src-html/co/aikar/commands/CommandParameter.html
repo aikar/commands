@@ -42,9 +42,9 @@
 <span class="sourceLineNo">034</span>import co.aikar.commands.contexts.IssuerAwareContextResolver;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>import co.aikar.commands.contexts.IssuerOnlyContextResolver;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>import co.aikar.commands.contexts.OptionalContextResolver;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.google.common.collect.Maps;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>import java.lang.reflect.Parameter;<a name="line.39"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.lang.reflect.Parameter;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import java.util.HashMap;<a name="line.39"></a>
 <span class="sourceLineNo">040</span>import java.util.Map;<a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span>public class CommandParameter &lt;CEC extends CommandExecutionContext&lt;CEC, ? extends CommandIssuer&gt;&gt; {<a name="line.42"></a>
@@ -109,7 +109,7 @@
 <span class="sourceLineNo">101</span>            }<a name="line.101"></a>
 <span class="sourceLineNo">102</span>        }<a name="line.102"></a>
 <span class="sourceLineNo">103</span><a name="line.103"></a>
-<span class="sourceLineNo">104</span>        this.flags = Maps.newHashMap();<a name="line.104"></a>
+<span class="sourceLineNo">104</span>        this.flags = new HashMap&lt;&gt;();<a name="line.104"></a>
 <span class="sourceLineNo">105</span>        String flags = annotations.getAnnotationValue(param, Flags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.105"></a>
 <span class="sourceLineNo">106</span>        if (flags != null) {<a name="line.106"></a>
 <span class="sourceLineNo">107</span>            parseFlags(flags);<a name="line.107"></a>

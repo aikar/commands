@@ -40,7 +40,7 @@
 <span class="sourceLineNo">032</span>        this.registerIssuerOnlyContext(JDA.class, c -&gt; jda);<a name="line.32"></a>
 <span class="sourceLineNo">033</span>        this.registerIssuerOnlyContext(Guild.class, c -&gt; {<a name="line.33"></a>
 <span class="sourceLineNo">034</span>            MessageReceivedEvent event = c.getIssuer().getIssuer();<a name="line.34"></a>
-<span class="sourceLineNo">035</span>            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; !c.hasAnnotation(Optional.class)) {<a name="line.35"></a>
+<span class="sourceLineNo">035</span>            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; !c.isOptional()) {<a name="line.35"></a>
 <span class="sourceLineNo">036</span>                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);<a name="line.36"></a>
 <span class="sourceLineNo">037</span>            } else {<a name="line.37"></a>
 <span class="sourceLineNo">038</span>                return event.getGuild();<a name="line.38"></a>
@@ -74,50 +74,54 @@
 <span class="sourceLineNo">066</span>            if (c.hasAnnotation(SelfUser.class)) {<a name="line.66"></a>
 <span class="sourceLineNo">067</span>                return jda.getSelfUser();<a name="line.67"></a>
 <span class="sourceLineNo">068</span>            }<a name="line.68"></a>
-<span class="sourceLineNo">069</span>            String arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated<a name="line.69"></a>
-<span class="sourceLineNo">070</span>            User user = null;<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            if (arg.startsWith("&lt;@!")) { // for some reason a ! is added when @'ing and clicking their name.<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                user = jda.getUserById(arg.substring(3, arg.length() - 1));<a name="line.72"></a>
-<span class="sourceLineNo">073</span>            } else if (arg.startsWith("&lt;@")) { // users can /also/ be mentioned like this...<a name="line.73"></a>
-<span class="sourceLineNo">074</span>                user = jda.getUserById(arg.substring(2, arg.length() - 1));<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            } else {<a name="line.75"></a>
-<span class="sourceLineNo">076</span>                List&lt;User&gt; users = jda.getUsersByName(arg, true);<a name="line.76"></a>
-<span class="sourceLineNo">077</span>                if (users.size() &gt; 1) {<a name="line.77"></a>
-<span class="sourceLineNo">078</span>                    throw new InvalidCommandArgument("Too many users were found with the given name. Try with the `@username#0000` syntax.", false);<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                }<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                if (!users.isEmpty()) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                    user = users.get(0);<a name="line.81"></a>
-<span class="sourceLineNo">082</span>                }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>            }<a name="line.83"></a>
-<span class="sourceLineNo">084</span>            if (user == null) {<a name="line.84"></a>
-<span class="sourceLineNo">085</span>                throw new InvalidCommandArgument("Could not find a user with that name or ID.");<a name="line.85"></a>
-<span class="sourceLineNo">086</span>            }<a name="line.86"></a>
-<span class="sourceLineNo">087</span>            return user;<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        });<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        this.registerContext(Role.class, c -&gt; {<a name="line.89"></a>
-<span class="sourceLineNo">090</span>            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);<a name="line.90"></a>
-<span class="sourceLineNo">091</span>            String arg = c.popFirstArg();<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            Role role = null;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>            if (arg.startsWith("&lt;@&amp;")) {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>                String id = arg.substring(3, arg.length() - 1);<a name="line.94"></a>
-<span class="sourceLineNo">095</span>                role = isCrossGuild ? jda.getRoleById(id) : c.issuer.getIssuer().getGuild().getRoleById(id);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>            } else {<a name="line.96"></a>
-<span class="sourceLineNo">097</span>                List&lt;Role&gt; roles = isCrossGuild ? jda.getRolesByName(arg, true)<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                        : c.issuer.getIssuer().getGuild().getRolesByName(arg, true);<a name="line.98"></a>
-<span class="sourceLineNo">099</span>                if (roles.size() &gt; 1) {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>                    throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>                }<a name="line.101"></a>
-<span class="sourceLineNo">102</span>                if (!roles.isEmpty()) {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>                    role = roles.get(0);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>                }<a name="line.104"></a>
-<span class="sourceLineNo">105</span>            }<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            if (role == null) {<a name="line.106"></a>
-<span class="sourceLineNo">107</span>                throw new InvalidCommandArgument("Could not find a role with that name or ID.");<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            }<a name="line.108"></a>
-<span class="sourceLineNo">109</span>            return role;<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        });<a name="line.110"></a>
-<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
-<span class="sourceLineNo">112</span>}<a name="line.112"></a>
+<span class="sourceLineNo">069</span>            String arg = c.getFirstArg();<a name="line.69"></a>
+<span class="sourceLineNo">070</span>            if (c.isOptional() &amp;&amp; (arg == null || arg.isEmpty())) {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                return null;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>            }<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated<a name="line.73"></a>
+<span class="sourceLineNo">074</span>            User user = null;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>            if (arg.startsWith("&lt;@!")) { // for some reason a ! is added when @'ing and clicking their name.<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                user = jda.getUserById(arg.substring(3, arg.length() - 1));<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            } else if (arg.startsWith("&lt;@")) { // users can /also/ be mentioned like this...<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                user = jda.getUserById(arg.substring(2, arg.length() - 1));<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            } else {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                List&lt;User&gt; users = jda.getUsersByName(arg, true);<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                if (users.size() &gt; 1) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                    throw new InvalidCommandArgument("Too many users were found with the given name. Try with the `@username#0000` syntax.", false);<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                }<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                if (!users.isEmpty()) {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                    user = users.get(0);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                }<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            }<a name="line.87"></a>
+<span class="sourceLineNo">088</span>            if (user == null) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                throw new InvalidCommandArgument("Could not find a user with that name or ID.");<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            }<a name="line.90"></a>
+<span class="sourceLineNo">091</span>            return user;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        });<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        this.registerContext(Role.class, c -&gt; {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);<a name="line.94"></a>
+<span class="sourceLineNo">095</span>            String arg = c.popFirstArg();<a name="line.95"></a>
+<span class="sourceLineNo">096</span>            Role role = null;<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            if (arg.startsWith("&lt;@&amp;")) {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                String id = arg.substring(3, arg.length() - 1);<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                role = isCrossGuild ? jda.getRoleById(id) : c.issuer.getIssuer().getGuild().getRoleById(id);<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            } else {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                List&lt;Role&gt; roles = isCrossGuild ? jda.getRolesByName(arg, true)<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                        : c.issuer.getIssuer().getGuild().getRolesByName(arg, true);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                if (roles.size() &gt; 1) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>                    throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>                }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                if (!roles.isEmpty()) {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                    role = roles.get(0);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            if (role == null) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                throw new InvalidCommandArgument("Could not find a role with that name or ID.");<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>            return role;<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        });<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>}<a name="line.116"></a>
 
 
 

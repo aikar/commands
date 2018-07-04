@@ -96,7 +96,7 @@
 <span class="sourceLineNo">088</span>        }<a name="line.88"></a>
 <span class="sourceLineNo">089</span>        THROWABLE_CAUSE_METHOD = causeMethod;<a name="line.89"></a>
 <span class="sourceLineNo">090</span>        try {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>            causeMethod = Throwable.class.getMethod("initCause", new Class[]{Throwable.class});<a name="line.91"></a>
+<span class="sourceLineNo">091</span>            causeMethod = Throwable.class.getMethod("initCause", Throwable.class);<a name="line.91"></a>
 <span class="sourceLineNo">092</span>        } catch (Exception e) {<a name="line.92"></a>
 <span class="sourceLineNo">093</span>            causeMethod = null;<a name="line.93"></a>
 <span class="sourceLineNo">094</span>        }<a name="line.94"></a>
@@ -193,7 +193,7 @@
 <span class="sourceLineNo">185</span>            }<a name="line.185"></a>
 <span class="sourceLineNo">186</span>        }<a name="line.186"></a>
 <span class="sourceLineNo">187</span>        try {<a name="line.187"></a>
-<span class="sourceLineNo">188</span>            Method setCauseMethod = target.getClass().getMethod("setCause", new Class[]{Throwable.class});<a name="line.188"></a>
+<span class="sourceLineNo">188</span>            Method setCauseMethod = target.getClass().getMethod("setCause", Throwable.class);<a name="line.188"></a>
 <span class="sourceLineNo">189</span>            setCauseMethod.invoke(target, causeArgs);<a name="line.189"></a>
 <span class="sourceLineNo">190</span>            modifiedTarget = true;<a name="line.190"></a>
 <span class="sourceLineNo">191</span>        } catch (NoSuchMethodException ignored) {<a name="line.191"></a>
@@ -350,7 +350,7 @@
 <span class="sourceLineNo">342</span>     */<a name="line.342"></a>
 <span class="sourceLineNo">343</span>    private static Throwable getCauseUsingWellKnownTypes(Throwable throwable) {<a name="line.343"></a>
 <span class="sourceLineNo">344</span>        if (throwable instanceof Nestable) {<a name="line.344"></a>
-<span class="sourceLineNo">345</span>            return ((Nestable) throwable).getCause();<a name="line.345"></a>
+<span class="sourceLineNo">345</span>            return throwable.getCause();<a name="line.345"></a>
 <span class="sourceLineNo">346</span>        } else if (throwable instanceof SQLException) {<a name="line.346"></a>
 <span class="sourceLineNo">347</span>            return ((SQLException) throwable).getNextException();<a name="line.347"></a>
 <span class="sourceLineNo">348</span>        } else if (throwable instanceof InvocationTargetException) {<a name="line.348"></a>
@@ -885,7 +885,7 @@
 <span class="sourceLineNo">877</span>         *<a name="line.877"></a>
 <span class="sourceLineNo">878</span>         * @return throwable that caused the original exception<a name="line.878"></a>
 <span class="sourceLineNo">879</span>         */<a name="line.879"></a>
-<span class="sourceLineNo">880</span>        public Throwable getCause();<a name="line.880"></a>
+<span class="sourceLineNo">880</span>        Throwable getCause();<a name="line.880"></a>
 <span class="sourceLineNo">881</span><a name="line.881"></a>
 <span class="sourceLineNo">882</span>        /**<a name="line.882"></a>
 <span class="sourceLineNo">883</span>         * Returns the error message of this and any nested<a name="line.883"></a>
@@ -893,7 +893,7 @@
 <span class="sourceLineNo">885</span>         *<a name="line.885"></a>
 <span class="sourceLineNo">886</span>         * @return the error message<a name="line.886"></a>
 <span class="sourceLineNo">887</span>         */<a name="line.887"></a>
-<span class="sourceLineNo">888</span>        public String getMessage();<a name="line.888"></a>
+<span class="sourceLineNo">888</span>        String getMessage();<a name="line.888"></a>
 <span class="sourceLineNo">889</span><a name="line.889"></a>
 <span class="sourceLineNo">890</span>        /**<a name="line.890"></a>
 <span class="sourceLineNo">891</span>         * Returns the error message of the &lt;code&gt;Throwable&lt;/code&gt; in the chain<a name="line.891"></a>
@@ -907,7 +907,7 @@
 <span class="sourceLineNo">899</span>         * negative or not less than the count of &lt;code&gt;Throwable&lt;/code&gt;s in the<a name="line.899"></a>
 <span class="sourceLineNo">900</span>         * chain<a name="line.900"></a>
 <span class="sourceLineNo">901</span>         */<a name="line.901"></a>
-<span class="sourceLineNo">902</span>        public String getMessage(int index);<a name="line.902"></a>
+<span class="sourceLineNo">902</span>        String getMessage(int index);<a name="line.902"></a>
 <span class="sourceLineNo">903</span><a name="line.903"></a>
 <span class="sourceLineNo">904</span>        /**<a name="line.904"></a>
 <span class="sourceLineNo">905</span>         * Returns the error message of this and any nested &lt;code&gt;Throwable&lt;/code&gt;s<a name="line.905"></a>
@@ -919,7 +919,7 @@
 <span class="sourceLineNo">911</span>         *<a name="line.911"></a>
 <span class="sourceLineNo">912</span>         * @return the error messages<a name="line.912"></a>
 <span class="sourceLineNo">913</span>         */<a name="line.913"></a>
-<span class="sourceLineNo">914</span>        public String[] getMessages();<a name="line.914"></a>
+<span class="sourceLineNo">914</span>        String[] getMessages();<a name="line.914"></a>
 <span class="sourceLineNo">915</span><a name="line.915"></a>
 <span class="sourceLineNo">916</span>        /**<a name="line.916"></a>
 <span class="sourceLineNo">917</span>         * Returns the &lt;code&gt;Throwable&lt;/code&gt; in the chain of<a name="line.917"></a>
@@ -932,7 +932,7 @@
 <span class="sourceLineNo">924</span>         * negative or not less than the count of &lt;code&gt;Throwable&lt;/code&gt;s in the<a name="line.924"></a>
 <span class="sourceLineNo">925</span>         * chain<a name="line.925"></a>
 <span class="sourceLineNo">926</span>         */<a name="line.926"></a>
-<span class="sourceLineNo">927</span>        public Throwable getThrowable(int index);<a name="line.927"></a>
+<span class="sourceLineNo">927</span>        Throwable getThrowable(int index);<a name="line.927"></a>
 <span class="sourceLineNo">928</span><a name="line.928"></a>
 <span class="sourceLineNo">929</span>        /**<a name="line.929"></a>
 <span class="sourceLineNo">930</span>         * Returns the number of nested &lt;code&gt;Throwable&lt;/code&gt;s represented by<a name="line.930"></a>
@@ -940,7 +940,7 @@
 <span class="sourceLineNo">932</span>         *<a name="line.932"></a>
 <span class="sourceLineNo">933</span>         * @return the throwable count<a name="line.933"></a>
 <span class="sourceLineNo">934</span>         */<a name="line.934"></a>
-<span class="sourceLineNo">935</span>        public int getThrowableCount();<a name="line.935"></a>
+<span class="sourceLineNo">935</span>        int getThrowableCount();<a name="line.935"></a>
 <span class="sourceLineNo">936</span><a name="line.936"></a>
 <span class="sourceLineNo">937</span>        /**<a name="line.937"></a>
 <span class="sourceLineNo">938</span>         * Returns this &lt;code&gt;Nestable&lt;/code&gt; and any nested &lt;code&gt;Throwable&lt;/code&gt;s<a name="line.938"></a>
@@ -949,7 +949,7 @@
 <span class="sourceLineNo">941</span>         *<a name="line.941"></a>
 <span class="sourceLineNo">942</span>         * @return the &lt;code&gt;Throwable&lt;/code&gt;s<a name="line.942"></a>
 <span class="sourceLineNo">943</span>         */<a name="line.943"></a>
-<span class="sourceLineNo">944</span>        public Throwable[] getThrowables();<a name="line.944"></a>
+<span class="sourceLineNo">944</span>        Throwable[] getThrowables();<a name="line.944"></a>
 <span class="sourceLineNo">945</span><a name="line.945"></a>
 <span class="sourceLineNo">946</span>        /**<a name="line.946"></a>
 <span class="sourceLineNo">947</span>         * Returns the index, numbered from 0, of the first occurrence of the<a name="line.947"></a>
@@ -965,7 +965,7 @@
 <span class="sourceLineNo">957</span>         * @return index of the first occurrence of the type in the chain, or -1 if<a name="line.957"></a>
 <span class="sourceLineNo">958</span>         * the type is not found<a name="line.958"></a>
 <span class="sourceLineNo">959</span>         */<a name="line.959"></a>
-<span class="sourceLineNo">960</span>        public int indexOfThrowable(Class type);<a name="line.960"></a>
+<span class="sourceLineNo">960</span>        int indexOfThrowable(Class type);<a name="line.960"></a>
 <span class="sourceLineNo">961</span><a name="line.961"></a>
 <span class="sourceLineNo">962</span>        /**<a name="line.962"></a>
 <span class="sourceLineNo">963</span>         * Returns the index, numbered from 0, of the first &lt;code&gt;Throwable&lt;/code&gt;<a name="line.963"></a>
@@ -987,7 +987,7 @@
 <span class="sourceLineNo">979</span>         * is negative or not less than the count of &lt;code&gt;Throwable&lt;/code&gt;s in the<a name="line.979"></a>
 <span class="sourceLineNo">980</span>         * chain<a name="line.980"></a>
 <span class="sourceLineNo">981</span>         */<a name="line.981"></a>
-<span class="sourceLineNo">982</span>        public int indexOfThrowable(Class type, int fromIndex);<a name="line.982"></a>
+<span class="sourceLineNo">982</span>        int indexOfThrowable(Class type, int fromIndex);<a name="line.982"></a>
 <span class="sourceLineNo">983</span><a name="line.983"></a>
 <span class="sourceLineNo">984</span>        /**<a name="line.984"></a>
 <span class="sourceLineNo">985</span>         * Prints the stack trace of this exception to the specified print<a name="line.985"></a>
@@ -996,7 +996,7 @@
 <span class="sourceLineNo">988</span>         *<a name="line.988"></a>
 <span class="sourceLineNo">989</span>         * @param out &lt;code&gt;PrintWriter&lt;/code&gt; to use for output.<a name="line.989"></a>
 <span class="sourceLineNo">990</span>         */<a name="line.990"></a>
-<span class="sourceLineNo">991</span>        public void printStackTrace(PrintWriter out);<a name="line.991"></a>
+<span class="sourceLineNo">991</span>        void printStackTrace(PrintWriter out);<a name="line.991"></a>
 <span class="sourceLineNo">992</span><a name="line.992"></a>
 <span class="sourceLineNo">993</span>        /**<a name="line.993"></a>
 <span class="sourceLineNo">994</span>         * Prints the stack trace of this exception to the specified print<a name="line.994"></a>
@@ -1005,7 +1005,7 @@
 <span class="sourceLineNo">997</span>         *<a name="line.997"></a>
 <span class="sourceLineNo">998</span>         * @param out &lt;code&gt;PrintStream&lt;/code&gt; to use for output.<a name="line.998"></a>
 <span class="sourceLineNo">999</span>         */<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>        public void printStackTrace(PrintStream out);<a name="line.1000"></a>
+<span class="sourceLineNo">1000</span>        void printStackTrace(PrintStream out);<a name="line.1000"></a>
 <span class="sourceLineNo">1001</span><a name="line.1001"></a>
 <span class="sourceLineNo">1002</span>        /**<a name="line.1002"></a>
 <span class="sourceLineNo">1003</span>         * Prints the stack trace for this exception only--root cause not<a name="line.1003"></a>
@@ -1016,7 +1016,7 @@
 <span class="sourceLineNo">1008</span>         *<a name="line.1008"></a>
 <span class="sourceLineNo">1009</span>         * @param out The writer to use.<a name="line.1009"></a>
 <span class="sourceLineNo">1010</span>         */<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>        public void printPartialStackTrace(PrintWriter out);<a name="line.1011"></a>
+<span class="sourceLineNo">1011</span>        void printPartialStackTrace(PrintWriter out);<a name="line.1011"></a>
 <span class="sourceLineNo">1012</span><a name="line.1012"></a>
 <span class="sourceLineNo">1013</span>    }<a name="line.1013"></a>
 <span class="sourceLineNo">1014</span>}<a name="line.1014"></a>
