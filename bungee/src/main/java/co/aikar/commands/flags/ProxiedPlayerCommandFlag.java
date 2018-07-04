@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,11 +21,39 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands;
+package co.aikar.commands.flags;
 
-public enum LogLevel {
-    INFO,
-    ERROR;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-    static final String LOG_PREFIX = "[ACF] ";
+public class ProxiedPlayerCommandFlag extends AbstractCommandFlag<ProxiedPlayerCommandFlag.ProxiedPlayerCommandFlagType, ProxiedPlayer> {
+
+    public static final ProxiedPlayerCommandFlagType TYPE = new ProxiedPlayerCommandFlagType();
+
+    public ProxiedPlayerCommandFlag() {
+        super();
+    }
+
+    public ProxiedPlayerCommandFlag(ProxiedPlayer value) {
+        super(value);
+    }
+
+    @Override
+    public ProxiedPlayerCommandFlagType getType() {
+        return TYPE;
+    }
+
+    static class ProxiedPlayerCommandFlagType implements CommandFlagType<ProxiedPlayerCommandFlagType, ProxiedPlayer> {
+
+        @Override
+        public CommandFlag<ProxiedPlayerCommandFlagType, ProxiedPlayer> create(ProxiedPlayer value) {
+            return new ProxiedPlayerCommandFlag(value);
+        }
+
+        @Override
+        public Class<ProxiedPlayer> getValueType() {
+            return ProxiedPlayer.class;
+        }
+
+    }
+
 }

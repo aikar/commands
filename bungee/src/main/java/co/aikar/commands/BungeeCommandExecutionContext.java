@@ -32,8 +32,9 @@ import java.util.Map;
 
 public class BungeeCommandExecutionContext extends CommandExecutionContext<BungeeCommandExecutionContext, BungeeCommandIssuer> {
 
-    BungeeCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, BungeeCommandIssuer sender, List<String> args, int index, Map<String, Object> passedArgs) {
-        super(cmd, param, sender, args, index, passedArgs);
+    BungeeCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, BungeeCommandIssuer sender, List<String> args,
+                                  Map<String, String> commandFlags, int index, Map<String, Object> passedArgs) {
+        super(cmd, param, sender, args, commandFlags, index, passedArgs);
     }
 
     public CommandSender getSender() {

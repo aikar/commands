@@ -24,7 +24,10 @@
 package co.aikar.commands;
 
 
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import co.aikar.commands.flags.CommandFlagType;
+import co.aikar.commands.flags.StateCommandFlag;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
@@ -33,7 +36,9 @@ import java.text.Normalizer.Form;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

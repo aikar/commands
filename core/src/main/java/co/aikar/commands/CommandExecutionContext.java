@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.contexts.ContextResolver;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -39,10 +37,11 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     private final int index;
     private final Map<String, Object> passedArgs;
     private final Map<String, String> flags;
+    private final Map<String, String> commandFlags;
     private final CommandManager manager;
 
     CommandExecutionContext(RegisteredCommand cmd, CommandParameter param, I sender, List<String> args,
-                            int index, Map<String, Object> passedArgs) {
+                            Map<String, String> commandFlags, int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
         this.manager = cmd.scope.manager;
         this.param = param;
@@ -51,6 +50,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
         this.index = index;
         this.passedArgs = passedArgs;
         this.flags = param.getFlags();
+        this.commandFlags = commandFlags;
 
     }
 
@@ -223,6 +223,10 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
 
     public Map<String, String> getFlags() {
         return this.flags;
+    }
+
+    public Map<String, String> getCommandFlags() {
+        return this.commandFlags;
     }
 
     public String joinArgs() {

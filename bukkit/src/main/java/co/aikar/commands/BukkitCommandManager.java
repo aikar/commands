@@ -324,8 +324,11 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     @Override
-    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args, int i, Map<String, Object> passedArgs) {
-        return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);
+    public BukkitCommandExecutionContext createCommandContext
+            (RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List<String> args,
+             Map<String, String> commandFlags, int i, Map<String, Object> passedArgs) {
+        return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args,
+                commandFlags, i, passedArgs);
     }
 
     @Override

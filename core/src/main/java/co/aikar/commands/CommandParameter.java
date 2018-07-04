@@ -34,6 +34,9 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
+import co.aikar.commands.flags.CommandFlag;
+import co.aikar.commands.flags.CommandFlagType;
+import co.aikar.commands.resolver.Resolver;
 import com.google.common.collect.Maps;
 
 import java.lang.reflect.Parameter;
@@ -46,13 +49,14 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
     private final CommandManager manager;
     private final int paramIndex;
 
-    private ContextResolver<?, CEC> resolver;
+    private Resolver<?, CEC> resolver;
     private boolean optional;
     private String description;
     private String defaultValue;
     private String syntax;
     private String conditions;
     private boolean requiresInput;
+    private boolean flag;
     private boolean commandIssuer;
     private String[] values;
     private Map<String, String> flags;
@@ -72,15 +76,35 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.description = annotations.getAnnotationValue(param, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
-        //noinspection unchecked
-        this.resolver = manager.getCommandContexts().getResolver(type);
-        if (this.resolver == null) {
-            ACFUtil.sneaky(new InvalidCommandContextException(
-                    "Parameter " + type.getSimpleName() + " of " + command + " has no applicable context resolver"
-            ));
+        if (CommandFlag.isCommandFlag(type)) {
+            this.flag = true;
+            String flagName = annotations.getAnnotationValue(param, Flags.class);
+
+            if (flagName == null)
+                ACFUtil.sneaky(new InvalidCommandContextException(
+                        "Parameter " + type.getSimpleName() + " of " + command + " has no flag name"
+                ));
+
+            //noinspection unchecked
+            this.resolver = this.manager.getCommandFlags().getResolver(flagName);
+
+            if (this.resolver == null)
+                ACFUtil.sneaky(new InvalidCommandContextException(
+                        "CommandFlagType of name `" + flagName + "` not has a resolver"
+                ));
+        } else {
+            this.flag = false;
+            //noinspection unchecked
+            this.resolver = manager.getCommandContexts().getResolver(type);
+
+            if (this.resolver == null) {
+                ACFUtil.sneaky(new InvalidCommandContextException(
+                        "Parameter " + type.getSimpleName() + " of " + command + " has no applicable context resolver"
+                ));
+            }
         }
 
-        this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null;
+        this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null || this.flag;
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
@@ -132,12 +156,15 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         }
     }
 
-    private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
+    private boolean isOptionalResolver(Resolver<?, CEC> resolver) {
         return resolver instanceof IssuerAwareContextResolver
             || resolver instanceof IssuerOnlyContextResolver
             || resolver instanceof OptionalContextResolver;
     }
 
+    public boolean isFlag() {
+        return this.flag;
+    }
 
     public Parameter getParameter() {
         return parameter;
@@ -159,7 +186,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         return paramIndex;
     }
 
-    public ContextResolver<?, CEC> getResolver() {
+    public Resolver<?, CEC> getResolver() {
         return resolver;
     }
 
