@@ -60,6 +60,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (commandLabel.contains(":")) commandLabel = ACFPatterns.COLON.split(commandLabel, 2)[1];
         execute(manager.getCommandIssuer(sender), commandLabel, args);
         return true;
     }
