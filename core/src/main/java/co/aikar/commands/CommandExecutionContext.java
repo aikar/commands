@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.contexts.ContextResolver;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;

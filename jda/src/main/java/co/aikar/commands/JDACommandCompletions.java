@@ -1,8 +1,8 @@
 package co.aikar.commands;
 
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 public class JDACommandCompletions extends CommandCompletions<CommandCompletionContext<?>> {
@@ -32,11 +32,11 @@ public class JDACommandCompletions extends CommandCompletions<CommandCompletionC
     @NotNull
     @Override
     List<String> of(RegisteredCommand command, CommandIssuer sender, String[] args, boolean isAsync) {
-        return ImmutableList.of();
+        return Collections.emptyList();
     }
 
     @Override
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
-        return ImmutableList.of();
+        return Collections.emptyList();
     }
 }

@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Maps;
-
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConditionContext <I extends CommandIssuer> {
@@ -36,7 +35,7 @@ public class ConditionContext <I extends CommandIssuer> {
     ConditionContext(I issuer, String config) {
         this.issuer = issuer;
         this.config = config;
-        this.configs = Maps.newHashMap();
+        this.configs = new HashMap<>();
         if (config != null) {
             for (String s : ACFPatterns.COMMA.split(config)) {
                 String[] v = ACFPatterns.EQUALS.split(s, 2);

@@ -35,13 +35,8 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
@@ -95,7 +90,7 @@ public abstract class BaseCommand {
     /**
      * A map of flags to pass to Context Resolution for every parameter of the type. This is like an automatic @Flags on each.
      */
-    final Map<Class<?>, String> contextFlags = Maps.newHashMap();
+    final Map<Class<?>, String> contextFlags = new HashMap<>();
 
     /**
      * What method was annoated with {@link PreCommand} to execute before commands.
@@ -653,7 +648,7 @@ public abstract class BaseCommand {
             if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {
                 return;
             }
-            List<String> sargs = Lists.newArrayList(args);
+            List<String> sargs = Arrays.asList(args);
             cmd.invoke(issuer, sargs, commandOperationContext);
         } else {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
@@ -780,7 +775,7 @@ public abstract class BaseCommand {
      */
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
         if (!cmd.hasPermission(issuer) || args.length > cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {
-            return ImmutableList.of();
+            return Collections.emptyList();
         }
 
         List<String> cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);
@@ -949,9 +944,9 @@ public abstract class BaseCommand {
 
     public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         }
-        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
     }
 
     public boolean requiresPermission(String permission) {

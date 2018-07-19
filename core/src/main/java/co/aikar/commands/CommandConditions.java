@@ -24,9 +24,9 @@
 package co.aikar.commands;
 
 import co.aikar.util.Table;
-import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong
@@ -36,7 +36,7 @@ public class CommandConditions <
         CC extends ConditionContext<I>
     > {
     private CommandManager manager;
-    private Map<String, Condition<I>> conditions = Maps.newHashMap();
+    private Map<String, Condition<I>> conditions = new HashMap<>();
     private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = new Table<>();
 
     CommandConditions(CommandManager manager) {

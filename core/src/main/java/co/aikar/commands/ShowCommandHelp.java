@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowCommandHelp extends InvalidCommandArgument {
@@ -38,6 +37,6 @@ public class ShowCommandHelp extends InvalidCommandArgument {
     }
     ShowCommandHelp(List<String> args) {
         this(true);
-        this.searchArgs = Lists.newArrayList(args);
+        this.searchArgs = new ArrayList<>(args);
     }
 }

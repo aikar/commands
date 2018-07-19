@@ -33,17 +33,17 @@ import java.util.Map;
 @SuppressWarnings("TypeParameterExplicitlyExtendsObject")
 class Annotations <M extends CommandManager> extends AnnotationLookups {
 
-    public static int NOTHING = 0;
-    public static int REPLACEMENTS = 1;
-    public static int LOWERCASE = 1 << 1;
-    public static int UPPERCASE = 1 << 2;
-    public static int NO_EMPTY = 1 << 3;
-    public static int DEFAULT_EMPTY = 1 << 4;
+    public static final int NOTHING = 0;
+    public static final int REPLACEMENTS = 1;
+    public static final int LOWERCASE = 1 << 1;
+    public static final int UPPERCASE = 1 << 2;
+    public static final int NO_EMPTY = 1 << 3;
+    public static final int DEFAULT_EMPTY = 1 << 4;
 
     private final M manager;
 
-    private Map<Class<? extends Annotation>, Method> valueMethods = new IdentityHashMap<>();
-    private Map<Class<? extends Annotation>, Void> noValueAnnotations = new IdentityHashMap<>();
+    private final Map<Class<? extends Annotation>, Method> valueMethods = new IdentityHashMap<>();
+    private final Map<Class<? extends Annotation>, Void> noValueAnnotations = new IdentityHashMap<>();
 
     Annotations(M manager) {
         this.manager = manager;

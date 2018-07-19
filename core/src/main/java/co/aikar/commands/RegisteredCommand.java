@@ -32,17 +32,17 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -196,9 +196,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
-        args = Lists.newArrayList(args);
+        args = new ArrayList<>(args);
         String[] origArgs = args.toArray(new String[args.size()]);
-        Map<String, Object> passedArgs = Maps.newLinkedHashMap();
+        Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
@@ -239,7 +239,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             if (parameter.getValues() != null) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 
-                Set<String> possible = Sets.newHashSet();
+                Set<String> possible = new HashSet<>();
                 CommandCompletions commandCompletions = this.manager.getCommandCompletions();
                 for (String s : parameter.getValues()) {
                     //noinspection unchecked
@@ -283,9 +283,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
     public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         }
-        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
     }
 
     public boolean requiresPermission(String permission) {
