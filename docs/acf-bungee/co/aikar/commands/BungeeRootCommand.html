@@ -18,8 +18,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":18,"i2":18,"i3":10,"i4":18,"i5":10,"i6":10,"i7":18,"i8":10,"i9":18,"i10":10,"i11":10,"i12":18,"i13":18,"i14":18,"i15":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],16:["t5","Default Methods"]};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -113,13 +113,13 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>net.md_5.bungee.api.plugin.TabExecutor</dd>
+<dd>co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor</dd>
 </dl>
 <hr>
 <br>
 <pre>public class <a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.35">BungeeRootCommand</a>
 extends net.md_5.bungee.api.plugin.Command
-implements net.md_5.bungee.api.plugin.TabExecutor</pre>
+implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor</pre>
 </li>
 </ul>
 </div>
@@ -133,7 +133,7 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t5" class="tableTab"><span><a href="javascript:show(16);">Default Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -143,72 +143,31 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#addChild-co.aikar.commands.BaseCommand-">addChild</a></span>(co.aikar.commands.BaseCommand&nbsp;command)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>default void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">addChildShared</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;arg0,
-              com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;arg1,
-              co.aikar.commands.BaseCommand&nbsp;arg2)</code>&nbsp;</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>default co.aikar.commands.BaseCommand</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">execute</a></span>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</code>&nbsp;</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#execute-net.md_5.bungee.api.CommandSender-java.lang.String:A-">execute</a></span>(net.md_5.bungee.api.CommandSender&nbsp;sender,
        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>default co.aikar.commands.BaseCommand</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getBaseCommand-java.lang.String:A-">getBaseCommand</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg0)</code>&nbsp;</td>
-</tr>
-<tr id="i5" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getChildren--">getChildren</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getCommandName--">getCommandName</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>default co.aikar.commands.RegisteredCommand</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i8" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>co.aikar.commands.BaseCommand</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getDefCommand--">getDefCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getDescription--">getDescription</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>co.aikar.commands.CommandManager</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getSubCommands--">getSubCommands</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">getTabCompletions</a></span>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</code>&nbsp;</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">getTabCompletions</a></span>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2,
-                 boolean&nbsp;arg3)</code>&nbsp;</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getUsage--">getUsage</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i15" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#onTabComplete-net.md_5.bungee.api.CommandSender-java.lang.String:A-">onTabComplete</a></span>(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
              <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;strings)</code>&nbsp;</td>
@@ -227,6 +186,13 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
 <code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#clone--" title="class or interface in java.lang">clone</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#finalize--" title="class or interface in java.lang">finalize</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#getClass--" title="class or interface in java.lang">getClass</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notify--" title="class or interface in java.lang">notify</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#notifyAll--" title="class or interface in java.lang">notifyAll</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait--" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-" title="class or interface in java.lang">wait</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true#wait-long-int-" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.co.aikar.commands.RootCommand">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;co.aikar.commands.RootCommand</h3>
+<code>addChildShared, execute, getBaseCommand, getDefaultRegisteredCommand, getDescription, getTabCompletions, getTabCompletions, getUsage</code></li>
 </ul>
 </li>
 </ul>
@@ -249,6 +215,10 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <li class="blockList">
 <h4>getCommandName</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.51">getCommandName</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getCommandName</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 <a name="addChild-co.aikar.commands.BaseCommand-">
@@ -258,6 +228,10 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <li class="blockList">
 <h4>addChild</h4>
 <pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.56">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>addChild</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 <a name="getManager--">
@@ -267,6 +241,10 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <li class="blockList">
 <h4>getManager</h4>
 <pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.65">getManager</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 <a name="getSubCommands--">
@@ -276,6 +254,10 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <li class="blockList">
 <h4>getSubCommands</h4>
 <pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.70">getSubCommands</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getSubCommands</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 <a name="getChildren--">
@@ -285,6 +267,10 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <li class="blockList">
 <h4>getChildren</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.75">getChildren</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getChildren</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 <a name="execute-net.md_5.bungee.api.CommandSender-java.lang.String:A-">
@@ -318,91 +304,14 @@ implements net.md_5.bungee.api.plugin.TabExecutor</pre>
 <a name="getDefCommand--">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>getDefCommand</h4>
 <pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.90">getDefCommand</a>()</pre>
-</li>
-</ul>
-<a name="addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>addChildShared</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">addChildShared</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;arg0,
-                           com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;arg1,
-                           co.aikar.commands.BaseCommand&nbsp;arg2)</pre>
-</li>
-</ul>
-<a name="execute-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>execute</h4>
-<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">execute</a>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</pre>
-</li>
-</ul>
-<a name="getBaseCommand-java.lang.String:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getBaseCommand</h4>
-<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getBaseCommand</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg0)</pre>
-</li>
-</ul>
-<a name="getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getTabCompletions</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getTabCompletions</a>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2)</pre>
-</li>
-</ul>
-<a name="getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getTabCompletions</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getTabCompletions</a>(co.aikar.commands.CommandIssuer&nbsp;arg0,
-                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;arg1,
-                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;arg2,
-                                      boolean&nbsp;arg3)</pre>
-</li>
-</ul>
-<a name="getDefaultRegisteredCommand--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDefaultRegisteredCommand</h4>
-<pre>public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDefaultRegisteredCommand</a>()</pre>
-</li>
-</ul>
-<a name="getDescription--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDescription</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getDescription</a>()</pre>
-</li>
-</ul>
-<a name="getUsage--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>getUsage</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.0">getUsage</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getDefCommand</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
 </li>
 </ul>
 </li>

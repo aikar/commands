@@ -25,7 +25,6 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.util.Identifiable;

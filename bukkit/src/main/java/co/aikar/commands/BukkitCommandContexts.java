@@ -117,7 +117,10 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                     } else {
                         return null;
                     }
+                } else if (arg == null) {
+                    throw new InvalidCommandArgument();
                 }
+                
                 OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), arg, isOptional);
                 return onlinePlayer != null ? onlinePlayer.getPlayer() : null;
             }

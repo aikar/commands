@@ -36,15 +36,19 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target(ElementType.FIELD)<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface Dependency {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    /**<a name="line.34"></a>
-<span class="sourceLineNo">035</span>     * The key that should be used to lookup the instances, defaults to \"\"<a name="line.35"></a>
-<span class="sourceLineNo">036</span>     * @return the key<a name="line.36"></a>
-<span class="sourceLineNo">037</span>     */<a name="line.37"></a>
-<span class="sourceLineNo">038</span>    String value() default "";<a name="line.38"></a>
-<span class="sourceLineNo">039</span>}<a name="line.39"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Injects a dependency into the field this is attached to.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Any time a new dependency is registered, this will be overwritten.<a name="line.33"></a>
+<span class="sourceLineNo">034</span> */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.35"></a>
+<span class="sourceLineNo">036</span>@Target(ElementType.FIELD)<a name="line.36"></a>
+<span class="sourceLineNo">037</span>public @interface Dependency {<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    /**<a name="line.38"></a>
+<span class="sourceLineNo">039</span>     * The key that should be used to lookup the instances, defaults to \"\"<a name="line.39"></a>
+<span class="sourceLineNo">040</span>     * @return the key<a name="line.40"></a>
+<span class="sourceLineNo">041</span>     */<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    String value() default "";<a name="line.42"></a>
+<span class="sourceLineNo">043</span>}<a name="line.43"></a>
 
 
 

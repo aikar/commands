@@ -94,7 +94,14 @@
 <br>
 <pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true" title="class or interface in java.lang.annotation">@Retention</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html?is-external=true#RUNTIME" title="class or interface in java.lang.annotation">RUNTIME</a>)
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true" title="class or interface in java.lang.annotation">@Target</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html?is-external=true#METHOD" title="class or interface in java.lang.annotation">METHOD</a>)
-public @interface <a href="../../../../src-html/co/aikar/commands/annotation/CatchUnknown.html#line.33">CatchUnknown</a></pre>
+public @interface <a href="../../../../src-html/co/aikar/commands/annotation/CatchUnknown.html#line.42">CatchUnknown</a></pre>
+<div class="block">Defines a method that should receive any unknown command for the related root command.
+
+ For example, if a BaseCommand /foo has a method with this, and /foo someunknowncommand is used
+
+ If a method is tagged with this annotation, it will catch unknown commands and let you react to them.
+
+ Only one instance of this annotation can be used per root command.</div>
 </li>
 </ul>
 </div>

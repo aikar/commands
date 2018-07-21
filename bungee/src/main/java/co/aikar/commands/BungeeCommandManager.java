@@ -31,6 +31,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -174,6 +176,11 @@ public class BungeeCommandManager extends CommandManager<
     @Override
     public RootCommand createRootCommand(String cmd) {
         return new BungeeRootCommand(this, cmd);
+    }
+    
+    @Override
+    public Collection<RootCommand> getRegisteredRootCommands() {
+        return Collections.unmodifiableCollection(registeredCommands.values());
     }
 
     @Override

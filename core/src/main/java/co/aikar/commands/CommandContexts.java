@@ -30,17 +30,17 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
-import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandContexts<R extends CommandExecutionContext<?, ? extends CommandIssuer>> {
-    protected final Map<Class<?>, ContextResolver<?, R>> contextMap = Maps.newHashMap();
+    protected final Map<Class<?>, ContextResolver<?, R>> contextMap = new HashMap<>();
     protected final CommandManager manager;
 
     CommandContexts(CommandManager manager) {

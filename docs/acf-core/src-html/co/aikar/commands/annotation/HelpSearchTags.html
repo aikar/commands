@@ -36,11 +36,17 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target({ElementType.METHOD})<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface HelpSearchTags {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>    String value();<a name="line.34"></a>
-<span class="sourceLineNo">035</span>}<a name="line.35"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Defines additional keywords to feed into the search help system.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * For example, if a specific word doesn't make sense to use in the command name or description, but should<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * be used for help in discovering the correct command, then you can add it as a tag.<a name="line.35"></a>
+<span class="sourceLineNo">036</span> */<a name="line.36"></a>
+<span class="sourceLineNo">037</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.37"></a>
+<span class="sourceLineNo">038</span>@Target({ElementType.METHOD})<a name="line.38"></a>
+<span class="sourceLineNo">039</span>public @interface HelpSearchTags {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    String value();<a name="line.40"></a>
+<span class="sourceLineNo">041</span>}<a name="line.41"></a>
 
 
 

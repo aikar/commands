@@ -27,8 +27,9 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
-import com.google.common.collect.Lists;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Arrays;
 
 public final class ACFExample extends JavaPlugin {
 
@@ -64,9 +65,9 @@ public final class ACFExample extends JavaPlugin {
                 SomeObject.getContextResolver());
 
         // 4: Register Command Completions - this will be accessible with @CommandCompletion("@test")
-        commandManager.getCommandCompletions().registerAsyncCompletion("test", c -> (
-            Lists.newArrayList("foo", "bar", "baz")
-        ));
+        commandManager.getCommandCompletions().registerAsyncCompletion("test", c -> {
+            Arrays.asList("foo", "bar", "baz")
+        });
 
         // 5: Register Command Conditions
         commandManager.getCommandConditions().addCondition(SomeObject.class, "limits", (c, exec, value) -> {

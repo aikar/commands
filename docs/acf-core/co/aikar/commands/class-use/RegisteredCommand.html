@@ -117,8 +117,25 @@
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a></span>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>default <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a></span>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></code></td>
 <td class="colLast"><span class="typeNameLabel">CommandOperationContext.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/CommandOperationContext.html#getRegisteredCommand--">getRegisteredCommand</a></span>()</code>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Methods in <a href="../../../../co/aikar/commands/package-summary.html">co.aikar.commands</a> that return types with arguments of type <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#getSubCommands--">getSubCommands</a></span>()</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>
@@ -132,7 +149,11 @@
 <tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#canExecute-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">canExecute</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
-          <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;?&gt;&nbsp;cmd)</code>&nbsp;</td>
+          <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;?&gt;&nbsp;cmd)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">See <a href="../../../../co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands"><code>CommandConditions</code></a></span></div>
+</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>abstract <a href="../../../../co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></code></td>
@@ -195,6 +216,21 @@
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><span class="typeNameLabel">BaseCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/BaseCommand.html#showSyntax-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">showSyntax</a></span>(<a href="../../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
           <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;?&gt;&nbsp;cmd)</code>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="useSummary" border="0" cellpadding="3" cellspacing="0" summary="Use table, listing methods, and an explanation">
+<caption><span>Method parameters in <a href="../../../../co/aikar/commands/package-summary.html">co.aikar.commands</a> with type arguments of type <a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>default void</code></td>
+<td class="colLast"><span class="typeNameLabel">RootCommand.</span><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/RootCommand.html#addChildShared-java.util.List-com.google.common.collect.SetMultimap-co.aikar.commands.BaseCommand-">addChildShared</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&gt;&nbsp;children,
+              com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,<a href="../../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;subCommands,
+              <a href="../../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</code>&nbsp;</td>
 </tr>
 </tbody>
 </table>

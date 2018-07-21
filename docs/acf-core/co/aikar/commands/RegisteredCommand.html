@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":42,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -49,7 +49,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/ShowCommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/RegisteredCommand.html" target="_top">Frames</a></li>
@@ -161,31 +161,39 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#getHelpText--">getHelpText</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#getPermission--">getPermission</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;&nbsp;</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#getPrefSubCommand--">getPrefSubCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#getRequiredPermissions--">getRequiredPermissions</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#getSyntaxText--">getSyntaxText</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#isPrivate--">isPrivate</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#postCommand--">postCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#preCommand--">preCommand</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RegisteredCommand.html#requiresPermission-java.lang.String-">requiresPermission</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</code>&nbsp;</td>
 </tr>
@@ -234,7 +242,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>preCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.152">preCommand</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.153">preCommand</a>()</pre>
 </li>
 </ul>
 <a name="postCommand--">
@@ -243,7 +251,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>postCommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.153">postCommand</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.154">postCommand</a>()</pre>
 </li>
 </ul>
 <a name="getPermission--">
@@ -253,7 +261,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>getPermission</h4>
 <pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.273">getPermission</a>()</pre>
+public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.277">getPermission</a>()</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -267,7 +275,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>getRequiredPermissions</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.280">getRequiredPermissions</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.284">getRequiredPermissions</a>()</pre>
 </li>
 </ul>
 <a name="requiresPermission-java.lang.String-">
@@ -276,7 +284,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>requiresPermission</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.287">requiresPermission</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.291">requiresPermission</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permission)</pre>
 </li>
 </ul>
 <a name="getPrefSubCommand--">
@@ -285,7 +293,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPrefSubCommand</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.291">getPrefSubCommand</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.295">getPrefSubCommand</a>()</pre>
 </li>
 </ul>
 <a name="getSyntaxText--">
@@ -294,7 +302,25 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>getSyntaxText</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.295">getSyntaxText</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.299">getSyntaxText</a>()</pre>
+</li>
+</ul>
+<a name="getHelpText--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getHelpText</h4>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.303">getHelpText</a>()</pre>
+</li>
+</ul>
+<a name="isPrivate--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isPrivate</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.307">isPrivate</a>()</pre>
 </li>
 </ul>
 <a name="getCommand--">
@@ -303,7 +329,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommand</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.299">getCommand</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.311">getCommand</a>()</pre>
 </li>
 </ul>
 <a name="addSubcommand-java.lang.String-">
@@ -312,7 +338,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockList">
 <li class="blockList">
 <h4>addSubcommand</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.303">addSubcommand</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.315">addSubcommand</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;cmd)</pre>
 </li>
 </ul>
 <a name="addSubcommands-java.util.Collection-">
@@ -321,7 +347,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>addSubcommands</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.306">addSubcommands</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;cmd)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/RegisteredCommand.html#line.318">addSubcommands</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;cmd)</pre>
 </li>
 </ul>
 </li>
@@ -352,7 +378,7 @@ public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../co/aikar/commands/MessageType.html" title="class in co.aikar.commands"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../co/aikar/commands/ShowCommandHelp.html" title="class in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?co/aikar/commands/RegisteredCommand.html" target="_top">Frames</a></li>

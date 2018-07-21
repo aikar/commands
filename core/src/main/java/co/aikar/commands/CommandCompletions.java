@@ -23,14 +23,16 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -43,11 +45,11 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
-        registerAsyncCompletion("nothing", c -> ImmutableList.of());
+        registerAsyncCompletion("nothing", c -> Collections.emptyList());
         registerAsyncCompletion("range", (c) -> {
             String config = c.getConfig();
             if (config == null) {
-                return ImmutableList.of();
+                return Collections.emptyList();
             }
             final String[] ranges = ACFPatterns.DASH.split(config);
             int start;
@@ -61,15 +63,86 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        registerAsyncCompletion("timeunits", (c) -> ImmutableList.of("minutes", "hours", "days", "weeks", "months", "years"));
+        List<String> timeunits = Arrays.asList("minutes", "hours", "days", "weeks", "months", "years");
+        registerAsyncCompletion("timeunits", (c) -> timeunits);
     }
 
+    /**
+     * Registr a completion handler to provide command completions based on the user input.
+     *
+     * @param id
+     * @param handler
+     * @return
+     */
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
     }
 
+    /**
+     * Registr a completion handler to provide command completions based on the user input.
+     * This handler is declared to be safe to be executed asynchronously.
+     * <p>
+     * Not all platforms support this, so if the platform does not support asynchronous execution,
+     * your handler will be executed on the main thread.
+     * <p>
+     * Use this anytime your handler does not need to access state that is not considered thread safe.
+     * <p>
+     * Use context.isAsync() to determine if you are async or not.
+     *
+     * @param id
+     * @param handler
+     * @return
+     */
     public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
         return this.completionMap.put("@" + id.toLowerCase(), handler);
+    }
+
+    /**
+     * Register a static list of command completions that will never change.
+     * Like @CommandCompletion, values are | (PIPE) separated.
+     * <p>
+     * Example: foo|bar|baz
+     *
+     * @param id
+     * @param list
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String list) {
+        return registerStaticCompletion(id, ACFPatterns.PIPE.split(list));
+    }
+
+    /**
+     * Register a static list of command completions that will never change
+     *
+     * @param id
+     * @param completions
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String[] completions) {
+        return registerStaticCompletion(id, Arrays.asList(completions));
+    }
+
+    /**
+     * Register a static list of command completions that will never change. The list is obtained from the supplier
+     * immediately as part of this method call.
+     *
+     * @param id
+     * @param supplier
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Supplier<Collection<String>> supplier) {
+        return registerStaticCompletion(id, supplier.get());
+    }
+
+    /**
+     * Register a static list of command completions that will never change
+     *
+     * @param id
+     * @param completions
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Collection<String> completions) {
+        return registerAsyncCompletion(id, x -> completions);
     }
 
     /**
@@ -107,7 +180,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
             completion = completions[completions.length - 1];
         }
         if (completion == null) {
-            return ImmutableList.of(input);
+            return Collections.singletonList(input);
         }
 
         return getCompletionValues(cmd, sender, completion, args, isAsync);
@@ -116,7 +189,7 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
         completion = manager.getCommandReplacements().replace(completion);
 
-        List<String> allCompletions = Lists.newArrayList();
+        List<String> allCompletions = new ArrayList<>();
         String input = args.length > 0 ? args[args.length - 1] : "";
 
         for (String value : ACFPatterns.PIPE.split(completion)) {
@@ -144,10 +217,10 @@ public class CommandCompletions <C extends CommandCompletionContext> {
                 } catch (CommandCompletionTextLookupException ignored) {
                     // This should only happen if some other feedback error occured.
                 } catch (Exception e) {
-                    command.handleException(sender, Lists.newArrayList(args), e);
+                    command.handleException(sender, Arrays.asList(args), e);
                 }
                 // Something went wrong in lookup, fall back to input
-                return ImmutableList.of(input);
+                return Collections.singletonList(input);
             } else {
                 // Plaintext value
                 allCompletions.add(value);

@@ -87,234 +87,246 @@
 <span class="sourceLineNo">079</span><a name="line.79"></a>
 <span class="sourceLineNo">080</span>        if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {<a name="line.80"></a>
 <span class="sourceLineNo">081</span>            prefSubCommand = "";<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        }<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) &amp;&amp; !prefSubCommand.isEmpty() ? prefSubCommand : "");<a name="line.83"></a>
-<span class="sourceLineNo">084</span>        this.method = method;<a name="line.84"></a>
-<span class="sourceLineNo">085</span>        this.prefSubCommand = prefSubCommand;<a name="line.85"></a>
-<span class="sourceLineNo">086</span><a name="line.86"></a>
-<span class="sourceLineNo">087</span>        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.91"></a>
-<span class="sourceLineNo">092</span><a name="line.92"></a>
-<span class="sourceLineNo">093</span>        Parameter[] parameters = method.getParameters();<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        //noinspection unchecked<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        this.parameters = new CommandParameter[parameters.length];<a name="line.95"></a>
-<span class="sourceLineNo">096</span><a name="line.96"></a>
-<span class="sourceLineNo">097</span>        this.isPrivate = annotations.hasAnnotation(method, Private.class);<a name="line.97"></a>
-<span class="sourceLineNo">098</span><a name="line.98"></a>
-<span class="sourceLineNo">099</span>        int requiredResolvers = 0;<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        int consumeInputResolvers = 0;<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        int doesNotConsumeInputResolvers = 0;<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        int optionalResolvers = 0;<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        StringBuilder syntaxBuilder = new StringBuilder(64);<a name="line.103"></a>
-<span class="sourceLineNo">104</span><a name="line.104"></a>
-<span class="sourceLineNo">105</span>        for (int i = 0; i &lt; parameters.length; i++) {<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            CommandParameter&lt;CEC&gt; parameter = this.parameters[i] = new CommandParameter&lt;&gt;(this, parameters[i], i);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>            if (!parameter.isCommandIssuer()) {<a name="line.107"></a>
-<span class="sourceLineNo">108</span>                if (!parameter.requiresInput()) {<a name="line.108"></a>
-<span class="sourceLineNo">109</span>                    optionalResolvers++;<a name="line.109"></a>
-<span class="sourceLineNo">110</span>                } else {<a name="line.110"></a>
-<span class="sourceLineNo">111</span>                    requiredResolvers++;<a name="line.111"></a>
-<span class="sourceLineNo">112</span>                }<a name="line.112"></a>
-<span class="sourceLineNo">113</span>                if (parameter.canConsumeInput()) {<a name="line.113"></a>
-<span class="sourceLineNo">114</span>                    consumeInputResolvers++;<a name="line.114"></a>
-<span class="sourceLineNo">115</span>                } else {<a name="line.115"></a>
-<span class="sourceLineNo">116</span>                    doesNotConsumeInputResolvers++;<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                }<a name="line.117"></a>
-<span class="sourceLineNo">118</span>            }<a name="line.118"></a>
-<span class="sourceLineNo">119</span>            if (parameter.getSyntax() != null) {<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                if (syntaxBuilder.length() &gt; 0) {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                    syntaxBuilder.append(' ');<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                }<a name="line.122"></a>
-<span class="sourceLineNo">123</span>                syntaxBuilder.append(parameter.getSyntax());<a name="line.123"></a>
-<span class="sourceLineNo">124</span>            }<a name="line.124"></a>
-<span class="sourceLineNo">125</span>        }<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        String syntaxText = syntaxBuilder.toString().trim();<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        this.requiredResolvers = requiredResolvers;<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        this.consumeInputResolvers = consumeInputResolvers;<a name="line.130"></a>
-<span class="sourceLineNo">131</span>        this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;<a name="line.131"></a>
-<span class="sourceLineNo">132</span>        this.optionalResolvers = optionalResolvers;<a name="line.132"></a>
-<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
-<span class="sourceLineNo">134</span><a name="line.134"></a>
+<span class="sourceLineNo">082</span>            command = command.trim();<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        }<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) &amp;&amp; !prefSubCommand.isEmpty() ? prefSubCommand : "");<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        this.method = method;<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        this.prefSubCommand = prefSubCommand;<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>        Parameter[] parameters = method.getParameters();<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        //noinspection unchecked<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        this.parameters = new CommandParameter[parameters.length];<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>        this.isPrivate = annotations.hasAnnotation(method, Private.class);<a name="line.98"></a>
+<span class="sourceLineNo">099</span><a name="line.99"></a>
+<span class="sourceLineNo">100</span>        int requiredResolvers = 0;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        int consumeInputResolvers = 0;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        int doesNotConsumeInputResolvers = 0;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        int optionalResolvers = 0;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        StringBuilder syntaxBuilder = new StringBuilder(64);<a name="line.104"></a>
+<span class="sourceLineNo">105</span><a name="line.105"></a>
+<span class="sourceLineNo">106</span>        for (int i = 0; i &lt; parameters.length; i++) {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>            CommandParameter&lt;CEC&gt; parameter = this.parameters[i] = new CommandParameter&lt;&gt;(this, parameters[i], i);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            if (!parameter.isCommandIssuer()) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                if (!parameter.requiresInput()) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                    optionalResolvers++;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                } else {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                    requiredResolvers++;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                }<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                if (parameter.canConsumeInput()) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                    consumeInputResolvers++;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                } else {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                    doesNotConsumeInputResolvers++;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>                }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>            }<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            if (parameter.getSyntax() != null) {<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                if (syntaxBuilder.length() &gt; 0) {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>                    syntaxBuilder.append(' ');<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                }<a name="line.123"></a>
+<span class="sourceLineNo">124</span>                syntaxBuilder.append(parameter.getSyntax());<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            }<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        }<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        String syntaxText = syntaxBuilder.toString().trim();<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        this.requiredResolvers = requiredResolvers;<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        this.consumeInputResolvers = consumeInputResolvers;<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        this.optionalResolvers = optionalResolvers;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    }<a name="line.134"></a>
 <span class="sourceLineNo">135</span><a name="line.135"></a>
-<span class="sourceLineNo">136</span>    void invoke(CommandIssuer sender, List&lt;String&gt; args, CommandOperationContext context) {<a name="line.136"></a>
-<span class="sourceLineNo">137</span>        if (!scope.canExecute(sender, this)) {<a name="line.137"></a>
-<span class="sourceLineNo">138</span>            return;<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        }<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        preCommand();<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        try {<a name="line.141"></a>
-<span class="sourceLineNo">142</span>            this.manager.conditions.validateConditions(context);<a name="line.142"></a>
-<span class="sourceLineNo">143</span>            Map&lt;String, Object&gt; passedArgs = resolveContexts(sender, args);<a name="line.143"></a>
-<span class="sourceLineNo">144</span>            if (passedArgs == null) return;<a name="line.144"></a>
-<span class="sourceLineNo">145</span><a name="line.145"></a>
-<span class="sourceLineNo">146</span>            method.invoke(scope, passedArgs.values().toArray());<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        } catch (Exception e) {<a name="line.147"></a>
-<span class="sourceLineNo">148</span>            handleException(sender, args, e);<a name="line.148"></a>
-<span class="sourceLineNo">149</span>        }<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        postCommand();<a name="line.150"></a>
-<span class="sourceLineNo">151</span>    }<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    public void preCommand() {}<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    public void postCommand() {}<a name="line.153"></a>
-<span class="sourceLineNo">154</span><a name="line.154"></a>
-<span class="sourceLineNo">155</span>    void handleException(CommandIssuer sender, List&lt;String&gt; args, Exception e) {<a name="line.155"></a>
-<span class="sourceLineNo">156</span>        if (e instanceof InvocationTargetException &amp;&amp; e.getCause() instanceof InvalidCommandArgument) {<a name="line.156"></a>
-<span class="sourceLineNo">157</span>            e = (Exception) e.getCause();<a name="line.157"></a>
-<span class="sourceLineNo">158</span>        }<a name="line.158"></a>
-<span class="sourceLineNo">159</span>        if (e instanceof ShowCommandHelp) {<a name="line.159"></a>
-<span class="sourceLineNo">160</span>            ShowCommandHelp showHelp = (ShowCommandHelp) e;<a name="line.160"></a>
-<span class="sourceLineNo">161</span>            CommandHelp commandHelp = manager.generateCommandHelp();<a name="line.161"></a>
-<span class="sourceLineNo">162</span>            if (showHelp.search) {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>                commandHelp.setSearch(showHelp.searchArgs == null ? args : showHelp.searchArgs);<a name="line.163"></a>
-<span class="sourceLineNo">164</span>            }<a name="line.164"></a>
-<span class="sourceLineNo">165</span>            commandHelp.showHelp(sender);<a name="line.165"></a>
-<span class="sourceLineNo">166</span>        } else if (e instanceof InvalidCommandArgument) {<a name="line.166"></a>
-<span class="sourceLineNo">167</span>            InvalidCommandArgument invalidCommandArg = (InvalidCommandArgument) e;<a name="line.167"></a>
-<span class="sourceLineNo">168</span>            if (invalidCommandArg.key != null) {<a name="line.168"></a>
-<span class="sourceLineNo">169</span>                sender.sendMessage(MessageType.ERROR, invalidCommandArg.key, invalidCommandArg.replacements);<a name="line.169"></a>
-<span class="sourceLineNo">170</span>            } else if (e.getMessage() != null &amp;&amp; !e.getMessage().isEmpty()) {<a name="line.170"></a>
-<span class="sourceLineNo">171</span>                sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PREFIX, "{message}", e.getMessage());<a name="line.171"></a>
-<span class="sourceLineNo">172</span>            }<a name="line.172"></a>
-<span class="sourceLineNo">173</span>            if (invalidCommandArg.showSyntax) {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>                scope.showSyntax(sender, this);<a name="line.174"></a>
-<span class="sourceLineNo">175</span>            }<a name="line.175"></a>
-<span class="sourceLineNo">176</span>        } else {<a name="line.176"></a>
-<span class="sourceLineNo">177</span>            try {<a name="line.177"></a>
-<span class="sourceLineNo">178</span>                if (!this.manager.handleUncaughtException(scope, this, sender, args, e)) {<a name="line.178"></a>
-<span class="sourceLineNo">179</span>                    sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);<a name="line.179"></a>
-<span class="sourceLineNo">180</span>                }<a name="line.180"></a>
-<span class="sourceLineNo">181</span>                this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);<a name="line.181"></a>
-<span class="sourceLineNo">182</span>            } catch (Exception e2) {<a name="line.182"></a>
-<span class="sourceLineNo">183</span>                this.manager.log(LogLevel.ERROR, "Exception in handleException for command: " + command + " " + ACFUtil.join(args), e);<a name="line.183"></a>
-<span class="sourceLineNo">184</span>                this.manager.log(LogLevel.ERROR, "Exception triggered by exception handler:", e2);<a name="line.184"></a>
-<span class="sourceLineNo">185</span>            }<a name="line.185"></a>
-<span class="sourceLineNo">186</span>        }<a name="line.186"></a>
-<span class="sourceLineNo">187</span>    }<a name="line.187"></a>
-<span class="sourceLineNo">188</span><a name="line.188"></a>
-<span class="sourceLineNo">189</span>    @Nullable<a name="line.189"></a>
-<span class="sourceLineNo">190</span>    Map&lt;String, Object&gt; resolveContexts(CommandIssuer sender, List&lt;String&gt; args) throws InvalidCommandArgument {<a name="line.190"></a>
-<span class="sourceLineNo">191</span>        return resolveContexts(sender, args, parameters.length);<a name="line.191"></a>
-<span class="sourceLineNo">192</span>    }<a name="line.192"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>    void invoke(CommandIssuer sender, List&lt;String&gt; args, CommandOperationContext context) {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        if (!scope.canExecute(sender, this)) {<a name="line.138"></a>
+<span class="sourceLineNo">139</span>            return;<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        }<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        preCommand();<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        try {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>            this.manager.conditions.validateConditions(context);<a name="line.143"></a>
+<span class="sourceLineNo">144</span>            Map&lt;String, Object&gt; passedArgs = resolveContexts(sender, args);<a name="line.144"></a>
+<span class="sourceLineNo">145</span>            if (passedArgs == null) return;<a name="line.145"></a>
+<span class="sourceLineNo">146</span><a name="line.146"></a>
+<span class="sourceLineNo">147</span>            method.invoke(scope, passedArgs.values().toArray());<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        } catch (Exception e) {<a name="line.148"></a>
+<span class="sourceLineNo">149</span>            handleException(sender, args, e);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
+<span class="sourceLineNo">151</span>        postCommand();<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    }<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    public void preCommand() {}<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    public void postCommand() {}<a name="line.154"></a>
+<span class="sourceLineNo">155</span><a name="line.155"></a>
+<span class="sourceLineNo">156</span>    void handleException(CommandIssuer sender, List&lt;String&gt; args, Exception e) {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        if (e instanceof InvocationTargetException &amp;&amp; e.getCause() instanceof InvalidCommandArgument) {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>            e = (Exception) e.getCause();<a name="line.158"></a>
+<span class="sourceLineNo">159</span>        }<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        if (e instanceof ShowCommandHelp) {<a name="line.160"></a>
+<span class="sourceLineNo">161</span>            ShowCommandHelp showHelp = (ShowCommandHelp) e;<a name="line.161"></a>
+<span class="sourceLineNo">162</span>            CommandHelp commandHelp = manager.generateCommandHelp();<a name="line.162"></a>
+<span class="sourceLineNo">163</span>            if (showHelp.search) {<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                commandHelp.setSearch(showHelp.searchArgs == null ? args : showHelp.searchArgs);<a name="line.164"></a>
+<span class="sourceLineNo">165</span>            }<a name="line.165"></a>
+<span class="sourceLineNo">166</span>            commandHelp.showHelp(sender);<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        } else if (e instanceof InvalidCommandArgument) {<a name="line.167"></a>
+<span class="sourceLineNo">168</span>            InvalidCommandArgument invalidCommandArg = (InvalidCommandArgument) e;<a name="line.168"></a>
+<span class="sourceLineNo">169</span>            if (invalidCommandArg.key != null) {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                sender.sendMessage(MessageType.ERROR, invalidCommandArg.key, invalidCommandArg.replacements);<a name="line.170"></a>
+<span class="sourceLineNo">171</span>            } else if (e.getMessage() != null &amp;&amp; !e.getMessage().isEmpty()) {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PREFIX, "{message}", e.getMessage());<a name="line.172"></a>
+<span class="sourceLineNo">173</span>            }<a name="line.173"></a>
+<span class="sourceLineNo">174</span>            if (invalidCommandArg.showSyntax) {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                scope.showSyntax(sender, this);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>            }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        } else {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>            try {<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                if (!this.manager.handleUncaughtException(scope, this, sender, args, e)) {<a name="line.179"></a>
+<span class="sourceLineNo">180</span>                    sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);<a name="line.180"></a>
+<span class="sourceLineNo">181</span>                }<a name="line.181"></a>
+<span class="sourceLineNo">182</span>                boolean hasExceptionHandler = this.manager.defaultExceptionHandler != null || this.scope.getExceptionHandler() != null;<a name="line.182"></a>
+<span class="sourceLineNo">183</span>                if (!hasExceptionHandler || this.manager.logUnhandledExceptions) {<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                    this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                }<a name="line.185"></a>
+<span class="sourceLineNo">186</span>            } catch (Exception e2) {<a name="line.186"></a>
+<span class="sourceLineNo">187</span>                this.manager.log(LogLevel.ERROR, "Exception in handleException for command: " + command + " " + ACFUtil.join(args), e);<a name="line.187"></a>
+<span class="sourceLineNo">188</span>                this.manager.log(LogLevel.ERROR, "Exception triggered by exception handler:", e2);<a name="line.188"></a>
+<span class="sourceLineNo">189</span>            }<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    }<a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
 <span class="sourceLineNo">193</span>    @Nullable<a name="line.193"></a>
-<span class="sourceLineNo">194</span>    Map&lt;String, Object&gt; resolveContexts(CommandIssuer sender, List&lt;String&gt; args, int argLimit) throws InvalidCommandArgument {<a name="line.194"></a>
-<span class="sourceLineNo">195</span>        args = Lists.newArrayList(args);<a name="line.195"></a>
-<span class="sourceLineNo">196</span>        String[] origArgs = args.toArray(new String[args.size()]);<a name="line.196"></a>
-<span class="sourceLineNo">197</span>        Map&lt;String, Object&gt; passedArgs = Maps.newLinkedHashMap();<a name="line.197"></a>
-<span class="sourceLineNo">198</span>        int remainingRequired = requiredResolvers;<a name="line.198"></a>
-<span class="sourceLineNo">199</span>        CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();<a name="line.199"></a>
-<span class="sourceLineNo">200</span>        for (int i = 0; i &lt; parameters.length &amp;&amp; i &lt; argLimit; i++) {<a name="line.200"></a>
-<span class="sourceLineNo">201</span>            boolean isLast = i == parameters.length - 1;<a name="line.201"></a>
-<span class="sourceLineNo">202</span>            boolean allowOptional = remainingRequired == 0;<a name="line.202"></a>
-<span class="sourceLineNo">203</span>            final CommandParameter&lt;CEC&gt; parameter = parameters[i];<a name="line.203"></a>
-<span class="sourceLineNo">204</span>            if (parameter.isCommandIssuer()) {<a name="line.204"></a>
-<span class="sourceLineNo">205</span>                argLimit++;<a name="line.205"></a>
-<span class="sourceLineNo">206</span>            }<a name="line.206"></a>
-<span class="sourceLineNo">207</span>            final String parameterName = parameter.getName();<a name="line.207"></a>
-<span class="sourceLineNo">208</span>            final Class&lt;?&gt; type = parameter.getType();<a name="line.208"></a>
-<span class="sourceLineNo">209</span>            //noinspection unchecked<a name="line.209"></a>
-<span class="sourceLineNo">210</span>            final ContextResolver&lt;?, CEC&gt; resolver = parameter.getResolver();<a name="line.210"></a>
-<span class="sourceLineNo">211</span>            //noinspection unchecked<a name="line.211"></a>
-<span class="sourceLineNo">212</span>            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);<a name="line.212"></a>
-<span class="sourceLineNo">213</span>            boolean requiresInput = parameter.requiresInput();<a name="line.213"></a>
-<span class="sourceLineNo">214</span>            if (requiresInput &amp;&amp; remainingRequired &gt; 0) {<a name="line.214"></a>
-<span class="sourceLineNo">215</span>                remainingRequired--;<a name="line.215"></a>
-<span class="sourceLineNo">216</span>            }<a name="line.216"></a>
-<span class="sourceLineNo">217</span>            if (args.isEmpty() &amp;&amp; !(isLast &amp;&amp; type == String[].class)) {<a name="line.217"></a>
-<span class="sourceLineNo">218</span>                if (allowOptional &amp;&amp; parameter.getDefaultValue() != null) {<a name="line.218"></a>
-<span class="sourceLineNo">219</span>                    args.add(parameter.getDefaultValue());<a name="line.219"></a>
-<span class="sourceLineNo">220</span>                } else if (allowOptional &amp;&amp; parameter.isOptional()) {<a name="line.220"></a>
-<span class="sourceLineNo">221</span>                    Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;<a name="line.221"></a>
-<span class="sourceLineNo">222</span>                    if (value == null &amp;&amp; parameter.getClass().isPrimitive()) {<a name="line.222"></a>
-<span class="sourceLineNo">223</span>                        throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");<a name="line.223"></a>
-<span class="sourceLineNo">224</span>                    }<a name="line.224"></a>
-<span class="sourceLineNo">225</span>                    //noinspection unchecked<a name="line.225"></a>
-<span class="sourceLineNo">226</span>                    this.manager.conditions.validateConditions(context, value);<a name="line.226"></a>
-<span class="sourceLineNo">227</span>                    passedArgs.put(parameterName, value);<a name="line.227"></a>
-<span class="sourceLineNo">228</span>                    //noinspection UnnecessaryContinue<a name="line.228"></a>
-<span class="sourceLineNo">229</span>                    continue;<a name="line.229"></a>
-<span class="sourceLineNo">230</span>                } else if (requiresInput) {<a name="line.230"></a>
-<span class="sourceLineNo">231</span>                    scope.showSyntax(sender, this);<a name="line.231"></a>
-<span class="sourceLineNo">232</span>                    return null;<a name="line.232"></a>
-<span class="sourceLineNo">233</span>                }<a name="line.233"></a>
-<span class="sourceLineNo">234</span>            }<a name="line.234"></a>
-<span class="sourceLineNo">235</span>            if (parameter.getValues() != null) {<a name="line.235"></a>
-<span class="sourceLineNo">236</span>                String arg = !args.isEmpty() ? args.get(0) : "";<a name="line.236"></a>
-<span class="sourceLineNo">237</span><a name="line.237"></a>
-<span class="sourceLineNo">238</span>                Set&lt;String&gt; possible = Sets.newHashSet();<a name="line.238"></a>
-<span class="sourceLineNo">239</span>                CommandCompletions commandCompletions = this.manager.getCommandCompletions();<a name="line.239"></a>
-<span class="sourceLineNo">240</span>                for (String s : parameter.getValues()) {<a name="line.240"></a>
-<span class="sourceLineNo">241</span>                    //noinspection unchecked<a name="line.241"></a>
-<span class="sourceLineNo">242</span>                    List&lt;String&gt; check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());<a name="line.242"></a>
-<span class="sourceLineNo">243</span>                    if (!check.isEmpty()) {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>                        possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));<a name="line.244"></a>
-<span class="sourceLineNo">245</span>                    } else {<a name="line.245"></a>
-<span class="sourceLineNo">246</span>                        possible.add(s.toLowerCase());<a name="line.246"></a>
-<span class="sourceLineNo">247</span>                    }<a name="line.247"></a>
-<span class="sourceLineNo">248</span>                }<a name="line.248"></a>
-<span class="sourceLineNo">249</span><a name="line.249"></a>
-<span class="sourceLineNo">250</span>                if (!possible.contains(arg.toLowerCase())) {<a name="line.250"></a>
-<span class="sourceLineNo">251</span>                    throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,<a name="line.251"></a>
-<span class="sourceLineNo">252</span>                            "{valid}", ACFUtil.join(possible, ", "));<a name="line.252"></a>
-<span class="sourceLineNo">253</span>                }<a name="line.253"></a>
-<span class="sourceLineNo">254</span>            }<a name="line.254"></a>
-<span class="sourceLineNo">255</span>            Object paramValue = resolver.getContext(context);<a name="line.255"></a>
-<span class="sourceLineNo">256</span>            //noinspection unchecked<a name="line.256"></a>
-<span class="sourceLineNo">257</span>            this.manager.conditions.validateConditions(context, paramValue);<a name="line.257"></a>
-<span class="sourceLineNo">258</span>            passedArgs.put(parameterName, paramValue);<a name="line.258"></a>
-<span class="sourceLineNo">259</span>        }<a name="line.259"></a>
-<span class="sourceLineNo">260</span>        return passedArgs;<a name="line.260"></a>
-<span class="sourceLineNo">261</span>    }<a name="line.261"></a>
-<span class="sourceLineNo">262</span><a name="line.262"></a>
-<span class="sourceLineNo">263</span>    boolean hasPermission(CommandIssuer issuer) {<a name="line.263"></a>
-<span class="sourceLineNo">264</span>        return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) &amp;&amp; scope.hasPermission(issuer);<a name="line.264"></a>
+<span class="sourceLineNo">194</span>    Map&lt;String, Object&gt; resolveContexts(CommandIssuer sender, List&lt;String&gt; args) throws InvalidCommandArgument {<a name="line.194"></a>
+<span class="sourceLineNo">195</span>        return resolveContexts(sender, args, parameters.length);<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    }<a name="line.196"></a>
+<span class="sourceLineNo">197</span>    @Nullable<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    Map&lt;String, Object&gt; resolveContexts(CommandIssuer sender, List&lt;String&gt; args, int argLimit) throws InvalidCommandArgument {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>        args = Lists.newArrayList(args);<a name="line.199"></a>
+<span class="sourceLineNo">200</span>        String[] origArgs = args.toArray(new String[args.size()]);<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        Map&lt;String, Object&gt; passedArgs = Maps.newLinkedHashMap();<a name="line.201"></a>
+<span class="sourceLineNo">202</span>        int remainingRequired = requiredResolvers;<a name="line.202"></a>
+<span class="sourceLineNo">203</span>        CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();<a name="line.203"></a>
+<span class="sourceLineNo">204</span>        for (int i = 0; i &lt; parameters.length &amp;&amp; i &lt; argLimit; i++) {<a name="line.204"></a>
+<span class="sourceLineNo">205</span>            boolean isLast = i == parameters.length - 1;<a name="line.205"></a>
+<span class="sourceLineNo">206</span>            boolean allowOptional = remainingRequired == 0;<a name="line.206"></a>
+<span class="sourceLineNo">207</span>            final CommandParameter&lt;CEC&gt; parameter = parameters[i];<a name="line.207"></a>
+<span class="sourceLineNo">208</span>            if (parameter.isCommandIssuer()) {<a name="line.208"></a>
+<span class="sourceLineNo">209</span>                argLimit++;<a name="line.209"></a>
+<span class="sourceLineNo">210</span>            }<a name="line.210"></a>
+<span class="sourceLineNo">211</span>            final String parameterName = parameter.getName();<a name="line.211"></a>
+<span class="sourceLineNo">212</span>            final Class&lt;?&gt; type = parameter.getType();<a name="line.212"></a>
+<span class="sourceLineNo">213</span>            //noinspection unchecked<a name="line.213"></a>
+<span class="sourceLineNo">214</span>            final ContextResolver&lt;?, CEC&gt; resolver = parameter.getResolver();<a name="line.214"></a>
+<span class="sourceLineNo">215</span>            //noinspection unchecked<a name="line.215"></a>
+<span class="sourceLineNo">216</span>            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);<a name="line.216"></a>
+<span class="sourceLineNo">217</span>            boolean requiresInput = parameter.requiresInput();<a name="line.217"></a>
+<span class="sourceLineNo">218</span>            if (requiresInput &amp;&amp; remainingRequired &gt; 0) {<a name="line.218"></a>
+<span class="sourceLineNo">219</span>                remainingRequired--;<a name="line.219"></a>
+<span class="sourceLineNo">220</span>            }<a name="line.220"></a>
+<span class="sourceLineNo">221</span>            if (args.isEmpty() &amp;&amp; !(isLast &amp;&amp; type == String[].class)) {<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                if (allowOptional &amp;&amp; parameter.getDefaultValue() != null) {<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                    args.add(parameter.getDefaultValue());<a name="line.223"></a>
+<span class="sourceLineNo">224</span>                } else if (allowOptional &amp;&amp; parameter.isOptional()) {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                    Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                    if (value == null &amp;&amp; parameter.getClass().isPrimitive()) {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                        throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                    }<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                    //noinspection unchecked<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                    this.manager.conditions.validateConditions(context, value);<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                    passedArgs.put(parameterName, value);<a name="line.231"></a>
+<span class="sourceLineNo">232</span>                    //noinspection UnnecessaryContinue<a name="line.232"></a>
+<span class="sourceLineNo">233</span>                    continue;<a name="line.233"></a>
+<span class="sourceLineNo">234</span>                } else if (requiresInput) {<a name="line.234"></a>
+<span class="sourceLineNo">235</span>                    scope.showSyntax(sender, this);<a name="line.235"></a>
+<span class="sourceLineNo">236</span>                    return null;<a name="line.236"></a>
+<span class="sourceLineNo">237</span>                }<a name="line.237"></a>
+<span class="sourceLineNo">238</span>            }<a name="line.238"></a>
+<span class="sourceLineNo">239</span>            if (parameter.getValues() != null) {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>                String arg = !args.isEmpty() ? args.get(0) : "";<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>                Set&lt;String&gt; possible = Sets.newHashSet();<a name="line.242"></a>
+<span class="sourceLineNo">243</span>                CommandCompletions commandCompletions = this.manager.getCommandCompletions();<a name="line.243"></a>
+<span class="sourceLineNo">244</span>                for (String s : parameter.getValues()) {<a name="line.244"></a>
+<span class="sourceLineNo">245</span>                    //noinspection unchecked<a name="line.245"></a>
+<span class="sourceLineNo">246</span>                    List&lt;String&gt; check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());<a name="line.246"></a>
+<span class="sourceLineNo">247</span>                    if (!check.isEmpty()) {<a name="line.247"></a>
+<span class="sourceLineNo">248</span>                        possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));<a name="line.248"></a>
+<span class="sourceLineNo">249</span>                    } else {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>                        possible.add(s.toLowerCase());<a name="line.250"></a>
+<span class="sourceLineNo">251</span>                    }<a name="line.251"></a>
+<span class="sourceLineNo">252</span>                }<a name="line.252"></a>
+<span class="sourceLineNo">253</span><a name="line.253"></a>
+<span class="sourceLineNo">254</span>                if (!possible.contains(arg.toLowerCase())) {<a name="line.254"></a>
+<span class="sourceLineNo">255</span>                    throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,<a name="line.255"></a>
+<span class="sourceLineNo">256</span>                            "{valid}", ACFUtil.join(possible, ", "));<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                }<a name="line.257"></a>
+<span class="sourceLineNo">258</span>            }<a name="line.258"></a>
+<span class="sourceLineNo">259</span>            Object paramValue = resolver.getContext(context);<a name="line.259"></a>
+<span class="sourceLineNo">260</span>            //noinspection unchecked<a name="line.260"></a>
+<span class="sourceLineNo">261</span>            this.manager.conditions.validateConditions(context, paramValue);<a name="line.261"></a>
+<span class="sourceLineNo">262</span>            passedArgs.put(parameterName, paramValue);<a name="line.262"></a>
+<span class="sourceLineNo">263</span>        }<a name="line.263"></a>
+<span class="sourceLineNo">264</span>        return passedArgs;<a name="line.264"></a>
 <span class="sourceLineNo">265</span>    }<a name="line.265"></a>
 <span class="sourceLineNo">266</span><a name="line.266"></a>
-<span class="sourceLineNo">267</span><a name="line.267"></a>
-<span class="sourceLineNo">268</span>    /**<a name="line.268"></a>
-<span class="sourceLineNo">269</span>     * @see #getRequiredPermissions()<a name="line.269"></a>
-<span class="sourceLineNo">270</span>     * @deprecated<a name="line.270"></a>
-<span class="sourceLineNo">271</span>     */<a name="line.271"></a>
-<span class="sourceLineNo">272</span>    @Deprecated<a name="line.272"></a>
-<span class="sourceLineNo">273</span>    public String getPermission() {<a name="line.273"></a>
-<span class="sourceLineNo">274</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.274"></a>
-<span class="sourceLineNo">275</span>            return null;<a name="line.275"></a>
-<span class="sourceLineNo">276</span>        }<a name="line.276"></a>
-<span class="sourceLineNo">277</span>        return ACFPatterns.COMMA.split(this.permission)[0];<a name="line.277"></a>
-<span class="sourceLineNo">278</span>    }<a name="line.278"></a>
-<span class="sourceLineNo">279</span><a name="line.279"></a>
-<span class="sourceLineNo">280</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.280"></a>
-<span class="sourceLineNo">281</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.281"></a>
-<span class="sourceLineNo">282</span>            return ImmutableSet.of();<a name="line.282"></a>
-<span class="sourceLineNo">283</span>        }<a name="line.283"></a>
-<span class="sourceLineNo">284</span>        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));<a name="line.284"></a>
-<span class="sourceLineNo">285</span>    }<a name="line.285"></a>
-<span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>    public boolean requiresPermission(String permission) {<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        return getRequiredPermissions().contains(permission) || scope.requiresPermission(permission);<a name="line.288"></a>
+<span class="sourceLineNo">267</span>    boolean hasPermission(CommandIssuer issuer) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>        return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) &amp;&amp; scope.hasPermission(issuer);<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    }<a name="line.269"></a>
+<span class="sourceLineNo">270</span><a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>    /**<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * @see #getRequiredPermissions()<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * @deprecated<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     */<a name="line.275"></a>
+<span class="sourceLineNo">276</span>    @Deprecated<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    public String getPermission() {<a name="line.277"></a>
+<span class="sourceLineNo">278</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.278"></a>
+<span class="sourceLineNo">279</span>            return null;<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        }<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        return ACFPatterns.COMMA.split(this.permission)[0];<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    }<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.285"></a>
+<span class="sourceLineNo">286</span>            return ImmutableSet.of();<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        }<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));<a name="line.288"></a>
 <span class="sourceLineNo">289</span>    }<a name="line.289"></a>
 <span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span>    public String getPrefSubCommand() {<a name="line.291"></a>
-<span class="sourceLineNo">292</span>        return prefSubCommand;<a name="line.292"></a>
+<span class="sourceLineNo">291</span>    public boolean requiresPermission(String permission) {<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        return getRequiredPermissions().contains(permission) || scope.requiresPermission(permission);<a name="line.292"></a>
 <span class="sourceLineNo">293</span>    }<a name="line.293"></a>
 <span class="sourceLineNo">294</span><a name="line.294"></a>
-<span class="sourceLineNo">295</span>    public String getSyntaxText() {<a name="line.295"></a>
-<span class="sourceLineNo">296</span>        return syntaxText;<a name="line.296"></a>
+<span class="sourceLineNo">295</span>    public String getPrefSubCommand() {<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        return prefSubCommand;<a name="line.296"></a>
 <span class="sourceLineNo">297</span>    }<a name="line.297"></a>
 <span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>    public String getCommand() {<a name="line.299"></a>
-<span class="sourceLineNo">300</span>        return command;<a name="line.300"></a>
+<span class="sourceLineNo">299</span>    public String getSyntaxText() {<a name="line.299"></a>
+<span class="sourceLineNo">300</span>        return syntaxText;<a name="line.300"></a>
 <span class="sourceLineNo">301</span>    }<a name="line.301"></a>
-<span class="sourceLineNo">302</span><a name="line.302"></a>
-<span class="sourceLineNo">303</span>    public void addSubcommand(String cmd) {<a name="line.303"></a>
-<span class="sourceLineNo">304</span>        this.registeredSubcommands.add(cmd);<a name="line.304"></a>
+<span class="sourceLineNo">302</span>    <a name="line.302"></a>
+<span class="sourceLineNo">303</span>    public String getHelpText() {<a name="line.303"></a>
+<span class="sourceLineNo">304</span>        return helpText;<a name="line.304"></a>
 <span class="sourceLineNo">305</span>    }<a name="line.305"></a>
-<span class="sourceLineNo">306</span>    public void addSubcommands(Collection&lt;String&gt; cmd) {<a name="line.306"></a>
-<span class="sourceLineNo">307</span>        this.registeredSubcommands.addAll(cmd);<a name="line.307"></a>
-<span class="sourceLineNo">308</span>    }<a name="line.308"></a>
-<span class="sourceLineNo">309</span>}<a name="line.309"></a>
+<span class="sourceLineNo">306</span>    <a name="line.306"></a>
+<span class="sourceLineNo">307</span>    public boolean isPrivate() {<a name="line.307"></a>
+<span class="sourceLineNo">308</span>        return isPrivate;<a name="line.308"></a>
+<span class="sourceLineNo">309</span>    }<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>    public String getCommand() {<a name="line.311"></a>
+<span class="sourceLineNo">312</span>        return command;<a name="line.312"></a>
+<span class="sourceLineNo">313</span>    }<a name="line.313"></a>
+<span class="sourceLineNo">314</span><a name="line.314"></a>
+<span class="sourceLineNo">315</span>    public void addSubcommand(String cmd) {<a name="line.315"></a>
+<span class="sourceLineNo">316</span>        this.registeredSubcommands.add(cmd);<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    }<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    public void addSubcommands(Collection&lt;String&gt; cmd) {<a name="line.318"></a>
+<span class="sourceLineNo">319</span>        this.registeredSubcommands.addAll(cmd);<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    }<a name="line.320"></a>
+<span class="sourceLineNo">321</span>}<a name="line.321"></a>
 
 
 

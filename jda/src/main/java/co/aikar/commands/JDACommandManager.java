@@ -1,7 +1,6 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
-import com.google.common.collect.Maps;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -10,6 +9,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,7 +30,7 @@ public class JDACommandManager extends CommandManager<
     protected JDACommandCompletions completions;
     protected JDACommandContexts contexts;
     protected JDALocales locales;
-    protected Map<String, JDARootCommand> commands = Maps.newHashMap();
+    protected Map<String, JDARootCommand> commands = new HashMap<>();
     private Logger logger;
     private CommandConfig defaultConfig;
     private CommandConfigProvider configProvider;
@@ -180,6 +182,11 @@ public class JDACommandManager extends CommandManager<
     @Override
     public RootCommand createRootCommand(String cmd) {
         return new JDARootCommand(this, cmd);
+    }
+
+    @Override
+    public Collection<RootCommand> getRegisteredRootCommands() {
+        return Collections.unmodifiableCollection(commands.values());
     }
 
     @Override

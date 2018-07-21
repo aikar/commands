@@ -32,17 +32,17 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,6 +79,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
         if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
             prefSubCommand = "";
+            command = command.trim();
         }
         this.command = command + (!annotations.hasAnnotation(method, CommandAlias.class, false) && !prefSubCommand.isEmpty() ? prefSubCommand : "");
         this.method = method;
@@ -178,7 +179,10 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                 if (!this.manager.handleUncaughtException(scope, this, sender, args, e)) {
                     sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_PERFORMING_COMMAND);
                 }
-                this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
+                boolean hasExceptionHandler = this.manager.defaultExceptionHandler != null || this.scope.getExceptionHandler() != null;
+                if (!hasExceptionHandler || this.manager.logUnhandledExceptions) {
+                    this.manager.log(LogLevel.ERROR, "Exception in command: " + command + " " + ACFUtil.join(args), e);
+                }
             } catch (Exception e2) {
                 this.manager.log(LogLevel.ERROR, "Exception in handleException for command: " + command + " " + ACFUtil.join(args), e);
                 this.manager.log(LogLevel.ERROR, "Exception triggered by exception handler:", e2);
@@ -192,9 +196,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
-        args = Lists.newArrayList(args);
+        args = new ArrayList<>(args);
         String[] origArgs = args.toArray(new String[args.size()]);
-        Map<String, Object> passedArgs = Maps.newLinkedHashMap();
+        Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
         for (int i = 0; i < parameters.length && i < argLimit; i++) {
@@ -235,7 +239,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             if (parameter.getValues() != null) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 
-                Set<String> possible = Sets.newHashSet();
+                Set<String> possible = new HashSet<>();
                 CommandCompletions commandCompletions = this.manager.getCommandCompletions();
                 for (String s : parameter.getValues()) {
                     //noinspection unchecked
@@ -279,9 +283,9 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
     public Set<String> getRequiredPermissions() {
         if (this.permission == null || this.permission.isEmpty()) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         }
-        return Sets.newHashSet(ACFPatterns.COMMA.split(this.permission));
+        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
     }
 
     public boolean requiresPermission(String permission) {
@@ -294,6 +298,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
 
     public String getSyntaxText() {
         return syntaxText;
+    }
+    
+    public String getHelpText() {
+        return helpText;
+    }
+    
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
     public String getCommand() {

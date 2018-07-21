@@ -23,8 +23,6 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.SetMultimap;
 
@@ -33,7 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-interface RootCommand {
+public interface RootCommand {
     void addChild(BaseCommand command);
     CommandManager getManager();
 

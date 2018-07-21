@@ -94,7 +94,11 @@
 <br>
 <pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true" title="class or interface in java.lang.annotation">@Retention</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html?is-external=true#RUNTIME" title="class or interface in java.lang.annotation">RUNTIME</a>)
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true" title="class or interface in java.lang.annotation">@Target</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html?is-external=true#value--" title="class or interface in java.lang.annotation">value</a>=<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html?is-external=true#METHOD" title="class or interface in java.lang.annotation">METHOD</a>)
-public @interface <a href="../../../../src-html/co/aikar/commands/annotation/HelpCommand.html#line.33">HelpCommand</a></pre>
+public @interface <a href="../../../../src-html/co/aikar/commands/annotation/HelpCommand.html#line.39">HelpCommand</a></pre>
+<div class="block">A Shortcut for specifying <a href="../../../../co/aikar/commands/annotation/CatchUnknown.html" title="annotation in co.aikar.commands.annotation"><code>CatchUnknown</code></a>, <a href="../../../../co/aikar/commands/annotation/Default.html" title="annotation in co.aikar.commands.annotation"><code>Default</code></a> and <a href="../../../../co/aikar/commands/annotation/Subcommand.html" title="annotation in co.aikar.commands.annotation"><code>Subcommand</code></a> on a method.
+ Subcommand carries the same value as this annotations value to define the list of subcommands to register for.
+
+ a method marked with this annotation should also use a <a href="../../../../co/aikar/commands/CommandHelp.html" title="class in co.aikar.commands"><code>CommandHelp</code></a> context parameter to show help.</div>
 </li>
 </ul>
 </div>
@@ -115,7 +119,9 @@ public @interface <a href="../../../../src-html/co/aikar/commands/annotation/Hel
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/annotation/HelpCommand.html#value--">value</a></span></code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../co/aikar/commands/annotation/HelpCommand.html#value--">value</a></span></code>
+<div class="block">The value to forward to the @Subcommand annotation.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -138,7 +144,11 @@ public @interface <a href="../../../../src-html/co/aikar/commands/annotation/Hel
 <ul class="blockListLast">
 <li class="blockList">
 <h4>value</h4>
-<pre>public abstract&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/annotation/HelpCommand.html#line.34">value</a></pre>
+<pre>public abstract&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/co/aikar/commands/annotation/HelpCommand.html#line.44">value</a></pre>
+<div class="block">The value to forward to the @Subcommand annotation. Lists which subcommands to register to trigger help</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+</dl>
 <dl>
 <dt>Default:</dt>
 <dd>"help|?|-help|-h|-?"</dd>

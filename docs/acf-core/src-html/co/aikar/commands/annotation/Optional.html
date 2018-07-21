@@ -36,10 +36,17 @@
 <span class="sourceLineNo">028</span>import java.lang.annotation.RetentionPolicy;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.lang.annotation.Target;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Target({ElementType.PARAMETER})<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public @interface Optional {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>}<a name="line.34"></a>
+<span class="sourceLineNo">031</span>/**<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Marks the parameter this is attached to as optional.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * This will set the parameter as null if it was not provided.<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * &lt;p&gt;<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * In the case the language used is Kotlin, Ceylon or any other null-enforcing JVM language,<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * you will need to allow for a nullable value.<a name="line.36"></a>
+<span class="sourceLineNo">037</span> */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.38"></a>
+<span class="sourceLineNo">039</span>@Target({ElementType.PARAMETER})<a name="line.39"></a>
+<span class="sourceLineNo">040</span>public @interface Optional {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>}<a name="line.41"></a>
 
 
 

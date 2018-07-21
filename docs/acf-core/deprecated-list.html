@@ -76,6 +76,7 @@
 <li><a href="#class">Deprecated Classes</a></li>
 <li><a href="#annotation.type">Deprecated Annotation Types</a></li>
 <li><a href="#method">Deprecated Methods</a></li>
+<li><a href="#constructor">Deprecated Constructors</a></li>
 </ul>
 </div>
 <div class="contentContainer"><a name="interface">
@@ -159,89 +160,114 @@
 </tr>
 <tbody>
 <tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/BaseCommand.html#canExecute-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">co.aikar.commands.BaseCommand.canExecute(CommandIssuer, RegisteredCommand&lt;?&gt;)</a>
+<div class="block"><span class="deprecationComment">See <a href="co/aikar/commands/CommandConditions.html" title="class in co.aikar.commands"><code>CommandConditions</code></a></span></div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#enableUnstableAPI-java.lang.String-">co.aikar.commands.CommandManager.enableUnstableAPI(String)</a>
 <div class="block"><span class="deprecationComment">Use this with caution! If you enable and use Unstable API's, your next compile using ACF
  may require you to update your implementation to those unstable API's</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#generateCommandHelp--">co.aikar.commands.CommandManager.generateCommandHelp()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#generateCommandHelp-co.aikar.commands.CommandIssuer-co.aikar.commands.RootCommand-">co.aikar.commands.CommandManager.generateCommandHelp(CommandIssuer, RootCommand)</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#generateCommandHelp-co.aikar.commands.CommandIssuer-java.lang.String-">co.aikar.commands.CommandManager.generateCommandHelp(CommandIssuer, String)</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#generateCommandHelp-java.lang.String-">co.aikar.commands.CommandManager.generateCommandHelp(String)</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandOperationContext.html#getAnnotation-java.lang.Class-">co.aikar.commands.CommandOperationContext.getAnnotation(Class&lt;T&gt;)</a>
 <div class="block"><span class="deprecationComment">Use <a href="co/aikar/commands/CommandOperationContext.html#getAnnotationValue-java.lang.Class-"><code>CommandOperationContext.getAnnotationValue(Class)</code></a></span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandExecutionContext.html#getAnnotation-java.lang.Class-">co.aikar.commands.CommandExecutionContext.getAnnotation(Class&lt;T&gt;)</a>
 <div class="block"><span class="deprecationComment">Use <a href="co/aikar/commands/CommandExecutionContext.html#getAnnotationValue-java.lang.Class-"><code>CommandExecutionContext.getAnnotationValue(Class)</code></a></span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/BaseCommand.html#getCommandHelp--">co.aikar.commands.BaseCommand.getCommandHelp()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#getDefaultHelpPerPage--">co.aikar.commands.CommandManager.getDefaultHelpPerPage()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#getHelpFormatter--">co.aikar.commands.CommandManager.getHelpFormatter()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandExecutionContext.html#getParam--">co.aikar.commands.CommandExecutionContext.getParam()</a></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/RegisteredCommand.html#getPermission--">co.aikar.commands.RegisteredCommand.getPermission()</a>&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/ACFUtil.html#random-java.lang.Class-">co.aikar.commands.ACFUtil.random(Class&lt;? extends T&gt;)</a></td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandContexts.html#registerSenderAwareContext-java.lang.Class-co.aikar.commands.contexts.IssuerAwareContextResolver-">co.aikar.commands.CommandContexts.registerSenderAwareContext(Class&lt;T&gt;, IssuerAwareContextResolver&lt;T, R&gt;)</a>
 <div class="block"><span class="deprecationComment">Please switch to <a href="co/aikar/commands/CommandContexts.html#registerIssuerAwareContext-java.lang.Class-co.aikar.commands.contexts.IssuerAwareContextResolver-"><code>CommandContexts.registerIssuerAwareContext(Class, IssuerAwareContextResolver)</code></a>
  as the core wants to use the platform agnostic term of "Issuer" instead of Sender</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandIssuer.html#sendMessageInternal-java.lang.String-">co.aikar.commands.CommandIssuer.sendMessageInternal(String)</a>
 <div class="block"><span class="deprecationComment">Do not call this, for internal use. Not considered part of the API and may break.</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#setDefaultHelpPerPage-int-">co.aikar.commands.CommandManager.setDefaultHelpPerPage(int)</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colOne"><a href="co/aikar/commands/CommandManager.html#setHelpFormatter-co.aikar.commands.CommandHelpFormatter-">co.aikar.commands.CommandManager.setHelpFormatter(CommandHelpFormatter)</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colOne"><a href="co/aikar/commands/BaseCommand.html#showCommandHelp--">co.aikar.commands.BaseCommand.showCommandHelp()</a>
 <div class="block"><span class="deprecationComment">Unstable API</span></div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<a name="constructor">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<table class="deprecatedSummary" border="0" cellpadding="3" cellspacing="0" summary="Deprecated Constructors table, listing deprecated constructors, and an explanation">
+<caption><span>Deprecated Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="co/aikar/commands/BaseCommand.html#BaseCommand-java.lang.String-">co.aikar.commands.BaseCommand(String)</a>
+<div class="block"><span class="deprecationComment">Please switch to <a href="co/aikar/commands/annotation/CommandAlias.html" title="annotation in co.aikar.commands.annotation"><code>CommandAlias</code></a> for defining all root commands.</span></div>
 </td>
 </tr>
 </tbody>

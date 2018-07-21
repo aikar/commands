@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -574,6 +575,17 @@ public final class ACFUtil {
     private static <T extends Throwable> T superSneaky(Throwable t) throws T {
         //noinspection ConstantConditions,unchecked
         throw (T) t;
+    }
+
+    public static <T> List<T> preformOnImmutable(List<T> list, Consumer<List<T>> action) {
+        try {
+            action.accept(list);
+        } catch (UnsupportedOperationException ex) {
+            list = new ArrayList<>(list);
+            action.accept(list);
+        }
+
+        return list;
     }
 
     private static class ApplyModifierToNumber {
