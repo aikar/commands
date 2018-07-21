@@ -32,7 +32,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         this.registerIssuerOnlyContext(JDA.class, c -> jda);
         this.registerIssuerOnlyContext(Guild.class, c -> {
             MessageReceivedEvent event = c.getIssuer().getIssuer();
-            if (event.isFromType(ChannelType.PRIVATE) && !c.hasAnnotation(Optional.class)) {
+            if (event.isFromType(ChannelType.PRIVATE) && !c.isOptional()) {
                 throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);
             } else {
                 return event.getGuild();
@@ -67,7 +67,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
                 return jda.getSelfUser();
             }
             String arg = c.getFirstArg();
-            if (c.hasAnnotation(Optional.class) && (arg == null || arg.isEmpty())) {
+            if (c.isOptional() && (arg == null || arg.isEmpty())) {
                 return null;
             }
             arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
