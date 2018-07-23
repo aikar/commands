@@ -109,6 +109,15 @@ public final class ACFExample extends JavaPlugin {
             getLogger().warning("Error occurred while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
+
+        commandManager.enableUnstableAPI("brigadier");
+
+        BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
+        ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
+
+        BrigadierTest test = new BrigadierTest();
+        commandManager.registerCommand(test);
+        brigadierManager.register(test);
     }
 
     // Typical Bukkit Plugin Scaffolding

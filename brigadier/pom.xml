@@ -34,68 +34,30 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>acf-bukkit</artifactId>
+    <artifactId>acf-brigadier</artifactId>
     <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
 
-    <name>ACF (Bukkit)</name>
+    <name>ACF (Brigadier)</name>
+
+    <repositories>
+        <repository>
+            <id>mojang-repo</id>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-core</artifactId>
             <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-brigadier</artifactId>
-            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>minecraft-timings</artifactId>
-            <version>1.0.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
+            <groupId>com.mojang</groupId>
+            <artifactId>brigadier</artifactId>
+            <version>0.1.27</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
-                    <!-- when downloading via Maven we can pull depends individually -->
-                    <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <relocations>
-                        <relocation>
-                            <pattern>co.aikar.timings.lib</pattern>
-                            <shadedPattern>co.aikar.commands.timings</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/../languages/minecraft/</directory>
-            </resource>
-        </resources>
-    </build>
 </project>

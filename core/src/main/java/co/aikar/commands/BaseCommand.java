@@ -839,4 +839,8 @@ public abstract class BaseCommand {
         registeredCommands.addAll(this.subCommands.values());
         return registeredCommands;
     }
+
+    public SetMultimap<String, RegisteredCommand> getSubCommands(){
+        return subCommands;
+    }
 }

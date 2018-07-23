@@ -64,10 +64,10 @@
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                     <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>com.exampleplugin.acf</shadedPattern>
-                        </relocation>
+                        <!--<relocation>-->
+                            <!--<pattern>co.aikar.commands</pattern>-->
+                            <!--<shadedPattern>com.exampleplugin.acf</shadedPattern>-->
+                        <!--</relocation>-->
                     </relocations>
                 </configuration>
                 <executions>
