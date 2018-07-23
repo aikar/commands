@@ -33,19 +33,35 @@ public class BukkitCommandDispatcherProvider implements ACFBrigadierProvider {
 
     private Object commandDispatcher;
 
+    private static final String SERVER_VERSION = getServerVersion();
+
+    private static String getServerVersion() {
+        Class<?> server = Bukkit.getServer().getClass();
+        if (!server.getSimpleName().equals("CraftServer")) {
+            return ".";
+        }
+        if (server.getName().equals("org.bukkit.craftbukkit.CraftServer")) {
+            // Non versioned class
+            return ".";
+        } else {
+            String version = server.getName().substring("org.bukkit.craftbukkit".length());
+            return version.substring(0, version.length() - "CraftServer".length());
+        }
+    }
+
     @Override
     public Object getCommandDispatcher() {
         if (commandDispatcher == null) {
             try {
-                Class<?> craftServer = Class.forName("CraftServer");
+                Class<?> craftServer = Class.forName("org.bukkit.craftbukkit" + SERVER_VERSION + "CraftServer");
                 Field console = craftServer.getDeclaredField("console");
                 console.setAccessible(true);
 
-                Class<?> minecraftServer = Class.forName("MinecraftServer");
+                Class<?> minecraftServer = Class.forName("net.minecraft.server" + SERVER_VERSION + "MinecraftServer");
                 Method getCommandDispatcher = minecraftServer.getDeclaredMethod("getCommandDispatcher");
                 getCommandDispatcher.setAccessible(true);
 
-                Class<?> commandDispatcher = Class.forName("CommandDispatcher");
+                Class<?> commandDispatcher = Class.forName("net.minecraft.server" + SERVER_VERSION + "CommandDispatcher");
                 Method getBrigadierDispatcher = commandDispatcher.getDeclaredMethod("a");
                 getBrigadierDispatcher.setAccessible(true);
 
