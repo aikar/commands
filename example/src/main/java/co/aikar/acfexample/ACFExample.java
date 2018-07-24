@@ -118,11 +118,11 @@ public final class ACFExample extends JavaPlugin {
         commandManager.enableUnstableAPI("brigadier");
 
         BrigadierTest test = new BrigadierTest();
-        commandManager.registerCommand(test);
         Bukkit.getScheduler().runTaskLater(this, () -> {
             BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
             ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
 
+            commandManager.registerCommand(test);// later so that bukkit doesn't ruin it
             brigadierManager.register(test);
 
             File file = new File("test.json");

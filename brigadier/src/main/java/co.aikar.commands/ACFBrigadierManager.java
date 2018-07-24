@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Deprecated
 @UnstableAPI
-public class ACFBrigadierManager<S> implements SuggestionProvider<S>, Command<S> {
+public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
 
     private CommandManager<?, ?, ?, ?, ?, ?> manager;
     private CommandDispatcher<S> dispatcher;
@@ -63,7 +63,7 @@ public class ACFBrigadierManager<S> implements SuggestionProvider<S>, Command<S>
                 if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
                     continue;
                 }
-                paramNode.addChild(paramNode = RequiredArgumentBuilder.<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(this).executes(this).build());
+                paramNode.addChild(paramNode = RequiredArgumentBuilder.<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(this).build());
                 System.out.println("* * * registering param " + param.getName() + " of type " + param.getType().getSimpleName() + " with argument type " + ((ArgumentCommandNode) paramNode).getType().getClass().
                         getSimpleName());
             }
@@ -82,12 +82,5 @@ public class ACFBrigadierManager<S> implements SuggestionProvider<S>, Command<S>
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) throws CommandSyntaxException {
-        return builder.suggest("test").buildFuture();
-    }
-
-    @Override
-    public int run(CommandContext<S> context) throws CommandSyntaxException {
-        return 0;
-    }
+    public abstract CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) throws CommandSyntaxException;
 }
