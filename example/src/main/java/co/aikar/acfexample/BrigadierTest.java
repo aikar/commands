@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -19,7 +20,7 @@ public class BrigadierTest extends BaseCommand {
     @Syntax("<player>")
     @CommandCompletion("@player")
     @Description("Says hello to a player")
-    public static void onHello(Player player, Player arg) {
+    public static void onHello(Player player, @Flags("other") Player arg) {
         player.sendMessage("You said hello to " + arg.getDisplayName());
     }
 
@@ -30,8 +31,8 @@ public class BrigadierTest extends BaseCommand {
     }
 
     @Subcommand("test")
-    @Syntax("<bool> <float> <double> <integer> <string>")
     @Description("Says hello to a player")
+    @CommandCompletion("true|false @range:20 @range:1-5 @range:20-30 @range:40 test|test2|foo|bar")
     public static void onTest(Player player, boolean booleanParam, float floatParam, double doubleParam, int integerParam, String stringParam) {
         player.sendMessage("You said: " + booleanParam + " - " + floatParam + " - " + doubleParam + " - " + integerParam + " - " + stringParam);
     }

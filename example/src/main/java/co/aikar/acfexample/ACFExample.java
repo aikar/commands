@@ -27,9 +27,11 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import com.mojang.brigadier.CommandDispatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Arrays;
 
 public final class ACFExample extends JavaPlugin {
@@ -119,9 +121,13 @@ public final class ACFExample extends JavaPlugin {
         commandManager.registerCommand(test);
         Bukkit.getScheduler().runTaskLater(this, () -> {
             BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
-            ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
+            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
 
             brigadierManager.register(test);
+
+            File file = new File("test.json");
+            ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a(file);
+            System.out.println("WROTE TO " + file.getAbsolutePath());
         }, 1);
     }
 
