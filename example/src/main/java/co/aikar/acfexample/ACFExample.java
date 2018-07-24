@@ -27,6 +27,7 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -110,14 +111,18 @@ public final class ACFExample extends JavaPlugin {
             return false; // mark as unhandeled, sender will see default message
         });
 
-        commandManager.enableUnstableAPI("brigadier");
 
-        BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
-        ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
+        // TEST STUFF
+        commandManager.enableUnstableAPI("brigadier");
 
         BrigadierTest test = new BrigadierTest();
         commandManager.registerCommand(test);
-        brigadierManager.register(test);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
+            ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
+
+            brigadierManager.register(test);
+        }, 1);
     }
 
     // Typical Bukkit Plugin Scaffolding
