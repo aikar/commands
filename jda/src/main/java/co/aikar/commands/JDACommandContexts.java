@@ -32,7 +32,7 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
         this.registerIssuerOnlyContext(JDA.class, c -> jda);
         this.registerIssuerOnlyContext(Guild.class, c -> {
             MessageReceivedEvent event = c.getIssuer().getIssuer();
-            if (event.isFromType(ChannelType.PRIVATE) && !c.hasAnnotation(Optional.class)) {
+            if (event.isFromType(ChannelType.PRIVATE) && !c.isOptional()) {
                 throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);
             } else {
                 return event.getGuild();
@@ -66,7 +66,11 @@ public class JDACommandContexts extends CommandContexts<JDACommandExecutionConte
             if (c.hasAnnotation(SelfUser.class)) {
                 return jda.getSelfUser();
             }
-            String arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
+            String arg = c.getFirstArg();
+            if (c.isOptional() && (arg == null || arg.isEmpty())) {
+                return null;
+            }
+            arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated
             User user = null;
             if (arg.startsWith("<@!")) { // for some reason a ! is added when @'ing and clicking their name.
                 user = jda.getUserById(arg.substring(3, arg.length() - 1));
