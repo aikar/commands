@@ -42,6 +42,12 @@
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
+            <artifactId>MapSet</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
             <artifactId>Table</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
