@@ -1,6 +1,5 @@
 package co.aikar.commands;
 
-import com.google.common.collect.Iterables;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
@@ -45,7 +44,7 @@ public class ACFSpongeUtil {
                         "{search}", name);
                 return null;
             } else {
-                Player player = Iterables.getOnlyElement(confirmList);
+                Player player = ACFUtil.getFirstElement(confirmList);
                 issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }

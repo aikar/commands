@@ -35,7 +35,6 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
 import org.jetbrains.annotations.Nullable;
 
@@ -614,7 +613,7 @@ public abstract class BaseCommand {
             if (!cmds.isEmpty()) {
                 RegisteredCommand cmd = null;
                 if (cmds.size() == 1) {
-                    cmd = Iterables.getOnlyElement(cmds);
+                    cmd = ACFUtil.getFirstElement(cmds);
                 } else {
                     Optional<RegisteredCommand> optCmd = cmds.stream().filter(c -> {
                         int required = c.requiredResolvers;
@@ -718,9 +717,9 @@ public abstract class BaseCommand {
             if (search != null) {
                 cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));
             } else if (subCommands.get(CATCHUNKNOWN).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));
+                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));
             } else if (subCommands.get(DEFAULT).size() == 1) {
-                cmds.addAll(completeCommand(issuer, Iterables.getOnlyElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
+                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));
             }
 
             return filterTabComplete(args[args.length - 1], cmds);

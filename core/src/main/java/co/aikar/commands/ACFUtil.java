@@ -33,6 +33,7 @@ import java.text.Normalizer.Form;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -586,6 +587,16 @@ public final class ACFUtil {
         }
 
         return list;
+    }
+
+    public static <T> T getFirstElement(Iterable<T> iterable) {
+        Iterator<T> iterator = iterable.iterator();
+        T first = iterator.next();
+        if (!iterator.hasNext()) {
+            return first;
+        }
+
+        throw new IllegalArgumentException("Expected one element in iterable");
     }
 
     private static class ApplyModifierToNumber {

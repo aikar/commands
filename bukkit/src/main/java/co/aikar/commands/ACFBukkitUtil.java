@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -281,7 +280,7 @@ public class ACFBukkitUtil {
                         "{search}", name);
                 return null;
             } else {
-                Player player = Iterables.getOnlyElement(confirmList);
+                Player player = ACFUtil.getFirstElement(confirmList);
                 issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }
