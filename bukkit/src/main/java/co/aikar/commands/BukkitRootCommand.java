@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -36,7 +35,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
     private final BukkitCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
-    private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    private MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
@@ -79,7 +78,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
-    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+    public MapSet<String, RegisteredCommand> getSubCommands() {
         return this.subCommands;
     }
 
