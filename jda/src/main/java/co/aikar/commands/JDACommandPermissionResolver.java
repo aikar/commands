@@ -22,6 +22,11 @@ public class JDACommandPermissionResolver implements CommandPermissionResolver {
             return true;
         }
 
+        // Return false on webhook messages, as they cannot have permissions defined.
+        if (event.getIssuer().isWebhookMessage()) {
+            return false;
+        }
+
         Integer permissionOffset = discordPermissionOffsets.get(permission);
         if (permissionOffset == null) {
             return false;
