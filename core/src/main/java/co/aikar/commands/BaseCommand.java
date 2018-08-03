@@ -34,8 +34,7 @@ import co.aikar.commands.annotation.PreCommand;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
@@ -84,7 +83,7 @@ public abstract class BaseCommand {
     /**
      * A map of all the registered commands for this base command, keyed to each potential subcommand to access it.
      */
-    final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    final MapSet<String, RegisteredCommand> subCommands = new MapSet<>();
 
     /**
      * A map of flags to pass to Context Resolution for every parameter of the type. This is like an automatic @Flags on each.
@@ -432,7 +431,7 @@ public abstract class BaseCommand {
         RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);
 
         for (String subcmd : cmdList) {
-            subCommands.put(subcmd, cmd);
+            subCommands.add(subcmd, cmd);
         }
         cmd.addSubcommands(cmdList);
 
@@ -496,13 +495,13 @@ public abstract class BaseCommand {
                 }
             }
 
-            if (subCommands.get(DEFAULT) != null && args.length == 0) {
+            if (subCommands.getOrDefault(DEFAULT, null) != null && args.length == 0) {
                 findAndExecuteCommand(commandContext, DEFAULT, issuer, args);
-            } else if (subCommands.get(CATCHUNKNOWN) != null) {
+            } else if (subCommands.getOrDefault(CATCHUNKNOWN, null) != null) {
                 if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {
                     help(issuer, args);
                 }
-            } else if (subCommands.get(DEFAULT) != null) {
+            } else if (subCommands.getOrDefault(DEFAULT, null) != null) {
                 findAndExecuteCommand(commandContext, DEFAULT, issuer, args);
             }
 
@@ -741,16 +740,17 @@ public abstract class BaseCommand {
         final Set<String> cmds = new HashSet<>();
         final int cmdIndex = Math.max(0, args.length - 1);
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
-        for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
+        for (Map.Entry<String, Set<RegisteredCommand>> entry : subCommands.entrySet()) {
             final String key = entry.getKey();
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
-                final RegisteredCommand value = entry.getValue();
-                if (!value.hasPermission(issuer) || value.isPrivate) {
-                    continue;
-                }
+                for (RegisteredCommand value : entry.getValue()) {
+                    if (!value.hasPermission(issuer) || value.isPrivate) {
+                        continue;
+                    }
 
-                String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);
-                cmds.add(split[cmdIndex]);
+                    String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);
+                    cmds.add(split[cmdIndex]);
+                }
             }
         }
         return new ArrayList<>(cmds);

@@ -26,8 +26,7 @@ package co.aikar.commands;
 import co.aikar.locales.LocaleManager;
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import co.aikar.util.MapSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class Locales {
 
     private final CommandManager manager;
     private final LocaleManager<CommandIssuer> localeManager;
-    private final Map<ClassLoader, SetMultimap<String, Locale>> loadedBundles = new HashMap<>();
+    private final Map<ClassLoader, MapSet<String, Locale>> loadedBundles = new HashMap<>();
     private final List<ClassLoader> registeredClassLoaders = new ArrayList<>();
 
     public Locales(CommandManager manager) {
@@ -107,8 +106,8 @@ public class Locales {
         //noinspection unchecked
         Set<Locale> supportedLanguages = manager.getSupportedLanguages();
         for (Locale locale : supportedLanguages) {
-            for(SetMultimap<String, Locale> localeData: this.loadedBundles.values()) {
-                for (String bundleName : new HashSet<>(localeData.keys())) {
+            for(MapSet<String, Locale> localeData: this.loadedBundles.values()) {
+                for (String bundleName : new HashSet<>(localeData.keySet())) {
                     addMessageBundle(bundleName, locale);
                 }
             }
@@ -138,10 +137,10 @@ public class Locales {
     }
 
     public boolean addMessageBundle(ClassLoader classLoader, String bundleName, Locale locale) {
-        SetMultimap<String, Locale> classLoadersLocales = this.loadedBundles.getOrDefault(classLoader, HashMultimap.create());
-        if(!classLoadersLocales.containsEntry(bundleName, locale)) {
+        MapSet<String, Locale> classLoadersLocales = this.loadedBundles.getOrDefault(classLoader, new MapSet<>());
+        if(!classLoadersLocales.get(bundleName).contains(locale)) {
             if(this.localeManager.addMessageBundle(classLoader, bundleName, locale)) {
-                classLoadersLocales.put(bundleName, locale);
+                classLoadersLocales.add(bundleName, locale);
                 this.loadedBundles.put(classLoader, classLoadersLocales);
                 return true;
             }
