@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -53,11 +54,6 @@ public class CommandReplacements {
     }
 
     public String addReplacement(String key, String val) {
-        if (this.manager.hasRegisteredCommands()) {
-            this.manager.log(LogLevel.ERROR, "You are registering replacements after you have registered your commands!");
-            this.manager.log(LogLevel.ERROR, "This is not allowed, and this replacement (" + key + ") will not work for any previously registered command.");
-        }
-
         return addReplacement0(key, val);
     }
 
@@ -83,6 +79,13 @@ public class CommandReplacements {
 
         for (Map.Entry<Pattern, String> entry : replacements.values()) {
             text = entry.getKey().matcher(text).replaceAll(entry.getValue());
+        }
+
+        // check for unregistered replacements
+        Pattern pattern = Pattern.compile("%.[^\\s]*");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            this.manager.log(LogLevel.ERROR, "Found unregistered replacement: " + matcher.group());
         }
 
         return manager.getLocales().replaceI18NStrings(text);
