@@ -249,7 +249,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <li class="blockList">
 <h4>registerSenderAwareContext</h4>
 <pre><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
-public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.282">registerSenderAwareContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
+public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.283">registerSenderAwareContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
                                                        <a href="../../../co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts">IssuerAwareContextResolver</a>&lt;T,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;supplier)</pre>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Please switch to <a href="../../../co/aikar/commands/CommandContexts.html#registerIssuerAwareContext-java.lang.Class-co.aikar.commands.contexts.IssuerAwareContextResolver-"><code>registerIssuerAwareContext(Class, IssuerAwareContextResolver)</code></a>
  as the core wants to use the platform agnostic term of "Issuer" instead of Sender</span></div>
@@ -265,7 +265,7 @@ public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/command
 <ul class="blockList">
 <li class="blockList">
 <h4>registerIssuerAwareContext</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.292">registerIssuerAwareContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
+<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.293">registerIssuerAwareContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
                                            <a href="../../../co/aikar/commands/contexts/IssuerAwareContextResolver.html" title="interface in co.aikar.commands.contexts">IssuerAwareContextResolver</a>&lt;T,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;supplier)</pre>
 <div class="block">Registers a context resolver that may conditionally consume input, falling back to using the context of the
  issuer to potentially fulfill this context.
@@ -279,7 +279,7 @@ public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/command
 <ul class="blockList">
 <li class="blockList">
 <h4>registerIssuerOnlyContext</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.300">registerIssuerOnlyContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
+<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.301">registerIssuerOnlyContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
                                           <a href="../../../co/aikar/commands/contexts/IssuerOnlyContextResolver.html" title="interface in co.aikar.commands.contexts">IssuerOnlyContextResolver</a>&lt;T,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;supplier)</pre>
 <div class="block">Registers a context resolver that will never consume input. It will always satisfy its context based on the
  issuer of the command, so it will not appear in syntax strings.</div>
@@ -291,7 +291,7 @@ public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/command
 <ul class="blockList">
 <li class="blockList">
 <h4>registerOptionalContext</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.308">registerOptionalContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
+<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.309">registerOptionalContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
                                         <a href="../../../co/aikar/commands/contexts/OptionalContextResolver.html" title="interface in co.aikar.commands.contexts">OptionalContextResolver</a>&lt;T,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;supplier)</pre>
 <div class="block">Registers a context that can safely accept a null input from the command issuer to resolve. This resolver should always
  call <a href="../../../co/aikar/commands/CommandExecutionContext.html#popFirstArg--"><code>CommandExecutionContext.popFirstArg()</code></a></div>
@@ -303,7 +303,7 @@ public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/command
 <ul class="blockList">
 <li class="blockList">
 <h4>registerContext</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.316">registerContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
+<pre>public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.317">registerContext</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;context,
                                 <a href="../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a>&lt;T,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;supplier)</pre>
 <div class="block">Registers a context that requires input from the command issuer to resolve. This resolver should always
  call <a href="../../../co/aikar/commands/CommandExecutionContext.html#popFirstArg--"><code>CommandExecutionContext.popFirstArg()</code></a></div>
@@ -315,7 +315,7 @@ public&nbsp;&lt;T&gt;&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/command
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getResolver</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a>&lt;?,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.320">getResolver</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/contexts/ContextResolver.html" title="interface in co.aikar.commands.contexts">ContextResolver</a>&lt;?,<a href="../../../co/aikar/commands/CommandContexts.html" title="type parameter in CommandContexts">R</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/CommandContexts.html#line.321">getResolver</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;?&gt;&nbsp;type)</pre>
 </li>
 </ul>
 </li>
