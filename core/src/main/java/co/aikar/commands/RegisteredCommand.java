@@ -301,7 +301,10 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     
     public String getHelpText() {
-        return helpText;
+        if (helpText != null) {
+            return manager.getLocales().replaceI18NStrings(helpText);
+        }
+        return "";
     }
     
     public boolean isPrivate() {

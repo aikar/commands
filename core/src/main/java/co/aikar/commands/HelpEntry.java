@@ -51,7 +51,7 @@ public class HelpEntry {
     }
 
     public String getDescription(){
-        return this.command.helpText != null ? this.command.helpText : "";
+        return this.command.getHelpText();
     }
 
     public void setSearchScore(int searchScore) {
