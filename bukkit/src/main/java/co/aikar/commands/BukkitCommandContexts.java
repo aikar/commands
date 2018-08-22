@@ -241,7 +241,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     }
 
     @Nullable
-    OnlinePlayer getOnlinePlayer(BukkitCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
+    protected OnlinePlayer getOnlinePlayer(BukkitCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
         Player player = ACFBukkitUtil.findPlayerSmart(issuer, lookup);
         //noinspection Duplicates
         if (player == null) {
