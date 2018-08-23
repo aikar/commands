@@ -179,7 +179,7 @@ public class Locales {
         return message;
     }
 
-    public String replaceI18NStrings(String message, CommandIssuer issuer) {
+    public String replaceI18NStrings(String message) {
         if (message == null) {
             return null;
         }
@@ -187,6 +187,8 @@ public class Locales {
         if (!matcher.find()) {
             return message;
         }
+
+        CommandIssuer issuer = CommandManager.getCurrentCommandIssuer();
 
         matcher.reset();
         StringBuffer sb = new StringBuffer(message.length());

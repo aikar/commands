@@ -365,7 +365,6 @@ public abstract class CommandManager <
         }
 
         message = getCommandReplacements().replace(message);
-        message = getLocales().replaceI18NStrings(message, issuer);
 
         MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);
         if (formatter != null) {
@@ -400,7 +399,7 @@ public abstract class CommandManager <
     }
 
     public Locale getIssuerLocale(CommandIssuer issuer) {
-        if (usingPerIssuerLocale()) {
+        if (usingPerIssuerLocale() && issuer != null) {
             Locale locale = issuersLocale.get(issuer.getUniqueId());
             if (locale != null) {
                 return locale;
