@@ -88,6 +88,6 @@ public class CommandReplacements {
             this.manager.log(LogLevel.ERROR, "Found unregistered replacement: " + matcher.group());
         }
 
-        return manager.getLocales().replaceI18NStrings(text);
+        return text;
     }
 }

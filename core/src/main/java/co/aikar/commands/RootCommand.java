@@ -113,7 +113,7 @@ public interface RootCommand {
     default String getDescription() {
         final RegisteredCommand cmd = this.getDefaultRegisteredCommand();
         if (cmd != null) {
-            return cmd.helpText != null ? cmd.helpText : "";
+            return cmd.getHelpText();
         }
         BaseCommand defCommand = getDefCommand();
         if (defCommand != null && defCommand.description != null) {

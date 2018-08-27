@@ -301,7 +301,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     
     public String getHelpText() {
-        return helpText;
+        return helpText != null ? helpText : "";
     }
     
     public boolean isPrivate() {

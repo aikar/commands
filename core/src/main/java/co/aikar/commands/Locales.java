@@ -184,7 +184,7 @@ public class Locales {
             return null;
         }
         Matcher matcher = ACFPatterns.I18N_STRING.matcher(message);
-        if (!matcher.matches()) {
+        if (!matcher.find()) {
             return message;
         }
 
