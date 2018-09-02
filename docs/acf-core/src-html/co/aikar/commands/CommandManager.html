@@ -373,175 +373,176 @@
 <span class="sourceLineNo">365</span>        }<a name="line.365"></a>
 <span class="sourceLineNo">366</span><a name="line.366"></a>
 <span class="sourceLineNo">367</span>        message = getCommandReplacements().replace(message);<a name="line.367"></a>
-<span class="sourceLineNo">368</span><a name="line.368"></a>
-<span class="sourceLineNo">369</span>        MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);<a name="line.369"></a>
-<span class="sourceLineNo">370</span>        if (formatter != null) {<a name="line.370"></a>
-<span class="sourceLineNo">371</span>            message = formatter.format(message);<a name="line.371"></a>
-<span class="sourceLineNo">372</span>        }<a name="line.372"></a>
-<span class="sourceLineNo">373</span>        return message;<a name="line.373"></a>
-<span class="sourceLineNo">374</span>    }<a name="line.374"></a>
-<span class="sourceLineNo">375</span><a name="line.375"></a>
-<span class="sourceLineNo">376</span>    public void onLocaleChange(IssuerLocaleChangedCallback&lt;I&gt; onChange) {<a name="line.376"></a>
-<span class="sourceLineNo">377</span>        localeChangedCallbacks.add(onChange);<a name="line.377"></a>
-<span class="sourceLineNo">378</span>    }<a name="line.378"></a>
-<span class="sourceLineNo">379</span><a name="line.379"></a>
-<span class="sourceLineNo">380</span>    public void notifyLocaleChange(I issuer, Locale oldLocale, Locale newLocale) {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>        localeChangedCallbacks.forEach(cb -&gt; {<a name="line.381"></a>
-<span class="sourceLineNo">382</span>            try {<a name="line.382"></a>
-<span class="sourceLineNo">383</span>                cb.onIssuerLocaleChange(issuer, oldLocale, newLocale);<a name="line.383"></a>
-<span class="sourceLineNo">384</span>            } catch (Exception e) {<a name="line.384"></a>
-<span class="sourceLineNo">385</span>                this.log(LogLevel.ERROR, "Error in notifyLocaleChange", e);<a name="line.385"></a>
-<span class="sourceLineNo">386</span>            }<a name="line.386"></a>
-<span class="sourceLineNo">387</span>        });<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    }<a name="line.388"></a>
-<span class="sourceLineNo">389</span><a name="line.389"></a>
-<span class="sourceLineNo">390</span>    public Locale setIssuerLocale(IT issuer, Locale locale) {<a name="line.390"></a>
-<span class="sourceLineNo">391</span>        I commandIssuer = getCommandIssuer(issuer);<a name="line.391"></a>
-<span class="sourceLineNo">392</span><a name="line.392"></a>
-<span class="sourceLineNo">393</span>        Locale old = issuersLocale.put(commandIssuer.getUniqueId(), locale);<a name="line.393"></a>
-<span class="sourceLineNo">394</span>        if (!Objects.equals(old, locale)) {<a name="line.394"></a>
-<span class="sourceLineNo">395</span>            this.notifyLocaleChange(commandIssuer, old, locale);<a name="line.395"></a>
-<span class="sourceLineNo">396</span>        }<a name="line.396"></a>
-<span class="sourceLineNo">397</span><a name="line.397"></a>
-<span class="sourceLineNo">398</span>        return old;<a name="line.398"></a>
-<span class="sourceLineNo">399</span>    }<a name="line.399"></a>
-<span class="sourceLineNo">400</span><a name="line.400"></a>
-<span class="sourceLineNo">401</span>    public Locale getIssuerLocale(CommandIssuer issuer) {<a name="line.401"></a>
-<span class="sourceLineNo">402</span>        if (usingPerIssuerLocale()) {<a name="line.402"></a>
-<span class="sourceLineNo">403</span>            Locale locale = issuersLocale.get(issuer.getUniqueId());<a name="line.403"></a>
-<span class="sourceLineNo">404</span>            if (locale != null) {<a name="line.404"></a>
-<span class="sourceLineNo">405</span>                return locale;<a name="line.405"></a>
-<span class="sourceLineNo">406</span>            }<a name="line.406"></a>
-<span class="sourceLineNo">407</span>        }<a name="line.407"></a>
-<span class="sourceLineNo">408</span><a name="line.408"></a>
-<span class="sourceLineNo">409</span>        return getLocales().getDefaultLocale();<a name="line.409"></a>
-<span class="sourceLineNo">410</span>    }<a name="line.410"></a>
-<span class="sourceLineNo">411</span><a name="line.411"></a>
-<span class="sourceLineNo">412</span>    CommandOperationContext&lt;I&gt; createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.412"></a>
-<span class="sourceLineNo">413</span>        //noinspection unchecked<a name="line.413"></a>
-<span class="sourceLineNo">414</span>        return new CommandOperationContext&lt;&gt;(<a name="line.414"></a>
-<span class="sourceLineNo">415</span>                this,<a name="line.415"></a>
-<span class="sourceLineNo">416</span>                (I) issuer,<a name="line.416"></a>
-<span class="sourceLineNo">417</span>                command,<a name="line.417"></a>
-<span class="sourceLineNo">418</span>                commandLabel,<a name="line.418"></a>
-<span class="sourceLineNo">419</span>                args,<a name="line.419"></a>
-<span class="sourceLineNo">420</span>                isAsync<a name="line.420"></a>
-<span class="sourceLineNo">421</span>        );<a name="line.421"></a>
-<span class="sourceLineNo">422</span>    }<a name="line.422"></a>
-<span class="sourceLineNo">423</span><a name="line.423"></a>
-<span class="sourceLineNo">424</span>    /**<a name="line.424"></a>
-<span class="sourceLineNo">425</span>     * Gets a list of all currently supported languages for this manager.<a name="line.425"></a>
-<span class="sourceLineNo">426</span>     * These locales will be automatically loaded from<a name="line.426"></a>
-<span class="sourceLineNo">427</span>     * @return<a name="line.427"></a>
-<span class="sourceLineNo">428</span>     */<a name="line.428"></a>
-<span class="sourceLineNo">429</span>    public Set&lt;Locale&gt; getSupportedLanguages() {<a name="line.429"></a>
-<span class="sourceLineNo">430</span>        return supportedLanguages;<a name="line.430"></a>
-<span class="sourceLineNo">431</span>    }<a name="line.431"></a>
-<span class="sourceLineNo">432</span><a name="line.432"></a>
-<span class="sourceLineNo">433</span>    /**<a name="line.433"></a>
-<span class="sourceLineNo">434</span>     * Adds a new locale to the list of automatic Locales to load Message Bundles for.<a name="line.434"></a>
-<span class="sourceLineNo">435</span>     * All bundles loaded under the previous supported languages will now automatically load for this new locale too.<a name="line.435"></a>
-<span class="sourceLineNo">436</span>     *<a name="line.436"></a>
-<span class="sourceLineNo">437</span>     * @param locale<a name="line.437"></a>
-<span class="sourceLineNo">438</span>     */<a name="line.438"></a>
-<span class="sourceLineNo">439</span>    public void addSupportedLanguage(Locale locale) {<a name="line.439"></a>
-<span class="sourceLineNo">440</span>        supportedLanguages.add(locale);<a name="line.440"></a>
-<span class="sourceLineNo">441</span>        getLocales().loadMissingBundles();<a name="line.441"></a>
-<span class="sourceLineNo">442</span>    }<a name="line.442"></a>
-<span class="sourceLineNo">443</span><a name="line.443"></a>
-<span class="sourceLineNo">444</span>    /**<a name="line.444"></a>
-<span class="sourceLineNo">445</span>     * Registers an instance of a class to be registered as an injectable dependency.&lt;br&gt;<a name="line.445"></a>
-<span class="sourceLineNo">446</span>     * The command manager will attempt to inject all fields in a command class that are annotated with<a name="line.446"></a>
-<span class="sourceLineNo">447</span>     * {@link co.aikar.commands.annotation.Dependency} with the provided instance.<a name="line.447"></a>
-<span class="sourceLineNo">448</span>     *<a name="line.448"></a>
-<span class="sourceLineNo">449</span>     * @param clazz the class the injector should look for when injecting<a name="line.449"></a>
-<span class="sourceLineNo">450</span>     * @param instance the instance of the class that should be injected<a name="line.450"></a>
-<span class="sourceLineNo">451</span>     * @throws IllegalStateException when there is already an instance for the provided class registered<a name="line.451"></a>
-<span class="sourceLineNo">452</span>     */<a name="line.452"></a>
-<span class="sourceLineNo">453</span>    public &lt;T&gt; void registerDependency(Class&lt;? extends T&gt; clazz, T instance){<a name="line.453"></a>
-<span class="sourceLineNo">454</span>        registerDependency(clazz, clazz.getName(), instance);<a name="line.454"></a>
-<span class="sourceLineNo">455</span>    }<a name="line.455"></a>
-<span class="sourceLineNo">456</span><a name="line.456"></a>
-<span class="sourceLineNo">457</span>    /**<a name="line.457"></a>
-<span class="sourceLineNo">458</span>     * Registers an instance of a class to be registered as an injectable dependency.&lt;br&gt;<a name="line.458"></a>
-<span class="sourceLineNo">459</span>     * The command manager will attempt to inject all fields in a command class that are annotated with<a name="line.459"></a>
-<span class="sourceLineNo">460</span>     * {@link co.aikar.commands.annotation.Dependency} with the provided instance.<a name="line.460"></a>
-<span class="sourceLineNo">461</span>     *<a name="line.461"></a>
-<span class="sourceLineNo">462</span>     * @param clazz the class the injector should look for when injecting<a name="line.462"></a>
-<span class="sourceLineNo">463</span>     * @param key the key which needs to be present if that<a name="line.463"></a>
-<span class="sourceLineNo">464</span>     * @param instance the instance of the class that should be injected<a name="line.464"></a>
-<span class="sourceLineNo">465</span>     * @throws IllegalStateException when there is already an instance for the provided class registered<a name="line.465"></a>
-<span class="sourceLineNo">466</span>     */<a name="line.466"></a>
-<span class="sourceLineNo">467</span>    public &lt;T&gt; void registerDependency(Class&lt;? extends T&gt; clazz, String key, T instance){<a name="line.467"></a>
-<span class="sourceLineNo">468</span>        if (dependencies.containsKey(clazz, key)) {<a name="line.468"></a>
-<span class="sourceLineNo">469</span>            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");<a name="line.469"></a>
-<span class="sourceLineNo">470</span>        }<a name="line.470"></a>
-<span class="sourceLineNo">471</span><a name="line.471"></a>
-<span class="sourceLineNo">472</span>        dependencies.put(clazz, key, instance);<a name="line.472"></a>
-<span class="sourceLineNo">473</span>    }<a name="line.473"></a>
-<span class="sourceLineNo">474</span><a name="line.474"></a>
-<span class="sourceLineNo">475</span>    /**<a name="line.475"></a>
-<span class="sourceLineNo">476</span>     * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}<a name="line.476"></a>
-<span class="sourceLineNo">477</span>     * into all fields of the class and its superclasses that are marked with {@link Dependency}.<a name="line.477"></a>
-<span class="sourceLineNo">478</span>     *<a name="line.478"></a>
-<span class="sourceLineNo">479</span>     * @param baseCommand the instance which fields should be filled<a name="line.479"></a>
-<span class="sourceLineNo">480</span>     */<a name="line.480"></a>
-<span class="sourceLineNo">481</span>    void injectDependencies(BaseCommand baseCommand) {<a name="line.481"></a>
-<span class="sourceLineNo">482</span>        Class clazz = baseCommand.getClass();<a name="line.482"></a>
-<span class="sourceLineNo">483</span>        do {<a name="line.483"></a>
-<span class="sourceLineNo">484</span>            for (Field field : clazz.getDeclaredFields()) {<a name="line.484"></a>
-<span class="sourceLineNo">485</span>                if (annotations.hasAnnotation(field, Dependency.class)) {<a name="line.485"></a>
-<span class="sourceLineNo">486</span>                    String dependency = annotations.getAnnotationValue(field, Dependency.class);<a name="line.486"></a>
-<span class="sourceLineNo">487</span>                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;<a name="line.487"></a>
-<span class="sourceLineNo">488</span>                    Object object = dependencies.row(field.getType()).get(key);<a name="line.488"></a>
-<span class="sourceLineNo">489</span>                    if (object == null) {<a name="line.489"></a>
-<span class="sourceLineNo">490</span>                        throw new UnresolvedDependencyException("Could not find a registered instance of " +<a name="line.490"></a>
-<span class="sourceLineNo">491</span>                                field.getType().getName() + " with key " + key + " for field " + field.getName() +<a name="line.491"></a>
-<span class="sourceLineNo">492</span>                                " in class " + baseCommand.getClass().getName());<a name="line.492"></a>
-<span class="sourceLineNo">493</span>                    }<a name="line.493"></a>
-<span class="sourceLineNo">494</span><a name="line.494"></a>
-<span class="sourceLineNo">495</span>                    try {<a name="line.495"></a>
-<span class="sourceLineNo">496</span>                        boolean accessible = field.isAccessible();<a name="line.496"></a>
-<span class="sourceLineNo">497</span>                        if (!accessible) {<a name="line.497"></a>
-<span class="sourceLineNo">498</span>                            field.setAccessible(true);<a name="line.498"></a>
-<span class="sourceLineNo">499</span>                        }<a name="line.499"></a>
-<span class="sourceLineNo">500</span>                        field.set(baseCommand, object);<a name="line.500"></a>
-<span class="sourceLineNo">501</span>                        field.setAccessible(accessible);<a name="line.501"></a>
-<span class="sourceLineNo">502</span>                    } catch (IllegalAccessException e) {<a name="line.502"></a>
-<span class="sourceLineNo">503</span>                        e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?<a name="line.503"></a>
-<span class="sourceLineNo">504</span>                    }<a name="line.504"></a>
-<span class="sourceLineNo">505</span>                }<a name="line.505"></a>
-<span class="sourceLineNo">506</span>            }<a name="line.506"></a>
-<span class="sourceLineNo">507</span>            clazz = clazz.getSuperclass();<a name="line.507"></a>
-<span class="sourceLineNo">508</span>        } while (!clazz.equals(BaseCommand.class));<a name="line.508"></a>
-<span class="sourceLineNo">509</span>    }<a name="line.509"></a>
-<span class="sourceLineNo">510</span><a name="line.510"></a>
-<span class="sourceLineNo">511</span>    /**<a name="line.511"></a>
-<span class="sourceLineNo">512</span>     * @deprecated Use this with caution! If you enable and use Unstable API's, your next compile using ACF<a name="line.512"></a>
-<span class="sourceLineNo">513</span>     * may require you to update your implementation to those unstable API's<a name="line.513"></a>
-<span class="sourceLineNo">514</span>     */<a name="line.514"></a>
-<span class="sourceLineNo">515</span>    @Deprecated<a name="line.515"></a>
-<span class="sourceLineNo">516</span>    public void enableUnstableAPI(String api) {<a name="line.516"></a>
-<span class="sourceLineNo">517</span>        unstableAPIs.add(api);<a name="line.517"></a>
-<span class="sourceLineNo">518</span>    }<a name="line.518"></a>
-<span class="sourceLineNo">519</span>    void verifyUnstableAPI(String api) {<a name="line.519"></a>
-<span class="sourceLineNo">520</span>        if (!unstableAPIs.contains(api)) {<a name="line.520"></a>
-<span class="sourceLineNo">521</span>            throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");<a name="line.521"></a>
-<span class="sourceLineNo">522</span>        }<a name="line.522"></a>
-<span class="sourceLineNo">523</span>    }<a name="line.523"></a>
-<span class="sourceLineNo">524</span><a name="line.524"></a>
-<span class="sourceLineNo">525</span>    boolean hasUnstableAPI(String api) {<a name="line.525"></a>
-<span class="sourceLineNo">526</span>        return unstableAPIs.contains(api);<a name="line.526"></a>
-<span class="sourceLineNo">527</span>    }<a name="line.527"></a>
-<span class="sourceLineNo">528</span><a name="line.528"></a>
-<span class="sourceLineNo">529</span>    Annotations getAnnotations() {<a name="line.529"></a>
-<span class="sourceLineNo">530</span>        return annotations;<a name="line.530"></a>
-<span class="sourceLineNo">531</span>    }<a name="line.531"></a>
-<span class="sourceLineNo">532</span><a name="line.532"></a>
-<span class="sourceLineNo">533</span>    public String getCommandPrefix(CommandIssuer issuer) {<a name="line.533"></a>
-<span class="sourceLineNo">534</span>        return "";<a name="line.534"></a>
-<span class="sourceLineNo">535</span>    }<a name="line.535"></a>
-<span class="sourceLineNo">536</span>}<a name="line.536"></a>
+<span class="sourceLineNo">368</span>        message = getLocales().replaceI18NStrings(message);<a name="line.368"></a>
+<span class="sourceLineNo">369</span><a name="line.369"></a>
+<span class="sourceLineNo">370</span>        MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);<a name="line.370"></a>
+<span class="sourceLineNo">371</span>        if (formatter != null) {<a name="line.371"></a>
+<span class="sourceLineNo">372</span>            message = formatter.format(message);<a name="line.372"></a>
+<span class="sourceLineNo">373</span>        }<a name="line.373"></a>
+<span class="sourceLineNo">374</span>        return message;<a name="line.374"></a>
+<span class="sourceLineNo">375</span>    }<a name="line.375"></a>
+<span class="sourceLineNo">376</span><a name="line.376"></a>
+<span class="sourceLineNo">377</span>    public void onLocaleChange(IssuerLocaleChangedCallback&lt;I&gt; onChange) {<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        localeChangedCallbacks.add(onChange);<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    }<a name="line.379"></a>
+<span class="sourceLineNo">380</span><a name="line.380"></a>
+<span class="sourceLineNo">381</span>    public void notifyLocaleChange(I issuer, Locale oldLocale, Locale newLocale) {<a name="line.381"></a>
+<span class="sourceLineNo">382</span>        localeChangedCallbacks.forEach(cb -&gt; {<a name="line.382"></a>
+<span class="sourceLineNo">383</span>            try {<a name="line.383"></a>
+<span class="sourceLineNo">384</span>                cb.onIssuerLocaleChange(issuer, oldLocale, newLocale);<a name="line.384"></a>
+<span class="sourceLineNo">385</span>            } catch (Exception e) {<a name="line.385"></a>
+<span class="sourceLineNo">386</span>                this.log(LogLevel.ERROR, "Error in notifyLocaleChange", e);<a name="line.386"></a>
+<span class="sourceLineNo">387</span>            }<a name="line.387"></a>
+<span class="sourceLineNo">388</span>        });<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    }<a name="line.389"></a>
+<span class="sourceLineNo">390</span><a name="line.390"></a>
+<span class="sourceLineNo">391</span>    public Locale setIssuerLocale(IT issuer, Locale locale) {<a name="line.391"></a>
+<span class="sourceLineNo">392</span>        I commandIssuer = getCommandIssuer(issuer);<a name="line.392"></a>
+<span class="sourceLineNo">393</span><a name="line.393"></a>
+<span class="sourceLineNo">394</span>        Locale old = issuersLocale.put(commandIssuer.getUniqueId(), locale);<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        if (!Objects.equals(old, locale)) {<a name="line.395"></a>
+<span class="sourceLineNo">396</span>            this.notifyLocaleChange(commandIssuer, old, locale);<a name="line.396"></a>
+<span class="sourceLineNo">397</span>        }<a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span>        return old;<a name="line.399"></a>
+<span class="sourceLineNo">400</span>    }<a name="line.400"></a>
+<span class="sourceLineNo">401</span><a name="line.401"></a>
+<span class="sourceLineNo">402</span>    public Locale getIssuerLocale(CommandIssuer issuer) {<a name="line.402"></a>
+<span class="sourceLineNo">403</span>        if (usingPerIssuerLocale() &amp;&amp; issuer != null) {<a name="line.403"></a>
+<span class="sourceLineNo">404</span>            Locale locale = issuersLocale.get(issuer.getUniqueId());<a name="line.404"></a>
+<span class="sourceLineNo">405</span>            if (locale != null) {<a name="line.405"></a>
+<span class="sourceLineNo">406</span>                return locale;<a name="line.406"></a>
+<span class="sourceLineNo">407</span>            }<a name="line.407"></a>
+<span class="sourceLineNo">408</span>        }<a name="line.408"></a>
+<span class="sourceLineNo">409</span><a name="line.409"></a>
+<span class="sourceLineNo">410</span>        return getLocales().getDefaultLocale();<a name="line.410"></a>
+<span class="sourceLineNo">411</span>    }<a name="line.411"></a>
+<span class="sourceLineNo">412</span><a name="line.412"></a>
+<span class="sourceLineNo">413</span>    CommandOperationContext&lt;I&gt; createCommandOperationContext(BaseCommand command, CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>        //noinspection unchecked<a name="line.414"></a>
+<span class="sourceLineNo">415</span>        return new CommandOperationContext&lt;&gt;(<a name="line.415"></a>
+<span class="sourceLineNo">416</span>                this,<a name="line.416"></a>
+<span class="sourceLineNo">417</span>                (I) issuer,<a name="line.417"></a>
+<span class="sourceLineNo">418</span>                command,<a name="line.418"></a>
+<span class="sourceLineNo">419</span>                commandLabel,<a name="line.419"></a>
+<span class="sourceLineNo">420</span>                args,<a name="line.420"></a>
+<span class="sourceLineNo">421</span>                isAsync<a name="line.421"></a>
+<span class="sourceLineNo">422</span>        );<a name="line.422"></a>
+<span class="sourceLineNo">423</span>    }<a name="line.423"></a>
+<span class="sourceLineNo">424</span><a name="line.424"></a>
+<span class="sourceLineNo">425</span>    /**<a name="line.425"></a>
+<span class="sourceLineNo">426</span>     * Gets a list of all currently supported languages for this manager.<a name="line.426"></a>
+<span class="sourceLineNo">427</span>     * These locales will be automatically loaded from<a name="line.427"></a>
+<span class="sourceLineNo">428</span>     * @return<a name="line.428"></a>
+<span class="sourceLineNo">429</span>     */<a name="line.429"></a>
+<span class="sourceLineNo">430</span>    public Set&lt;Locale&gt; getSupportedLanguages() {<a name="line.430"></a>
+<span class="sourceLineNo">431</span>        return supportedLanguages;<a name="line.431"></a>
+<span class="sourceLineNo">432</span>    }<a name="line.432"></a>
+<span class="sourceLineNo">433</span><a name="line.433"></a>
+<span class="sourceLineNo">434</span>    /**<a name="line.434"></a>
+<span class="sourceLineNo">435</span>     * Adds a new locale to the list of automatic Locales to load Message Bundles for.<a name="line.435"></a>
+<span class="sourceLineNo">436</span>     * All bundles loaded under the previous supported languages will now automatically load for this new locale too.<a name="line.436"></a>
+<span class="sourceLineNo">437</span>     *<a name="line.437"></a>
+<span class="sourceLineNo">438</span>     * @param locale<a name="line.438"></a>
+<span class="sourceLineNo">439</span>     */<a name="line.439"></a>
+<span class="sourceLineNo">440</span>    public void addSupportedLanguage(Locale locale) {<a name="line.440"></a>
+<span class="sourceLineNo">441</span>        supportedLanguages.add(locale);<a name="line.441"></a>
+<span class="sourceLineNo">442</span>        getLocales().loadMissingBundles();<a name="line.442"></a>
+<span class="sourceLineNo">443</span>    }<a name="line.443"></a>
+<span class="sourceLineNo">444</span><a name="line.444"></a>
+<span class="sourceLineNo">445</span>    /**<a name="line.445"></a>
+<span class="sourceLineNo">446</span>     * Registers an instance of a class to be registered as an injectable dependency.&lt;br&gt;<a name="line.446"></a>
+<span class="sourceLineNo">447</span>     * The command manager will attempt to inject all fields in a command class that are annotated with<a name="line.447"></a>
+<span class="sourceLineNo">448</span>     * {@link co.aikar.commands.annotation.Dependency} with the provided instance.<a name="line.448"></a>
+<span class="sourceLineNo">449</span>     *<a name="line.449"></a>
+<span class="sourceLineNo">450</span>     * @param clazz the class the injector should look for when injecting<a name="line.450"></a>
+<span class="sourceLineNo">451</span>     * @param instance the instance of the class that should be injected<a name="line.451"></a>
+<span class="sourceLineNo">452</span>     * @throws IllegalStateException when there is already an instance for the provided class registered<a name="line.452"></a>
+<span class="sourceLineNo">453</span>     */<a name="line.453"></a>
+<span class="sourceLineNo">454</span>    public &lt;T&gt; void registerDependency(Class&lt;? extends T&gt; clazz, T instance){<a name="line.454"></a>
+<span class="sourceLineNo">455</span>        registerDependency(clazz, clazz.getName(), instance);<a name="line.455"></a>
+<span class="sourceLineNo">456</span>    }<a name="line.456"></a>
+<span class="sourceLineNo">457</span><a name="line.457"></a>
+<span class="sourceLineNo">458</span>    /**<a name="line.458"></a>
+<span class="sourceLineNo">459</span>     * Registers an instance of a class to be registered as an injectable dependency.&lt;br&gt;<a name="line.459"></a>
+<span class="sourceLineNo">460</span>     * The command manager will attempt to inject all fields in a command class that are annotated with<a name="line.460"></a>
+<span class="sourceLineNo">461</span>     * {@link co.aikar.commands.annotation.Dependency} with the provided instance.<a name="line.461"></a>
+<span class="sourceLineNo">462</span>     *<a name="line.462"></a>
+<span class="sourceLineNo">463</span>     * @param clazz the class the injector should look for when injecting<a name="line.463"></a>
+<span class="sourceLineNo">464</span>     * @param key the key which needs to be present if that<a name="line.464"></a>
+<span class="sourceLineNo">465</span>     * @param instance the instance of the class that should be injected<a name="line.465"></a>
+<span class="sourceLineNo">466</span>     * @throws IllegalStateException when there is already an instance for the provided class registered<a name="line.466"></a>
+<span class="sourceLineNo">467</span>     */<a name="line.467"></a>
+<span class="sourceLineNo">468</span>    public &lt;T&gt; void registerDependency(Class&lt;? extends T&gt; clazz, String key, T instance){<a name="line.468"></a>
+<span class="sourceLineNo">469</span>        if (dependencies.containsKey(clazz, key)) {<a name="line.469"></a>
+<span class="sourceLineNo">470</span>            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");<a name="line.470"></a>
+<span class="sourceLineNo">471</span>        }<a name="line.471"></a>
+<span class="sourceLineNo">472</span><a name="line.472"></a>
+<span class="sourceLineNo">473</span>        dependencies.put(clazz, key, instance);<a name="line.473"></a>
+<span class="sourceLineNo">474</span>    }<a name="line.474"></a>
+<span class="sourceLineNo">475</span><a name="line.475"></a>
+<span class="sourceLineNo">476</span>    /**<a name="line.476"></a>
+<span class="sourceLineNo">477</span>     * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}<a name="line.477"></a>
+<span class="sourceLineNo">478</span>     * into all fields of the class and its superclasses that are marked with {@link Dependency}.<a name="line.478"></a>
+<span class="sourceLineNo">479</span>     *<a name="line.479"></a>
+<span class="sourceLineNo">480</span>     * @param baseCommand the instance which fields should be filled<a name="line.480"></a>
+<span class="sourceLineNo">481</span>     */<a name="line.481"></a>
+<span class="sourceLineNo">482</span>    void injectDependencies(BaseCommand baseCommand) {<a name="line.482"></a>
+<span class="sourceLineNo">483</span>        Class clazz = baseCommand.getClass();<a name="line.483"></a>
+<span class="sourceLineNo">484</span>        do {<a name="line.484"></a>
+<span class="sourceLineNo">485</span>            for (Field field : clazz.getDeclaredFields()) {<a name="line.485"></a>
+<span class="sourceLineNo">486</span>                if (annotations.hasAnnotation(field, Dependency.class)) {<a name="line.486"></a>
+<span class="sourceLineNo">487</span>                    String dependency = annotations.getAnnotationValue(field, Dependency.class);<a name="line.487"></a>
+<span class="sourceLineNo">488</span>                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;<a name="line.488"></a>
+<span class="sourceLineNo">489</span>                    Object object = dependencies.row(field.getType()).get(key);<a name="line.489"></a>
+<span class="sourceLineNo">490</span>                    if (object == null) {<a name="line.490"></a>
+<span class="sourceLineNo">491</span>                        throw new UnresolvedDependencyException("Could not find a registered instance of " +<a name="line.491"></a>
+<span class="sourceLineNo">492</span>                                field.getType().getName() + " with key " + key + " for field " + field.getName() +<a name="line.492"></a>
+<span class="sourceLineNo">493</span>                                " in class " + baseCommand.getClass().getName());<a name="line.493"></a>
+<span class="sourceLineNo">494</span>                    }<a name="line.494"></a>
+<span class="sourceLineNo">495</span><a name="line.495"></a>
+<span class="sourceLineNo">496</span>                    try {<a name="line.496"></a>
+<span class="sourceLineNo">497</span>                        boolean accessible = field.isAccessible();<a name="line.497"></a>
+<span class="sourceLineNo">498</span>                        if (!accessible) {<a name="line.498"></a>
+<span class="sourceLineNo">499</span>                            field.setAccessible(true);<a name="line.499"></a>
+<span class="sourceLineNo">500</span>                        }<a name="line.500"></a>
+<span class="sourceLineNo">501</span>                        field.set(baseCommand, object);<a name="line.501"></a>
+<span class="sourceLineNo">502</span>                        field.setAccessible(accessible);<a name="line.502"></a>
+<span class="sourceLineNo">503</span>                    } catch (IllegalAccessException e) {<a name="line.503"></a>
+<span class="sourceLineNo">504</span>                        e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?<a name="line.504"></a>
+<span class="sourceLineNo">505</span>                    }<a name="line.505"></a>
+<span class="sourceLineNo">506</span>                }<a name="line.506"></a>
+<span class="sourceLineNo">507</span>            }<a name="line.507"></a>
+<span class="sourceLineNo">508</span>            clazz = clazz.getSuperclass();<a name="line.508"></a>
+<span class="sourceLineNo">509</span>        } while (!clazz.equals(BaseCommand.class));<a name="line.509"></a>
+<span class="sourceLineNo">510</span>    }<a name="line.510"></a>
+<span class="sourceLineNo">511</span><a name="line.511"></a>
+<span class="sourceLineNo">512</span>    /**<a name="line.512"></a>
+<span class="sourceLineNo">513</span>     * @deprecated Use this with caution! If you enable and use Unstable API's, your next compile using ACF<a name="line.513"></a>
+<span class="sourceLineNo">514</span>     * may require you to update your implementation to those unstable API's<a name="line.514"></a>
+<span class="sourceLineNo">515</span>     */<a name="line.515"></a>
+<span class="sourceLineNo">516</span>    @Deprecated<a name="line.516"></a>
+<span class="sourceLineNo">517</span>    public void enableUnstableAPI(String api) {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>        unstableAPIs.add(api);<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    }<a name="line.519"></a>
+<span class="sourceLineNo">520</span>    void verifyUnstableAPI(String api) {<a name="line.520"></a>
+<span class="sourceLineNo">521</span>        if (!unstableAPIs.contains(api)) {<a name="line.521"></a>
+<span class="sourceLineNo">522</span>            throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        }<a name="line.523"></a>
+<span class="sourceLineNo">524</span>    }<a name="line.524"></a>
+<span class="sourceLineNo">525</span><a name="line.525"></a>
+<span class="sourceLineNo">526</span>    boolean hasUnstableAPI(String api) {<a name="line.526"></a>
+<span class="sourceLineNo">527</span>        return unstableAPIs.contains(api);<a name="line.527"></a>
+<span class="sourceLineNo">528</span>    }<a name="line.528"></a>
+<span class="sourceLineNo">529</span><a name="line.529"></a>
+<span class="sourceLineNo">530</span>    Annotations getAnnotations() {<a name="line.530"></a>
+<span class="sourceLineNo">531</span>        return annotations;<a name="line.531"></a>
+<span class="sourceLineNo">532</span>    }<a name="line.532"></a>
+<span class="sourceLineNo">533</span><a name="line.533"></a>
+<span class="sourceLineNo">534</span>    public String getCommandPrefix(CommandIssuer issuer) {<a name="line.534"></a>
+<span class="sourceLineNo">535</span>        return "";<a name="line.535"></a>
+<span class="sourceLineNo">536</span>    }<a name="line.536"></a>
+<span class="sourceLineNo">537</span>}<a name="line.537"></a>
 
 
 

@@ -241,778 +241,777 @@
 <span class="sourceLineNo">233</span>        this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);<a name="line.233"></a>
 <span class="sourceLineNo">234</span><a name="line.234"></a>
 <span class="sourceLineNo">235</span>        registerSubcommands();<a name="line.235"></a>
-<span class="sourceLineNo">236</span><a name="line.236"></a>
-<span class="sourceLineNo">237</span>        if (cmdAliases != null) {<a name="line.237"></a>
-<span class="sourceLineNo">238</span>            Set&lt;String&gt; cmdList = new HashSet&lt;&gt;();<a name="line.238"></a>
-<span class="sourceLineNo">239</span>            Collections.addAll(cmdList, cmdAliases);<a name="line.239"></a>
-<span class="sourceLineNo">240</span>            cmdList.remove(cmd);<a name="line.240"></a>
-<span class="sourceLineNo">241</span>            for (String cmdAlias : cmdList) {<a name="line.241"></a>
-<span class="sourceLineNo">242</span>                register(cmdAlias, this);<a name="line.242"></a>
-<span class="sourceLineNo">243</span>            }<a name="line.243"></a>
-<span class="sourceLineNo">244</span>        }<a name="line.244"></a>
-<span class="sourceLineNo">245</span><a name="line.245"></a>
-<span class="sourceLineNo">246</span>        if (cmd != null) {<a name="line.246"></a>
-<span class="sourceLineNo">247</span>            register(cmd, this);<a name="line.247"></a>
-<span class="sourceLineNo">248</span>        }<a name="line.248"></a>
-<span class="sourceLineNo">249</span>        registerSubclasses(cmd);<a name="line.249"></a>
-<span class="sourceLineNo">250</span><a name="line.250"></a>
-<span class="sourceLineNo">251</span>    }<a name="line.251"></a>
-<span class="sourceLineNo">252</span><a name="line.252"></a>
-<span class="sourceLineNo">253</span>    /**<a name="line.253"></a>
-<span class="sourceLineNo">254</span>     * This recursively registers all subclasses of the command as subcommands, if they are of type {@link BaseCommand}.<a name="line.254"></a>
-<span class="sourceLineNo">255</span>     *<a name="line.255"></a>
-<span class="sourceLineNo">256</span>     * @param cmd<a name="line.256"></a>
-<span class="sourceLineNo">257</span>     *         The command name of this command.<a name="line.257"></a>
-<span class="sourceLineNo">258</span>     */<a name="line.258"></a>
-<span class="sourceLineNo">259</span>    private void registerSubclasses(String cmd) {<a name="line.259"></a>
-<span class="sourceLineNo">260</span>        for (Class&lt;?&gt; clazz : this.getClass().getDeclaredClasses()) {<a name="line.260"></a>
-<span class="sourceLineNo">261</span>            if (BaseCommand.class.isAssignableFrom(clazz)) {<a name="line.261"></a>
-<span class="sourceLineNo">262</span>                try {<a name="line.262"></a>
-<span class="sourceLineNo">263</span>                    BaseCommand subCommand = null;<a name="line.263"></a>
-<span class="sourceLineNo">264</span>                    Constructor&lt;?&gt;[] declaredConstructors = clazz.getDeclaredConstructors();<a name="line.264"></a>
-<span class="sourceLineNo">265</span>                    for (Constructor&lt;?&gt; declaredConstructor : declaredConstructors) {<a name="line.265"></a>
-<span class="sourceLineNo">266</span><a name="line.266"></a>
-<span class="sourceLineNo">267</span>                        declaredConstructor.setAccessible(true);<a name="line.267"></a>
-<span class="sourceLineNo">268</span>                        Parameter[] parameters = declaredConstructor.getParameters();<a name="line.268"></a>
-<span class="sourceLineNo">269</span>                        if (parameters.length == 1) {<a name="line.269"></a>
-<span class="sourceLineNo">270</span>                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);<a name="line.270"></a>
-<span class="sourceLineNo">271</span>                        } else {<a name="line.271"></a>
-<span class="sourceLineNo">272</span>                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -&gt; p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("&lt;c2&gt;,&lt;/c2&gt; ")) + ")");<a name="line.272"></a>
-<span class="sourceLineNo">273</span>                        }<a name="line.273"></a>
-<span class="sourceLineNo">274</span>                    }<a name="line.274"></a>
-<span class="sourceLineNo">275</span>                    if (subCommand != null) {<a name="line.275"></a>
-<span class="sourceLineNo">276</span>                        subCommand.parentCommand = this;<a name="line.276"></a>
-<span class="sourceLineNo">277</span>                        subCommand.onRegister(manager, cmd);<a name="line.277"></a>
-<span class="sourceLineNo">278</span>                        this.subCommands.putAll(subCommand.subCommands);<a name="line.278"></a>
-<span class="sourceLineNo">279</span>                        this.registeredCommands.putAll(subCommand.registeredCommands);<a name="line.279"></a>
-<span class="sourceLineNo">280</span>                    } else {<a name="line.280"></a>
-<span class="sourceLineNo">281</span>                        this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());<a name="line.281"></a>
-<span class="sourceLineNo">282</span>                    }<a name="line.282"></a>
-<span class="sourceLineNo">283</span>                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {<a name="line.283"></a>
-<span class="sourceLineNo">284</span>                    this.manager.log(LogLevel.ERROR, "Error registering subclass", e);<a name="line.284"></a>
-<span class="sourceLineNo">285</span>                }<a name="line.285"></a>
-<span class="sourceLineNo">286</span>            }<a name="line.286"></a>
-<span class="sourceLineNo">287</span>        }<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span>    /**<a name="line.290"></a>
-<span class="sourceLineNo">291</span>     * This registers all subcommands of the command.<a name="line.291"></a>
-<span class="sourceLineNo">292</span>     */<a name="line.292"></a>
-<span class="sourceLineNo">293</span>    private void registerSubcommands() {<a name="line.293"></a>
-<span class="sourceLineNo">294</span>        final Annotations annotations = manager.getAnnotations();<a name="line.294"></a>
-<span class="sourceLineNo">295</span>        boolean foundDefault = false;<a name="line.295"></a>
-<span class="sourceLineNo">296</span>        boolean foundCatchUnknown = false;<a name="line.296"></a>
-<span class="sourceLineNo">297</span>        boolean isParentEmpty = parentSubcommand == null || parentSubcommand.isEmpty();<a name="line.297"></a>
-<span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>        for (Method method : this.getClass().getMethods()) {<a name="line.299"></a>
-<span class="sourceLineNo">300</span>            method.setAccessible(true);<a name="line.300"></a>
-<span class="sourceLineNo">301</span>            String sublist = null;<a name="line.301"></a>
-<span class="sourceLineNo">302</span>            String sub = getSubcommandValue(method);<a name="line.302"></a>
-<span class="sourceLineNo">303</span>            final boolean def = annotations.hasAnnotation(method, Default.class);<a name="line.303"></a>
-<span class="sourceLineNo">304</span>            final String helpCommand = annotations.getAnnotationValue(method, HelpCommand.class, Annotations.NOTHING);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>            final String commandAliases = annotations.getAnnotationValue(method, CommandAlias.class, Annotations.NOTHING);<a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span>            if (!isParentEmpty &amp;&amp; def) {<a name="line.307"></a>
-<span class="sourceLineNo">308</span>                sub = parentSubcommand;<a name="line.308"></a>
-<span class="sourceLineNo">309</span>            }<a name="line.309"></a>
-<span class="sourceLineNo">310</span>            if (isParentEmpty &amp;&amp; (def || (!foundDefault &amp;&amp; helpCommand != null))) {<a name="line.310"></a>
-<span class="sourceLineNo">311</span>                if (!foundDefault) {<a name="line.311"></a>
-<span class="sourceLineNo">312</span>                    if (def) {<a name="line.312"></a>
-<span class="sourceLineNo">313</span>                        this.subCommands.get(DEFAULT).clear();<a name="line.313"></a>
-<span class="sourceLineNo">314</span>                        foundDefault = true;<a name="line.314"></a>
-<span class="sourceLineNo">315</span>                    }<a name="line.315"></a>
-<span class="sourceLineNo">316</span>                    registerSubcommand(method, DEFAULT);<a name="line.316"></a>
-<span class="sourceLineNo">317</span>                } else {<a name="line.317"></a>
-<span class="sourceLineNo">318</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @Default/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.318"></a>
-<span class="sourceLineNo">319</span>                }<a name="line.319"></a>
-<span class="sourceLineNo">320</span>            }<a name="line.320"></a>
-<span class="sourceLineNo">321</span><a name="line.321"></a>
-<span class="sourceLineNo">322</span>            if (sub != null) {<a name="line.322"></a>
-<span class="sourceLineNo">323</span>                sublist = sub;<a name="line.323"></a>
-<span class="sourceLineNo">324</span>            } else if (commandAliases != null) {<a name="line.324"></a>
-<span class="sourceLineNo">325</span>                sublist = commandAliases;<a name="line.325"></a>
-<span class="sourceLineNo">326</span>            } else if (helpCommand != null) {<a name="line.326"></a>
-<span class="sourceLineNo">327</span>                sublist = helpCommand;<a name="line.327"></a>
-<span class="sourceLineNo">328</span>                hasHelpCommand = true;<a name="line.328"></a>
-<span class="sourceLineNo">329</span>            }<a name="line.329"></a>
-<span class="sourceLineNo">330</span><a name="line.330"></a>
-<span class="sourceLineNo">331</span>            boolean preCommand = annotations.hasAnnotation(method, PreCommand.class);<a name="line.331"></a>
-<span class="sourceLineNo">332</span>            boolean hasCatchUnknown = annotations.hasAnnotation(method, CatchUnknown.class) ||<a name="line.332"></a>
-<span class="sourceLineNo">333</span>                    annotations.hasAnnotation(method, CatchAll.class) ||<a name="line.333"></a>
-<span class="sourceLineNo">334</span>                    annotations.hasAnnotation(method, UnknownHandler.class);<a name="line.334"></a>
-<span class="sourceLineNo">335</span><a name="line.335"></a>
-<span class="sourceLineNo">336</span>            if (hasCatchUnknown || (!foundCatchUnknown &amp;&amp; helpCommand != null)) {<a name="line.336"></a>
-<span class="sourceLineNo">337</span>                if (!foundCatchUnknown) {<a name="line.337"></a>
-<span class="sourceLineNo">338</span>                    if (hasCatchUnknown) {<a name="line.338"></a>
-<span class="sourceLineNo">339</span>                        this.subCommands.get(CATCHUNKNOWN).clear();<a name="line.339"></a>
-<span class="sourceLineNo">340</span>                        foundCatchUnknown = true;<a name="line.340"></a>
-<span class="sourceLineNo">341</span>                    }<a name="line.341"></a>
-<span class="sourceLineNo">342</span>                    registerSubcommand(method, CATCHUNKNOWN);<a name="line.342"></a>
-<span class="sourceLineNo">343</span>                } else {<a name="line.343"></a>
-<span class="sourceLineNo">344</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.344"></a>
-<span class="sourceLineNo">345</span>                }<a name="line.345"></a>
-<span class="sourceLineNo">346</span>            } else if (preCommand) {<a name="line.346"></a>
-<span class="sourceLineNo">347</span>                if (this.preCommandHandler == null) {<a name="line.347"></a>
-<span class="sourceLineNo">348</span>                    this.preCommandHandler = method;<a name="line.348"></a>
-<span class="sourceLineNo">349</span>                } else {<a name="line.349"></a>
-<span class="sourceLineNo">350</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.350"></a>
-<span class="sourceLineNo">351</span>                }<a name="line.351"></a>
-<span class="sourceLineNo">352</span>            }<a name="line.352"></a>
-<span class="sourceLineNo">353</span>            if (Objects.equals(method.getDeclaringClass(), this.getClass()) &amp;&amp; sublist != null) {<a name="line.353"></a>
-<span class="sourceLineNo">354</span>                registerSubcommand(method, sublist);<a name="line.354"></a>
-<span class="sourceLineNo">355</span>            }<a name="line.355"></a>
-<span class="sourceLineNo">356</span>        }<a name="line.356"></a>
-<span class="sourceLineNo">357</span>    }<a name="line.357"></a>
-<span class="sourceLineNo">358</span><a name="line.358"></a>
-<span class="sourceLineNo">359</span>    /**<a name="line.359"></a>
-<span class="sourceLineNo">360</span>     * Gets the subcommand name of the method given.<a name="line.360"></a>
-<span class="sourceLineNo">361</span>     *<a name="line.361"></a>
-<span class="sourceLineNo">362</span>     * @param method<a name="line.362"></a>
-<span class="sourceLineNo">363</span>     *         The method to check.<a name="line.363"></a>
-<span class="sourceLineNo">364</span>     *<a name="line.364"></a>
-<span class="sourceLineNo">365</span>     * @return The name of the subcommand. It returns null if the input doesn't have {@link Subcommand} attached.<a name="line.365"></a>
-<span class="sourceLineNo">366</span>     */<a name="line.366"></a>
-<span class="sourceLineNo">367</span>    private String getSubcommandValue(Method method) {<a name="line.367"></a>
-<span class="sourceLineNo">368</span>        final String sub = manager.getAnnotations().getAnnotationValue(method, Subcommand.class, Annotations.NOTHING);<a name="line.368"></a>
-<span class="sourceLineNo">369</span>        if (sub == null) {<a name="line.369"></a>
-<span class="sourceLineNo">370</span>            return null;<a name="line.370"></a>
-<span class="sourceLineNo">371</span>        }<a name="line.371"></a>
-<span class="sourceLineNo">372</span>        Class&lt;?&gt; clazz = method.getDeclaringClass();<a name="line.372"></a>
-<span class="sourceLineNo">373</span>        String parent = getParentSubcommand(clazz);<a name="line.373"></a>
-<span class="sourceLineNo">374</span>        return parent == null || parent.isEmpty() ? sub : parent + " " + sub;<a name="line.374"></a>
-<span class="sourceLineNo">375</span>    }<a name="line.375"></a>
-<span class="sourceLineNo">376</span><a name="line.376"></a>
-<span class="sourceLineNo">377</span>    private String getParentSubcommand(Class&lt;?&gt; clazz) {<a name="line.377"></a>
-<span class="sourceLineNo">378</span>        List&lt;String&gt; subList = new ArrayList&lt;&gt;();<a name="line.378"></a>
-<span class="sourceLineNo">379</span>        while (clazz != null) {<a name="line.379"></a>
-<span class="sourceLineNo">380</span>            String sub = manager.getAnnotations().getAnnotationValue(clazz, Subcommand.class, Annotations.NOTHING);<a name="line.380"></a>
-<span class="sourceLineNo">381</span>            if (sub != null) {<a name="line.381"></a>
-<span class="sourceLineNo">382</span>                subList.add(sub);<a name="line.382"></a>
-<span class="sourceLineNo">383</span>            }<a name="line.383"></a>
-<span class="sourceLineNo">384</span>            clazz = clazz.getEnclosingClass();<a name="line.384"></a>
-<span class="sourceLineNo">385</span>        }<a name="line.385"></a>
-<span class="sourceLineNo">386</span>        Collections.reverse(subList);<a name="line.386"></a>
-<span class="sourceLineNo">387</span>        return ACFUtil.join(subList, " ");<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    }<a name="line.388"></a>
-<span class="sourceLineNo">389</span><a name="line.389"></a>
-<span class="sourceLineNo">390</span>    /**<a name="line.390"></a>
-<span class="sourceLineNo">391</span>     * Registers the given {@link BaseCommand cmd} as a child of the {@link RootCommand} linked to the name given.<a name="line.391"></a>
-<span class="sourceLineNo">392</span>     *<a name="line.392"></a>
-<span class="sourceLineNo">393</span>     * @param name<a name="line.393"></a>
-<span class="sourceLineNo">394</span>     *         Name of the parent to cmd.<a name="line.394"></a>
-<span class="sourceLineNo">395</span>     * @param cmd<a name="line.395"></a>
-<span class="sourceLineNo">396</span>     *         The {@link BaseCommand} to add as a child to the {@link RootCommand} owned name field.<a name="line.396"></a>
-<span class="sourceLineNo">397</span>     */<a name="line.397"></a>
-<span class="sourceLineNo">398</span>    private void register(String name, BaseCommand cmd) {<a name="line.398"></a>
-<span class="sourceLineNo">399</span>        String nameLower = name.toLowerCase();<a name="line.399"></a>
-<span class="sourceLineNo">400</span>        RootCommand rootCommand = manager.obtainRootCommand(nameLower);<a name="line.400"></a>
-<span class="sourceLineNo">401</span>        rootCommand.addChild(cmd);<a name="line.401"></a>
-<span class="sourceLineNo">402</span><a name="line.402"></a>
-<span class="sourceLineNo">403</span>        this.registeredCommands.put(nameLower, rootCommand);<a name="line.403"></a>
-<span class="sourceLineNo">404</span>    }<a name="line.404"></a>
-<span class="sourceLineNo">405</span><a name="line.405"></a>
-<span class="sourceLineNo">406</span>    /**<a name="line.406"></a>
-<span class="sourceLineNo">407</span>     * Registers the given {@link Method} as a subcommand.<a name="line.407"></a>
-<span class="sourceLineNo">408</span>     *<a name="line.408"></a>
-<span class="sourceLineNo">409</span>     * @param method<a name="line.409"></a>
-<span class="sourceLineNo">410</span>     *         The method to register as a subcommand.<a name="line.410"></a>
-<span class="sourceLineNo">411</span>     * @param subCommand<a name="line.411"></a>
-<span class="sourceLineNo">412</span>     *         The subcommand's name(s).<a name="line.412"></a>
-<span class="sourceLineNo">413</span>     */<a name="line.413"></a>
-<span class="sourceLineNo">414</span>    private void registerSubcommand(Method method, String subCommand) {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>        subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase());<a name="line.415"></a>
-<span class="sourceLineNo">416</span>        final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);<a name="line.416"></a>
-<span class="sourceLineNo">417</span>        // Must run getSubcommandPossibility BEFORE we rewrite it just after this.<a name="line.417"></a>
-<span class="sourceLineNo">418</span>        Set&lt;String&gt; cmdList = getSubCommandPossibilityList(subCommandParts);<a name="line.418"></a>
-<span class="sourceLineNo">419</span><a name="line.419"></a>
-<span class="sourceLineNo">420</span>        // Strip pipes off for auto complete addition<a name="line.420"></a>
-<span class="sourceLineNo">421</span>        for (int i = 0; i &lt; subCommandParts.length; i++) {<a name="line.421"></a>
-<span class="sourceLineNo">422</span>            String[] split = ACFPatterns.PIPE.split(subCommandParts[i]);<a name="line.422"></a>
-<span class="sourceLineNo">423</span>            if (split.length == 0 || split[0].isEmpty()) {<a name="line.423"></a>
-<span class="sourceLineNo">424</span>                throw new IllegalArgumentException("Invalid @Subcommand configuration for " + method.getName() + " - parts can not start with | or be empty");<a name="line.424"></a>
-<span class="sourceLineNo">425</span>            }<a name="line.425"></a>
-<span class="sourceLineNo">426</span>            subCommandParts[i] = split[0];<a name="line.426"></a>
-<span class="sourceLineNo">427</span>        }<a name="line.427"></a>
-<span class="sourceLineNo">428</span>        String prefSubCommand = ApacheCommonsLangUtil.join(subCommandParts, " ");<a name="line.428"></a>
-<span class="sourceLineNo">429</span>        final String[] aliasNames = manager.getAnnotations().getAnnotationValues(method, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE);<a name="line.429"></a>
-<span class="sourceLineNo">430</span><a name="line.430"></a>
-<span class="sourceLineNo">431</span>        String cmdName = aliasNames != null ? aliasNames[0] : this.commandName + " ";<a name="line.431"></a>
-<span class="sourceLineNo">432</span>        RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);<a name="line.432"></a>
-<span class="sourceLineNo">433</span><a name="line.433"></a>
-<span class="sourceLineNo">434</span>        for (String subcmd : cmdList) {<a name="line.434"></a>
-<span class="sourceLineNo">435</span>            subCommands.put(subcmd, cmd);<a name="line.435"></a>
-<span class="sourceLineNo">436</span>        }<a name="line.436"></a>
-<span class="sourceLineNo">437</span>        cmd.addSubcommands(cmdList);<a name="line.437"></a>
-<span class="sourceLineNo">438</span><a name="line.438"></a>
-<span class="sourceLineNo">439</span>        if (aliasNames != null) {<a name="line.439"></a>
-<span class="sourceLineNo">440</span>            for (String name : aliasNames) {<a name="line.440"></a>
-<span class="sourceLineNo">441</span>                register(name, new ForwardingCommand(this, subCommandParts));<a name="line.441"></a>
-<span class="sourceLineNo">442</span>            }<a name="line.442"></a>
-<span class="sourceLineNo">443</span>        }<a name="line.443"></a>
-<span class="sourceLineNo">444</span>    }<a name="line.444"></a>
-<span class="sourceLineNo">445</span><a name="line.445"></a>
-<span class="sourceLineNo">446</span>    /**<a name="line.446"></a>
-<span class="sourceLineNo">447</span>     * Takes a string like "foo|bar baz|qux" and generates a list of<a name="line.447"></a>
-<span class="sourceLineNo">448</span>     * - foo baz<a name="line.448"></a>
-<span class="sourceLineNo">449</span>     * - foo qux<a name="line.449"></a>
-<span class="sourceLineNo">450</span>     * - bar baz<a name="line.450"></a>
-<span class="sourceLineNo">451</span>     * - bar qux<a name="line.451"></a>
-<span class="sourceLineNo">452</span>     *<a name="line.452"></a>
-<span class="sourceLineNo">453</span>     * For every possible sub command combination<a name="line.453"></a>
-<span class="sourceLineNo">454</span>     *<a name="line.454"></a>
-<span class="sourceLineNo">455</span>     * @param subCommandParts<a name="line.455"></a>
-<span class="sourceLineNo">456</span>     * @return List of all sub command possibilities<a name="line.456"></a>
-<span class="sourceLineNo">457</span>     */<a name="line.457"></a>
-<span class="sourceLineNo">458</span>    private static Set&lt;String&gt; getSubCommandPossibilityList(String[] subCommandParts) {<a name="line.458"></a>
-<span class="sourceLineNo">459</span>        int i = 0;<a name="line.459"></a>
-<span class="sourceLineNo">460</span>        Set&lt;String&gt; current = null;<a name="line.460"></a>
-<span class="sourceLineNo">461</span>        while (true) {<a name="line.461"></a>
-<span class="sourceLineNo">462</span>            Set&lt;String&gt; newList = new HashSet&lt;&gt;();<a name="line.462"></a>
-<span class="sourceLineNo">463</span><a name="line.463"></a>
-<span class="sourceLineNo">464</span>            if (i &lt; subCommandParts.length) {<a name="line.464"></a>
-<span class="sourceLineNo">465</span>                for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {<a name="line.465"></a>
-<span class="sourceLineNo">466</span>                    if (current != null) {<a name="line.466"></a>
-<span class="sourceLineNo">467</span>                        newList.addAll(current.stream().map(s -&gt; s + " " + s1).collect(Collectors.toList()));<a name="line.467"></a>
-<span class="sourceLineNo">468</span>                    } else {<a name="line.468"></a>
-<span class="sourceLineNo">469</span>                        newList.add(s1);<a name="line.469"></a>
-<span class="sourceLineNo">470</span>                    }<a name="line.470"></a>
-<span class="sourceLineNo">471</span>                }<a name="line.471"></a>
-<span class="sourceLineNo">472</span>            }<a name="line.472"></a>
-<span class="sourceLineNo">473</span><a name="line.473"></a>
-<span class="sourceLineNo">474</span>            if (i + 1 &lt; subCommandParts.length) {<a name="line.474"></a>
-<span class="sourceLineNo">475</span>                current = newList;<a name="line.475"></a>
-<span class="sourceLineNo">476</span>                i = i + 1;<a name="line.476"></a>
-<span class="sourceLineNo">477</span>                continue;<a name="line.477"></a>
-<span class="sourceLineNo">478</span>            }<a name="line.478"></a>
-<span class="sourceLineNo">479</span><a name="line.479"></a>
-<span class="sourceLineNo">480</span>            return newList;<a name="line.480"></a>
-<span class="sourceLineNo">481</span>        }<a name="line.481"></a>
-<span class="sourceLineNo">482</span>    }<a name="line.482"></a>
-<span class="sourceLineNo">483</span><a name="line.483"></a>
-<span class="sourceLineNo">484</span>    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.484"></a>
-<span class="sourceLineNo">485</span>        commandLabel = commandLabel.toLowerCase();<a name="line.485"></a>
-<span class="sourceLineNo">486</span>        try {<a name="line.486"></a>
-<span class="sourceLineNo">487</span>            CommandOperationContext commandContext = preCommandOperation(issuer, commandLabel, args, false);<a name="line.487"></a>
-<span class="sourceLineNo">488</span><a name="line.488"></a>
-<span class="sourceLineNo">489</span>            if (args.length &gt; 0) {<a name="line.489"></a>
-<span class="sourceLineNo">490</span>                CommandSearch cmd = findSubCommand(args);<a name="line.490"></a>
-<span class="sourceLineNo">491</span>                if (cmd != null) {<a name="line.491"></a>
-<span class="sourceLineNo">492</span>                    execSubcommand = cmd.getCheckSub();<a name="line.492"></a>
-<span class="sourceLineNo">493</span>                    final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);<a name="line.493"></a>
-<span class="sourceLineNo">494</span>                    executeCommand(commandContext, issuer, execargs, cmd.cmd);<a name="line.494"></a>
-<span class="sourceLineNo">495</span>                    return;<a name="line.495"></a>
-<span class="sourceLineNo">496</span>                }<a name="line.496"></a>
-<span class="sourceLineNo">497</span>            }<a name="line.497"></a>
-<span class="sourceLineNo">498</span><a name="line.498"></a>
-<span class="sourceLineNo">499</span>            if (subCommands.get(DEFAULT) != null &amp;&amp; args.length == 0) {<a name="line.499"></a>
-<span class="sourceLineNo">500</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.500"></a>
-<span class="sourceLineNo">501</span>            } else if (subCommands.get(CATCHUNKNOWN) != null) {<a name="line.501"></a>
-<span class="sourceLineNo">502</span>                if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {<a name="line.502"></a>
-<span class="sourceLineNo">503</span>                    help(issuer, args);<a name="line.503"></a>
-<span class="sourceLineNo">504</span>                }<a name="line.504"></a>
-<span class="sourceLineNo">505</span>            } else if (subCommands.get(DEFAULT) != null) {<a name="line.505"></a>
-<span class="sourceLineNo">506</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.506"></a>
-<span class="sourceLineNo">507</span>            }<a name="line.507"></a>
-<span class="sourceLineNo">508</span><a name="line.508"></a>
-<span class="sourceLineNo">509</span>        } finally {<a name="line.509"></a>
-<span class="sourceLineNo">510</span>            postCommandOperation();<a name="line.510"></a>
-<span class="sourceLineNo">511</span>        }<a name="line.511"></a>
-<span class="sourceLineNo">512</span>    }<a name="line.512"></a>
-<span class="sourceLineNo">513</span><a name="line.513"></a>
-<span class="sourceLineNo">514</span>    /**<a name="line.514"></a>
-<span class="sourceLineNo">515</span>     * Gets the registered command of the given arguments.<a name="line.515"></a>
-<span class="sourceLineNo">516</span>     * @param args<a name="line.516"></a>
-<span class="sourceLineNo">517</span>     *         The arguments given by the user.<a name="line.517"></a>
-<span class="sourceLineNo">518</span>     *<a name="line.518"></a>
-<span class="sourceLineNo">519</span>     * @return The subcommand or null if none were found.<a name="line.519"></a>
-<span class="sourceLineNo">520</span>     *<a name="line.520"></a>
-<span class="sourceLineNo">521</span>     * @see #findSubCommand(String[])<a name="line.521"></a>
-<span class="sourceLineNo">522</span>     */<a name="line.522"></a>
-<span class="sourceLineNo">523</span>    RegisteredCommand&lt;?&gt; getRegisteredCommand(String[] args) {<a name="line.523"></a>
-<span class="sourceLineNo">524</span>        final CommandSearch cmd = findSubCommand(args);<a name="line.524"></a>
-<span class="sourceLineNo">525</span>        return cmd != null ? cmd.cmd : null;<a name="line.525"></a>
-<span class="sourceLineNo">526</span>    }<a name="line.526"></a>
-<span class="sourceLineNo">527</span><a name="line.527"></a>
-<span class="sourceLineNo">528</span>    /**<a name="line.528"></a>
-<span class="sourceLineNo">529</span>     * This is ran after any command operation has been performed.<a name="line.529"></a>
-<span class="sourceLineNo">530</span>     */<a name="line.530"></a>
-<span class="sourceLineNo">531</span>    private void postCommandOperation() {<a name="line.531"></a>
-<span class="sourceLineNo">532</span>        CommandManager.commandOperationContext.get().pop();<a name="line.532"></a>
-<span class="sourceLineNo">533</span>        execSubcommand = null;<a name="line.533"></a>
-<span class="sourceLineNo">534</span>        execLabel = null;<a name="line.534"></a>
-<span class="sourceLineNo">535</span>        origArgs = new String[]{};<a name="line.535"></a>
-<span class="sourceLineNo">536</span>    }<a name="line.536"></a>
-<span class="sourceLineNo">537</span><a name="line.537"></a>
-<span class="sourceLineNo">538</span>    /**<a name="line.538"></a>
-<span class="sourceLineNo">539</span>     * This is ran before any command operation has been performed.<a name="line.539"></a>
-<span class="sourceLineNo">540</span>     *<a name="line.540"></a>
-<span class="sourceLineNo">541</span>     * @param issuer<a name="line.541"></a>
-<span class="sourceLineNo">542</span>     *         The user who executed the command.<a name="line.542"></a>
-<span class="sourceLineNo">543</span>     * @param commandLabel<a name="line.543"></a>
-<span class="sourceLineNo">544</span>     *         The label the user used to execute the command. This is not the command name, but their input.<a name="line.544"></a>
-<span class="sourceLineNo">545</span>     *         When there is multiple aliases, this is which alias was used<a name="line.545"></a>
-<span class="sourceLineNo">546</span>     * @param args<a name="line.546"></a>
-<span class="sourceLineNo">547</span>     *         The arguments passed to the command when executing it.<a name="line.547"></a>
-<span class="sourceLineNo">548</span>     * @param isAsync<a name="line.548"></a>
-<span class="sourceLineNo">549</span>     *         Whether the command is executed off of the main thread.<a name="line.549"></a>
-<span class="sourceLineNo">550</span>     *<a name="line.550"></a>
-<span class="sourceLineNo">551</span>     * @return The context which is being registered to the {@link CommandManager}'s {@link<a name="line.551"></a>
-<span class="sourceLineNo">552</span>     * CommandManager#commandOperationContext thread local stack}.<a name="line.552"></a>
-<span class="sourceLineNo">553</span>     */<a name="line.553"></a>
-<span class="sourceLineNo">554</span>    private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.554"></a>
-<span class="sourceLineNo">555</span>        Stack&lt;CommandOperationContext&gt; contexts = CommandManager.commandOperationContext.get();<a name="line.555"></a>
-<span class="sourceLineNo">556</span>        CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);<a name="line.556"></a>
-<span class="sourceLineNo">557</span>        contexts.push(context);<a name="line.557"></a>
-<span class="sourceLineNo">558</span>        lastCommandOperationContext = context;<a name="line.558"></a>
-<span class="sourceLineNo">559</span>        execSubcommand = null;<a name="line.559"></a>
-<span class="sourceLineNo">560</span>        execLabel = commandLabel;<a name="line.560"></a>
-<span class="sourceLineNo">561</span>        origArgs = args;<a name="line.561"></a>
-<span class="sourceLineNo">562</span>        return context;<a name="line.562"></a>
-<span class="sourceLineNo">563</span>    }<a name="line.563"></a>
-<span class="sourceLineNo">564</span><a name="line.564"></a>
-<span class="sourceLineNo">565</span>    /**<a name="line.565"></a>
-<span class="sourceLineNo">566</span>     * Gets the current command issuer.<a name="line.566"></a>
-<span class="sourceLineNo">567</span>     *<a name="line.567"></a>
-<span class="sourceLineNo">568</span>     * @return The current command issuer.<a name="line.568"></a>
-<span class="sourceLineNo">569</span>     */<a name="line.569"></a>
-<span class="sourceLineNo">570</span>    public CommandIssuer getCurrentCommandIssuer() {<a name="line.570"></a>
-<span class="sourceLineNo">571</span>        return CommandManager.getCurrentCommandIssuer();<a name="line.571"></a>
-<span class="sourceLineNo">572</span>    }<a name="line.572"></a>
-<span class="sourceLineNo">573</span><a name="line.573"></a>
-<span class="sourceLineNo">574</span>    /**<a name="line.574"></a>
-<span class="sourceLineNo">575</span>     * Gets the current command manager.<a name="line.575"></a>
-<span class="sourceLineNo">576</span>     *<a name="line.576"></a>
-<span class="sourceLineNo">577</span>     * @return The current command manager.<a name="line.577"></a>
-<span class="sourceLineNo">578</span>     */<a name="line.578"></a>
-<span class="sourceLineNo">579</span>    public CommandManager getCurrentCommandManager() {<a name="line.579"></a>
-<span class="sourceLineNo">580</span>        return CommandManager.getCurrentCommandManager();<a name="line.580"></a>
-<span class="sourceLineNo">581</span>    }<a name="line.581"></a>
-<span class="sourceLineNo">582</span><a name="line.582"></a>
-<span class="sourceLineNo">583</span>    /**<a name="line.583"></a>
-<span class="sourceLineNo">584</span>     * Finds a subcommand of the given arguments.<a name="line.584"></a>
-<span class="sourceLineNo">585</span>     *<a name="line.585"></a>
-<span class="sourceLineNo">586</span>     * @param args<a name="line.586"></a>
-<span class="sourceLineNo">587</span>     *         The arguments the user input.<a name="line.587"></a>
-<span class="sourceLineNo">588</span>     *<a name="line.588"></a>
-<span class="sourceLineNo">589</span>     * @return The identified subcommand.<a name="line.589"></a>
-<span class="sourceLineNo">590</span>     *<a name="line.590"></a>
-<span class="sourceLineNo">591</span>     * @see #findSubCommand(String[], boolean)<a name="line.591"></a>
-<span class="sourceLineNo">592</span>     */<a name="line.592"></a>
-<span class="sourceLineNo">593</span>    private CommandSearch findSubCommand(String[] args) {<a name="line.593"></a>
-<span class="sourceLineNo">594</span>        return findSubCommand(args, false);<a name="line.594"></a>
-<span class="sourceLineNo">595</span>    }<a name="line.595"></a>
-<span class="sourceLineNo">596</span><a name="line.596"></a>
-<span class="sourceLineNo">597</span>    /**<a name="line.597"></a>
-<span class="sourceLineNo">598</span>     * Finds a subcommand of the given arguments.<a name="line.598"></a>
-<span class="sourceLineNo">599</span>     *<a name="line.599"></a>
-<span class="sourceLineNo">600</span>     * @param args<a name="line.600"></a>
-<span class="sourceLineNo">601</span>     *         The arguments the user input.<a name="line.601"></a>
-<span class="sourceLineNo">602</span>     * @param completion<a name="line.602"></a>
-<span class="sourceLineNo">603</span>     *         Whether or not completion of arguments should kick in. This may end up with worse than wanted results.<a name="line.603"></a>
-<span class="sourceLineNo">604</span>     *<a name="line.604"></a>
-<span class="sourceLineNo">605</span>     * @return The identified subcommand.<a name="line.605"></a>
-<span class="sourceLineNo">606</span>     */<a name="line.606"></a>
-<span class="sourceLineNo">607</span>    private CommandSearch findSubCommand(String[] args, boolean completion) {<a name="line.607"></a>
-<span class="sourceLineNo">608</span>        for (int i = args.length; i &gt;= 0; i--) {<a name="line.608"></a>
-<span class="sourceLineNo">609</span>            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();<a name="line.609"></a>
-<span class="sourceLineNo">610</span>            Set&lt;RegisteredCommand&gt; cmds = subCommands.get(checkSub);<a name="line.610"></a>
-<span class="sourceLineNo">611</span><a name="line.611"></a>
-<span class="sourceLineNo">612</span>            final int extraArgs = args.length - i;<a name="line.612"></a>
-<span class="sourceLineNo">613</span>            if (!cmds.isEmpty()) {<a name="line.613"></a>
-<span class="sourceLineNo">614</span>                RegisteredCommand cmd = null;<a name="line.614"></a>
-<span class="sourceLineNo">615</span>                if (cmds.size() == 1) {<a name="line.615"></a>
-<span class="sourceLineNo">616</span>                    cmd = ACFUtil.getFirstElement(cmds);<a name="line.616"></a>
-<span class="sourceLineNo">617</span>                } else {<a name="line.617"></a>
-<span class="sourceLineNo">618</span>                    Optional&lt;RegisteredCommand&gt; optCmd = cmds.stream().filter(c -&gt; {<a name="line.618"></a>
-<span class="sourceLineNo">619</span>                        int required = c.requiredResolvers;<a name="line.619"></a>
-<span class="sourceLineNo">620</span>                        int optional = c.optionalResolvers;<a name="line.620"></a>
-<span class="sourceLineNo">621</span>                        return extraArgs &lt;= required + optional &amp;&amp; (completion || extraArgs &gt;= required);<a name="line.621"></a>
-<span class="sourceLineNo">622</span>                    }).min((c1, c2) -&gt; {<a name="line.622"></a>
-<span class="sourceLineNo">623</span>                        int a = c1.consumeInputResolvers;<a name="line.623"></a>
-<span class="sourceLineNo">624</span>                        int b = c2.consumeInputResolvers;<a name="line.624"></a>
-<span class="sourceLineNo">625</span><a name="line.625"></a>
-<span class="sourceLineNo">626</span>                        if (a == b) {<a name="line.626"></a>
-<span class="sourceLineNo">627</span>                            return 0;<a name="line.627"></a>
-<span class="sourceLineNo">628</span>                        }<a name="line.628"></a>
-<span class="sourceLineNo">629</span>                        return a &lt; b ? 1 : -1;<a name="line.629"></a>
-<span class="sourceLineNo">630</span>                    });<a name="line.630"></a>
-<span class="sourceLineNo">631</span>                    if (optCmd.isPresent()) {<a name="line.631"></a>
-<span class="sourceLineNo">632</span>                        cmd = optCmd.get();<a name="line.632"></a>
-<span class="sourceLineNo">633</span>                    }<a name="line.633"></a>
-<span class="sourceLineNo">634</span>                }<a name="line.634"></a>
-<span class="sourceLineNo">635</span>                if (cmd != null) {<a name="line.635"></a>
-<span class="sourceLineNo">636</span>                    return new CommandSearch(cmd, i, checkSub);<a name="line.636"></a>
-<span class="sourceLineNo">637</span>                }<a name="line.637"></a>
-<span class="sourceLineNo">638</span>            }<a name="line.638"></a>
-<span class="sourceLineNo">639</span>        }<a name="line.639"></a>
-<span class="sourceLineNo">640</span>        return null;<a name="line.640"></a>
-<span class="sourceLineNo">641</span>    }<a name="line.641"></a>
-<span class="sourceLineNo">642</span><a name="line.642"></a>
-<span class="sourceLineNo">643</span>    private void executeCommand(CommandOperationContext commandOperationContext,<a name="line.643"></a>
-<span class="sourceLineNo">644</span>                                CommandIssuer issuer, String[] args, RegisteredCommand cmd) {<a name="line.644"></a>
-<span class="sourceLineNo">645</span>        if (cmd.hasPermission(issuer)) {<a name="line.645"></a>
-<span class="sourceLineNo">646</span>            commandOperationContext.setRegisteredCommand(cmd);<a name="line.646"></a>
-<span class="sourceLineNo">647</span>            if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {<a name="line.647"></a>
-<span class="sourceLineNo">648</span>                return;<a name="line.648"></a>
-<span class="sourceLineNo">649</span>            }<a name="line.649"></a>
-<span class="sourceLineNo">650</span>            List&lt;String&gt; sargs = Arrays.asList(args);<a name="line.650"></a>
-<span class="sourceLineNo">651</span>            cmd.invoke(issuer, sargs, commandOperationContext);<a name="line.651"></a>
-<span class="sourceLineNo">652</span>        } else {<a name="line.652"></a>
-<span class="sourceLineNo">653</span>            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);<a name="line.653"></a>
-<span class="sourceLineNo">654</span>        }<a name="line.654"></a>
-<span class="sourceLineNo">655</span>    }<a name="line.655"></a>
-<span class="sourceLineNo">656</span><a name="line.656"></a>
-<span class="sourceLineNo">657</span>    /**<a name="line.657"></a>
-<span class="sourceLineNo">658</span>     * Please use command conditions for restricting execution<a name="line.658"></a>
-<span class="sourceLineNo">659</span>     * @deprecated See {@link CommandConditions}<a name="line.659"></a>
-<span class="sourceLineNo">660</span>     * @param issuer<a name="line.660"></a>
-<span class="sourceLineNo">661</span>     * @param cmd<a name="line.661"></a>
-<span class="sourceLineNo">662</span>     * @return<a name="line.662"></a>
-<span class="sourceLineNo">663</span>     */<a name="line.663"></a>
-<span class="sourceLineNo">664</span>    @SuppressWarnings("DeprecatedIsStillUsed")<a name="line.664"></a>
-<span class="sourceLineNo">665</span>    @Deprecated<a name="line.665"></a>
-<span class="sourceLineNo">666</span>    public boolean canExecute(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {<a name="line.666"></a>
-<span class="sourceLineNo">667</span>        return true;<a name="line.667"></a>
-<span class="sourceLineNo">668</span>    }<a name="line.668"></a>
-<span class="sourceLineNo">669</span><a name="line.669"></a>
-<span class="sourceLineNo">670</span>    /**<a name="line.670"></a>
-<span class="sourceLineNo">671</span>     * Gets tab completed data from the given command from the user.<a name="line.671"></a>
-<span class="sourceLineNo">672</span>     *<a name="line.672"></a>
-<span class="sourceLineNo">673</span>     * @param issuer<a name="line.673"></a>
-<span class="sourceLineNo">674</span>     *         The user who executed the tabcomplete.<a name="line.674"></a>
-<span class="sourceLineNo">675</span>     * @param commandLabel<a name="line.675"></a>
-<span class="sourceLineNo">676</span>     *         The label which is being used by the user.<a name="line.676"></a>
-<span class="sourceLineNo">677</span>     * @param args<a name="line.677"></a>
-<span class="sourceLineNo">678</span>     *         The arguments the user has typed so far.<a name="line.678"></a>
-<span class="sourceLineNo">679</span>     *<a name="line.679"></a>
-<span class="sourceLineNo">680</span>     * @return All possibilities in the tab complete.<a name="line.680"></a>
-<span class="sourceLineNo">681</span>     */<a name="line.681"></a>
-<span class="sourceLineNo">682</span>    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.682"></a>
-<span class="sourceLineNo">683</span>        return tabComplete(issuer, commandLabel, args, false);<a name="line.683"></a>
-<span class="sourceLineNo">684</span>    }<a name="line.684"></a>
-<span class="sourceLineNo">685</span><a name="line.685"></a>
-<span class="sourceLineNo">686</span>    /**<a name="line.686"></a>
-<span class="sourceLineNo">687</span>     * Gets the tab complete suggestions from a given command. This will automatically find anything<a name="line.687"></a>
-<span class="sourceLineNo">688</span>     * which is valid for the specified command through the command's implementation.<a name="line.688"></a>
-<span class="sourceLineNo">689</span>     *<a name="line.689"></a>
-<span class="sourceLineNo">690</span>     * @param issuer<a name="line.690"></a>
-<span class="sourceLineNo">691</span>     *         The issuer of the command.<a name="line.691"></a>
-<span class="sourceLineNo">692</span>     * @param commandLabel<a name="line.692"></a>
-<span class="sourceLineNo">693</span>     *         The command name as entered by the user instead of the ACF registered name.<a name="line.693"></a>
-<span class="sourceLineNo">694</span>     * @param args<a name="line.694"></a>
-<span class="sourceLineNo">695</span>     *         All arguments entered by the user.<a name="line.695"></a>
-<span class="sourceLineNo">696</span>     * @param isAsync<a name="line.696"></a>
-<span class="sourceLineNo">697</span>     *         Whether this is run off of the main thread.<a name="line.697"></a>
-<span class="sourceLineNo">698</span>     *<a name="line.698"></a>
-<span class="sourceLineNo">699</span>     * @return The possibilities to tab complete in no particular order.<a name="line.699"></a>
-<span class="sourceLineNo">700</span>     */<a name="line.700"></a>
-<span class="sourceLineNo">701</span>    @SuppressWarnings("WeakerAccess")<a name="line.701"></a>
-<span class="sourceLineNo">702</span>    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)<a name="line.702"></a>
-<span class="sourceLineNo">703</span>        throws IllegalArgumentException {<a name="line.703"></a>
-<span class="sourceLineNo">704</span><a name="line.704"></a>
-<span class="sourceLineNo">705</span>        commandLabel = commandLabel.toLowerCase();<a name="line.705"></a>
-<span class="sourceLineNo">706</span>        if (args.length == 0) {<a name="line.706"></a>
-<span class="sourceLineNo">707</span>            args = new String[]{""};<a name="line.707"></a>
-<span class="sourceLineNo">708</span>        }<a name="line.708"></a>
-<span class="sourceLineNo">709</span>        try {<a name="line.709"></a>
-<span class="sourceLineNo">710</span>            CommandOperationContext commandOperationContext = preCommandOperation(issuer, commandLabel, args, isAsync);<a name="line.710"></a>
-<span class="sourceLineNo">711</span><a name="line.711"></a>
-<span class="sourceLineNo">712</span>            final CommandSearch search = findSubCommand(args, true);<a name="line.712"></a>
+<span class="sourceLineNo">236</span>        registerSubclasses(cmd);<a name="line.236"></a>
+<span class="sourceLineNo">237</span><a name="line.237"></a>
+<span class="sourceLineNo">238</span>        if (cmdAliases != null) {<a name="line.238"></a>
+<span class="sourceLineNo">239</span>            Set&lt;String&gt; cmdList = new HashSet&lt;&gt;();<a name="line.239"></a>
+<span class="sourceLineNo">240</span>            Collections.addAll(cmdList, cmdAliases);<a name="line.240"></a>
+<span class="sourceLineNo">241</span>            cmdList.remove(cmd);<a name="line.241"></a>
+<span class="sourceLineNo">242</span>            for (String cmdAlias : cmdList) {<a name="line.242"></a>
+<span class="sourceLineNo">243</span>                register(cmdAlias, this);<a name="line.243"></a>
+<span class="sourceLineNo">244</span>            }<a name="line.244"></a>
+<span class="sourceLineNo">245</span>        }<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>        if (cmd != null) {<a name="line.247"></a>
+<span class="sourceLineNo">248</span>            register(cmd, this);<a name="line.248"></a>
+<span class="sourceLineNo">249</span>        }<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    }<a name="line.250"></a>
+<span class="sourceLineNo">251</span><a name="line.251"></a>
+<span class="sourceLineNo">252</span>    /**<a name="line.252"></a>
+<span class="sourceLineNo">253</span>     * This recursively registers all subclasses of the command as subcommands, if they are of type {@link BaseCommand}.<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     *<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * @param cmd<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     *         The command name of this command.<a name="line.256"></a>
+<span class="sourceLineNo">257</span>     */<a name="line.257"></a>
+<span class="sourceLineNo">258</span>    private void registerSubclasses(String cmd) {<a name="line.258"></a>
+<span class="sourceLineNo">259</span>        for (Class&lt;?&gt; clazz : this.getClass().getDeclaredClasses()) {<a name="line.259"></a>
+<span class="sourceLineNo">260</span>            if (BaseCommand.class.isAssignableFrom(clazz)) {<a name="line.260"></a>
+<span class="sourceLineNo">261</span>                try {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                    BaseCommand subCommand = null;<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                    Constructor&lt;?&gt;[] declaredConstructors = clazz.getDeclaredConstructors();<a name="line.263"></a>
+<span class="sourceLineNo">264</span>                    for (Constructor&lt;?&gt; declaredConstructor : declaredConstructors) {<a name="line.264"></a>
+<span class="sourceLineNo">265</span><a name="line.265"></a>
+<span class="sourceLineNo">266</span>                        declaredConstructor.setAccessible(true);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                        Parameter[] parameters = declaredConstructor.getParameters();<a name="line.267"></a>
+<span class="sourceLineNo">268</span>                        if (parameters.length == 1) {<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);<a name="line.269"></a>
+<span class="sourceLineNo">270</span>                        } else {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -&gt; p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("&lt;c2&gt;,&lt;/c2&gt; ")) + ")");<a name="line.271"></a>
+<span class="sourceLineNo">272</span>                        }<a name="line.272"></a>
+<span class="sourceLineNo">273</span>                    }<a name="line.273"></a>
+<span class="sourceLineNo">274</span>                    if (subCommand != null) {<a name="line.274"></a>
+<span class="sourceLineNo">275</span>                        subCommand.parentCommand = this;<a name="line.275"></a>
+<span class="sourceLineNo">276</span>                        subCommand.onRegister(manager, cmd);<a name="line.276"></a>
+<span class="sourceLineNo">277</span>                        this.subCommands.putAll(subCommand.subCommands);<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                        this.registeredCommands.putAll(subCommand.registeredCommands);<a name="line.278"></a>
+<span class="sourceLineNo">279</span>                    } else {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>                        this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());<a name="line.280"></a>
+<span class="sourceLineNo">281</span>                    }<a name="line.281"></a>
+<span class="sourceLineNo">282</span>                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {<a name="line.282"></a>
+<span class="sourceLineNo">283</span>                    this.manager.log(LogLevel.ERROR, "Error registering subclass", e);<a name="line.283"></a>
+<span class="sourceLineNo">284</span>                }<a name="line.284"></a>
+<span class="sourceLineNo">285</span>            }<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>    /**<a name="line.289"></a>
+<span class="sourceLineNo">290</span>     * This registers all subcommands of the command.<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     */<a name="line.291"></a>
+<span class="sourceLineNo">292</span>    private void registerSubcommands() {<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        final Annotations annotations = manager.getAnnotations();<a name="line.293"></a>
+<span class="sourceLineNo">294</span>        boolean foundDefault = false;<a name="line.294"></a>
+<span class="sourceLineNo">295</span>        boolean foundCatchUnknown = false;<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        boolean isParentEmpty = parentSubcommand == null || parentSubcommand.isEmpty();<a name="line.296"></a>
+<span class="sourceLineNo">297</span><a name="line.297"></a>
+<span class="sourceLineNo">298</span>        for (Method method : this.getClass().getMethods()) {<a name="line.298"></a>
+<span class="sourceLineNo">299</span>            method.setAccessible(true);<a name="line.299"></a>
+<span class="sourceLineNo">300</span>            String sublist = null;<a name="line.300"></a>
+<span class="sourceLineNo">301</span>            String sub = getSubcommandValue(method);<a name="line.301"></a>
+<span class="sourceLineNo">302</span>            final boolean def = annotations.hasAnnotation(method, Default.class);<a name="line.302"></a>
+<span class="sourceLineNo">303</span>            final String helpCommand = annotations.getAnnotationValue(method, HelpCommand.class, Annotations.NOTHING);<a name="line.303"></a>
+<span class="sourceLineNo">304</span>            final String commandAliases = annotations.getAnnotationValue(method, CommandAlias.class, Annotations.NOTHING);<a name="line.304"></a>
+<span class="sourceLineNo">305</span><a name="line.305"></a>
+<span class="sourceLineNo">306</span>            if (!isParentEmpty &amp;&amp; def) {<a name="line.306"></a>
+<span class="sourceLineNo">307</span>                sub = parentSubcommand;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>            }<a name="line.308"></a>
+<span class="sourceLineNo">309</span>            if (isParentEmpty &amp;&amp; (def || (!foundDefault &amp;&amp; helpCommand != null))) {<a name="line.309"></a>
+<span class="sourceLineNo">310</span>                if (!foundDefault) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>                    if (def) {<a name="line.311"></a>
+<span class="sourceLineNo">312</span>                        this.subCommands.get(DEFAULT).clear();<a name="line.312"></a>
+<span class="sourceLineNo">313</span>                        foundDefault = true;<a name="line.313"></a>
+<span class="sourceLineNo">314</span>                    }<a name="line.314"></a>
+<span class="sourceLineNo">315</span>                    registerSubcommand(method, DEFAULT);<a name="line.315"></a>
+<span class="sourceLineNo">316</span>                } else {<a name="line.316"></a>
+<span class="sourceLineNo">317</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @Default/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.317"></a>
+<span class="sourceLineNo">318</span>                }<a name="line.318"></a>
+<span class="sourceLineNo">319</span>            }<a name="line.319"></a>
+<span class="sourceLineNo">320</span><a name="line.320"></a>
+<span class="sourceLineNo">321</span>            if (sub != null) {<a name="line.321"></a>
+<span class="sourceLineNo">322</span>                sublist = sub;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>            } else if (commandAliases != null) {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>                sublist = commandAliases;<a name="line.324"></a>
+<span class="sourceLineNo">325</span>            } else if (helpCommand != null) {<a name="line.325"></a>
+<span class="sourceLineNo">326</span>                sublist = helpCommand;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>                hasHelpCommand = true;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>            }<a name="line.328"></a>
+<span class="sourceLineNo">329</span><a name="line.329"></a>
+<span class="sourceLineNo">330</span>            boolean preCommand = annotations.hasAnnotation(method, PreCommand.class);<a name="line.330"></a>
+<span class="sourceLineNo">331</span>            boolean hasCatchUnknown = annotations.hasAnnotation(method, CatchUnknown.class) ||<a name="line.331"></a>
+<span class="sourceLineNo">332</span>                    annotations.hasAnnotation(method, CatchAll.class) ||<a name="line.332"></a>
+<span class="sourceLineNo">333</span>                    annotations.hasAnnotation(method, UnknownHandler.class);<a name="line.333"></a>
+<span class="sourceLineNo">334</span><a name="line.334"></a>
+<span class="sourceLineNo">335</span>            if (hasCatchUnknown || (!foundCatchUnknown &amp;&amp; helpCommand != null)) {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>                if (!foundCatchUnknown) {<a name="line.336"></a>
+<span class="sourceLineNo">337</span>                    if (hasCatchUnknown) {<a name="line.337"></a>
+<span class="sourceLineNo">338</span>                        this.subCommands.get(CATCHUNKNOWN).clear();<a name="line.338"></a>
+<span class="sourceLineNo">339</span>                        foundCatchUnknown = true;<a name="line.339"></a>
+<span class="sourceLineNo">340</span>                    }<a name="line.340"></a>
+<span class="sourceLineNo">341</span>                    registerSubcommand(method, CATCHUNKNOWN);<a name="line.341"></a>
+<span class="sourceLineNo">342</span>                } else {<a name="line.342"></a>
+<span class="sourceLineNo">343</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @UnknownHandler/@HelpCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.343"></a>
+<span class="sourceLineNo">344</span>                }<a name="line.344"></a>
+<span class="sourceLineNo">345</span>            } else if (preCommand) {<a name="line.345"></a>
+<span class="sourceLineNo">346</span>                if (this.preCommandHandler == null) {<a name="line.346"></a>
+<span class="sourceLineNo">347</span>                    this.preCommandHandler = method;<a name="line.347"></a>
+<span class="sourceLineNo">348</span>                } else {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>                    ACFUtil.sneaky(new IllegalStateException("Multiple @PreCommand commands, duplicate on " + method.getDeclaringClass().getName() + "#" + method.getName()));<a name="line.349"></a>
+<span class="sourceLineNo">350</span>                }<a name="line.350"></a>
+<span class="sourceLineNo">351</span>            }<a name="line.351"></a>
+<span class="sourceLineNo">352</span>            if (Objects.equals(method.getDeclaringClass(), this.getClass()) &amp;&amp; sublist != null) {<a name="line.352"></a>
+<span class="sourceLineNo">353</span>                registerSubcommand(method, sublist);<a name="line.353"></a>
+<span class="sourceLineNo">354</span>            }<a name="line.354"></a>
+<span class="sourceLineNo">355</span>        }<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    }<a name="line.356"></a>
+<span class="sourceLineNo">357</span><a name="line.357"></a>
+<span class="sourceLineNo">358</span>    /**<a name="line.358"></a>
+<span class="sourceLineNo">359</span>     * Gets the subcommand name of the method given.<a name="line.359"></a>
+<span class="sourceLineNo">360</span>     *<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     * @param method<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     *         The method to check.<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     *<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     * @return The name of the subcommand. It returns null if the input doesn't have {@link Subcommand} attached.<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     */<a name="line.365"></a>
+<span class="sourceLineNo">366</span>    private String getSubcommandValue(Method method) {<a name="line.366"></a>
+<span class="sourceLineNo">367</span>        final String sub = manager.getAnnotations().getAnnotationValue(method, Subcommand.class, Annotations.NOTHING);<a name="line.367"></a>
+<span class="sourceLineNo">368</span>        if (sub == null) {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>            return null;<a name="line.369"></a>
+<span class="sourceLineNo">370</span>        }<a name="line.370"></a>
+<span class="sourceLineNo">371</span>        Class&lt;?&gt; clazz = method.getDeclaringClass();<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        String parent = getParentSubcommand(clazz);<a name="line.372"></a>
+<span class="sourceLineNo">373</span>        return parent == null || parent.isEmpty() ? sub : parent + " " + sub;<a name="line.373"></a>
+<span class="sourceLineNo">374</span>    }<a name="line.374"></a>
+<span class="sourceLineNo">375</span><a name="line.375"></a>
+<span class="sourceLineNo">376</span>    private String getParentSubcommand(Class&lt;?&gt; clazz) {<a name="line.376"></a>
+<span class="sourceLineNo">377</span>        List&lt;String&gt; subList = new ArrayList&lt;&gt;();<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        while (clazz != null) {<a name="line.378"></a>
+<span class="sourceLineNo">379</span>            String sub = manager.getAnnotations().getAnnotationValue(clazz, Subcommand.class, Annotations.NOTHING);<a name="line.379"></a>
+<span class="sourceLineNo">380</span>            if (sub != null) {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>                subList.add(sub);<a name="line.381"></a>
+<span class="sourceLineNo">382</span>            }<a name="line.382"></a>
+<span class="sourceLineNo">383</span>            clazz = clazz.getEnclosingClass();<a name="line.383"></a>
+<span class="sourceLineNo">384</span>        }<a name="line.384"></a>
+<span class="sourceLineNo">385</span>        Collections.reverse(subList);<a name="line.385"></a>
+<span class="sourceLineNo">386</span>        return ACFUtil.join(subList, " ");<a name="line.386"></a>
+<span class="sourceLineNo">387</span>    }<a name="line.387"></a>
+<span class="sourceLineNo">388</span><a name="line.388"></a>
+<span class="sourceLineNo">389</span>    /**<a name="line.389"></a>
+<span class="sourceLineNo">390</span>     * Registers the given {@link BaseCommand cmd} as a child of the {@link RootCommand} linked to the name given.<a name="line.390"></a>
+<span class="sourceLineNo">391</span>     *<a name="line.391"></a>
+<span class="sourceLineNo">392</span>     * @param name<a name="line.392"></a>
+<span class="sourceLineNo">393</span>     *         Name of the parent to cmd.<a name="line.393"></a>
+<span class="sourceLineNo">394</span>     * @param cmd<a name="line.394"></a>
+<span class="sourceLineNo">395</span>     *         The {@link BaseCommand} to add as a child to the {@link RootCommand} owned name field.<a name="line.395"></a>
+<span class="sourceLineNo">396</span>     */<a name="line.396"></a>
+<span class="sourceLineNo">397</span>    private void register(String name, BaseCommand cmd) {<a name="line.397"></a>
+<span class="sourceLineNo">398</span>        String nameLower = name.toLowerCase();<a name="line.398"></a>
+<span class="sourceLineNo">399</span>        RootCommand rootCommand = manager.obtainRootCommand(nameLower);<a name="line.399"></a>
+<span class="sourceLineNo">400</span>        rootCommand.addChild(cmd);<a name="line.400"></a>
+<span class="sourceLineNo">401</span><a name="line.401"></a>
+<span class="sourceLineNo">402</span>        this.registeredCommands.put(nameLower, rootCommand);<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    }<a name="line.403"></a>
+<span class="sourceLineNo">404</span><a name="line.404"></a>
+<span class="sourceLineNo">405</span>    /**<a name="line.405"></a>
+<span class="sourceLineNo">406</span>     * Registers the given {@link Method} as a subcommand.<a name="line.406"></a>
+<span class="sourceLineNo">407</span>     *<a name="line.407"></a>
+<span class="sourceLineNo">408</span>     * @param method<a name="line.408"></a>
+<span class="sourceLineNo">409</span>     *         The method to register as a subcommand.<a name="line.409"></a>
+<span class="sourceLineNo">410</span>     * @param subCommand<a name="line.410"></a>
+<span class="sourceLineNo">411</span>     *         The subcommand's name(s).<a name="line.411"></a>
+<span class="sourceLineNo">412</span>     */<a name="line.412"></a>
+<span class="sourceLineNo">413</span>    private void registerSubcommand(Method method, String subCommand) {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>        subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase());<a name="line.414"></a>
+<span class="sourceLineNo">415</span>        final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);<a name="line.415"></a>
+<span class="sourceLineNo">416</span>        // Must run getSubcommandPossibility BEFORE we rewrite it just after this.<a name="line.416"></a>
+<span class="sourceLineNo">417</span>        Set&lt;String&gt; cmdList = getSubCommandPossibilityList(subCommandParts);<a name="line.417"></a>
+<span class="sourceLineNo">418</span><a name="line.418"></a>
+<span class="sourceLineNo">419</span>        // Strip pipes off for auto complete addition<a name="line.419"></a>
+<span class="sourceLineNo">420</span>        for (int i = 0; i &lt; subCommandParts.length; i++) {<a name="line.420"></a>
+<span class="sourceLineNo">421</span>            String[] split = ACFPatterns.PIPE.split(subCommandParts[i]);<a name="line.421"></a>
+<span class="sourceLineNo">422</span>            if (split.length == 0 || split[0].isEmpty()) {<a name="line.422"></a>
+<span class="sourceLineNo">423</span>                throw new IllegalArgumentException("Invalid @Subcommand configuration for " + method.getName() + " - parts can not start with | or be empty");<a name="line.423"></a>
+<span class="sourceLineNo">424</span>            }<a name="line.424"></a>
+<span class="sourceLineNo">425</span>            subCommandParts[i] = split[0];<a name="line.425"></a>
+<span class="sourceLineNo">426</span>        }<a name="line.426"></a>
+<span class="sourceLineNo">427</span>        String prefSubCommand = ApacheCommonsLangUtil.join(subCommandParts, " ");<a name="line.427"></a>
+<span class="sourceLineNo">428</span>        final String[] aliasNames = manager.getAnnotations().getAnnotationValues(method, CommandAlias.class, Annotations.REPLACEMENTS | Annotations.LOWERCASE);<a name="line.428"></a>
+<span class="sourceLineNo">429</span><a name="line.429"></a>
+<span class="sourceLineNo">430</span>        String cmdName = aliasNames != null ? aliasNames[0] : this.commandName + " ";<a name="line.430"></a>
+<span class="sourceLineNo">431</span>        RegisteredCommand cmd = manager.createRegisteredCommand(this, cmdName, method, prefSubCommand);<a name="line.431"></a>
+<span class="sourceLineNo">432</span><a name="line.432"></a>
+<span class="sourceLineNo">433</span>        for (String subcmd : cmdList) {<a name="line.433"></a>
+<span class="sourceLineNo">434</span>            subCommands.put(subcmd, cmd);<a name="line.434"></a>
+<span class="sourceLineNo">435</span>        }<a name="line.435"></a>
+<span class="sourceLineNo">436</span>        cmd.addSubcommands(cmdList);<a name="line.436"></a>
+<span class="sourceLineNo">437</span><a name="line.437"></a>
+<span class="sourceLineNo">438</span>        if (aliasNames != null) {<a name="line.438"></a>
+<span class="sourceLineNo">439</span>            for (String name : aliasNames) {<a name="line.439"></a>
+<span class="sourceLineNo">440</span>                register(name, new ForwardingCommand(this, subCommandParts));<a name="line.440"></a>
+<span class="sourceLineNo">441</span>            }<a name="line.441"></a>
+<span class="sourceLineNo">442</span>        }<a name="line.442"></a>
+<span class="sourceLineNo">443</span>    }<a name="line.443"></a>
+<span class="sourceLineNo">444</span><a name="line.444"></a>
+<span class="sourceLineNo">445</span>    /**<a name="line.445"></a>
+<span class="sourceLineNo">446</span>     * Takes a string like "foo|bar baz|qux" and generates a list of<a name="line.446"></a>
+<span class="sourceLineNo">447</span>     * - foo baz<a name="line.447"></a>
+<span class="sourceLineNo">448</span>     * - foo qux<a name="line.448"></a>
+<span class="sourceLineNo">449</span>     * - bar baz<a name="line.449"></a>
+<span class="sourceLineNo">450</span>     * - bar qux<a name="line.450"></a>
+<span class="sourceLineNo">451</span>     *<a name="line.451"></a>
+<span class="sourceLineNo">452</span>     * For every possible sub command combination<a name="line.452"></a>
+<span class="sourceLineNo">453</span>     *<a name="line.453"></a>
+<span class="sourceLineNo">454</span>     * @param subCommandParts<a name="line.454"></a>
+<span class="sourceLineNo">455</span>     * @return List of all sub command possibilities<a name="line.455"></a>
+<span class="sourceLineNo">456</span>     */<a name="line.456"></a>
+<span class="sourceLineNo">457</span>    private static Set&lt;String&gt; getSubCommandPossibilityList(String[] subCommandParts) {<a name="line.457"></a>
+<span class="sourceLineNo">458</span>        int i = 0;<a name="line.458"></a>
+<span class="sourceLineNo">459</span>        Set&lt;String&gt; current = null;<a name="line.459"></a>
+<span class="sourceLineNo">460</span>        while (true) {<a name="line.460"></a>
+<span class="sourceLineNo">461</span>            Set&lt;String&gt; newList = new HashSet&lt;&gt;();<a name="line.461"></a>
+<span class="sourceLineNo">462</span><a name="line.462"></a>
+<span class="sourceLineNo">463</span>            if (i &lt; subCommandParts.length) {<a name="line.463"></a>
+<span class="sourceLineNo">464</span>                for (String s1 : ACFPatterns.PIPE.split(subCommandParts[i])) {<a name="line.464"></a>
+<span class="sourceLineNo">465</span>                    if (current != null) {<a name="line.465"></a>
+<span class="sourceLineNo">466</span>                        newList.addAll(current.stream().map(s -&gt; s + " " + s1).collect(Collectors.toList()));<a name="line.466"></a>
+<span class="sourceLineNo">467</span>                    } else {<a name="line.467"></a>
+<span class="sourceLineNo">468</span>                        newList.add(s1);<a name="line.468"></a>
+<span class="sourceLineNo">469</span>                    }<a name="line.469"></a>
+<span class="sourceLineNo">470</span>                }<a name="line.470"></a>
+<span class="sourceLineNo">471</span>            }<a name="line.471"></a>
+<span class="sourceLineNo">472</span><a name="line.472"></a>
+<span class="sourceLineNo">473</span>            if (i + 1 &lt; subCommandParts.length) {<a name="line.473"></a>
+<span class="sourceLineNo">474</span>                current = newList;<a name="line.474"></a>
+<span class="sourceLineNo">475</span>                i = i + 1;<a name="line.475"></a>
+<span class="sourceLineNo">476</span>                continue;<a name="line.476"></a>
+<span class="sourceLineNo">477</span>            }<a name="line.477"></a>
+<span class="sourceLineNo">478</span><a name="line.478"></a>
+<span class="sourceLineNo">479</span>            return newList;<a name="line.479"></a>
+<span class="sourceLineNo">480</span>        }<a name="line.480"></a>
+<span class="sourceLineNo">481</span>    }<a name="line.481"></a>
+<span class="sourceLineNo">482</span><a name="line.482"></a>
+<span class="sourceLineNo">483</span>    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.483"></a>
+<span class="sourceLineNo">484</span>        commandLabel = commandLabel.toLowerCase();<a name="line.484"></a>
+<span class="sourceLineNo">485</span>        try {<a name="line.485"></a>
+<span class="sourceLineNo">486</span>            CommandOperationContext commandContext = preCommandOperation(issuer, commandLabel, args, false);<a name="line.486"></a>
+<span class="sourceLineNo">487</span><a name="line.487"></a>
+<span class="sourceLineNo">488</span>            if (args.length &gt; 0) {<a name="line.488"></a>
+<span class="sourceLineNo">489</span>                CommandSearch cmd = findSubCommand(args);<a name="line.489"></a>
+<span class="sourceLineNo">490</span>                if (cmd != null) {<a name="line.490"></a>
+<span class="sourceLineNo">491</span>                    execSubcommand = cmd.getCheckSub();<a name="line.491"></a>
+<span class="sourceLineNo">492</span>                    final String[] execargs = Arrays.copyOfRange(args, cmd.argIndex, args.length);<a name="line.492"></a>
+<span class="sourceLineNo">493</span>                    executeCommand(commandContext, issuer, execargs, cmd.cmd);<a name="line.493"></a>
+<span class="sourceLineNo">494</span>                    return;<a name="line.494"></a>
+<span class="sourceLineNo">495</span>                }<a name="line.495"></a>
+<span class="sourceLineNo">496</span>            }<a name="line.496"></a>
+<span class="sourceLineNo">497</span><a name="line.497"></a>
+<span class="sourceLineNo">498</span>            if (subCommands.get(DEFAULT) != null &amp;&amp; args.length == 0) {<a name="line.498"></a>
+<span class="sourceLineNo">499</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.499"></a>
+<span class="sourceLineNo">500</span>            } else if (subCommands.get(CATCHUNKNOWN) != null) {<a name="line.500"></a>
+<span class="sourceLineNo">501</span>                if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {<a name="line.501"></a>
+<span class="sourceLineNo">502</span>                    help(issuer, args);<a name="line.502"></a>
+<span class="sourceLineNo">503</span>                }<a name="line.503"></a>
+<span class="sourceLineNo">504</span>            } else if (subCommands.get(DEFAULT) != null) {<a name="line.504"></a>
+<span class="sourceLineNo">505</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.505"></a>
+<span class="sourceLineNo">506</span>            }<a name="line.506"></a>
+<span class="sourceLineNo">507</span><a name="line.507"></a>
+<span class="sourceLineNo">508</span>        } finally {<a name="line.508"></a>
+<span class="sourceLineNo">509</span>            postCommandOperation();<a name="line.509"></a>
+<span class="sourceLineNo">510</span>        }<a name="line.510"></a>
+<span class="sourceLineNo">511</span>    }<a name="line.511"></a>
+<span class="sourceLineNo">512</span><a name="line.512"></a>
+<span class="sourceLineNo">513</span>    /**<a name="line.513"></a>
+<span class="sourceLineNo">514</span>     * Gets the registered command of the given arguments.<a name="line.514"></a>
+<span class="sourceLineNo">515</span>     * @param args<a name="line.515"></a>
+<span class="sourceLineNo">516</span>     *         The arguments given by the user.<a name="line.516"></a>
+<span class="sourceLineNo">517</span>     *<a name="line.517"></a>
+<span class="sourceLineNo">518</span>     * @return The subcommand or null if none were found.<a name="line.518"></a>
+<span class="sourceLineNo">519</span>     *<a name="line.519"></a>
+<span class="sourceLineNo">520</span>     * @see #findSubCommand(String[])<a name="line.520"></a>
+<span class="sourceLineNo">521</span>     */<a name="line.521"></a>
+<span class="sourceLineNo">522</span>    RegisteredCommand&lt;?&gt; getRegisteredCommand(String[] args) {<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        final CommandSearch cmd = findSubCommand(args);<a name="line.523"></a>
+<span class="sourceLineNo">524</span>        return cmd != null ? cmd.cmd : null;<a name="line.524"></a>
+<span class="sourceLineNo">525</span>    }<a name="line.525"></a>
+<span class="sourceLineNo">526</span><a name="line.526"></a>
+<span class="sourceLineNo">527</span>    /**<a name="line.527"></a>
+<span class="sourceLineNo">528</span>     * This is ran after any command operation has been performed.<a name="line.528"></a>
+<span class="sourceLineNo">529</span>     */<a name="line.529"></a>
+<span class="sourceLineNo">530</span>    private void postCommandOperation() {<a name="line.530"></a>
+<span class="sourceLineNo">531</span>        CommandManager.commandOperationContext.get().pop();<a name="line.531"></a>
+<span class="sourceLineNo">532</span>        execSubcommand = null;<a name="line.532"></a>
+<span class="sourceLineNo">533</span>        execLabel = null;<a name="line.533"></a>
+<span class="sourceLineNo">534</span>        origArgs = new String[]{};<a name="line.534"></a>
+<span class="sourceLineNo">535</span>    }<a name="line.535"></a>
+<span class="sourceLineNo">536</span><a name="line.536"></a>
+<span class="sourceLineNo">537</span>    /**<a name="line.537"></a>
+<span class="sourceLineNo">538</span>     * This is ran before any command operation has been performed.<a name="line.538"></a>
+<span class="sourceLineNo">539</span>     *<a name="line.539"></a>
+<span class="sourceLineNo">540</span>     * @param issuer<a name="line.540"></a>
+<span class="sourceLineNo">541</span>     *         The user who executed the command.<a name="line.541"></a>
+<span class="sourceLineNo">542</span>     * @param commandLabel<a name="line.542"></a>
+<span class="sourceLineNo">543</span>     *         The label the user used to execute the command. This is not the command name, but their input.<a name="line.543"></a>
+<span class="sourceLineNo">544</span>     *         When there is multiple aliases, this is which alias was used<a name="line.544"></a>
+<span class="sourceLineNo">545</span>     * @param args<a name="line.545"></a>
+<span class="sourceLineNo">546</span>     *         The arguments passed to the command when executing it.<a name="line.546"></a>
+<span class="sourceLineNo">547</span>     * @param isAsync<a name="line.547"></a>
+<span class="sourceLineNo">548</span>     *         Whether the command is executed off of the main thread.<a name="line.548"></a>
+<span class="sourceLineNo">549</span>     *<a name="line.549"></a>
+<span class="sourceLineNo">550</span>     * @return The context which is being registered to the {@link CommandManager}'s {@link<a name="line.550"></a>
+<span class="sourceLineNo">551</span>     * CommandManager#commandOperationContext thread local stack}.<a name="line.551"></a>
+<span class="sourceLineNo">552</span>     */<a name="line.552"></a>
+<span class="sourceLineNo">553</span>    private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {<a name="line.553"></a>
+<span class="sourceLineNo">554</span>        Stack&lt;CommandOperationContext&gt; contexts = CommandManager.commandOperationContext.get();<a name="line.554"></a>
+<span class="sourceLineNo">555</span>        CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);<a name="line.555"></a>
+<span class="sourceLineNo">556</span>        contexts.push(context);<a name="line.556"></a>
+<span class="sourceLineNo">557</span>        lastCommandOperationContext = context;<a name="line.557"></a>
+<span class="sourceLineNo">558</span>        execSubcommand = null;<a name="line.558"></a>
+<span class="sourceLineNo">559</span>        execLabel = commandLabel;<a name="line.559"></a>
+<span class="sourceLineNo">560</span>        origArgs = args;<a name="line.560"></a>
+<span class="sourceLineNo">561</span>        return context;<a name="line.561"></a>
+<span class="sourceLineNo">562</span>    }<a name="line.562"></a>
+<span class="sourceLineNo">563</span><a name="line.563"></a>
+<span class="sourceLineNo">564</span>    /**<a name="line.564"></a>
+<span class="sourceLineNo">565</span>     * Gets the current command issuer.<a name="line.565"></a>
+<span class="sourceLineNo">566</span>     *<a name="line.566"></a>
+<span class="sourceLineNo">567</span>     * @return The current command issuer.<a name="line.567"></a>
+<span class="sourceLineNo">568</span>     */<a name="line.568"></a>
+<span class="sourceLineNo">569</span>    public CommandIssuer getCurrentCommandIssuer() {<a name="line.569"></a>
+<span class="sourceLineNo">570</span>        return CommandManager.getCurrentCommandIssuer();<a name="line.570"></a>
+<span class="sourceLineNo">571</span>    }<a name="line.571"></a>
+<span class="sourceLineNo">572</span><a name="line.572"></a>
+<span class="sourceLineNo">573</span>    /**<a name="line.573"></a>
+<span class="sourceLineNo">574</span>     * Gets the current command manager.<a name="line.574"></a>
+<span class="sourceLineNo">575</span>     *<a name="line.575"></a>
+<span class="sourceLineNo">576</span>     * @return The current command manager.<a name="line.576"></a>
+<span class="sourceLineNo">577</span>     */<a name="line.577"></a>
+<span class="sourceLineNo">578</span>    public CommandManager getCurrentCommandManager() {<a name="line.578"></a>
+<span class="sourceLineNo">579</span>        return CommandManager.getCurrentCommandManager();<a name="line.579"></a>
+<span class="sourceLineNo">580</span>    }<a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span>    /**<a name="line.582"></a>
+<span class="sourceLineNo">583</span>     * Finds a subcommand of the given arguments.<a name="line.583"></a>
+<span class="sourceLineNo">584</span>     *<a name="line.584"></a>
+<span class="sourceLineNo">585</span>     * @param args<a name="line.585"></a>
+<span class="sourceLineNo">586</span>     *         The arguments the user input.<a name="line.586"></a>
+<span class="sourceLineNo">587</span>     *<a name="line.587"></a>
+<span class="sourceLineNo">588</span>     * @return The identified subcommand.<a name="line.588"></a>
+<span class="sourceLineNo">589</span>     *<a name="line.589"></a>
+<span class="sourceLineNo">590</span>     * @see #findSubCommand(String[], boolean)<a name="line.590"></a>
+<span class="sourceLineNo">591</span>     */<a name="line.591"></a>
+<span class="sourceLineNo">592</span>    private CommandSearch findSubCommand(String[] args) {<a name="line.592"></a>
+<span class="sourceLineNo">593</span>        return findSubCommand(args, false);<a name="line.593"></a>
+<span class="sourceLineNo">594</span>    }<a name="line.594"></a>
+<span class="sourceLineNo">595</span><a name="line.595"></a>
+<span class="sourceLineNo">596</span>    /**<a name="line.596"></a>
+<span class="sourceLineNo">597</span>     * Finds a subcommand of the given arguments.<a name="line.597"></a>
+<span class="sourceLineNo">598</span>     *<a name="line.598"></a>
+<span class="sourceLineNo">599</span>     * @param args<a name="line.599"></a>
+<span class="sourceLineNo">600</span>     *         The arguments the user input.<a name="line.600"></a>
+<span class="sourceLineNo">601</span>     * @param completion<a name="line.601"></a>
+<span class="sourceLineNo">602</span>     *         Whether or not completion of arguments should kick in. This may end up with worse than wanted results.<a name="line.602"></a>
+<span class="sourceLineNo">603</span>     *<a name="line.603"></a>
+<span class="sourceLineNo">604</span>     * @return The identified subcommand.<a name="line.604"></a>
+<span class="sourceLineNo">605</span>     */<a name="line.605"></a>
+<span class="sourceLineNo">606</span>    private CommandSearch findSubCommand(String[] args, boolean completion) {<a name="line.606"></a>
+<span class="sourceLineNo">607</span>        for (int i = args.length; i &gt;= 0; i--) {<a name="line.607"></a>
+<span class="sourceLineNo">608</span>            String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();<a name="line.608"></a>
+<span class="sourceLineNo">609</span>            Set&lt;RegisteredCommand&gt; cmds = subCommands.get(checkSub);<a name="line.609"></a>
+<span class="sourceLineNo">610</span><a name="line.610"></a>
+<span class="sourceLineNo">611</span>            final int extraArgs = args.length - i;<a name="line.611"></a>
+<span class="sourceLineNo">612</span>            if (!cmds.isEmpty()) {<a name="line.612"></a>
+<span class="sourceLineNo">613</span>                RegisteredCommand cmd = null;<a name="line.613"></a>
+<span class="sourceLineNo">614</span>                if (cmds.size() == 1) {<a name="line.614"></a>
+<span class="sourceLineNo">615</span>                    cmd = ACFUtil.getFirstElement(cmds);<a name="line.615"></a>
+<span class="sourceLineNo">616</span>                } else {<a name="line.616"></a>
+<span class="sourceLineNo">617</span>                    Optional&lt;RegisteredCommand&gt; optCmd = cmds.stream().filter(c -&gt; {<a name="line.617"></a>
+<span class="sourceLineNo">618</span>                        int required = c.requiredResolvers;<a name="line.618"></a>
+<span class="sourceLineNo">619</span>                        int optional = c.optionalResolvers;<a name="line.619"></a>
+<span class="sourceLineNo">620</span>                        return extraArgs &lt;= required + optional &amp;&amp; (completion || extraArgs &gt;= required);<a name="line.620"></a>
+<span class="sourceLineNo">621</span>                    }).min((c1, c2) -&gt; {<a name="line.621"></a>
+<span class="sourceLineNo">622</span>                        int a = c1.consumeInputResolvers;<a name="line.622"></a>
+<span class="sourceLineNo">623</span>                        int b = c2.consumeInputResolvers;<a name="line.623"></a>
+<span class="sourceLineNo">624</span><a name="line.624"></a>
+<span class="sourceLineNo">625</span>                        if (a == b) {<a name="line.625"></a>
+<span class="sourceLineNo">626</span>                            return 0;<a name="line.626"></a>
+<span class="sourceLineNo">627</span>                        }<a name="line.627"></a>
+<span class="sourceLineNo">628</span>                        return a &lt; b ? 1 : -1;<a name="line.628"></a>
+<span class="sourceLineNo">629</span>                    });<a name="line.629"></a>
+<span class="sourceLineNo">630</span>                    if (optCmd.isPresent()) {<a name="line.630"></a>
+<span class="sourceLineNo">631</span>                        cmd = optCmd.get();<a name="line.631"></a>
+<span class="sourceLineNo">632</span>                    }<a name="line.632"></a>
+<span class="sourceLineNo">633</span>                }<a name="line.633"></a>
+<span class="sourceLineNo">634</span>                if (cmd != null) {<a name="line.634"></a>
+<span class="sourceLineNo">635</span>                    return new CommandSearch(cmd, i, checkSub);<a name="line.635"></a>
+<span class="sourceLineNo">636</span>                }<a name="line.636"></a>
+<span class="sourceLineNo">637</span>            }<a name="line.637"></a>
+<span class="sourceLineNo">638</span>        }<a name="line.638"></a>
+<span class="sourceLineNo">639</span>        return null;<a name="line.639"></a>
+<span class="sourceLineNo">640</span>    }<a name="line.640"></a>
+<span class="sourceLineNo">641</span><a name="line.641"></a>
+<span class="sourceLineNo">642</span>    private void executeCommand(CommandOperationContext commandOperationContext,<a name="line.642"></a>
+<span class="sourceLineNo">643</span>                                CommandIssuer issuer, String[] args, RegisteredCommand cmd) {<a name="line.643"></a>
+<span class="sourceLineNo">644</span>        if (cmd.hasPermission(issuer)) {<a name="line.644"></a>
+<span class="sourceLineNo">645</span>            commandOperationContext.setRegisteredCommand(cmd);<a name="line.645"></a>
+<span class="sourceLineNo">646</span>            if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {<a name="line.646"></a>
+<span class="sourceLineNo">647</span>                return;<a name="line.647"></a>
+<span class="sourceLineNo">648</span>            }<a name="line.648"></a>
+<span class="sourceLineNo">649</span>            List&lt;String&gt; sargs = Arrays.asList(args);<a name="line.649"></a>
+<span class="sourceLineNo">650</span>            cmd.invoke(issuer, sargs, commandOperationContext);<a name="line.650"></a>
+<span class="sourceLineNo">651</span>        } else {<a name="line.651"></a>
+<span class="sourceLineNo">652</span>            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);<a name="line.652"></a>
+<span class="sourceLineNo">653</span>        }<a name="line.653"></a>
+<span class="sourceLineNo">654</span>    }<a name="line.654"></a>
+<span class="sourceLineNo">655</span><a name="line.655"></a>
+<span class="sourceLineNo">656</span>    /**<a name="line.656"></a>
+<span class="sourceLineNo">657</span>     * Please use command conditions for restricting execution<a name="line.657"></a>
+<span class="sourceLineNo">658</span>     * @deprecated See {@link CommandConditions}<a name="line.658"></a>
+<span class="sourceLineNo">659</span>     * @param issuer<a name="line.659"></a>
+<span class="sourceLineNo">660</span>     * @param cmd<a name="line.660"></a>
+<span class="sourceLineNo">661</span>     * @return<a name="line.661"></a>
+<span class="sourceLineNo">662</span>     */<a name="line.662"></a>
+<span class="sourceLineNo">663</span>    @SuppressWarnings("DeprecatedIsStillUsed")<a name="line.663"></a>
+<span class="sourceLineNo">664</span>    @Deprecated<a name="line.664"></a>
+<span class="sourceLineNo">665</span>    public boolean canExecute(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {<a name="line.665"></a>
+<span class="sourceLineNo">666</span>        return true;<a name="line.666"></a>
+<span class="sourceLineNo">667</span>    }<a name="line.667"></a>
+<span class="sourceLineNo">668</span><a name="line.668"></a>
+<span class="sourceLineNo">669</span>    /**<a name="line.669"></a>
+<span class="sourceLineNo">670</span>     * Gets tab completed data from the given command from the user.<a name="line.670"></a>
+<span class="sourceLineNo">671</span>     *<a name="line.671"></a>
+<span class="sourceLineNo">672</span>     * @param issuer<a name="line.672"></a>
+<span class="sourceLineNo">673</span>     *         The user who executed the tabcomplete.<a name="line.673"></a>
+<span class="sourceLineNo">674</span>     * @param commandLabel<a name="line.674"></a>
+<span class="sourceLineNo">675</span>     *         The label which is being used by the user.<a name="line.675"></a>
+<span class="sourceLineNo">676</span>     * @param args<a name="line.676"></a>
+<span class="sourceLineNo">677</span>     *         The arguments the user has typed so far.<a name="line.677"></a>
+<span class="sourceLineNo">678</span>     *<a name="line.678"></a>
+<span class="sourceLineNo">679</span>     * @return All possibilities in the tab complete.<a name="line.679"></a>
+<span class="sourceLineNo">680</span>     */<a name="line.680"></a>
+<span class="sourceLineNo">681</span>    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.681"></a>
+<span class="sourceLineNo">682</span>        return tabComplete(issuer, commandLabel, args, false);<a name="line.682"></a>
+<span class="sourceLineNo">683</span>    }<a name="line.683"></a>
+<span class="sourceLineNo">684</span><a name="line.684"></a>
+<span class="sourceLineNo">685</span>    /**<a name="line.685"></a>
+<span class="sourceLineNo">686</span>     * Gets the tab complete suggestions from a given command. This will automatically find anything<a name="line.686"></a>
+<span class="sourceLineNo">687</span>     * which is valid for the specified command through the command's implementation.<a name="line.687"></a>
+<span class="sourceLineNo">688</span>     *<a name="line.688"></a>
+<span class="sourceLineNo">689</span>     * @param issuer<a name="line.689"></a>
+<span class="sourceLineNo">690</span>     *         The issuer of the command.<a name="line.690"></a>
+<span class="sourceLineNo">691</span>     * @param commandLabel<a name="line.691"></a>
+<span class="sourceLineNo">692</span>     *         The command name as entered by the user instead of the ACF registered name.<a name="line.692"></a>
+<span class="sourceLineNo">693</span>     * @param args<a name="line.693"></a>
+<span class="sourceLineNo">694</span>     *         All arguments entered by the user.<a name="line.694"></a>
+<span class="sourceLineNo">695</span>     * @param isAsync<a name="line.695"></a>
+<span class="sourceLineNo">696</span>     *         Whether this is run off of the main thread.<a name="line.696"></a>
+<span class="sourceLineNo">697</span>     *<a name="line.697"></a>
+<span class="sourceLineNo">698</span>     * @return The possibilities to tab complete in no particular order.<a name="line.698"></a>
+<span class="sourceLineNo">699</span>     */<a name="line.699"></a>
+<span class="sourceLineNo">700</span>    @SuppressWarnings("WeakerAccess")<a name="line.700"></a>
+<span class="sourceLineNo">701</span>    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)<a name="line.701"></a>
+<span class="sourceLineNo">702</span>        throws IllegalArgumentException {<a name="line.702"></a>
+<span class="sourceLineNo">703</span><a name="line.703"></a>
+<span class="sourceLineNo">704</span>        commandLabel = commandLabel.toLowerCase();<a name="line.704"></a>
+<span class="sourceLineNo">705</span>        if (args.length == 0) {<a name="line.705"></a>
+<span class="sourceLineNo">706</span>            args = new String[]{""};<a name="line.706"></a>
+<span class="sourceLineNo">707</span>        }<a name="line.707"></a>
+<span class="sourceLineNo">708</span>        try {<a name="line.708"></a>
+<span class="sourceLineNo">709</span>            CommandOperationContext commandOperationContext = preCommandOperation(issuer, commandLabel, args, isAsync);<a name="line.709"></a>
+<span class="sourceLineNo">710</span><a name="line.710"></a>
+<span class="sourceLineNo">711</span>            final CommandSearch search = findSubCommand(args, true);<a name="line.711"></a>
+<span class="sourceLineNo">712</span><a name="line.712"></a>
 <span class="sourceLineNo">713</span><a name="line.713"></a>
-<span class="sourceLineNo">714</span><a name="line.714"></a>
-<span class="sourceLineNo">715</span>            final List&lt;String&gt; cmds = new ArrayList&lt;&gt;();<a name="line.715"></a>
-<span class="sourceLineNo">716</span><a name="line.716"></a>
-<span class="sourceLineNo">717</span>            if (search != null) {<a name="line.717"></a>
-<span class="sourceLineNo">718</span>                cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));<a name="line.718"></a>
-<span class="sourceLineNo">719</span>            } else if (subCommands.get(CATCHUNKNOWN).size() == 1) {<a name="line.719"></a>
-<span class="sourceLineNo">720</span>                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));<a name="line.720"></a>
-<span class="sourceLineNo">721</span>            } else if (subCommands.get(DEFAULT).size() == 1) {<a name="line.721"></a>
-<span class="sourceLineNo">722</span>                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));<a name="line.722"></a>
-<span class="sourceLineNo">723</span>            }<a name="line.723"></a>
-<span class="sourceLineNo">724</span><a name="line.724"></a>
-<span class="sourceLineNo">725</span>            return filterTabComplete(args[args.length - 1], cmds);<a name="line.725"></a>
-<span class="sourceLineNo">726</span>        } finally {<a name="line.726"></a>
-<span class="sourceLineNo">727</span>            postCommandOperation();<a name="line.727"></a>
-<span class="sourceLineNo">728</span>        }<a name="line.728"></a>
-<span class="sourceLineNo">729</span>    }<a name="line.729"></a>
-<span class="sourceLineNo">730</span><a name="line.730"></a>
-<span class="sourceLineNo">731</span>    /**<a name="line.731"></a>
-<span class="sourceLineNo">732</span>     * Gets all subcommands which are possible to tabcomplete.<a name="line.732"></a>
-<span class="sourceLineNo">733</span>     *<a name="line.733"></a>
-<span class="sourceLineNo">734</span>     * @param issuer<a name="line.734"></a>
-<span class="sourceLineNo">735</span>     *         The command issuer.<a name="line.735"></a>
-<span class="sourceLineNo">736</span>     * @param args<a name="line.736"></a>
-<span class="sourceLineNo">737</span>     *<a name="line.737"></a>
-<span class="sourceLineNo">738</span>     * @return<a name="line.738"></a>
-<span class="sourceLineNo">739</span>     */<a name="line.739"></a>
-<span class="sourceLineNo">740</span>    List&lt;String&gt; getCommandsForCompletion(CommandIssuer issuer, String[] args) {<a name="line.740"></a>
-<span class="sourceLineNo">741</span>        final Set&lt;String&gt; cmds = new HashSet&lt;&gt;();<a name="line.741"></a>
-<span class="sourceLineNo">742</span>        final int cmdIndex = Math.max(0, args.length - 1);<a name="line.742"></a>
-<span class="sourceLineNo">743</span>        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();<a name="line.743"></a>
-<span class="sourceLineNo">744</span>        for (Map.Entry&lt;String, RegisteredCommand&gt; entry : subCommands.entries()) {<a name="line.744"></a>
-<span class="sourceLineNo">745</span>            final String key = entry.getKey();<a name="line.745"></a>
-<span class="sourceLineNo">746</span>            if (key.startsWith(argString) &amp;&amp; !CATCHUNKNOWN.equals(key) &amp;&amp; !DEFAULT.equals(key)) {<a name="line.746"></a>
-<span class="sourceLineNo">747</span>                final RegisteredCommand value = entry.getValue();<a name="line.747"></a>
-<span class="sourceLineNo">748</span>                if (!value.hasPermission(issuer) || value.isPrivate) {<a name="line.748"></a>
-<span class="sourceLineNo">749</span>                    continue;<a name="line.749"></a>
-<span class="sourceLineNo">750</span>                }<a name="line.750"></a>
-<span class="sourceLineNo">751</span><a name="line.751"></a>
-<span class="sourceLineNo">752</span>                String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);<a name="line.752"></a>
-<span class="sourceLineNo">753</span>                cmds.add(split[cmdIndex]);<a name="line.753"></a>
-<span class="sourceLineNo">754</span>            }<a name="line.754"></a>
-<span class="sourceLineNo">755</span>        }<a name="line.755"></a>
-<span class="sourceLineNo">756</span>        return new ArrayList&lt;&gt;(cmds);<a name="line.756"></a>
-<span class="sourceLineNo">757</span>    }<a name="line.757"></a>
-<span class="sourceLineNo">758</span><a name="line.758"></a>
-<span class="sourceLineNo">759</span>    /**<a name="line.759"></a>
-<span class="sourceLineNo">760</span>     * Complete a command properly per issuer and input.<a name="line.760"></a>
-<span class="sourceLineNo">761</span>     *<a name="line.761"></a>
-<span class="sourceLineNo">762</span>     * @param issuer<a name="line.762"></a>
-<span class="sourceLineNo">763</span>     *         The user who executed this.<a name="line.763"></a>
-<span class="sourceLineNo">764</span>     * @param cmd<a name="line.764"></a>
-<span class="sourceLineNo">765</span>     *         The command to be completed.<a name="line.765"></a>
-<span class="sourceLineNo">766</span>     * @param args<a name="line.766"></a>
-<span class="sourceLineNo">767</span>     *         All arguments given by the user.<a name="line.767"></a>
-<span class="sourceLineNo">768</span>     * @param commandLabel<a name="line.768"></a>
-<span class="sourceLineNo">769</span>     *         The command name the user used.<a name="line.769"></a>
-<span class="sourceLineNo">770</span>     * @param isAsync<a name="line.770"></a>
-<span class="sourceLineNo">771</span>     *         Whether the command was executed async.<a name="line.771"></a>
-<span class="sourceLineNo">772</span>     *<a name="line.772"></a>
-<span class="sourceLineNo">773</span>     * @return All results to complete the command.<a name="line.773"></a>
-<span class="sourceLineNo">774</span>     */<a name="line.774"></a>
-<span class="sourceLineNo">775</span>    private List&lt;String&gt; completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {<a name="line.775"></a>
-<span class="sourceLineNo">776</span>        if (!cmd.hasPermission(issuer) || args.length &gt; cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {<a name="line.776"></a>
-<span class="sourceLineNo">777</span>            return Collections.emptyList();<a name="line.777"></a>
-<span class="sourceLineNo">778</span>        }<a name="line.778"></a>
-<span class="sourceLineNo">779</span><a name="line.779"></a>
-<span class="sourceLineNo">780</span>        List&lt;String&gt; cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);<a name="line.780"></a>
-<span class="sourceLineNo">781</span>        return filterTabComplete(args[args.length-1], cmds);<a name="line.781"></a>
-<span class="sourceLineNo">782</span>    }<a name="line.782"></a>
-<span class="sourceLineNo">783</span><a name="line.783"></a>
-<span class="sourceLineNo">784</span>    /**<a name="line.784"></a>
-<span class="sourceLineNo">785</span>     * Gets the actual args in string form the user typed<a name="line.785"></a>
-<span class="sourceLineNo">786</span>     * This returns a list of all tab complete options which are possible with the given argument and commands.<a name="line.786"></a>
-<span class="sourceLineNo">787</span>     * @param arg<a name="line.787"></a>
-<span class="sourceLineNo">788</span>     *         Argument which was pressed tab on.<a name="line.788"></a>
-<span class="sourceLineNo">789</span>     * @param cmds<a name="line.789"></a>
-<span class="sourceLineNo">790</span>     *         The possibilities to return.<a name="line.790"></a>
-<span class="sourceLineNo">791</span>     *<a name="line.791"></a>
-<span class="sourceLineNo">792</span>     * @return All possible options. This may be empty.<a name="line.792"></a>
-<span class="sourceLineNo">793</span>     */<a name="line.793"></a>
-<span class="sourceLineNo">794</span>    private static List&lt;String&gt; filterTabComplete(String arg, List&lt;String&gt; cmds) {<a name="line.794"></a>
-<span class="sourceLineNo">795</span>        return cmds.stream()<a name="line.795"></a>
-<span class="sourceLineNo">796</span>                   .distinct()<a name="line.796"></a>
-<span class="sourceLineNo">797</span>                   .filter(cmd -&gt; cmd != null &amp;&amp; (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))<a name="line.797"></a>
-<span class="sourceLineNo">798</span>                   .collect(Collectors.toList());<a name="line.798"></a>
-<span class="sourceLineNo">799</span>    }<a name="line.799"></a>
-<span class="sourceLineNo">800</span><a name="line.800"></a>
-<span class="sourceLineNo">801</span>    /**<a name="line.801"></a>
-<span class="sourceLineNo">802</span>     * Gets a registered command under the given subcommand name.<a name="line.802"></a>
-<span class="sourceLineNo">803</span>     *<a name="line.803"></a>
-<span class="sourceLineNo">804</span>     * @param subcommand<a name="line.804"></a>
-<span class="sourceLineNo">805</span>     *         The name of the subcommand requested.<a name="line.805"></a>
-<span class="sourceLineNo">806</span>     *<a name="line.806"></a>
-<span class="sourceLineNo">807</span>     * @return The subcommand found or null if none.<a name="line.807"></a>
-<span class="sourceLineNo">808</span>     */<a name="line.808"></a>
-<span class="sourceLineNo">809</span>    private RegisteredCommand getCommandBySubcommand(String subcommand) {<a name="line.809"></a>
-<span class="sourceLineNo">810</span>        return getCommandBySubcommand(subcommand, false);<a name="line.810"></a>
-<span class="sourceLineNo">811</span>    }<a name="line.811"></a>
-<span class="sourceLineNo">812</span><a name="line.812"></a>
-<span class="sourceLineNo">813</span>    /**<a name="line.813"></a>
-<span class="sourceLineNo">814</span>     * Gets a registered command under the given name.<a name="line.814"></a>
-<span class="sourceLineNo">815</span>     * If requireOne is true, it won't accept more than a single matching subcommand.<a name="line.815"></a>
-<span class="sourceLineNo">816</span>     *<a name="line.816"></a>
-<span class="sourceLineNo">817</span>     * @param subcommand<a name="line.817"></a>
-<span class="sourceLineNo">818</span>     *         Name of the subcommand wanted.<a name="line.818"></a>
-<span class="sourceLineNo">819</span>     * @param requireOne<a name="line.819"></a>
-<span class="sourceLineNo">820</span>     *         Whether to only accept 1 result.<a name="line.820"></a>
-<span class="sourceLineNo">821</span>     *<a name="line.821"></a>
-<span class="sourceLineNo">822</span>     * @return The subcommand found, or null if none/too many.<a name="line.822"></a>
-<span class="sourceLineNo">823</span>     */<a name="line.823"></a>
-<span class="sourceLineNo">824</span>    private RegisteredCommand getCommandBySubcommand(String subcommand, boolean requireOne) {<a name="line.824"></a>
-<span class="sourceLineNo">825</span>        final Set&lt;RegisteredCommand&gt; commands = subCommands.get(subcommand);<a name="line.825"></a>
-<span class="sourceLineNo">826</span>        if (!commands.isEmpty() &amp;&amp; (!requireOne || commands.size() == 1)) {<a name="line.826"></a>
-<span class="sourceLineNo">827</span>            return commands.iterator().next();<a name="line.827"></a>
-<span class="sourceLineNo">828</span>        }<a name="line.828"></a>
-<span class="sourceLineNo">829</span>        return null;<a name="line.829"></a>
-<span class="sourceLineNo">830</span>    }<a name="line.830"></a>
-<span class="sourceLineNo">831</span><a name="line.831"></a>
-<span class="sourceLineNo">832</span>    /**<a name="line.832"></a>
-<span class="sourceLineNo">833</span>     * Internally calls {@link #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)}<a name="line.833"></a>
-<span class="sourceLineNo">834</span>     * and gets through {@link #getCommandBySubcommand(String)}.<a name="line.834"></a>
-<span class="sourceLineNo">835</span>     *<a name="line.835"></a>
-<span class="sourceLineNo">836</span>     * @param commandContext<a name="line.836"></a>
-<span class="sourceLineNo">837</span>     *         The command context to use.<a name="line.837"></a>
-<span class="sourceLineNo">838</span>     * @param subcommand<a name="line.838"></a>
-<span class="sourceLineNo">839</span>     *         The subcommand to find the executor of.<a name="line.839"></a>
-<span class="sourceLineNo">840</span>     * @param issuer<a name="line.840"></a>
-<span class="sourceLineNo">841</span>     *         The issuer who executed the subcommand.<a name="line.841"></a>
-<span class="sourceLineNo">842</span>     * @param args<a name="line.842"></a>
-<span class="sourceLineNo">843</span>     *         All arguments given by the issuer.<a name="line.843"></a>
-<span class="sourceLineNo">844</span>     *<a name="line.844"></a>
-<span class="sourceLineNo">845</span>     * @return Whether it found a command or not.<a name="line.845"></a>
-<span class="sourceLineNo">846</span>     *<a name="line.846"></a>
-<span class="sourceLineNo">847</span>     * @see #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)<a name="line.847"></a>
-<span class="sourceLineNo">848</span>     * @see #getCommandBySubcommand(String)<a name="line.848"></a>
-<span class="sourceLineNo">849</span>     * @see RegisteredCommand#invoke(CommandIssuer, List, CommandOperationContext)<a name="line.849"></a>
-<span class="sourceLineNo">850</span>     */<a name="line.850"></a>
-<span class="sourceLineNo">851</span>    private boolean findAndExecuteCommand(CommandOperationContext commandContext, String subcommand, CommandIssuer issuer, String... args) {<a name="line.851"></a>
-<span class="sourceLineNo">852</span>        final RegisteredCommand cmd = this.getCommandBySubcommand(subcommand);<a name="line.852"></a>
-<span class="sourceLineNo">853</span>        if (cmd != null) {<a name="line.853"></a>
-<span class="sourceLineNo">854</span>            executeCommand(commandContext, issuer, args, cmd);<a name="line.854"></a>
-<span class="sourceLineNo">855</span>            return true;<a name="line.855"></a>
-<span class="sourceLineNo">856</span>        }<a name="line.856"></a>
-<span class="sourceLineNo">857</span><a name="line.857"></a>
-<span class="sourceLineNo">858</span>        return false;<a name="line.858"></a>
-<span class="sourceLineNo">859</span>    }<a name="line.859"></a>
-<span class="sourceLineNo">860</span><a name="line.860"></a>
-<span class="sourceLineNo">861</span>    /**<a name="line.861"></a>
-<span class="sourceLineNo">862</span>     * Executes the precommand and sees whether something is wrong. Ideally, you get false from this.<a name="line.862"></a>
-<span class="sourceLineNo">863</span>     *<a name="line.863"></a>
-<span class="sourceLineNo">864</span>     * @param commandOperationContext<a name="line.864"></a>
-<span class="sourceLineNo">865</span>     *         The context to use.<a name="line.865"></a>
-<span class="sourceLineNo">866</span>     * @param cmd<a name="line.866"></a>
-<span class="sourceLineNo">867</span>     *         The command executed.<a name="line.867"></a>
-<span class="sourceLineNo">868</span>     * @param issuer<a name="line.868"></a>
-<span class="sourceLineNo">869</span>     *         The issuer who executed the command.<a name="line.869"></a>
-<span class="sourceLineNo">870</span>     * @param args<a name="line.870"></a>
-<span class="sourceLineNo">871</span>     *         The arguments the issuer provided.<a name="line.871"></a>
-<span class="sourceLineNo">872</span>     *<a name="line.872"></a>
-<span class="sourceLineNo">873</span>     * @return Whether something went wrong.<a name="line.873"></a>
-<span class="sourceLineNo">874</span>     */<a name="line.874"></a>
-<span class="sourceLineNo">875</span>    private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {<a name="line.875"></a>
-<span class="sourceLineNo">876</span>        Method pre = this.preCommandHandler;<a name="line.876"></a>
-<span class="sourceLineNo">877</span>        if (pre != null) {<a name="line.877"></a>
-<span class="sourceLineNo">878</span>            try {<a name="line.878"></a>
-<span class="sourceLineNo">879</span>                Class&lt;?&gt;[] types = pre.getParameterTypes();<a name="line.879"></a>
-<span class="sourceLineNo">880</span>                Object[] parameters = new Object[pre.getParameterCount()];<a name="line.880"></a>
-<span class="sourceLineNo">881</span>                for (int i = 0; i &lt; parameters.length; i++) {<a name="line.881"></a>
-<span class="sourceLineNo">882</span>                    Class&lt;?&gt; type = types[i];<a name="line.882"></a>
-<span class="sourceLineNo">883</span>                    Object issuerObject = issuer.getIssuer();<a name="line.883"></a>
-<span class="sourceLineNo">884</span>                    if (manager.isCommandIssuer(type) &amp;&amp; type.isAssignableFrom(issuerObject.getClass())) {<a name="line.884"></a>
-<span class="sourceLineNo">885</span>                        parameters[i] = issuerObject;<a name="line.885"></a>
-<span class="sourceLineNo">886</span>                    } else if (CommandIssuer.class.isAssignableFrom(type)) {<a name="line.886"></a>
-<span class="sourceLineNo">887</span>                        parameters[i] = issuer;<a name="line.887"></a>
-<span class="sourceLineNo">888</span>                    } else if (RegisteredCommand.class.isAssignableFrom(type)) {<a name="line.888"></a>
-<span class="sourceLineNo">889</span>                        parameters[i] = cmd;<a name="line.889"></a>
-<span class="sourceLineNo">890</span>                    } else if (String[].class.isAssignableFrom((type))) {<a name="line.890"></a>
-<span class="sourceLineNo">891</span>                        parameters[i] = args;<a name="line.891"></a>
-<span class="sourceLineNo">892</span>                    } else {<a name="line.892"></a>
-<span class="sourceLineNo">893</span>                        parameters[i] = null;<a name="line.893"></a>
-<span class="sourceLineNo">894</span>                    }<a name="line.894"></a>
-<span class="sourceLineNo">895</span>                }<a name="line.895"></a>
-<span class="sourceLineNo">896</span><a name="line.896"></a>
-<span class="sourceLineNo">897</span>                return (boolean) pre.invoke(this, parameters);<a name="line.897"></a>
-<span class="sourceLineNo">898</span>            } catch (IllegalAccessException | InvocationTargetException e) {<a name="line.898"></a>
-<span class="sourceLineNo">899</span>                this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);<a name="line.899"></a>
-<span class="sourceLineNo">900</span>            }<a name="line.900"></a>
-<span class="sourceLineNo">901</span>        }<a name="line.901"></a>
-<span class="sourceLineNo">902</span>        return false;<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    }<a name="line.903"></a>
-<span class="sourceLineNo">904</span><a name="line.904"></a>
-<span class="sourceLineNo">905</span>    /** @deprecated Unstable API */ @Deprecated @UnstableAPI<a name="line.905"></a>
-<span class="sourceLineNo">906</span>    public CommandHelp getCommandHelp() {<a name="line.906"></a>
-<span class="sourceLineNo">907</span>       return manager.generateCommandHelp();<a name="line.907"></a>
-<span class="sourceLineNo">908</span>    }<a name="line.908"></a>
-<span class="sourceLineNo">909</span><a name="line.909"></a>
-<span class="sourceLineNo">910</span>    /** @deprecated Unstable API */ @Deprecated @UnstableAPI<a name="line.910"></a>
-<span class="sourceLineNo">911</span>    public void showCommandHelp() {<a name="line.911"></a>
-<span class="sourceLineNo">912</span>        getCommandHelp().showHelp();<a name="line.912"></a>
-<span class="sourceLineNo">913</span>    }<a name="line.913"></a>
-<span class="sourceLineNo">914</span><a name="line.914"></a>
-<span class="sourceLineNo">915</span>    public void help(Object issuer, String[] args) {<a name="line.915"></a>
-<span class="sourceLineNo">916</span>        help(manager.getCommandIssuer(issuer), args);<a name="line.916"></a>
-<span class="sourceLineNo">917</span>    }<a name="line.917"></a>
-<span class="sourceLineNo">918</span>    public void help(CommandIssuer issuer, String[] args) {<a name="line.918"></a>
-<span class="sourceLineNo">919</span>        issuer.sendMessage(MessageType.ERROR, MessageKeys.UNKNOWN_COMMAND);<a name="line.919"></a>
-<span class="sourceLineNo">920</span>    }<a name="line.920"></a>
-<span class="sourceLineNo">921</span>    public void doHelp(Object issuer, String... args) {<a name="line.921"></a>
-<span class="sourceLineNo">922</span>        doHelp(manager.getCommandIssuer(issuer), args);<a name="line.922"></a>
-<span class="sourceLineNo">923</span>    }<a name="line.923"></a>
-<span class="sourceLineNo">924</span>    public void doHelp(CommandIssuer issuer, String... args) {<a name="line.924"></a>
-<span class="sourceLineNo">925</span>        help(issuer, args);<a name="line.925"></a>
-<span class="sourceLineNo">926</span>    }<a name="line.926"></a>
-<span class="sourceLineNo">927</span><a name="line.927"></a>
-<span class="sourceLineNo">928</span>    public void showSyntax(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {<a name="line.928"></a>
-<span class="sourceLineNo">929</span>        issuer.sendMessage(MessageType.SYNTAX, MessageKeys.INVALID_SYNTAX,<a name="line.929"></a>
-<span class="sourceLineNo">930</span>                "{command}", manager.getCommandPrefix(issuer) + cmd.command,<a name="line.930"></a>
-<span class="sourceLineNo">931</span>                "{syntax}", cmd.syntaxText<a name="line.931"></a>
-<span class="sourceLineNo">932</span>        );<a name="line.932"></a>
-<span class="sourceLineNo">933</span>    }<a name="line.933"></a>
-<span class="sourceLineNo">934</span><a name="line.934"></a>
-<span class="sourceLineNo">935</span>    public boolean hasPermission(Object issuer) {<a name="line.935"></a>
-<span class="sourceLineNo">936</span>        return hasPermission(manager.getCommandIssuer(issuer));<a name="line.936"></a>
-<span class="sourceLineNo">937</span>    }<a name="line.937"></a>
-<span class="sourceLineNo">938</span><a name="line.938"></a>
-<span class="sourceLineNo">939</span>    public boolean hasPermission(CommandIssuer issuer) {<a name="line.939"></a>
-<span class="sourceLineNo">940</span>        return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) &amp;&amp; (parentCommand == null || parentCommand.hasPermission(issuer)));<a name="line.940"></a>
-<span class="sourceLineNo">941</span>    }<a name="line.941"></a>
+<span class="sourceLineNo">714</span>            final List&lt;String&gt; cmds = new ArrayList&lt;&gt;();<a name="line.714"></a>
+<span class="sourceLineNo">715</span><a name="line.715"></a>
+<span class="sourceLineNo">716</span>            if (search != null) {<a name="line.716"></a>
+<span class="sourceLineNo">717</span>                cmds.addAll(completeCommand(issuer, search.cmd, Arrays.copyOfRange(args, search.argIndex, args.length), commandLabel, isAsync));<a name="line.717"></a>
+<span class="sourceLineNo">718</span>            } else if (subCommands.get(CATCHUNKNOWN).size() == 1) {<a name="line.718"></a>
+<span class="sourceLineNo">719</span>                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(CATCHUNKNOWN)), args, commandLabel, isAsync));<a name="line.719"></a>
+<span class="sourceLineNo">720</span>            } else if (subCommands.get(DEFAULT).size() == 1) {<a name="line.720"></a>
+<span class="sourceLineNo">721</span>                cmds.addAll(completeCommand(issuer, ACFUtil.getFirstElement(subCommands.get(DEFAULT)), args, commandLabel, isAsync));<a name="line.721"></a>
+<span class="sourceLineNo">722</span>            }<a name="line.722"></a>
+<span class="sourceLineNo">723</span><a name="line.723"></a>
+<span class="sourceLineNo">724</span>            return filterTabComplete(args[args.length - 1], cmds);<a name="line.724"></a>
+<span class="sourceLineNo">725</span>        } finally {<a name="line.725"></a>
+<span class="sourceLineNo">726</span>            postCommandOperation();<a name="line.726"></a>
+<span class="sourceLineNo">727</span>        }<a name="line.727"></a>
+<span class="sourceLineNo">728</span>    }<a name="line.728"></a>
+<span class="sourceLineNo">729</span><a name="line.729"></a>
+<span class="sourceLineNo">730</span>    /**<a name="line.730"></a>
+<span class="sourceLineNo">731</span>     * Gets all subcommands which are possible to tabcomplete.<a name="line.731"></a>
+<span class="sourceLineNo">732</span>     *<a name="line.732"></a>
+<span class="sourceLineNo">733</span>     * @param issuer<a name="line.733"></a>
+<span class="sourceLineNo">734</span>     *         The command issuer.<a name="line.734"></a>
+<span class="sourceLineNo">735</span>     * @param args<a name="line.735"></a>
+<span class="sourceLineNo">736</span>     *<a name="line.736"></a>
+<span class="sourceLineNo">737</span>     * @return<a name="line.737"></a>
+<span class="sourceLineNo">738</span>     */<a name="line.738"></a>
+<span class="sourceLineNo">739</span>    List&lt;String&gt; getCommandsForCompletion(CommandIssuer issuer, String[] args) {<a name="line.739"></a>
+<span class="sourceLineNo">740</span>        final Set&lt;String&gt; cmds = new HashSet&lt;&gt;();<a name="line.740"></a>
+<span class="sourceLineNo">741</span>        final int cmdIndex = Math.max(0, args.length - 1);<a name="line.741"></a>
+<span class="sourceLineNo">742</span>        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();<a name="line.742"></a>
+<span class="sourceLineNo">743</span>        for (Map.Entry&lt;String, RegisteredCommand&gt; entry : subCommands.entries()) {<a name="line.743"></a>
+<span class="sourceLineNo">744</span>            final String key = entry.getKey();<a name="line.744"></a>
+<span class="sourceLineNo">745</span>            if (key.startsWith(argString) &amp;&amp; !CATCHUNKNOWN.equals(key) &amp;&amp; !DEFAULT.equals(key)) {<a name="line.745"></a>
+<span class="sourceLineNo">746</span>                final RegisteredCommand value = entry.getValue();<a name="line.746"></a>
+<span class="sourceLineNo">747</span>                if (!value.hasPermission(issuer) || value.isPrivate) {<a name="line.747"></a>
+<span class="sourceLineNo">748</span>                    continue;<a name="line.748"></a>
+<span class="sourceLineNo">749</span>                }<a name="line.749"></a>
+<span class="sourceLineNo">750</span><a name="line.750"></a>
+<span class="sourceLineNo">751</span>                String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);<a name="line.751"></a>
+<span class="sourceLineNo">752</span>                cmds.add(split[cmdIndex]);<a name="line.752"></a>
+<span class="sourceLineNo">753</span>            }<a name="line.753"></a>
+<span class="sourceLineNo">754</span>        }<a name="line.754"></a>
+<span class="sourceLineNo">755</span>        return new ArrayList&lt;&gt;(cmds);<a name="line.755"></a>
+<span class="sourceLineNo">756</span>    }<a name="line.756"></a>
+<span class="sourceLineNo">757</span><a name="line.757"></a>
+<span class="sourceLineNo">758</span>    /**<a name="line.758"></a>
+<span class="sourceLineNo">759</span>     * Complete a command properly per issuer and input.<a name="line.759"></a>
+<span class="sourceLineNo">760</span>     *<a name="line.760"></a>
+<span class="sourceLineNo">761</span>     * @param issuer<a name="line.761"></a>
+<span class="sourceLineNo">762</span>     *         The user who executed this.<a name="line.762"></a>
+<span class="sourceLineNo">763</span>     * @param cmd<a name="line.763"></a>
+<span class="sourceLineNo">764</span>     *         The command to be completed.<a name="line.764"></a>
+<span class="sourceLineNo">765</span>     * @param args<a name="line.765"></a>
+<span class="sourceLineNo">766</span>     *         All arguments given by the user.<a name="line.766"></a>
+<span class="sourceLineNo">767</span>     * @param commandLabel<a name="line.767"></a>
+<span class="sourceLineNo">768</span>     *         The command name the user used.<a name="line.768"></a>
+<span class="sourceLineNo">769</span>     * @param isAsync<a name="line.769"></a>
+<span class="sourceLineNo">770</span>     *         Whether the command was executed async.<a name="line.770"></a>
+<span class="sourceLineNo">771</span>     *<a name="line.771"></a>
+<span class="sourceLineNo">772</span>     * @return All results to complete the command.<a name="line.772"></a>
+<span class="sourceLineNo">773</span>     */<a name="line.773"></a>
+<span class="sourceLineNo">774</span>    private List&lt;String&gt; completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {<a name="line.774"></a>
+<span class="sourceLineNo">775</span>        if (!cmd.hasPermission(issuer) || args.length &gt; cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {<a name="line.775"></a>
+<span class="sourceLineNo">776</span>            return Collections.emptyList();<a name="line.776"></a>
+<span class="sourceLineNo">777</span>        }<a name="line.777"></a>
+<span class="sourceLineNo">778</span><a name="line.778"></a>
+<span class="sourceLineNo">779</span>        List&lt;String&gt; cmds = manager.getCommandCompletions().of(cmd, issuer, args, isAsync);<a name="line.779"></a>
+<span class="sourceLineNo">780</span>        return filterTabComplete(args[args.length-1], cmds);<a name="line.780"></a>
+<span class="sourceLineNo">781</span>    }<a name="line.781"></a>
+<span class="sourceLineNo">782</span><a name="line.782"></a>
+<span class="sourceLineNo">783</span>    /**<a name="line.783"></a>
+<span class="sourceLineNo">784</span>     * Gets the actual args in string form the user typed<a name="line.784"></a>
+<span class="sourceLineNo">785</span>     * This returns a list of all tab complete options which are possible with the given argument and commands.<a name="line.785"></a>
+<span class="sourceLineNo">786</span>     * @param arg<a name="line.786"></a>
+<span class="sourceLineNo">787</span>     *         Argument which was pressed tab on.<a name="line.787"></a>
+<span class="sourceLineNo">788</span>     * @param cmds<a name="line.788"></a>
+<span class="sourceLineNo">789</span>     *         The possibilities to return.<a name="line.789"></a>
+<span class="sourceLineNo">790</span>     *<a name="line.790"></a>
+<span class="sourceLineNo">791</span>     * @return All possible options. This may be empty.<a name="line.791"></a>
+<span class="sourceLineNo">792</span>     */<a name="line.792"></a>
+<span class="sourceLineNo">793</span>    private static List&lt;String&gt; filterTabComplete(String arg, List&lt;String&gt; cmds) {<a name="line.793"></a>
+<span class="sourceLineNo">794</span>        return cmds.stream()<a name="line.794"></a>
+<span class="sourceLineNo">795</span>                   .distinct()<a name="line.795"></a>
+<span class="sourceLineNo">796</span>                   .filter(cmd -&gt; cmd != null &amp;&amp; (arg.isEmpty() || ApacheCommonsLangUtil.startsWithIgnoreCase(cmd, arg)))<a name="line.796"></a>
+<span class="sourceLineNo">797</span>                   .collect(Collectors.toList());<a name="line.797"></a>
+<span class="sourceLineNo">798</span>    }<a name="line.798"></a>
+<span class="sourceLineNo">799</span><a name="line.799"></a>
+<span class="sourceLineNo">800</span>    /**<a name="line.800"></a>
+<span class="sourceLineNo">801</span>     * Gets a registered command under the given subcommand name.<a name="line.801"></a>
+<span class="sourceLineNo">802</span>     *<a name="line.802"></a>
+<span class="sourceLineNo">803</span>     * @param subcommand<a name="line.803"></a>
+<span class="sourceLineNo">804</span>     *         The name of the subcommand requested.<a name="line.804"></a>
+<span class="sourceLineNo">805</span>     *<a name="line.805"></a>
+<span class="sourceLineNo">806</span>     * @return The subcommand found or null if none.<a name="line.806"></a>
+<span class="sourceLineNo">807</span>     */<a name="line.807"></a>
+<span class="sourceLineNo">808</span>    private RegisteredCommand getCommandBySubcommand(String subcommand) {<a name="line.808"></a>
+<span class="sourceLineNo">809</span>        return getCommandBySubcommand(subcommand, false);<a name="line.809"></a>
+<span class="sourceLineNo">810</span>    }<a name="line.810"></a>
+<span class="sourceLineNo">811</span><a name="line.811"></a>
+<span class="sourceLineNo">812</span>    /**<a name="line.812"></a>
+<span class="sourceLineNo">813</span>     * Gets a registered command under the given name.<a name="line.813"></a>
+<span class="sourceLineNo">814</span>     * If requireOne is true, it won't accept more than a single matching subcommand.<a name="line.814"></a>
+<span class="sourceLineNo">815</span>     *<a name="line.815"></a>
+<span class="sourceLineNo">816</span>     * @param subcommand<a name="line.816"></a>
+<span class="sourceLineNo">817</span>     *         Name of the subcommand wanted.<a name="line.817"></a>
+<span class="sourceLineNo">818</span>     * @param requireOne<a name="line.818"></a>
+<span class="sourceLineNo">819</span>     *         Whether to only accept 1 result.<a name="line.819"></a>
+<span class="sourceLineNo">820</span>     *<a name="line.820"></a>
+<span class="sourceLineNo">821</span>     * @return The subcommand found, or null if none/too many.<a name="line.821"></a>
+<span class="sourceLineNo">822</span>     */<a name="line.822"></a>
+<span class="sourceLineNo">823</span>    private RegisteredCommand getCommandBySubcommand(String subcommand, boolean requireOne) {<a name="line.823"></a>
+<span class="sourceLineNo">824</span>        final Set&lt;RegisteredCommand&gt; commands = subCommands.get(subcommand);<a name="line.824"></a>
+<span class="sourceLineNo">825</span>        if (!commands.isEmpty() &amp;&amp; (!requireOne || commands.size() == 1)) {<a name="line.825"></a>
+<span class="sourceLineNo">826</span>            return commands.iterator().next();<a name="line.826"></a>
+<span class="sourceLineNo">827</span>        }<a name="line.827"></a>
+<span class="sourceLineNo">828</span>        return null;<a name="line.828"></a>
+<span class="sourceLineNo">829</span>    }<a name="line.829"></a>
+<span class="sourceLineNo">830</span><a name="line.830"></a>
+<span class="sourceLineNo">831</span>    /**<a name="line.831"></a>
+<span class="sourceLineNo">832</span>     * Internally calls {@link #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)}<a name="line.832"></a>
+<span class="sourceLineNo">833</span>     * and gets through {@link #getCommandBySubcommand(String)}.<a name="line.833"></a>
+<span class="sourceLineNo">834</span>     *<a name="line.834"></a>
+<span class="sourceLineNo">835</span>     * @param commandContext<a name="line.835"></a>
+<span class="sourceLineNo">836</span>     *         The command context to use.<a name="line.836"></a>
+<span class="sourceLineNo">837</span>     * @param subcommand<a name="line.837"></a>
+<span class="sourceLineNo">838</span>     *         The subcommand to find the executor of.<a name="line.838"></a>
+<span class="sourceLineNo">839</span>     * @param issuer<a name="line.839"></a>
+<span class="sourceLineNo">840</span>     *         The issuer who executed the subcommand.<a name="line.840"></a>
+<span class="sourceLineNo">841</span>     * @param args<a name="line.841"></a>
+<span class="sourceLineNo">842</span>     *         All arguments given by the issuer.<a name="line.842"></a>
+<span class="sourceLineNo">843</span>     *<a name="line.843"></a>
+<span class="sourceLineNo">844</span>     * @return Whether it found a command or not.<a name="line.844"></a>
+<span class="sourceLineNo">845</span>     *<a name="line.845"></a>
+<span class="sourceLineNo">846</span>     * @see #executeCommand(CommandOperationContext, CommandIssuer, String[], RegisteredCommand)<a name="line.846"></a>
+<span class="sourceLineNo">847</span>     * @see #getCommandBySubcommand(String)<a name="line.847"></a>
+<span class="sourceLineNo">848</span>     * @see RegisteredCommand#invoke(CommandIssuer, List, CommandOperationContext)<a name="line.848"></a>
+<span class="sourceLineNo">849</span>     */<a name="line.849"></a>
+<span class="sourceLineNo">850</span>    private boolean findAndExecuteCommand(CommandOperationContext commandContext, String subcommand, CommandIssuer issuer, String... args) {<a name="line.850"></a>
+<span class="sourceLineNo">851</span>        final RegisteredCommand cmd = this.getCommandBySubcommand(subcommand);<a name="line.851"></a>
+<span class="sourceLineNo">852</span>        if (cmd != null) {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>            executeCommand(commandContext, issuer, args, cmd);<a name="line.853"></a>
+<span class="sourceLineNo">854</span>            return true;<a name="line.854"></a>
+<span class="sourceLineNo">855</span>        }<a name="line.855"></a>
+<span class="sourceLineNo">856</span><a name="line.856"></a>
+<span class="sourceLineNo">857</span>        return false;<a name="line.857"></a>
+<span class="sourceLineNo">858</span>    }<a name="line.858"></a>
+<span class="sourceLineNo">859</span><a name="line.859"></a>
+<span class="sourceLineNo">860</span>    /**<a name="line.860"></a>
+<span class="sourceLineNo">861</span>     * Executes the precommand and sees whether something is wrong. Ideally, you get false from this.<a name="line.861"></a>
+<span class="sourceLineNo">862</span>     *<a name="line.862"></a>
+<span class="sourceLineNo">863</span>     * @param commandOperationContext<a name="line.863"></a>
+<span class="sourceLineNo">864</span>     *         The context to use.<a name="line.864"></a>
+<span class="sourceLineNo">865</span>     * @param cmd<a name="line.865"></a>
+<span class="sourceLineNo">866</span>     *         The command executed.<a name="line.866"></a>
+<span class="sourceLineNo">867</span>     * @param issuer<a name="line.867"></a>
+<span class="sourceLineNo">868</span>     *         The issuer who executed the command.<a name="line.868"></a>
+<span class="sourceLineNo">869</span>     * @param args<a name="line.869"></a>
+<span class="sourceLineNo">870</span>     *         The arguments the issuer provided.<a name="line.870"></a>
+<span class="sourceLineNo">871</span>     *<a name="line.871"></a>
+<span class="sourceLineNo">872</span>     * @return Whether something went wrong.<a name="line.872"></a>
+<span class="sourceLineNo">873</span>     */<a name="line.873"></a>
+<span class="sourceLineNo">874</span>    private boolean checkPrecommand(CommandOperationContext commandOperationContext, RegisteredCommand cmd, CommandIssuer issuer, String[] args) {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>        Method pre = this.preCommandHandler;<a name="line.875"></a>
+<span class="sourceLineNo">876</span>        if (pre != null) {<a name="line.876"></a>
+<span class="sourceLineNo">877</span>            try {<a name="line.877"></a>
+<span class="sourceLineNo">878</span>                Class&lt;?&gt;[] types = pre.getParameterTypes();<a name="line.878"></a>
+<span class="sourceLineNo">879</span>                Object[] parameters = new Object[pre.getParameterCount()];<a name="line.879"></a>
+<span class="sourceLineNo">880</span>                for (int i = 0; i &lt; parameters.length; i++) {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>                    Class&lt;?&gt; type = types[i];<a name="line.881"></a>
+<span class="sourceLineNo">882</span>                    Object issuerObject = issuer.getIssuer();<a name="line.882"></a>
+<span class="sourceLineNo">883</span>                    if (manager.isCommandIssuer(type) &amp;&amp; type.isAssignableFrom(issuerObject.getClass())) {<a name="line.883"></a>
+<span class="sourceLineNo">884</span>                        parameters[i] = issuerObject;<a name="line.884"></a>
+<span class="sourceLineNo">885</span>                    } else if (CommandIssuer.class.isAssignableFrom(type)) {<a name="line.885"></a>
+<span class="sourceLineNo">886</span>                        parameters[i] = issuer;<a name="line.886"></a>
+<span class="sourceLineNo">887</span>                    } else if (RegisteredCommand.class.isAssignableFrom(type)) {<a name="line.887"></a>
+<span class="sourceLineNo">888</span>                        parameters[i] = cmd;<a name="line.888"></a>
+<span class="sourceLineNo">889</span>                    } else if (String[].class.isAssignableFrom((type))) {<a name="line.889"></a>
+<span class="sourceLineNo">890</span>                        parameters[i] = args;<a name="line.890"></a>
+<span class="sourceLineNo">891</span>                    } else {<a name="line.891"></a>
+<span class="sourceLineNo">892</span>                        parameters[i] = null;<a name="line.892"></a>
+<span class="sourceLineNo">893</span>                    }<a name="line.893"></a>
+<span class="sourceLineNo">894</span>                }<a name="line.894"></a>
+<span class="sourceLineNo">895</span><a name="line.895"></a>
+<span class="sourceLineNo">896</span>                return (boolean) pre.invoke(this, parameters);<a name="line.896"></a>
+<span class="sourceLineNo">897</span>            } catch (IllegalAccessException | InvocationTargetException e) {<a name="line.897"></a>
+<span class="sourceLineNo">898</span>                this.manager.log(LogLevel.ERROR, "Exception encountered while command pre-processing", e);<a name="line.898"></a>
+<span class="sourceLineNo">899</span>            }<a name="line.899"></a>
+<span class="sourceLineNo">900</span>        }<a name="line.900"></a>
+<span class="sourceLineNo">901</span>        return false;<a name="line.901"></a>
+<span class="sourceLineNo">902</span>    }<a name="line.902"></a>
+<span class="sourceLineNo">903</span><a name="line.903"></a>
+<span class="sourceLineNo">904</span>    /** @deprecated Unstable API */ @Deprecated @UnstableAPI<a name="line.904"></a>
+<span class="sourceLineNo">905</span>    public CommandHelp getCommandHelp() {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>       return manager.generateCommandHelp();<a name="line.906"></a>
+<span class="sourceLineNo">907</span>    }<a name="line.907"></a>
+<span class="sourceLineNo">908</span><a name="line.908"></a>
+<span class="sourceLineNo">909</span>    /** @deprecated Unstable API */ @Deprecated @UnstableAPI<a name="line.909"></a>
+<span class="sourceLineNo">910</span>    public void showCommandHelp() {<a name="line.910"></a>
+<span class="sourceLineNo">911</span>        getCommandHelp().showHelp();<a name="line.911"></a>
+<span class="sourceLineNo">912</span>    }<a name="line.912"></a>
+<span class="sourceLineNo">913</span><a name="line.913"></a>
+<span class="sourceLineNo">914</span>    public void help(Object issuer, String[] args) {<a name="line.914"></a>
+<span class="sourceLineNo">915</span>        help(manager.getCommandIssuer(issuer), args);<a name="line.915"></a>
+<span class="sourceLineNo">916</span>    }<a name="line.916"></a>
+<span class="sourceLineNo">917</span>    public void help(CommandIssuer issuer, String[] args) {<a name="line.917"></a>
+<span class="sourceLineNo">918</span>        issuer.sendMessage(MessageType.ERROR, MessageKeys.UNKNOWN_COMMAND);<a name="line.918"></a>
+<span class="sourceLineNo">919</span>    }<a name="line.919"></a>
+<span class="sourceLineNo">920</span>    public void doHelp(Object issuer, String... args) {<a name="line.920"></a>
+<span class="sourceLineNo">921</span>        doHelp(manager.getCommandIssuer(issuer), args);<a name="line.921"></a>
+<span class="sourceLineNo">922</span>    }<a name="line.922"></a>
+<span class="sourceLineNo">923</span>    public void doHelp(CommandIssuer issuer, String... args) {<a name="line.923"></a>
+<span class="sourceLineNo">924</span>        help(issuer, args);<a name="line.924"></a>
+<span class="sourceLineNo">925</span>    }<a name="line.925"></a>
+<span class="sourceLineNo">926</span><a name="line.926"></a>
+<span class="sourceLineNo">927</span>    public void showSyntax(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {<a name="line.927"></a>
+<span class="sourceLineNo">928</span>        issuer.sendMessage(MessageType.SYNTAX, MessageKeys.INVALID_SYNTAX,<a name="line.928"></a>
+<span class="sourceLineNo">929</span>                "{command}", manager.getCommandPrefix(issuer) + cmd.command,<a name="line.929"></a>
+<span class="sourceLineNo">930</span>                "{syntax}", cmd.syntaxText<a name="line.930"></a>
+<span class="sourceLineNo">931</span>        );<a name="line.931"></a>
+<span class="sourceLineNo">932</span>    }<a name="line.932"></a>
+<span class="sourceLineNo">933</span><a name="line.933"></a>
+<span class="sourceLineNo">934</span>    public boolean hasPermission(Object issuer) {<a name="line.934"></a>
+<span class="sourceLineNo">935</span>        return hasPermission(manager.getCommandIssuer(issuer));<a name="line.935"></a>
+<span class="sourceLineNo">936</span>    }<a name="line.936"></a>
+<span class="sourceLineNo">937</span><a name="line.937"></a>
+<span class="sourceLineNo">938</span>    public boolean hasPermission(CommandIssuer issuer) {<a name="line.938"></a>
+<span class="sourceLineNo">939</span>        return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) &amp;&amp; (parentCommand == null || parentCommand.hasPermission(issuer)));<a name="line.939"></a>
+<span class="sourceLineNo">940</span>    }<a name="line.940"></a>
+<span class="sourceLineNo">941</span><a name="line.941"></a>
 <span class="sourceLineNo">942</span><a name="line.942"></a>
-<span class="sourceLineNo">943</span><a name="line.943"></a>
-<span class="sourceLineNo">944</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.944"></a>
-<span class="sourceLineNo">945</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.945"></a>
-<span class="sourceLineNo">946</span>            return Collections.emptySet();<a name="line.946"></a>
-<span class="sourceLineNo">947</span>        }<a name="line.947"></a>
-<span class="sourceLineNo">948</span>        return new HashSet&lt;&gt;(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));<a name="line.948"></a>
-<span class="sourceLineNo">949</span>    }<a name="line.949"></a>
-<span class="sourceLineNo">950</span><a name="line.950"></a>
-<span class="sourceLineNo">951</span>    public boolean requiresPermission(String permission) {<a name="line.951"></a>
-<span class="sourceLineNo">952</span>        return getRequiredPermissions().contains(permission) || this.parentCommand != null &amp;&amp; parentCommand.requiresPermission(permission);<a name="line.952"></a>
-<span class="sourceLineNo">953</span>    }<a name="line.953"></a>
-<span class="sourceLineNo">954</span><a name="line.954"></a>
-<span class="sourceLineNo">955</span>    public String getName() {<a name="line.955"></a>
-<span class="sourceLineNo">956</span>        return commandName;<a name="line.956"></a>
-<span class="sourceLineNo">957</span>    }<a name="line.957"></a>
-<span class="sourceLineNo">958</span><a name="line.958"></a>
-<span class="sourceLineNo">959</span>    public ExceptionHandler getExceptionHandler() {<a name="line.959"></a>
-<span class="sourceLineNo">960</span>        return exceptionHandler;<a name="line.960"></a>
-<span class="sourceLineNo">961</span>    }<a name="line.961"></a>
-<span class="sourceLineNo">962</span><a name="line.962"></a>
-<span class="sourceLineNo">963</span>    public BaseCommand setExceptionHandler(ExceptionHandler exceptionHandler) {<a name="line.963"></a>
-<span class="sourceLineNo">964</span>        this.exceptionHandler = exceptionHandler;<a name="line.964"></a>
-<span class="sourceLineNo">965</span>        return this;<a name="line.965"></a>
-<span class="sourceLineNo">966</span>    }<a name="line.966"></a>
-<span class="sourceLineNo">967</span><a name="line.967"></a>
-<span class="sourceLineNo">968</span>    public RegisteredCommand getDefaultRegisteredCommand() {<a name="line.968"></a>
-<span class="sourceLineNo">969</span>        return this.getCommandBySubcommand(DEFAULT);<a name="line.969"></a>
-<span class="sourceLineNo">970</span>    }<a name="line.970"></a>
-<span class="sourceLineNo">971</span><a name="line.971"></a>
-<span class="sourceLineNo">972</span>    public String setContextFlags(Class&lt;?&gt; cls, String flags) {<a name="line.972"></a>
-<span class="sourceLineNo">973</span>        return this.contextFlags.put(cls, flags);<a name="line.973"></a>
-<span class="sourceLineNo">974</span>    }<a name="line.974"></a>
-<span class="sourceLineNo">975</span><a name="line.975"></a>
-<span class="sourceLineNo">976</span>    public String getContextFlags(Class&lt;?&gt; cls) {<a name="line.976"></a>
-<span class="sourceLineNo">977</span>        return this.contextFlags.get(cls);<a name="line.977"></a>
-<span class="sourceLineNo">978</span>    }<a name="line.978"></a>
-<span class="sourceLineNo">979</span><a name="line.979"></a>
-<span class="sourceLineNo">980</span>    private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;<a name="line.980"></a>
-<span class="sourceLineNo">981</span><a name="line.981"></a>
-<span class="sourceLineNo">982</span>        CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {<a name="line.982"></a>
-<span class="sourceLineNo">983</span>            this.cmd = cmd;<a name="line.983"></a>
-<span class="sourceLineNo">984</span>            this.argIndex = argIndex;<a name="line.984"></a>
-<span class="sourceLineNo">985</span>            this.checkSub = checkSub;<a name="line.985"></a>
-<span class="sourceLineNo">986</span>        }<a name="line.986"></a>
-<span class="sourceLineNo">987</span><a name="line.987"></a>
-<span class="sourceLineNo">988</span>        String getCheckSub() {<a name="line.988"></a>
-<span class="sourceLineNo">989</span>            return this.checkSub;<a name="line.989"></a>
-<span class="sourceLineNo">990</span>        }<a name="line.990"></a>
-<span class="sourceLineNo">991</span><a name="line.991"></a>
-<span class="sourceLineNo">992</span>        @Override<a name="line.992"></a>
-<span class="sourceLineNo">993</span>        public boolean equals(Object o) {<a name="line.993"></a>
-<span class="sourceLineNo">994</span>            if (this == o) return true;<a name="line.994"></a>
-<span class="sourceLineNo">995</span>            if (o == null || getClass() != o.getClass()) return false;<a name="line.995"></a>
-<span class="sourceLineNo">996</span>            CommandSearch that = (CommandSearch) o;<a name="line.996"></a>
-<span class="sourceLineNo">997</span>            return argIndex == that.argIndex &amp;&amp;<a name="line.997"></a>
-<span class="sourceLineNo">998</span>                    Objects.equals(cmd, that.cmd) &amp;&amp;<a name="line.998"></a>
-<span class="sourceLineNo">999</span>                    Objects.equals(checkSub, that.checkSub);<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>        }<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span><a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>        @Override<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>        public int hashCode() {<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>            return Objects.hash(cmd, argIndex, checkSub);<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>        }<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>    }<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>}<a name="line.1007"></a>
+<span class="sourceLineNo">943</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.943"></a>
+<span class="sourceLineNo">944</span>        if (this.permission == null || this.permission.isEmpty()) {<a name="line.944"></a>
+<span class="sourceLineNo">945</span>            return Collections.emptySet();<a name="line.945"></a>
+<span class="sourceLineNo">946</span>        }<a name="line.946"></a>
+<span class="sourceLineNo">947</span>        return new HashSet&lt;&gt;(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));<a name="line.947"></a>
+<span class="sourceLineNo">948</span>    }<a name="line.948"></a>
+<span class="sourceLineNo">949</span><a name="line.949"></a>
+<span class="sourceLineNo">950</span>    public boolean requiresPermission(String permission) {<a name="line.950"></a>
+<span class="sourceLineNo">951</span>        return getRequiredPermissions().contains(permission) || this.parentCommand != null &amp;&amp; parentCommand.requiresPermission(permission);<a name="line.951"></a>
+<span class="sourceLineNo">952</span>    }<a name="line.952"></a>
+<span class="sourceLineNo">953</span><a name="line.953"></a>
+<span class="sourceLineNo">954</span>    public String getName() {<a name="line.954"></a>
+<span class="sourceLineNo">955</span>        return commandName;<a name="line.955"></a>
+<span class="sourceLineNo">956</span>    }<a name="line.956"></a>
+<span class="sourceLineNo">957</span><a name="line.957"></a>
+<span class="sourceLineNo">958</span>    public ExceptionHandler getExceptionHandler() {<a name="line.958"></a>
+<span class="sourceLineNo">959</span>        return exceptionHandler;<a name="line.959"></a>
+<span class="sourceLineNo">960</span>    }<a name="line.960"></a>
+<span class="sourceLineNo">961</span><a name="line.961"></a>
+<span class="sourceLineNo">962</span>    public BaseCommand setExceptionHandler(ExceptionHandler exceptionHandler) {<a name="line.962"></a>
+<span class="sourceLineNo">963</span>        this.exceptionHandler = exceptionHandler;<a name="line.963"></a>
+<span class="sourceLineNo">964</span>        return this;<a name="line.964"></a>
+<span class="sourceLineNo">965</span>    }<a name="line.965"></a>
+<span class="sourceLineNo">966</span><a name="line.966"></a>
+<span class="sourceLineNo">967</span>    public RegisteredCommand getDefaultRegisteredCommand() {<a name="line.967"></a>
+<span class="sourceLineNo">968</span>        return this.getCommandBySubcommand(DEFAULT);<a name="line.968"></a>
+<span class="sourceLineNo">969</span>    }<a name="line.969"></a>
+<span class="sourceLineNo">970</span><a name="line.970"></a>
+<span class="sourceLineNo">971</span>    public String setContextFlags(Class&lt;?&gt; cls, String flags) {<a name="line.971"></a>
+<span class="sourceLineNo">972</span>        return this.contextFlags.put(cls, flags);<a name="line.972"></a>
+<span class="sourceLineNo">973</span>    }<a name="line.973"></a>
+<span class="sourceLineNo">974</span><a name="line.974"></a>
+<span class="sourceLineNo">975</span>    public String getContextFlags(Class&lt;?&gt; cls) {<a name="line.975"></a>
+<span class="sourceLineNo">976</span>        return this.contextFlags.get(cls);<a name="line.976"></a>
+<span class="sourceLineNo">977</span>    }<a name="line.977"></a>
+<span class="sourceLineNo">978</span><a name="line.978"></a>
+<span class="sourceLineNo">979</span>    private static class CommandSearch { RegisteredCommand cmd; int argIndex; String checkSub;<a name="line.979"></a>
+<span class="sourceLineNo">980</span><a name="line.980"></a>
+<span class="sourceLineNo">981</span>        CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {<a name="line.981"></a>
+<span class="sourceLineNo">982</span>            this.cmd = cmd;<a name="line.982"></a>
+<span class="sourceLineNo">983</span>            this.argIndex = argIndex;<a name="line.983"></a>
+<span class="sourceLineNo">984</span>            this.checkSub = checkSub;<a name="line.984"></a>
+<span class="sourceLineNo">985</span>        }<a name="line.985"></a>
+<span class="sourceLineNo">986</span><a name="line.986"></a>
+<span class="sourceLineNo">987</span>        String getCheckSub() {<a name="line.987"></a>
+<span class="sourceLineNo">988</span>            return this.checkSub;<a name="line.988"></a>
+<span class="sourceLineNo">989</span>        }<a name="line.989"></a>
+<span class="sourceLineNo">990</span><a name="line.990"></a>
+<span class="sourceLineNo">991</span>        @Override<a name="line.991"></a>
+<span class="sourceLineNo">992</span>        public boolean equals(Object o) {<a name="line.992"></a>
+<span class="sourceLineNo">993</span>            if (this == o) return true;<a name="line.993"></a>
+<span class="sourceLineNo">994</span>            if (o == null || getClass() != o.getClass()) return false;<a name="line.994"></a>
+<span class="sourceLineNo">995</span>            CommandSearch that = (CommandSearch) o;<a name="line.995"></a>
+<span class="sourceLineNo">996</span>            return argIndex == that.argIndex &amp;&amp;<a name="line.996"></a>
+<span class="sourceLineNo">997</span>                    Objects.equals(cmd, that.cmd) &amp;&amp;<a name="line.997"></a>
+<span class="sourceLineNo">998</span>                    Objects.equals(checkSub, that.checkSub);<a name="line.998"></a>
+<span class="sourceLineNo">999</span>        }<a name="line.999"></a>
+<span class="sourceLineNo">1000</span><a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>        @Override<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>        public int hashCode() {<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>            return Objects.hash(cmd, argIndex, checkSub);<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>        }<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>    }<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>}<a name="line.1006"></a>
 
 
 
