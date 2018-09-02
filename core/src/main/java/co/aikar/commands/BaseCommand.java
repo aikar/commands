@@ -233,6 +233,7 @@ public abstract class BaseCommand {
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         registerSubcommands();
+        registerSubclasses(cmd);
 
         if (cmdAliases != null) {
             Set<String> cmdList = new HashSet<>();
@@ -246,8 +247,6 @@ public abstract class BaseCommand {
         if (cmd != null) {
             register(cmd, this);
         }
-        registerSubclasses(cmd);
-
     }
 
     /**
