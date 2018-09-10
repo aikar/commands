@@ -45,7 +45,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
 
     CommandContexts(CommandManager manager) {
         this.manager = manager;
-        registerContext(CommandIssuer.class, c -> c.getIssuer());
+        registerIssuerOnlyContext(CommandIssuer.class, c -> c.getIssuer());
         registerContext(Short.class, (c) -> {
             try {
                 return parseAndValidateNumber(c, Short.MIN_VALUE, Short.MAX_VALUE).shortValue();
