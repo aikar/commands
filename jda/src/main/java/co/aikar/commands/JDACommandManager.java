@@ -161,6 +161,18 @@ public class JDACommandManager extends CommandManager<
         }
     }
 
+    public void unregisterCommand(BaseCommand command) {
+        for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
+            String jdaCommandName = entry.getKey().toLowerCase();
+            JDARootCommand jdaCommand = (JDARootCommand) entry.getValue();
+            jdaCommand.getSubCommands().values().removeAll(command.subCommands.values());
+            if (jdaCommand.isRegistered && jdaCommand.getSubCommands().isEmpty()) {
+                jdaCommand.isRegistered = false;
+                commands.remove(jdaCommandName);
+            }
+        }
+    }
+
     @Override
     public boolean hasRegisteredCommands() {
         return !this.commands.isEmpty();
