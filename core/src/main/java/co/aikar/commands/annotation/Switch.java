@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2018 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -29,20 +29,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Many implementation platforms have a concept of "Tab Completions",
- * where pressing tab will give suggestions on what you can input.
- *
- * This annotation specifies either static completion values,
- * or special @codes that let you define Completion Handlers to dynamically
- * populate completion values.
- *
- * If used on a parameter it provides completion(s) for that parameter and will not
- * consume any provided on the Method
- *
- * @see {@link co.aikar.commands.CommandCompletions}
+ * Sets the name that the parameter can be accessed with
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.PARAMETER})
-public @interface CommandCompletion {
+public @interface Switch {
     String value();
 }

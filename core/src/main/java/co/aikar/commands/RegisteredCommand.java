@@ -142,9 +142,12 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         try {
             this.manager.conditions.validateConditions(context);
             Map<String, Object> passedArgs = resolveContexts(sender, args);
+
             if (passedArgs == null) return;
 
-            method.invoke(scope, passedArgs.values().toArray());
+            method.invoke(scope, Arrays.stream(parameters)
+                    .map(p -> passedArgs.getOrDefault(p.getName(), null))
+                    .toArray());
         } catch (Exception e) {
             handleException(sender, args, e);
         }
@@ -196,15 +199,17 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
-        args = new ArrayList<>(args);
-        String[] origArgs = args.toArray(new String[args.size()]);
+        CommandData commandData = parseArguments(args.toArray(new String[0]));
+        List<String> arguments = new ArrayList<>(commandData.args);
+
+        String[] origArgs = arguments.toArray(new String[0]);
         Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
-        for (int i = 0; i < parameters.length && i < argLimit; i++) {
-            boolean isLast = i == parameters.length - 1;
+        for (int i = 0; i < commandData.parameters.size() && i < argLimit; i++) {
+            boolean isLast = i == commandData.parameters.size() - 1;
             boolean allowOptional = remainingRequired == 0;
-            final CommandParameter<CEC> parameter = parameters[i];
+            final CommandParameter parameter = commandData.parameters.get(i);
             if (parameter.isCommandIssuer()) {
                 argLimit++;
             }
@@ -213,14 +218,14 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             //noinspection unchecked
             final ContextResolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
-            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, commandData.args, i, passedArgs);
             boolean requiresInput = parameter.requiresInput();
             if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
             }
-            if (args.isEmpty() && !(isLast && type == String[].class)) {
+            if (arguments.isEmpty() && !(isLast && type == String[].class)) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
-                    args.add(parameter.getDefaultValue());
+                    arguments.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
                     if (value == null && parameter.getClass().isPrimitive()) {
@@ -237,7 +242,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
                 }
             }
             if (parameter.getValues() != null) {
-                String arg = !args.isEmpty() ? args.get(0) : "";
+                String arg = !arguments.isEmpty() ? arguments.get(0) : "";
 
                 Set<String> possible = new HashSet<>();
                 CommandCompletions commandCompletions = this.manager.getCommandCompletions();
@@ -318,4 +323,130 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     public void addSubcommands(Collection<String> cmd) {
         this.registeredSubcommands.addAll(cmd);
     }
+
+    /**
+     * Resolve arguments and parameters with respect to positional and named parameters
+     */
+    public CommandData parseArguments(String[] args) {
+
+        // Command completions
+        List<String> completions = new ArrayList<>();
+        if (complete != null) {
+            completions.addAll(Arrays.asList(ACFPatterns.SPACE.split(complete)));
+        }
+
+        // List of all parameters
+        List<CommandParameter> parameters = Arrays.stream(this.parameters).collect(Collectors.toList());
+
+        // Return data
+        CommandData data = new CommandData();
+
+        // All Arguments
+        List<String> arguments = Arrays.stream(args).collect(Collectors.toList());
+        boolean isSwitch = false;
+
+        // Current Parameter
+        CommandParameter currentParameter = null;
+
+        // Current Argument
+        String currentArg = null;
+
+        while (arguments.size() > 0 && parameters.size() > 0) {
+            currentArg = arguments.remove(0);
+            currentParameter = null;
+
+            // Check if its a switch
+            if (currentArg.startsWith("-")) {
+                isSwitch = true;
+
+                String finalArg = currentArg;
+                currentParameter = parameters.stream()
+                        .filter(CommandParameter::canConsumeInput)
+                        .filter(p -> p.hasSwitch(finalArg.substring(1)))
+                        .findFirst()
+                        .orElse(null);
+
+                if (currentParameter != null) {
+
+                    parameters.remove(currentParameter);
+
+                    // Arguments consumed
+                    if (arguments.size() > 0) {
+                        isSwitch = false;
+                        currentArg = arguments.remove(0);
+                    } else {
+                        currentArg = null;
+                    }
+
+                    if (currentParameter.getComplete() != null) {
+                        data.complete = currentParameter.getComplete();
+                    }
+                }
+            }
+
+            // Deal with positional parameter
+            if (currentParameter == null) {
+                while(parameters.size() > 0) {
+                    currentParameter = parameters.remove(0);
+                    if (!currentParameter.canConsumeInput()) {
+                        data.parameters.add(currentParameter);
+                        currentParameter = null;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (currentParameter == null) {
+                    break;
+                }
+
+                // Save completions
+                if (currentParameter.getComplete() != null) {
+                    data.complete = currentParameter.getComplete();
+                } else {
+                    data.complete = completions.size() > 0 ? completions.remove(0) : null;
+                }
+            }
+
+            // Save switch result
+            if (arguments.size() < 1 && currentParameter.getSwitches() != null) {
+                data.switches.add("-" + currentParameter.getSwitches().split(",")[0]);
+            }
+
+            // Save arg
+            if (currentArg != null) {
+                data.args.add(currentArg);
+            }
+
+            // Save Parameter
+            data.parameters.add(currentParameter);
+        }
+
+        // Add rest of data
+        data.switches.addAll(parameters.stream()
+                .filter(p -> p.getSwitches() != null)
+                .map(p -> "-" + p.getSwitches().split(",")[0])
+                .collect(Collectors.toList()));
+
+        if (arguments.size() > 0) {
+            isSwitch = false;
+            data.args.addAll(arguments);
+            data.complete = null;
+        }
+        data.parameters.addAll(parameters);
+
+        data.isSwitch = isSwitch;
+
+        return data;
+    }
+
+    public static class CommandData {
+
+        public List<CommandParameter> parameters = new ArrayList<>();
+        public List<String> args = new ArrayList<>();
+        public String complete = null;
+        public List<String> switches = new ArrayList<>();
+        public boolean isSwitch = true;
+    }
+
 }

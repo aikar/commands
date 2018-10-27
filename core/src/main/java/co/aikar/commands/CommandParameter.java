@@ -23,11 +23,13 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Switch;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
@@ -36,6 +38,7 @@ import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +55,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
     private String defaultValue;
     private String syntax;
     private String conditions;
+    private String complete;
+    private String switches;
     private boolean requiresInput;
     private boolean commandIssuer;
     private String[] values;
@@ -71,6 +76,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
         this.description = annotations.getAnnotationValue(param, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.complete = annotations.getAnnotationValue(param, CommandCompletion.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.switches = annotations.getAnnotationValue(param, Switch.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         //noinspection unchecked
         this.resolver = manager.getCommandContexts().getResolver(type);
@@ -94,9 +101,17 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
             this.syntax = annotations.getAnnotationValue(param, Syntax.class);
             if (syntax == null) {
                 if (!requiresInput && canConsumeInput) {
-                    this.syntax = "[" + name + "]";
+                    if (switches != null) {
+                        this.syntax = "[-" + switches.split(",")[0] + " <" + name + ">]";
+                    } else {
+                        this.syntax = "[" + name + "]";
+                    }
                 } else if (requiresInput) {
-                    this.syntax = "<" + name + ">";
+                    if (switches != null) {
+                        this.syntax = "[-" + switches.split(",")[0] + "] " + "<" + name + ">";
+                    } else {
+                        this.syntax = "<" + name + ">";
+                    }
                 }
             }
         }
@@ -253,5 +268,25 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     public void setConditions(String conditions) {
         this.conditions = conditions;
+    }
+
+    public String getComplete() {
+        return complete;
+    }
+
+    public void setComplete(String complete) {
+        this.complete = complete;
+    }
+
+    public String getSwitches() {
+        return switches;
+    }
+
+    public void setSwitches(String value) {
+        this.switches = value;
+    }
+
+    public boolean hasSwitch(String value) {
+        return switches != null && Arrays.asList(switches.split(",")).contains(value);
     }
 }
