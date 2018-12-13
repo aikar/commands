@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_cs.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_de.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_en.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_es.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_nb.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_nn.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_pl.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_pt.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_ru.properties" />
+    <file url="file://$PROJECT_DIR$/languages/core/acf-core_sv.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_cs.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_de.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_en.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_es.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_nb.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_nn.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_pl.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_pt.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_ru.properties" />
+    <file url="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_sv.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_cs.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_de.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_en.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_es.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_nb.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_nn.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_pl.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_pt.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_ru.properties" />
+      <file value="file://$PROJECT_DIR$/languages/core/acf-core_sv.properties" />
+      <base-name>acf-core</base-name>
+    </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_cs.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_de.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_en.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_es.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_nb.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_nn.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_pl.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_pt.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_ru.properties" />
+      <file value="file://$PROJECT_DIR$/languages/minecraft/acf-minecraft_sv.properties" />
+      <base-name>acf-minecraft</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>
