@@ -17,9 +17,6 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import net.kyori.text.TextComponent;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
 import net.kyori.text.serializer.ComponentSerializers;
 
 public class ACFVelocityUtil {
@@ -78,10 +75,6 @@ public class ACFVelocityUtil {
                         : input.getUsername().toLowerCase(Locale.ROOT).startsWith(partialName.toLowerCase(Locale.ROOT));
             }
         }));
-    }
-
-    public static String getTextFormatName(TextFormat format) {
-        return format instanceof TextColor ? ((TextColor) format).name() : ((TextDecoration) format).name();
     }
 
     public static boolean isValidName(String name) {

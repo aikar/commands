@@ -69,14 +69,12 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
             if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
-                colors = colors.filter(
-                        color -> finalFilter.equals(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))));
+                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.toString())));
             }
 
             TextColor match = ACFUtil.simpleMatch(TextColor.class, first);
             if (match == null) {
-                String valid = colors.map(
-                        color -> "<c2>" + ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color)) + "</c2>")
+                String valid = colors.map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
 
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);

@@ -52,12 +52,10 @@ public class VelocityCommandCompletions extends CommandCompletions<VelocityComma
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)
                         .collect(Collectors.toSet());
 
-                colors = colors.filter(
-                        color -> filters.contains(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))));
+                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.toString())));
             }
 
-            return colors.map(color -> ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color)))
-                    .collect(Collectors.toList());
+            return colors.map(color -> ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());
         });
         registerCompletion("players", c -> {
             CommandSource sender = c.getSender();
