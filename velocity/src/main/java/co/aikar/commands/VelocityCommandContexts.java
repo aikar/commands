@@ -59,7 +59,7 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
             return proxiedPlayer;
         });
 
-        registerContext(TextColor.class, c -> {
+        registerContext(TextFormat.class, c -> {
             String first = c.popFirstArg();
             Stream<TextFormat> colors = Stream.of(TextColor.values());
             if (!c.hasFlag("colorsonly")) {
