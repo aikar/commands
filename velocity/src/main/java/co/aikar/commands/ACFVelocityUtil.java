@@ -4,14 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -60,21 +55,19 @@ public class ACFVelocityUtil {
      * Modified to work with Velocity by Crypnotic
      */
     private static Collection<Player> matchPlayer(ProxyServer server, final String partialName) {
-        Preconditions.checkNotNull(partialName, "partialName");
+        // A better error message might be nice. This just mimics the previous output
+        if (partialName == null) {
+            throw new NullPointerException("partialName");
+        }
 
         Optional<Player> exactMatch = server.getPlayer(partialName);
         if (exactMatch != null) {
             return Collections.singleton(exactMatch.get());
         }
 
-        return Sets.newHashSet(Iterables.filter(server.getAllPlayers(), new Predicate<Player>() {
-
-            @Override
-            public boolean apply(Player input) {
-                return (input == null) ? false
-                        : input.getUsername().toLowerCase(Locale.ROOT).startsWith(partialName.toLowerCase(Locale.ROOT));
-            }
-        }));
+        return server.getAllPlayers().stream()
+                .filter(player -> player.getUsername().regionMatches(true, 0, partialName, 0, partialName.length()))
+                .collect(Collectors.toList());
     }
 
     public static boolean isValidName(String name) {
