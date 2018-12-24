@@ -34,14 +34,14 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import net.kyori.text.format.TextColor;
+import net.kyori.text.format.TextDecoration;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<TextColor> colors = Stream.of(TextColor.values());
+            Stream<TextDecoration> colors = Stream.of(TextDecoration.values());
             if (c.hasConfig("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
             }

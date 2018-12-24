@@ -34,6 +34,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.OnlinePlayer;
 import net.kyori.text.format.TextColor;
+import net.kyori.text.format.TextDecoration;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
 
@@ -60,7 +61,7 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
 
         registerContext(TextColor.class, c -> {
             String first = c.popFirstArg();
-            Stream<TextColor> colors = Stream.of(TextColor.values());
+            Stream<TextDecoration> colors = Stream.of(TextDecoration.values());
             if (c.hasFlag("colorsonly")) {
                 colors = colors.filter(color -> color.ordinal() <= 0xF);
             }
