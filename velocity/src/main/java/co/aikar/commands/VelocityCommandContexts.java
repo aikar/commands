@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,6 +34,7 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.OnlinePlayer;
 import net.kyori.text.format.TextColor;
 import net.kyori.text.format.TextDecoration;
+import net.kyori.text.format.TextFormat;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
 
@@ -61,21 +61,22 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
 
         registerContext(TextColor.class, c -> {
             String first = c.popFirstArg();
-            Stream<TextDecoration> colors = Stream.of(TextDecoration.values());
-            if (c.hasFlag("colorsonly")) {
-                colors = colors.filter(color -> color.ordinal() <= 0xF);
+            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            if (!c.hasFlag("colorsonly")) {
+                Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
             String filter = c.getFlagValue("filter", (String) null);
             if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
-                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.name())));
+                colors = colors.filter(
+                        color -> finalFilter.equals(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))));
             }
 
             TextColor match = ACFUtil.simpleMatch(TextColor.class, first);
             if (match == null) {
-                String valid = colors
-                        .map(color -> "<c2>" + ACFUtil.simplifyString(color.name()) + "</c2>")
+                String valid = colors.map(
+                        color -> "<c2>" + ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color)) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
 
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);

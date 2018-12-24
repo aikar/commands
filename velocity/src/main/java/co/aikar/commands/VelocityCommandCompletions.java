@@ -34,26 +34,30 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import net.kyori.text.format.TextColor;
 import net.kyori.text.format.TextDecoration;
+import net.kyori.text.format.TextFormat;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<TextDecoration> colors = Stream.of(TextDecoration.values());
-            if (c.hasConfig("colorsonly")) {
-                colors = colors.filter(color -> color.ordinal() <= 0xF);
+            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            if (!c.hasConfig("colorsonly")) {
+                Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
             String filter = c.getConfig("filter");
             if (filter != null) {
-                Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter))
-                        .map(ACFUtil::simplifyString).collect(Collectors.toSet());
+                Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)
+                        .collect(Collectors.toSet());
 
-                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.name())));
+                colors = colors.filter(
+                        color -> filters.contains(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))));
             }
 
-            return colors.map(color -> ACFUtil.simplifyString(color.name())).collect(Collectors.toList());
+            return colors.map(color -> ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color)))
+                    .collect(Collectors.toList());
         });
         registerCompletion("players", c -> {
             CommandSource sender = c.getSender();
