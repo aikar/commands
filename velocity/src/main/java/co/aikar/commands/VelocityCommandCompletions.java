@@ -45,7 +45,7 @@ public class VelocityCommandCompletions extends CommandCompletions<VelocityComma
         registerAsyncCompletion("chatcolors", c -> {
             Stream<TextFormat> colors = Stream.of(TextColor.values());
             if (!c.hasConfig("colorsonly")) {
-                Stream.concat(colors, Stream.of(TextDecoration.values()));
+                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
             String filter = c.getConfig("filter");
             if (filter != null) {

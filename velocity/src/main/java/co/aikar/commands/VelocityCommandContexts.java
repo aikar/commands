@@ -63,7 +63,7 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
             String first = c.popFirstArg();
             Stream<TextFormat> colors = Stream.of(TextColor.values());
             if (!c.hasFlag("colorsonly")) {
-                Stream.concat(colors, Stream.of(TextDecoration.values()));
+                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
             String filter = c.getFlagValue("filter", (String) null);
             if (filter != null) {
