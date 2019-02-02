@@ -23,7 +23,7 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
@@ -34,7 +34,7 @@ import java.util.Arrays;
 public final class ACFExample extends JavaPlugin {
 
     private static ACFExample plugin;
-    private static BukkitCommandManager commandManager;
+    private static PaperCommandManager commandManager;
     @Override
     public void onEnable() {
         plugin = this;
@@ -43,7 +43,7 @@ public final class ACFExample extends JavaPlugin {
 
     private void registerCommands() {
         // 1: Create Command Manager for your respective platform
-        commandManager = new BukkitCommandManager(this);
+        commandManager = new PaperCommandManager(this);
 
         // optional: enable unstable api to use help
         commandManager.enableUnstableAPI("help");
@@ -65,8 +65,8 @@ public final class ACFExample extends JavaPlugin {
                 SomeObject.getContextResolver());
 
         // 4: Register Command Completions - this will be accessible with @CommandCompletion("@test")
-        commandManager.getCommandCompletions().registerAsyncCompletion("test", c -> 
-            Arrays.asList("foo", "bar", "baz")
+        commandManager.getCommandCompletions().registerAsyncCompletion("test", c ->
+                Arrays.asList("foo123", "bar123", "baz123")
         );
 
         // 5: Register Command Conditions
@@ -115,7 +115,7 @@ public final class ACFExample extends JavaPlugin {
     }
 
     // A way to access your command manager from other files if you do not use a Dependency Injection approach
-    public static BukkitCommandManager getCommandManager() {
+    public static PaperCommandManager getCommandManager() {
         return commandManager;
     }
 }

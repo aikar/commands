@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ACF (Core + Bukkit + Example)" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="ACF (Core + Paper + Example)" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -14,6 +14,7 @@
               <option value="package" />
             </list>
           </option>
+          <option name="pomFileName" />
           <option name="profilesMap">
             <map />
           </option>
@@ -22,9 +23,10 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method>
+    <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/core/pom.xml" goal="clean install" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/bukkit/pom.xml" goal="clean install" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/paper/pom.xml" goal="clean install" />
     </method>
   </configuration>
 </component>

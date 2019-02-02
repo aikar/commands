@@ -40,8 +40,9 @@
       <module name="acf-core" options="-parameters" />
       <module name="acf-jda" options="-parameters" />
       <module name="acf-paper" options="-parameters" />
-      <module name="acf-parent" options="-parameters" />
+      <module name="acf-parent" options="" />
       <module name="acf-sponge" options="-parameters" />
+      <module name="example-plugin" options="-parameters" />
     </option>
   </component>
 </project>

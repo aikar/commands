@@ -127,7 +127,7 @@ public class SomeCommand extends BaseCommand {
 
     // This sub command requires that `/acf testsub test1` be typed to be executed, or /Foo
     @Subcommand("testsub test1")
-    @CommandCompletion("Foo")
+    @CommandCompletion("@test")
     public void onTestSub1(CommandSender sender, String hi) {
         sender.sendMessage(hi);
     }
