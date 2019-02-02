@@ -24,6 +24,7 @@
 package co.aikar.commands;
 
 import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -48,25 +49,37 @@ class PaperAsyncTabCompleteHandler implements Listener {
         try {
             //noinspection ConstantConditions,ConstantIfStatement
             if (false) throw new CommandCompletions.SyncCompletionRequired(); // fake compiler due to SneakyThrows
-            String[] args = ACFPatterns.SPACE.split(buffer, -1);
-
-            String commandLabel = args[0];
-            if (commandLabel.startsWith("/")) {
-                commandLabel = commandLabel.substring(1);
+            List<String> completions = getCompletions(buffer, event.getCompletions(), event.getSender(), true);
+            if (completions != null) {
+                event.setCompletions(completions);
+                event.setHandled(true);
             }
-            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
-
-            BaseCommand cmd = this.manager.getBaseCommand(commandLabel, args);
-            if (cmd == null) {
-                return;
-            }
-
-            BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
-            List<String> results = cmd.tabComplete(issuer, commandLabel, args, true);
-            event.setCompletions(ACFUtil.preformOnImmutable(
-                    event.getCompletions(), (list) -> list.addAll(results)));
-            event.setHandled(true);
         } catch (Exception ignored) {}
+    }
+
+    public List<String> getCompletions(String buffer, List<String> existingCompletions, CommandSender sender, boolean async) {
+        String[] args = ACFPatterns.SPACE.split(buffer, -1);
+
+        String commandLabel = stripLeadingSlash(args[0]);
+        args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
+
+        RootCommand rootCommand = this.manager.getRootCommand(commandLabel);
+        if (rootCommand == null) {
+            return null;
+        }
+
+        BukkitCommandIssuer issuer = this.manager.getCommandIssuer(sender);
+        List<String> completions = rootCommand.getTabCompletions(issuer, commandLabel, args, false, async);
+
+        return ACFUtil.preformOnImmutable(existingCompletions, (list) -> list.addAll(completions));
+    }
+
+    private String stripLeadingSlash(String arg) {
+        String commandLabel = arg;
+        if (commandLabel.startsWith("/")) {
+            commandLabel = commandLabel.substring(1);
+        }
+        return commandLabel;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -75,20 +88,10 @@ class PaperAsyncTabCompleteHandler implements Listener {
         if (!event.isCommand() && !buffer.startsWith("/")) {
             return;
         }
-        String[] args = ACFPatterns.SPACE.split(buffer, -1);
 
-        String commandLabel = args[0];
-        if (commandLabel.startsWith("/")) {
-            commandLabel = commandLabel.substring(1);
-        }
-        RootCommand rootCommand = this.manager.getRootCommand(commandLabel);
-
-        if (rootCommand != null) {
-            args = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[]{""};
-            BukkitCommandIssuer issuer = this.manager.getCommandIssuer(event.getSender());
-            List<String> tabCompletions = rootCommand.getTabCompletions(issuer, commandLabel, args, true);
-            event.setCompletions(ACFUtil.preformOnImmutable(
-                    event.getCompletions(), (list) -> list.addAll(tabCompletions)));
+        List<String> completions = getCompletions(buffer, event.getCompletions(), event.getSender(), false);
+        if (completions != null) {
+            event.setCompletions(completions);
         }
     }
 }

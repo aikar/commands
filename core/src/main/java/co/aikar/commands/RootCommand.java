@@ -40,6 +40,9 @@ public interface RootCommand {
 
     String getCommandName();
     default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
+        if (command.manager == null) {
+            command.manager = getManager();
+        }
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
             RegisteredCommand registeredCommand = e.getValue();
@@ -86,10 +89,14 @@ public interface RootCommand {
     }
 
     default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly) {
+        return getTabCompletions(sender, alias, args, commandsOnly, false);
+    }
+
+    default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly, boolean isAsync) {
         Set<String> completions = new HashSet<>();
         getChildren().forEach(child -> {
             if (!commandsOnly) {
-                completions.addAll(child.tabComplete(sender, alias, args));
+                completions.addAll(child.tabComplete(sender, alias, args, isAsync));
             }
             completions.addAll(child.getCommandsForCompletion(sender, args));
         });

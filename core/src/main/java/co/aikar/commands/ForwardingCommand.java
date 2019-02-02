@@ -35,6 +35,7 @@ public class ForwardingCommand extends BaseCommand {
         this.commandName = command.commandName;
         this.command = command;
         this.baseArgs = baseArgs;
+        this.manager = command.manager;
     }
 
     @Override
