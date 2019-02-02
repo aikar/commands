@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":18,"i2":18,"i3":18,"i4":6,"i5":6,"i6":18,"i7":18,"i8":18,"i9":6,"i10":6,"i11":18,"i12":18,"i13":18};
+var methods = {"i0":6,"i1":18,"i2":18,"i3":18,"i4":6,"i5":6,"i6":18,"i7":18,"i8":18,"i9":6,"i10":6,"i11":18,"i12":18,"i13":18,"i14":18};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -181,6 +181,14 @@ var activeTableTab = "activeTableTab";
                  boolean&nbsp;commandsOnly)</code>&nbsp;</td>
 </tr>
 <tr id="i13" class="rowColor">
+<td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RootCommand.html#getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-boolean-">getTabCompletions</a></span>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
+                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args,
+                 boolean&nbsp;commandsOnly,
+                 boolean&nbsp;isAsync)</code>&nbsp;</td>
+</tr>
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>default <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/RootCommand.html#getUsage--">getUsage</a></span>()</code>&nbsp;</td>
 </tr>
@@ -261,7 +269,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>execute</h4>
-<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.64">execute</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.67">execute</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;commandLabel,
                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
 </li>
@@ -272,7 +280,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getBaseCommand</h4>
-<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.71">getBaseCommand</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
+<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.74">getBaseCommand</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
 </li>
 </ul>
 <a name="getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">
@@ -281,7 +289,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getTabCompletions</h4>
-<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.84">getTabCompletions</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.87">getTabCompletions</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
 </li>
@@ -292,10 +300,23 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getTabCompletions</h4>
-<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.88">getTabCompletions</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.91">getTabCompletions</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args,
                                        boolean&nbsp;commandsOnly)</pre>
+</li>
+</ul>
+<a name="getTabCompletions-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTabCompletions</h4>
+<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.95">getTabCompletions</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
+                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
+                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args,
+                                       boolean&nbsp;commandsOnly,
+                                       boolean&nbsp;isAsync)</pre>
 </li>
 </ul>
 <a name="getDefaultRegisteredCommand--">
@@ -304,7 +325,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefaultRegisteredCommand</h4>
-<pre>default&nbsp;<a href="../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.100">getDefaultRegisteredCommand</a>()</pre>
+<pre>default&nbsp;<a href="../../../co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.107">getDefaultRegisteredCommand</a>()</pre>
 </li>
 </ul>
 <a name="getDefCommand--">
@@ -313,7 +334,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefCommand</h4>
-<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.108">getDefCommand</a>()</pre>
+<pre>default&nbsp;<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.115">getDefCommand</a>()</pre>
 </li>
 </ul>
 <a name="getDescription--">
@@ -322,7 +343,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getDescription</h4>
-<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.113">getDescription</a>()</pre>
+<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.120">getDescription</a>()</pre>
 </li>
 </ul>
 <a name="getUsage--">
@@ -331,7 +352,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getUsage</h4>
-<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.126">getUsage</a>()</pre>
+<pre>default&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/RootCommand.html#line.133">getUsage</a>()</pre>
 </li>
 </ul>
 </li>
@@ -402,6 +423,6 @@ var activeTableTab = "activeTableTab";
 <!--   -->
 </a></div>
 <!-- ======== END OF BOTTOM NAVBAR ======= -->
-<p class="legalCopy"><small>Copyright &#169; 2018. All rights reserved.</small></p>
+<p class="legalCopy"><small>Copyright &#169; 2019. All rights reserved.</small></p>
 </body>
 </html>
