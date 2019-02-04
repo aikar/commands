@@ -145,10 +145,11 @@ extends <a href="../../../co/aikar/commands/BaseCommand.html" title="class in co
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ForwardingCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></span>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/ForwardingCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">tabComplete</a></span>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
-           <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</code>
-<div class="block">Gets tab completed data from the given command from the user.</div>
+           <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args,
+           boolean&nbsp;isAsync)</code>
+<div class="block">Gets the tab complete suggestions from a given command.</div>
 </td>
 </tr>
 </table>
@@ -157,7 +158,7 @@ extends <a href="../../../co/aikar/commands/BaseCommand.html" title="class in co
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;co.aikar.commands.<a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></h3>
-<code><a href="../../../co/aikar/commands/BaseCommand.html#canExecute-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">canExecute</a>, <a href="../../../co/aikar/commands/BaseCommand.html#doHelp-co.aikar.commands.CommandIssuer-java.lang.String...-">doHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#doHelp-java.lang.Object-java.lang.String...-">doHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCommandHelp--">getCommandHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getContextFlags-java.lang.Class-">getContextFlags</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCurrentCommandIssuer--">getCurrentCommandIssuer</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCurrentCommandManager--">getCurrentCommandManager</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExceptionHandler--">getExceptionHandler</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExecCommandLabel--">getExecCommandLabel</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExecSubcommand--">getExecSubcommand</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getName--">getName</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getOrigArgs--">getOrigArgs</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getRequiredPermissions--">getRequiredPermissions</a>, <a href="../../../co/aikar/commands/BaseCommand.html#hasPermission-java.lang.Object-">hasPermission</a>, <a href="../../../co/aikar/commands/BaseCommand.html#help-co.aikar.commands.CommandIssuer-java.lang.String:A-">help</a>, <a href="../../../co/aikar/commands/BaseCommand.html#help-java.lang.Object-java.lang.String:A-">help</a>, <a href="../../../co/aikar/commands/BaseCommand.html#requiresPermission-java.lang.String-">requiresPermission</a>, <a href="../../../co/aikar/commands/BaseCommand.html#setContextFlags-java.lang.Class-java.lang.String-">setContextFlags</a>, <a href="../../../co/aikar/commands/BaseCommand.html#setExceptionHandler-co.aikar.commands.ExceptionHandler-">setExceptionHandler</a>, <a href="../../../co/aikar/commands/BaseCommand.html#showCommandHelp--">showCommandHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#showSyntax-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">showSyntax</a>, <a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">tabComplete</a></code></li>
+<code><a href="../../../co/aikar/commands/BaseCommand.html#canExecute-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">canExecute</a>, <a href="../../../co/aikar/commands/BaseCommand.html#doHelp-co.aikar.commands.CommandIssuer-java.lang.String...-">doHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#doHelp-java.lang.Object-java.lang.String...-">doHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCommandHelp--">getCommandHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getContextFlags-java.lang.Class-">getContextFlags</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCurrentCommandIssuer--">getCurrentCommandIssuer</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getCurrentCommandManager--">getCurrentCommandManager</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getDefaultRegisteredCommand--">getDefaultRegisteredCommand</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExceptionHandler--">getExceptionHandler</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExecCommandLabel--">getExecCommandLabel</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getExecSubcommand--">getExecSubcommand</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getName--">getName</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getOrigArgs--">getOrigArgs</a>, <a href="../../../co/aikar/commands/BaseCommand.html#getRequiredPermissions--">getRequiredPermissions</a>, <a href="../../../co/aikar/commands/BaseCommand.html#hasPermission-java.lang.Object-">hasPermission</a>, <a href="../../../co/aikar/commands/BaseCommand.html#help-co.aikar.commands.CommandIssuer-java.lang.String:A-">help</a>, <a href="../../../co/aikar/commands/BaseCommand.html#help-java.lang.Object-java.lang.String:A-">help</a>, <a href="../../../co/aikar/commands/BaseCommand.html#requiresPermission-java.lang.String-">requiresPermission</a>, <a href="../../../co/aikar/commands/BaseCommand.html#setContextFlags-java.lang.Class-java.lang.String-">setContextFlags</a>, <a href="../../../co/aikar/commands/BaseCommand.html#setExceptionHandler-co.aikar.commands.ExceptionHandler-">setExceptionHandler</a>, <a href="../../../co/aikar/commands/BaseCommand.html#showCommandHelp--">showCommandHelp</a>, <a href="../../../co/aikar/commands/BaseCommand.html#showSyntax-co.aikar.commands.CommandIssuer-co.aikar.commands.RegisteredCommand-">showSyntax</a>, <a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -193,7 +194,7 @@ extends <a href="../../../co/aikar/commands/BaseCommand.html" title="class in co
 </dl>
 </li>
 </ul>
-<a name="tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">
+<a name="tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -201,19 +202,22 @@ extends <a href="../../../co/aikar/commands/BaseCommand.html" title="class in co
 <h4>tabComplete</h4>
 <pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/ForwardingCommand.html#line.47">tabComplete</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;alias,
-                                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)
+                                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args,
+                                boolean&nbsp;isAsync)
                          throws <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">BaseCommand</a></code></span></div>
-<div class="block">Gets tab completed data from the given command from the user.</div>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">BaseCommand</a></code></span></div>
+<div class="block">Gets the tab complete suggestions from a given command. This will automatically find anything
+ which is valid for the specified command through the command's implementation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-">tabComplete</a></code>&nbsp;in class&nbsp;<code><a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></dd>
+<dd><code><a href="../../../co/aikar/commands/BaseCommand.html#tabComplete-co.aikar.commands.CommandIssuer-java.lang.String-java.lang.String:A-boolean-">tabComplete</a></code>&nbsp;in class&nbsp;<code><a href="../../../co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>issuer</code> - The user who executed the tabcomplete.</dd>
-<dd><code>alias</code> - The label which is being used by the user.</dd>
-<dd><code>args</code> - The arguments the user has typed so far.</dd>
+<dd><code>issuer</code> - The issuer of the command.</dd>
+<dd><code>alias</code> - The command name as entered by the user instead of the ACF registered name.</dd>
+<dd><code>args</code> - All arguments entered by the user.</dd>
+<dd><code>isAsync</code> - Whether this is run off of the main thread.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>All possibilities in the tab complete.</dd>
+<dd>The possibilities to tab complete in no particular order.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code></dd>
 </dl>
