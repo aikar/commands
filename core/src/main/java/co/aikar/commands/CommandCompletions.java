@@ -233,6 +233,8 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         Collection<String> getCompletions(C context) throws InvalidCommandArgument;
     }
     public interface AsyncCommandCompletionHandler <C extends CommandCompletionContext> extends  CommandCompletionHandler <C> {}
-    public static class SyncCompletionRequired extends Exception {}
+
+    public static class SyncCompletionRequired extends RuntimeException {
+    }
 
 }

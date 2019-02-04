@@ -54,10 +54,14 @@ class PaperAsyncTabCompleteHandler implements Listener {
                 event.setCompletions(completions);
                 event.setHandled(true);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            if (!(e instanceof CommandCompletions.SyncCompletionRequired)) {
+                throw e;
+            }
+        }
     }
 
-    public List<String> getCompletions(String buffer, List<String> existingCompletions, CommandSender sender, boolean async) {
+    private List<String> getCompletions(String buffer, List<String> existingCompletions, CommandSender sender, boolean async) {
         String[] args = ACFPatterns.SPACE.split(buffer, -1);
 
         String commandLabel = stripLeadingSlash(args[0]);
@@ -74,24 +78,7 @@ class PaperAsyncTabCompleteHandler implements Listener {
         return ACFUtil.preformOnImmutable(existingCompletions, (list) -> list.addAll(completions));
     }
 
-    private String stripLeadingSlash(String arg) {
-        String commandLabel = arg;
-        if (commandLabel.startsWith("/")) {
-            commandLabel = commandLabel.substring(1);
-        }
-        return commandLabel;
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onTabComplete(TabCompleteEvent event) {
-        String buffer = event.getBuffer();
-        if (!event.isCommand() && !buffer.startsWith("/")) {
-            return;
-        }
-
-        List<String> completions = getCompletions(buffer, event.getCompletions(), event.getSender(), false);
-        if (completions != null) {
-            event.setCompletions(completions);
-        }
+    private static String stripLeadingSlash(String arg) {
+        return arg.startsWith("/") ? arg.substring(1) : arg;
     }
 }

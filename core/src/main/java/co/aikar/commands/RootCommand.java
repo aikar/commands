@@ -40,9 +40,6 @@ public interface RootCommand {
 
     String getCommandName();
     default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
-        if (command.manager == null) {
-            command.manager = getManager();
-        }
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
             RegisteredCommand registeredCommand = e.getValue();
