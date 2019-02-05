@@ -194,6 +194,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args) throws InvalidCommandArgument {
         return resolveContexts(sender, args, parameters.length);
     }
+
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
         args = new ArrayList<>(args);
@@ -282,14 +283,15 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     }
 
     public Set<String> getRequiredPermissions() {
-        if (this.permission == null || this.permission.isEmpty()) {
-            return Collections.emptySet();
+        Set<String> permissions = scope.getRequiredPermissions();
+        if (this.permission != null && !this.permission.isEmpty()) {
+            permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
         }
-        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+        return permissions;
     }
 
     public boolean requiresPermission(String permission) {
-        return getRequiredPermissions().contains(permission) || scope.requiresPermission(permission);
+        return getRequiredPermissions().contains(permission);
     }
 
     public String getPrefSubCommand() {
@@ -299,11 +301,11 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     public String getSyntaxText() {
         return syntaxText;
     }
-    
+
     public String getHelpText() {
         return helpText != null ? helpText : "";
     }
-    
+
     public boolean isPrivate() {
         return isPrivate;
     }
@@ -315,6 +317,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     public void addSubcommand(String cmd) {
         this.registeredSubcommands.add(cmd);
     }
+
     public void addSubcommands(Collection<String> cmd) {
         this.registeredSubcommands.addAll(cmd);
     }

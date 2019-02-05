@@ -25,17 +25,41 @@ package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class ForwardingCommand extends BaseCommand {
     private final BaseCommand command;
     private final String[] baseArgs;
+    private final RegisteredCommand regCommand;
 
-    ForwardingCommand(BaseCommand command, String[] baseArgs) {
-        this.commandName = command.commandName;
-        this.command = command;
+    ForwardingCommand(BaseCommand baseCommand, RegisteredCommand regCommand, String[] baseArgs) {
+        this.regCommand = regCommand;
+        this.commandName = baseCommand.commandName;
+        this.command = baseCommand;
         this.baseArgs = baseArgs;
-        this.manager = command.manager;
+        this.manager = baseCommand.manager;
+    }
+
+    @Override
+    public List<RegisteredCommand> getRegisteredCommands() {
+        return Collections.singletonList(regCommand);
+    }
+
+    @Override
+    public Set<String> getRequiredPermissions() {
+        return command.getRequiredPermissions();
+    }
+
+    @Override
+    public boolean hasPermission(Object issuer) {
+        return command.hasPermission(issuer);
+    }
+
+    @Override
+    public boolean requiresPermission(String permission) {
+        return command.requiresPermission(permission);
     }
 
     @Override

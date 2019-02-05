@@ -72,7 +72,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     @Override
     public boolean testPermission(@NotNull CommandSource source) {
-        return this.defCommand.hasPermission(source);
+        return this.hasAnyPermission(manager.getCommandIssuer(source));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
     }
 
     @Override
-    public BaseCommand getDefCommand(){
+    public BaseCommand getDefCommand() {
         return defCommand;
     }
 

@@ -33,12 +33,15 @@ import java.util.Set;
 
 public interface RootCommand {
     void addChild(BaseCommand command);
+
     CommandManager getManager();
 
     SetMultimap<String, RegisteredCommand> getSubCommands();
+
     List<BaseCommand> getChildren();
 
     String getCommandName();
+
     default void addChildShared(List<BaseCommand> children, SetMultimap<String, RegisteredCommand> subCommands, BaseCommand command) {
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
@@ -59,6 +62,43 @@ public interface RootCommand {
         });
 
         children.add(command);
+    }
+
+    /**
+     * @return If this root command can be summarized to a single required permission node to use it, returns that value. If any RegisteredCommand is permission-less, or has multiple required permission nodes, null is returned.
+     */
+    default String getUniquePermission() {
+        Set<String> permissions = new HashSet<>();
+        for (BaseCommand child : getChildren()) {
+            for (RegisteredCommand<?> value : child.subCommands.values()) {
+                Set<String> requiredPermissions = value.getRequiredPermissions();
+                if (requiredPermissions.isEmpty()) {
+                    return null;
+                } else {
+                    permissions.addAll(requiredPermissions);
+                }
+            }
+        }
+        return permissions.size() == 1 ? permissions.iterator().next() : null;
+    }
+
+    default boolean hasAnyPermission(CommandIssuer issuer) {
+        List<BaseCommand> children = getChildren();
+        if (children.isEmpty()) {
+            return true;
+        }
+
+        for (BaseCommand child : children) {
+            if (!child.hasPermission(issuer)) {
+                continue;
+            }
+            for (RegisteredCommand value : child.getRegisteredCommands()) {
+                if (value.hasPermission(issuer)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     default BaseCommand execute(CommandIssuer sender, String commandLabel, String[] args) {
@@ -109,7 +149,7 @@ public interface RootCommand {
         return null;
     }
 
-    default BaseCommand getDefCommand(){
+    default BaseCommand getDefCommand() {
         return null;
     }
 

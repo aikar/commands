@@ -40,6 +40,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
+    private String uniquePermission;
 
     BungeeRootCommand(BungeeCommandManager manager, String name) {
         super(name);
@@ -59,6 +60,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
         }
         this.addChildShared(this.children, this.subCommands, command);
+        this.uniquePermission = getUniquePermission();
     }
 
     @Override
@@ -79,6 +81,11 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     @Override
     public void execute(CommandSender sender, String[] args) {
         execute(manager.getCommandIssuer(sender), getName(), args);
+    }
+
+    @Override
+    public String getPermission() {
+        return uniquePermission;
     }
 
     @Override

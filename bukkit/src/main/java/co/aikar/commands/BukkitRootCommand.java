@@ -63,14 +63,19 @@ public class BukkitRootCommand extends Command implements RootCommand {
         return true;
     }
 
+    @Override
+    public boolean testPermissionSilent(CommandSender target) {
+        return hasAnyPermission(manager.getCommandIssuer(target));
+    }
+
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
             this.defCommand = command;
-            this.setPermission(command.permission);
             //this.setDescription(command.getDescription());
             //this.setUsage(command.getUsage());
         }
         addChildShared(this.children, this.subCommands, command);
+        setPermission(getUniquePermission());
     }
 
     @Override
@@ -89,7 +94,7 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
-    public BaseCommand getDefCommand(){
+    public BaseCommand getDefCommand() {
         return defCommand;
     }
 

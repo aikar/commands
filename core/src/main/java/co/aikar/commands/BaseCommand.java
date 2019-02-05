@@ -901,16 +901,20 @@ public abstract class BaseCommand {
         return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) && (parentCommand == null || parentCommand.hasPermission(issuer)));
     }
 
-
     public Set<String> getRequiredPermissions() {
-        if (this.permission == null || this.permission.isEmpty()) {
-            return Collections.emptySet();
+        Set<String> permissions = new HashSet<>();
+        if (this.permission != null && !this.permission.isEmpty()) {
+            permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
         }
-        return new HashSet<>(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+        if (parentCommand != null) {
+            permissions.addAll(parentCommand.getRequiredPermissions());
+        }
+
+        return permissions;
     }
 
     public boolean requiresPermission(String permission) {
-        return getRequiredPermissions().contains(permission) || this.parentCommand != null && parentCommand.requiresPermission(permission);
+        return getRequiredPermissions().contains(permission);
     }
 
     public String getName() {
