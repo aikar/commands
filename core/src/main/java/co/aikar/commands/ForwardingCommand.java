@@ -45,7 +45,7 @@ public class ForwardingCommand extends BaseCommand {
 
     @Override
     public List<String> tabComplete(CommandIssuer issuer, String alias, String[] args, boolean isAsync) throws IllegalArgumentException {
-        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args));
+        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args), isAsync);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ForwardingCommand extends BaseCommand {
         command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
     }
 
-    BaseCommand getCommand(){
+    BaseCommand getCommand() {
         return command;
     }
 }
