@@ -813,9 +813,15 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandOperationContext.html#getRegisteredCommand--">getRegisteredCommand()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#getRegisteredCommands--">getRegisteredCommands()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#getRegisteredCommands--">getRegisteredCommands()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#getRegisteredRootCommands--">getRegisteredRootCommands()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#getRequiredPermissions--">getRequiredPermissions()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#getRequiredPermissions--">getRequiredPermissions()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#getRequiredPermissions--">getRequiredPermissions()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>
@@ -902,6 +908,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandIssuer.html#getUniqueId--">getUniqueId()</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/RootCommand.html#getUniquePermission--">getUniquePermission()</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RootCommand.html#getUsage--">getUsage()</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#getValues--">getValues()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
@@ -919,6 +927,8 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandExecutionContext.html#hasAnnotation-java.lang.Class-">hasAnnotation(Class&lt;T&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandOperationContext.html#hasAnnotation-java.lang.Class-">hasAnnotation(Class&lt;? extends Annotation&gt;)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/RootCommand.html#hasAnyPermission-co.aikar.commands.CommandIssuer-">hasAnyPermission(CommandIssuer)</a></span> - Method in interface co.aikar.commands.<a href="co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandCompletionContext.html#hasConfig-java.lang.String-">hasConfig(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></dt>
 <dd>&nbsp;</dd>
@@ -939,6 +949,8 @@
 <div class="block">Has permission node</div>
 </dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandManager.html#hasPermission-co.aikar.commands.CommandIssuer-java.lang.String-">hasPermission(CommandIssuer, String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#hasPermission-java.lang.Object-">hasPermission(Object)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#hasPermission-co.aikar.commands.CommandIssuer-">hasPermission(CommandIssuer)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
 <dd>&nbsp;</dd>
@@ -1623,6 +1635,8 @@
 <dt><span class="memberNameLink"><a href="co/aikar/commands/CommandParameter.html#requiresInput--">requiresInput()</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/BaseCommand.html#requiresPermission-java.lang.String-">requiresPermission(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="co/aikar/commands/ForwardingCommand.html#requiresPermission-java.lang.String-">requiresPermission(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/ForwardingCommand.html" title="class in co.aikar.commands">ForwardingCommand</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="co/aikar/commands/RegisteredCommand.html#requiresPermission-java.lang.String-">requiresPermission(String)</a></span> - Method in class co.aikar.commands.<a href="co/aikar/commands/RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></dt>
 <dd>&nbsp;</dd>

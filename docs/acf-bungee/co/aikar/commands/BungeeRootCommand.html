@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -164,10 +164,14 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getManager--">getManager</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getPermission--">getPermission</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#getSubCommands--">getSubCommands</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeRootCommand.html#onTabComplete-net.md_5.bungee.api.CommandSender-java.lang.String:A-">onTabComplete</a></span>(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
              <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;strings)</code>&nbsp;</td>
@@ -178,7 +182,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;net.md_5.bungee.api.plugin.Command</h3>
-<code>canEqual, equals, getAliases, getName, getPermission, hashCode, toString</code></li>
+<code>canEqual, equals, getAliases, getName, hashCode, toString</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -192,7 +196,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;co.aikar.commands.RootCommand</h3>
-<code>addChildShared, execute, getBaseCommand, getDefaultRegisteredCommand, getDescription, getTabCompletions, getTabCompletions, getTabCompletions, getUsage</code></li>
+<code>addChildShared, execute, getBaseCommand, getDefaultRegisteredCommand, getDescription, getTabCompletions, getTabCompletions, getTabCompletions, getUniquePermission, getUsage, hasAnyPermission</code></li>
 </ul>
 </li>
 </ul>
@@ -214,7 +218,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandName</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.51">getCommandName</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.52">getCommandName</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandName</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -227,7 +231,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>addChild</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.56">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.57">addChild</a>(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>addChild</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -240,7 +244,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.65">getManager</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.67">getManager</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -253,7 +257,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubCommands</h4>
-<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.70">getSubCommands</a>()</pre>
+<pre>public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>,co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.72">getSubCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getSubCommands</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -266,7 +270,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>getChildren</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.75">getChildren</a>()</pre>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.77">getChildren</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getChildren</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -279,11 +283,24 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>execute</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.80">execute</a>(net.md_5.bungee.api.CommandSender&nbsp;sender,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.82">execute</a>(net.md_5.bungee.api.CommandSender&nbsp;sender,
                     <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;args)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>execute</code>&nbsp;in class&nbsp;<code>net.md_5.bungee.api.plugin.Command</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getPermission--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPermission</h4>
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.87">getPermission</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>getPermission</code>&nbsp;in class&nbsp;<code>net.md_5.bungee.api.plugin.Command</code></dd>
 </dl>
 </li>
 </ul>
@@ -293,7 +310,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockList">
 <li class="blockList">
 <h4>onTabComplete</h4>
-<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.85">onTabComplete</a>(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
+<pre>public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.92">onTabComplete</a>(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;strings)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -307,7 +324,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getDefCommand</h4>
-<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.90">getDefCommand</a>()</pre>
+<pre>public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.97">getDefCommand</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getDefCommand</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>

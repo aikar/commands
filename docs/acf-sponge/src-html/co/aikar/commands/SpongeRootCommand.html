@@ -80,7 +80,7 @@
 <span class="sourceLineNo">072</span><a name="line.72"></a>
 <span class="sourceLineNo">073</span>    @Override<a name="line.73"></a>
 <span class="sourceLineNo">074</span>    public boolean testPermission(@NotNull CommandSource source) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        return this.defCommand.hasPermission(source);<a name="line.75"></a>
+<span class="sourceLineNo">075</span>        return this.hasAnyPermission(manager.getCommandIssuer(source));<a name="line.75"></a>
 <span class="sourceLineNo">076</span>    }<a name="line.76"></a>
 <span class="sourceLineNo">077</span><a name="line.77"></a>
 <span class="sourceLineNo">078</span>    @Override<a name="line.78"></a>
@@ -113,7 +113,7 @@
 <span class="sourceLineNo">105</span>    }<a name="line.105"></a>
 <span class="sourceLineNo">106</span><a name="line.106"></a>
 <span class="sourceLineNo">107</span>    @Override<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    public BaseCommand getDefCommand(){<a name="line.108"></a>
+<span class="sourceLineNo">108</span>    public BaseCommand getDefCommand() {<a name="line.108"></a>
 <span class="sourceLineNo">109</span>        return defCommand;<a name="line.109"></a>
 <span class="sourceLineNo">110</span>    }<a name="line.110"></a>
 <span class="sourceLineNo">111</span><a name="line.111"></a>
