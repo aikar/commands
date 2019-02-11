@@ -23,9 +23,10 @@
 
 package co.aikar.commands;
 
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -50,10 +51,11 @@ final class ACFPatterns {
     public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
 
 
-    static final Map<String, Pattern> patternCache = CacheBuilder.newBuilder()
+    @SuppressWarnings("UnstableApiUsage")
+    static final Cache<String, Pattern> patternCache = CacheBuilder.newBuilder()
             .maximumSize(200)
             .expireAfterAccess(1, TimeUnit.HOURS)
-            .<String, Pattern>build().asMap();
+            .build();
 
     /**
      * Gets a pattern and compiles it.
@@ -68,6 +70,11 @@ final class ACFPatterns {
      * @return The pattern which has been cached.
      */
     public static Pattern getPattern(String pattern) {
-        return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
+        try {
+            return patternCache.get(pattern, () -> Pattern.compile(pattern));
+        } catch (ExecutionException e) {
+            // this should never normally happen
+            throw new RuntimeException("An exception occurred while getting pattern from pattern cache", e);
+        }
     }
 }
