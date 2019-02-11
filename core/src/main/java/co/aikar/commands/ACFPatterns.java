@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
+import com.google.common.cache.CacheBuilder;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -51,14 +50,10 @@ final class ACFPatterns {
     public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
 
 
-
-    private ACFPatterns() {}
-    @SuppressWarnings("Convert2MethodRef")
-    static final Map<String, Pattern> patternCache = ExpiringMap.builder()
-            .maxSize(200)
-            .expiration(1, TimeUnit.HOURS)
-            .expirationPolicy(ExpirationPolicy.ACCESSED)
-            .build();
+    static final Map<String, Pattern> patternCache = CacheBuilder.newBuilder()
+            .maximumSize(200)
+            .expireAfterAccess(1, TimeUnit.HOURS)
+            .<String, Pattern>build().asMap();
 
     /**
      * Gets a pattern and compiles it.
