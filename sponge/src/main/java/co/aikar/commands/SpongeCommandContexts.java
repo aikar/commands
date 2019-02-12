@@ -68,7 +68,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 return user.get();
             }
             if (!c.isOptional()) {
-                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND, false);
+                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND, false, "{search}", name);
             }
 
             return null;
