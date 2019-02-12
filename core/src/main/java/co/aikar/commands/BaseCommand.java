@@ -160,6 +160,11 @@ public abstract class BaseCommand {
     @Nullable
     private String parentSubcommand;
 
+    /**
+     * The permissions of the command.
+     */
+    private final Set<String> permissions = new HashSet<>();
+
     public BaseCommand() {
     }
 
@@ -248,6 +253,7 @@ public abstract class BaseCommand {
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         registerSubcommands();
+        registerPermissions();
         registerSubclasses(cmd);
 
         if (cmdAliases != null) {
@@ -366,6 +372,19 @@ public abstract class BaseCommand {
             if (Objects.equals(method.getDeclaringClass(), this.getClass()) && sublist != null) {
                 registerSubcommand(method, sublist);
             }
+        }
+    }
+
+    /**
+     * This registers all the permissions required to execute this command.
+     */
+    private void registerPermissions() {
+        this.permissions.clear();
+        if (this.permission != null && !this.permission.isEmpty()) {
+            this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+        }
+        if (this.parentCommand != null) {
+            this.permissions.addAll(this.parentCommand.getRequiredPermissions());
         }
     }
 
@@ -908,19 +927,11 @@ public abstract class BaseCommand {
     }
 
     public boolean hasPermission(CommandIssuer issuer) {
-        return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) && (parentCommand == null || parentCommand.hasPermission(issuer)));
+        return getRequiredPermissions().isEmpty() || getRequiredPermissions().stream().allMatch(permission -> manager.hasPermission(issuer, permission));
     }
 
     public Set<String> getRequiredPermissions() {
-        Set<String> permissions = new HashSet<>();
-        if (this.permission != null && !this.permission.isEmpty()) {
-            permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
-        }
-        if (parentCommand != null) {
-            permissions.addAll(parentCommand.getRequiredPermissions());
-        }
-
-        return permissions;
+        return this.permissions;
     }
 
     public boolean requiresPermission(String permission) {
