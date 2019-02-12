@@ -94,7 +94,8 @@ public class SpongeRootCommand implements CommandCallable, RootCommand {
 
     private CommandResult executeSponge(CommandIssuer sender, String commandLabel, String[] args) {
         BaseCommand cmd = execute(sender, commandLabel, args);
-        return ((SpongeCommandOperationContext) cmd.lastCommandOperationContext).getResult();
+        SpongeCommandOperationContext lastContext = (SpongeCommandOperationContext) cmd.getLastCommandOperationContext();
+        return lastContext != null ? lastContext.getResult() : CommandResult.success();
     }
 
     public void addChild(BaseCommand command) {

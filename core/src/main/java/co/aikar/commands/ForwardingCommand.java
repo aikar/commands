@@ -48,6 +48,11 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
+    public CommandOperationContext getLastCommandOperationContext() {
+        return command.getLastCommandOperationContext();
+    }
+
+    @Override
     public Set<String> getRequiredPermissions() {
         return command.getRequiredPermissions();
     }

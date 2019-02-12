@@ -153,7 +153,7 @@ public abstract class BaseCommand {
     /**
      * The last operative context data of this command. This may be null if this command hasn't been run yet.
      */
-    @Nullable CommandOperationContext lastCommandOperationContext;
+    private final ThreadLocal<CommandOperationContext> lastCommandOperationContext = new ThreadLocal<>();
     /**
      * If a parent exists to this command, and it has  a Subcommand annotation, prefix all subcommands in this class with this
      */
@@ -172,6 +172,16 @@ public abstract class BaseCommand {
     @Deprecated
     public BaseCommand(@Nullable String cmd) {
         this.commandName = cmd;
+    }
+
+    /**
+     * Returns a reference to the last used CommandOperationContext.
+     * This method is ThreadLocal, in that it can only be used on a thread that has executed a command
+     *
+     * @return
+     */
+    public CommandOperationContext getLastCommandOperationContext() {
+        return lastCommandOperationContext.get();
     }
 
     /**
@@ -545,7 +555,7 @@ public abstract class BaseCommand {
         Stack<CommandOperationContext> contexts = CommandManager.commandOperationContext.get();
         CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);
         contexts.push(context);
-        lastCommandOperationContext = context;
+        lastCommandOperationContext.set(context);
         execSubcommand = null;
         execLabel = commandLabel;
         origArgs = args;
