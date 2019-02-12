@@ -23,18 +23,20 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.contexts.OnlinePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextStyle;
 import org.spongepowered.api.world.World;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,12 +49,35 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         super(manager);
 
         registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
-        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional()));
+        registerContext(User.class, c -> {
+            String name = c.popFirstArg();
+            // try online players first
+            Optional<Player> targetPlayer = Sponge.getGame().getServer().getPlayer(name);
+            if (targetPlayer.isPresent()) {
+                return targetPlayer.get();
+            }
+
+            Optional<UserStorageService> service = Sponge.getGame().getServiceManager().provide(UserStorageService.class);
+            if (!service.isPresent()) {
+                manager.log(LogLevel.ERROR, "No UserStorageService is available", new Error());
+                throw new InvalidCommandArgument(MessageKeys.ERROR_GENERIC_LOGGED, false);
+            }
+            Optional<User> user = service.get().get(name);
+            if (user.isPresent()) {
+                return user.get();
+            }
+            if (!c.isOptional()) {
+                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND, false);
+            }
+
+            return null;
+        });
         registerContext(TextColor.class, c -> {
             String first = c.popFirstArg();
             Stream<TextColor> colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();
-            String filter = c.getFlagValue("filter", (String)null);
-            if(filter != null) {
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
                 colours = colours.filter(colour -> finalFilter.equals(ACFUtil.simplifyString(colour.getName())));
@@ -68,8 +93,8 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         registerContext(TextStyle.Base.class, c -> {
             String first = c.popFirstArg();
             Stream<TextStyle.Base> styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();
-            String filter = c.getFlagValue("filter", (String)null);
-            if(filter != null) {
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
                 styles = styles.filter(style -> finalFilter.equals(ACFUtil.simplifyString(style.getName())));
@@ -86,7 +111,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(Player.class, (c) -> {
             Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;
-            if (player == null && !c.hasAnnotation(Optional.class)) {
+            if (player == null && !c.isOptional()) {
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
             /*PlayerInventory inventory = player != null ? player.getInventory() : null;
@@ -95,7 +120,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             }*/
             return player;
         });
-        registerContext(OnlinePlayer[].class, (c) ->  {
+        registerContext(OnlinePlayer[].class, (c) -> {
             SpongeCommandIssuer issuer = c.getIssuer();
             final String search = c.popFirstArg();
             boolean allowMissing = c.hasFlag("allowmissing");
