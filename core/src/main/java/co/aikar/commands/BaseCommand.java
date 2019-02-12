@@ -908,7 +908,7 @@ public abstract class BaseCommand {
     }
 
     public boolean hasPermission(CommandIssuer issuer) {
-        return permission == null || permission.isEmpty() || (manager.hasPermission(issuer, permission) && (parentCommand == null || parentCommand.hasPermission(issuer)));
+        return getRequiredPermissions().stream().allMatch(permission -> manager.hasPermission(issuer, permission)) && (parentCommand == null || parentCommand.hasPermission(issuer));
     }
 
     public Set<String> getRequiredPermissions() {
