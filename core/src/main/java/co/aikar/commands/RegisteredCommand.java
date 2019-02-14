@@ -40,7 +40,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,6 +70,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     final int consumeInputResolvers;
     final int doesNotConsumeInputResolvers;
     final int optionalResolvers;
+
+    final Set<String> permissions = new HashSet<>();
 
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
@@ -131,6 +132,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.consumeInputResolvers = consumeInputResolvers;
         this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
         this.optionalResolvers = optionalResolvers;
+        this.computePermissions();
     }
 
 
@@ -282,12 +284,16 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    public Set<String> getRequiredPermissions() {
-        Set<String> permissions = scope.getRequiredPermissions();
+    private void computePermissions() {
+        this.permissions.clear();
+        this.permissions.addAll(this.scope.getRequiredPermissions());
         if (this.permission != null && !this.permission.isEmpty()) {
-            permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+            this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
         }
-        return permissions;
+    }
+
+    public Set<String> getRequiredPermissions() {
+        return this.permissions;
     }
 
     public boolean requiresPermission(String permission) {
