@@ -44,7 +44,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -253,7 +252,7 @@ public abstract class BaseCommand {
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         registerSubcommands();
-        registerPermissions();
+        computePermissions();
         registerSubclasses(cmd);
 
         if (cmdAliases != null) {
@@ -378,7 +377,7 @@ public abstract class BaseCommand {
     /**
      * This registers all the permissions required to execute this command.
      */
-    private void registerPermissions() {
+    private void computePermissions() {
         this.permissions.clear();
         if (this.permission != null && !this.permission.isEmpty()) {
             this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));

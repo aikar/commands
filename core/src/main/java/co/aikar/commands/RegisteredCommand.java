@@ -40,7 +40,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -88,7 +87,6 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.registerPermissions();
         this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -134,6 +132,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.consumeInputResolvers = consumeInputResolvers;
         this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
         this.optionalResolvers = optionalResolvers;
+        this.computePermissions();
     }
 
 
@@ -285,7 +284,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    private void registerPermissions() {
+    private void computePermissions() {
         this.permissions.clear();
         this.permissions.addAll(this.scope.getRequiredPermissions());
         if (this.permission != null && !this.permission.isEmpty()) {
