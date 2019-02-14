@@ -72,6 +72,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     final int doesNotConsumeInputResolvers;
     final int optionalResolvers;
 
+    final Set<String> permissions = new HashSet<>();
+
     RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
@@ -86,6 +88,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.registerPermissions();
         this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -282,12 +285,16 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    public Set<String> getRequiredPermissions() {
-        Set<String> permissions = scope.getRequiredPermissions();
+    private void registerPermissions() {
+        this.permissions.clear();
+        this.permissions.addAll(this.scope.getRequiredPermissions());
         if (this.permission != null && !this.permission.isEmpty()) {
-            permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+            this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
         }
-        return permissions;
+    }
+
+    public Set<String> getRequiredPermissions() {
+        return this.permissions;
     }
 
     public boolean requiresPermission(String permission) {
