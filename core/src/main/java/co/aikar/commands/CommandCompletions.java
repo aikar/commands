@@ -170,20 +170,21 @@ public class CommandCompletions <C extends CommandCompletionContext> {
 
     @NotNull
     List<String> of(RegisteredCommand cmd, CommandIssuer sender, String[] args, boolean isAsync) {
-        String[] completions = ACFPatterns.SPACE.split(cmd.complete);
-        final int argIndex = args.length - 1;
+        RegisteredCommand.CommandData commandData = cmd.parseArguments(args);
 
-        String input = args[argIndex];
+        final int argIndex = commandData.args.size() - 1;
+        String input = argIndex >= 0 ? commandData.args.get(argIndex) : "";
 
-        String completion = argIndex < completions.length ? completions[argIndex] : null;
-        if (completion == null && completions.length > 0) {
-            completion = completions[completions.length - 1];
+        // Check if its a switch
+        if (commandData.isSwitch) {
+            return commandData.switches;
         }
-        if (completion == null) {
+
+        if (commandData.complete == null) {
             return Collections.singletonList(input);
         }
 
-        return getCompletionValues(cmd, sender, completion, args, isAsync);
+        return getCompletionValues(cmd, sender, commandData.complete, args, isAsync);
     }
 
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {

@@ -715,7 +715,6 @@ public abstract class BaseCommand {
 
             final CommandSearch search = findSubCommand(args, true);
 
-
             final List<String> cmds = new ArrayList<>();
 
             if (search != null) {
@@ -769,7 +768,7 @@ public abstract class BaseCommand {
      * @return All results to complete the command.
      */
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
-        if (!cmd.hasPermission(issuer) || args.length > cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {
+        if (!cmd.hasPermission(issuer) || args.length == 0 || cmd.complete == null) {
             return Collections.emptyList();
         }
 
