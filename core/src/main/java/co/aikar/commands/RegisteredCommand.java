@@ -34,6 +34,7 @@ import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -328,7 +329,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         this.registeredSubcommands.addAll(cmd);
     }
 
-    public Method getMethod() {
-        return method;
+    public <T extends Annotation> T getAnnotation(Class<T> annotation) {
+        return method.getAnnotation(annotation);
     }
 }
