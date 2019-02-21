@@ -103,7 +103,6 @@ public class CommandCompletionContext<I extends CommandIssuer> {
         //noinspection unchecked
         Map<String, Object> resolved = command.resolveContexts(issuer, args, args.size() - 1);
         if (resolved == null || paramIdx > resolved.size()) {
-            this.command.scope.manager.log(LogLevel.ERROR, "resolved: " + resolved + " paramIdx: " + paramIdx + " - size: " + (resolved != null ? resolved.size() : null));
             ACFUtil.sneaky(new CommandCompletionTextLookupException());
         }
 
