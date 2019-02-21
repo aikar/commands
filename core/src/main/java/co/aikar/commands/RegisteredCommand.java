@@ -327,4 +327,8 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
     public void addSubcommands(Collection<String> cmd) {
         this.registeredSubcommands.addAll(cmd);
     }
+
+    public Method getMethod() {
+        return method;
+    }
 }
