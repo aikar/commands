@@ -46,7 +46,7 @@
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span>@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})<a name="line.40"></a>
-<span class="sourceLineNo">041</span>public class CommandCompletions &lt;C extends CommandCompletionContext&gt; {<a name="line.41"></a>
+<span class="sourceLineNo">041</span>public class CommandCompletions&lt;C extends CommandCompletionContext&gt; {<a name="line.41"></a>
 <span class="sourceLineNo">042</span>    private final CommandManager manager;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>    private Map&lt;String, CommandCompletionHandler&gt; completionMap = new HashMap&lt;&gt;();<a name="line.43"></a>
 <span class="sourceLineNo">044</span>    private Map&lt;Class, String&gt; defaultCompletions = new HashMap&lt;&gt;();<a name="line.44"></a>
@@ -154,22 +154,22 @@
 <span class="sourceLineNo">146</span>    }<a name="line.146"></a>
 <span class="sourceLineNo">147</span><a name="line.147"></a>
 <span class="sourceLineNo">148</span>    /**<a name="line.148"></a>
-<span class="sourceLineNo">149</span>     * @deprecated Feature Not done yet<a name="line.149"></a>
-<span class="sourceLineNo">150</span>     * @param id<a name="line.150"></a>
-<span class="sourceLineNo">151</span>     * @param classes<a name="line.151"></a>
-<span class="sourceLineNo">152</span>     * @return<a name="line.152"></a>
+<span class="sourceLineNo">149</span>     * @param id<a name="line.149"></a>
+<span class="sourceLineNo">150</span>     * @param classes<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * @return<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     * @deprecated Feature Not done yet<a name="line.152"></a>
 <span class="sourceLineNo">153</span>     */<a name="line.153"></a>
 <span class="sourceLineNo">154</span>    CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {<a name="line.154"></a>
 <span class="sourceLineNo">155</span>        // get completion with specified id<a name="line.155"></a>
 <span class="sourceLineNo">156</span>        id = id.toLowerCase();<a name="line.156"></a>
 <span class="sourceLineNo">157</span>        CommandCompletionHandler completion = completionMap.get(id);<a name="line.157"></a>
 <span class="sourceLineNo">158</span><a name="line.158"></a>
-<span class="sourceLineNo">159</span>        if(completion == null) {<a name="line.159"></a>
+<span class="sourceLineNo">159</span>        if (completion == null) {<a name="line.159"></a>
 <span class="sourceLineNo">160</span>            // Throw something because no completion with specified id<a name="line.160"></a>
-<span class="sourceLineNo">161</span>            ACFUtil.sneaky(new CommandCompletionTextLookupException());<a name="line.161"></a>
+<span class="sourceLineNo">161</span>            throw new IllegalStateException("Completion not registered for " + id);<a name="line.161"></a>
 <span class="sourceLineNo">162</span>        }<a name="line.162"></a>
 <span class="sourceLineNo">163</span><a name="line.163"></a>
-<span class="sourceLineNo">164</span>        for(Class clazz : classes) {<a name="line.164"></a>
+<span class="sourceLineNo">164</span>        for (Class clazz : classes) {<a name="line.164"></a>
 <span class="sourceLineNo">165</span>            defaultCompletions.put(clazz, id);<a name="line.165"></a>
 <span class="sourceLineNo">166</span>        }<a name="line.166"></a>
 <span class="sourceLineNo">167</span><a name="line.167"></a>
@@ -237,15 +237,17 @@
 <span class="sourceLineNo">229</span>        return allCompletions;<a name="line.229"></a>
 <span class="sourceLineNo">230</span>    }<a name="line.230"></a>
 <span class="sourceLineNo">231</span><a name="line.231"></a>
-<span class="sourceLineNo">232</span>    public interface CommandCompletionHandler &lt;C extends CommandCompletionContext&gt; {<a name="line.232"></a>
+<span class="sourceLineNo">232</span>    public interface CommandCompletionHandler&lt;C extends CommandCompletionContext&gt; {<a name="line.232"></a>
 <span class="sourceLineNo">233</span>        Collection&lt;String&gt; getCompletions(C context) throws InvalidCommandArgument;<a name="line.233"></a>
 <span class="sourceLineNo">234</span>    }<a name="line.234"></a>
-<span class="sourceLineNo">235</span>    public interface AsyncCommandCompletionHandler &lt;C extends CommandCompletionContext&gt; extends  CommandCompletionHandler &lt;C&gt; {}<a name="line.235"></a>
-<span class="sourceLineNo">236</span><a name="line.236"></a>
-<span class="sourceLineNo">237</span>    public static class SyncCompletionRequired extends RuntimeException {<a name="line.237"></a>
-<span class="sourceLineNo">238</span>    }<a name="line.238"></a>
-<span class="sourceLineNo">239</span><a name="line.239"></a>
-<span class="sourceLineNo">240</span>}<a name="line.240"></a>
+<span class="sourceLineNo">235</span><a name="line.235"></a>
+<span class="sourceLineNo">236</span>    public interface AsyncCommandCompletionHandler&lt;C extends CommandCompletionContext&gt; extends CommandCompletionHandler&lt;C&gt; {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>    }<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>    public static class SyncCompletionRequired extends RuntimeException {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>}<a name="line.242"></a>
 
 
 
