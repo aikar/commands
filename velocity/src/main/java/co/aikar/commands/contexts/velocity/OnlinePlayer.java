@@ -21,13 +21,14 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.sponge;
-
-import org.spongepowered.api.entity.living.player.Player;
+package co.aikar.commands.contexts.velocity;
 
 import java.util.Objects;
 
+import com.velocitypowered.api.proxy.Player;
+
 public class OnlinePlayer {
+
     public final Player player;
 
     public OnlinePlayer(Player player) {
@@ -35,7 +36,7 @@ public class OnlinePlayer {
     }
 
     public Player getPlayer() {
-        return this.player;
+        return player;
     }
 
     @Override

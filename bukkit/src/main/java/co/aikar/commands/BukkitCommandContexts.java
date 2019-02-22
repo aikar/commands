@@ -24,7 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.bukkit.OnlinePlayer;
+import co.aikar.commands.contexts.bukkit.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,9 +21,9 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.bukkit;
+package co.aikar.commands.contexts.sponge;
 
-import org.bukkit.entity.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.Objects;
 

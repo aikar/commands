@@ -26,10 +26,10 @@ package co.aikar.commands.contexts;
 import org.bukkit.entity.Player;
 
 /**
- * @deprecated Use {@link co.aikar.commands.bukkit.OnlinePlayer instead}
+ * @deprecated Use {@link co.aikar.commands.contexts.bukkit.OnlinePlayer instead}
  */
 @Deprecated
-public class OnlinePlayer extends co.aikar.commands.bukkit.OnlinePlayer {
+public class OnlinePlayer extends co.aikar.commands.contexts.bukkit.OnlinePlayer {
     public OnlinePlayer(Player player) {
         super(player);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2019 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,14 +21,13 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.velocity;
+package co.aikar.commands.contexts.bukkit;
+
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-import com.velocitypowered.api.proxy.Player;
-
 public class OnlinePlayer {
-
     public final Player player;
 
     public OnlinePlayer(Player player) {
@@ -36,7 +35,7 @@ public class OnlinePlayer {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     @Override
