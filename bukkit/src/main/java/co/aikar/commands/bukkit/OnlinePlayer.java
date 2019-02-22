@@ -21,16 +21,40 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts;
+package co.aikar.commands.bukkit;
 
 import org.bukkit.entity.Player;
 
-/**
- * @deprecated Use {@link co.aikar.commands.bukkit.OnlinePlayer instead}
- */
-@Deprecated
-public class OnlinePlayer extends co.aikar.commands.bukkit.OnlinePlayer {
+import java.util.Objects;
+
+public class OnlinePlayer {
+    public final Player player;
+
     public OnlinePlayer(Player player) {
-        super(player);
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OnlinePlayer that = (OnlinePlayer) o;
+        return Objects.equals(player, that.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player);
+    }
+
+    @Override
+    public String toString() {
+        return "OnlinePlayer{" +
+                "player=" + player +
+                '}';
     }
 }

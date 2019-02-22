@@ -31,7 +31,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.contexts.OnlinePlayer;
+import co.aikar.commands.velocity.OnlinePlayer;
 import net.kyori.text.format.TextColor;
 import net.kyori.text.format.TextDecoration;
 import net.kyori.text.format.TextFormat;
