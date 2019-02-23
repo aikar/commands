@@ -24,7 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.contexts.OnlinePlayer;
+import co.aikar.commands.contexts.bukkit.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -52,7 +52,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         super(manager);
 
         registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
-        registerContext(OnlinePlayer[].class, (c) ->  {
+        registerContext(OnlinePlayer[].class, (c) -> {
             BukkitCommandIssuer issuer = c.getIssuer();
             final String search = c.popFirstArg();
             boolean allowMissing = c.hasFlag("allowmissing");
@@ -120,7 +120,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 } else if (arg == null) {
                     throw new InvalidCommandArgument();
                 }
-                
+
                 OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), arg, isOptional);
                 return onlinePlayer != null ? onlinePlayer.getPlayer() : null;
             }

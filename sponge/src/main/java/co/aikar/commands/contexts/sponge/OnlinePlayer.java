@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,16 +21,40 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts;
+package co.aikar.commands.contexts.sponge;
 
-import com.velocitypowered.api.proxy.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
-/**
- * @deprecated Use {@link co.aikar.commands.contexts.velocity.OnlinePlayer instead}
- */
-@Deprecated
-public class OnlinePlayer extends co.aikar.commands.contexts.velocity.OnlinePlayer {
+import java.util.Objects;
+
+public class OnlinePlayer {
+    public final Player player;
+
     public OnlinePlayer(Player player) {
-        super(player);
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OnlinePlayer that = (OnlinePlayer) o;
+        return Objects.equals(player, that.player);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player);
+    }
+
+    @Override
+    public String toString() {
+        return "OnlinePlayer{" +
+                "player=" + player +
+                '}';
     }
 }
