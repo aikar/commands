@@ -56,6 +56,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandManager extends CommandManager<
@@ -73,6 +75,8 @@ public class BukkitCommandManager extends CommandManager<
     private final TimingManager timingManager;
     private final BukkitTask localeTask;
     private final Logger logger;
+    public final Integer mcMinorVersion;
+    public final Integer mcPatchVersion;
     protected Map<String, Command> knownCommands = new HashMap<>();
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
@@ -93,6 +97,15 @@ public class BukkitCommandManager extends CommandManager<
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
+        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?\\)");
+        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());
+        if (matcher.find()) {
+            this.mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);
+            this.mcPatchVersion = ACFUtil.parseInt(matcher.toMatchResult().group(3), 0);
+        } else {
+            this.mcMinorVersion = -1;
+            this.mcPatchVersion = -1;
+        }
 
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
 
@@ -114,7 +127,8 @@ public class BukkitCommandManager extends CommandManager<
         registerDependency(ItemFactory.class, Bukkit.getItemFactory());
     }
 
-    @NotNull private CommandMap hookCommandMap() {
+    @NotNull
+    private CommandMap hookCommandMap() {
         CommandMap commandMap = null;
         try {
             Server server = Bukkit.getServer();
@@ -232,8 +246,8 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     /**
-     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
      * @param command
+     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.
      */
     @Deprecated
     public void unregisterCommand(BukkitRootCommand command) {
@@ -314,7 +328,7 @@ public class BukkitCommandManager extends CommandManager<
     public Collection<RootCommand> getRegisteredRootCommands() {
         return Collections.unmodifiableCollection(registeredCommands.values());
     }
-    
+
     @Override
     public BukkitCommandIssuer getCommandIssuer(Object issuer) {
         if (!(issuer instanceof CommandSender)) {
