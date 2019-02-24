@@ -521,14 +521,14 @@ public abstract class BaseCommand {
                 }
             }
 
-            if (subCommands.get(DEFAULT) != null && args.length == 0) {
+            Set<RegisteredCommand> defaultCommands = subCommands.get(DEFAULT);
+            RegisteredCommand defCommand = !defaultCommands.isEmpty() ? ACFUtil.getFirstElement(defaultCommands) : null;
+            if (defCommand != null && (args.length == 0 || defCommand.consumeInputResolvers > 0)) {
                 findAndExecuteCommand(commandContext, DEFAULT, issuer, args);
             } else if (subCommands.get(CATCHUNKNOWN) != null) {
                 if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {
                     help(issuer, args);
                 }
-            } else if (subCommands.get(DEFAULT) != null) {
-                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);
             }
 
         } finally {
