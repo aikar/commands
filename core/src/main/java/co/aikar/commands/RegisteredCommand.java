@@ -97,7 +97,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         //noinspection unchecked
         this.parameters = new CommandParameter[parameters.length];
 
-        this.isPrivate = annotations.hasAnnotation(method, Private.class);
+        this.isPrivate = annotations.hasAnnotation(method, Private.class) || annotations.getAnnotationFromClass(scope.getClass(), Private.class) != null;
 
         int requiredResolvers = 0;
         int consumeInputResolvers = 0;

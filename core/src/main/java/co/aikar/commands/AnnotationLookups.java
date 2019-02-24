@@ -170,4 +170,26 @@ abstract class AnnotationLookups {
      * @return The value of the annotation on the object given. Nullability depends on options.
      */
     abstract String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options);
+
+    <T extends Annotation> T getAnnotationFromClass(Class<?> clazz, Class<T> annoClass) {
+        while (clazz != null && BaseCommand.class.isAssignableFrom(clazz)) {
+            T annotation = clazz.getAnnotation(annoClass);
+            if (annotation != null) {
+                return annotation;
+            }
+            Class<?> superClass = clazz.getSuperclass();
+            while (superClass != null && BaseCommand.class.isAssignableFrom(superClass)) {
+                annotation = superClass.getAnnotation(annoClass);
+                if (annotation != null) {
+                    return annotation;
+                }
+
+                superClass = superClass.getSuperclass();
+            }
+
+            clazz = clazz.getEnclosingClass();
+        }
+        return null;
+    }
+
 }

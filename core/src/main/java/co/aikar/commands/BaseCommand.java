@@ -966,7 +966,6 @@ public abstract class BaseCommand {
         List<RegisteredCommand> registeredCommands = new ArrayList<>();
         registeredCommands.addAll(this.subCommands.values());
         return registeredCommands;
-
     }
 
     private static class CommandSearch {
