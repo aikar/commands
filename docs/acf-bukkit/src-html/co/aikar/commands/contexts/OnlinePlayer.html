@@ -7,7 +7,7 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2016-2019 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
 <span class="sourceLineNo">003</span> *<a name="line.3"></a>
 <span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
 <span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
@@ -33,39 +33,15 @@
 <span class="sourceLineNo">025</span><a name="line.25"></a>
 <span class="sourceLineNo">026</span>import org.bukkit.entity.Player;<a name="line.26"></a>
 <span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span>import java.util.Objects;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>public class OnlinePlayer {<a name="line.30"></a>
-<span class="sourceLineNo">031</span>    public final Player player;<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">028</span>/**<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * @deprecated Use {@link co.aikar.commands.bukkit.contexts.OnlinePlayer instead}<a name="line.29"></a>
+<span class="sourceLineNo">030</span> */<a name="line.30"></a>
+<span class="sourceLineNo">031</span>@Deprecated<a name="line.31"></a>
+<span class="sourceLineNo">032</span>public class OnlinePlayer extends co.aikar.commands.bukkit.contexts.OnlinePlayer {<a name="line.32"></a>
 <span class="sourceLineNo">033</span>    public OnlinePlayer(Player player) {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>        this.player = player;<a name="line.34"></a>
+<span class="sourceLineNo">034</span>        super(player);<a name="line.34"></a>
 <span class="sourceLineNo">035</span>    }<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>    public Player getPlayer() {<a name="line.37"></a>
-<span class="sourceLineNo">038</span>        return this.player;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    }<a name="line.39"></a>
-<span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>    @Override<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    public boolean equals(Object o) {<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        if (this == o) return true;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>        if (o == null || getClass() != o.getClass()) return false;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>        OnlinePlayer that = (OnlinePlayer) o;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        return Objects.equals(player, that.player);<a name="line.46"></a>
-<span class="sourceLineNo">047</span>    }<a name="line.47"></a>
-<span class="sourceLineNo">048</span><a name="line.48"></a>
-<span class="sourceLineNo">049</span>    @Override<a name="line.49"></a>
-<span class="sourceLineNo">050</span>    public int hashCode() {<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        return Objects.hash(player);<a name="line.51"></a>
-<span class="sourceLineNo">052</span>    }<a name="line.52"></a>
-<span class="sourceLineNo">053</span><a name="line.53"></a>
-<span class="sourceLineNo">054</span>    @Override<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    public String toString() {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>        return "OnlinePlayer{" +<a name="line.56"></a>
-<span class="sourceLineNo">057</span>                "player=" + player +<a name="line.57"></a>
-<span class="sourceLineNo">058</span>                '}';<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    }<a name="line.59"></a>
-<span class="sourceLineNo">060</span>}<a name="line.60"></a>
+<span class="sourceLineNo">036</span>}<a name="line.36"></a>
 
 
 

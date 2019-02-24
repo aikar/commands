@@ -105,7 +105,7 @@
 <span class="sourceLineNo">097</span>        //noinspection unchecked<a name="line.97"></a>
 <span class="sourceLineNo">098</span>        this.parameters = new CommandParameter[parameters.length];<a name="line.98"></a>
 <span class="sourceLineNo">099</span><a name="line.99"></a>
-<span class="sourceLineNo">100</span>        this.isPrivate = annotations.hasAnnotation(method, Private.class);<a name="line.100"></a>
+<span class="sourceLineNo">100</span>        this.isPrivate = annotations.hasAnnotation(method, Private.class) || annotations.getAnnotationFromClass(scope.getClass(), Private.class) != null;<a name="line.100"></a>
 <span class="sourceLineNo">101</span><a name="line.101"></a>
 <span class="sourceLineNo">102</span>        int requiredResolvers = 0;<a name="line.102"></a>
 <span class="sourceLineNo">103</span>        int consumeInputResolvers = 0;<a name="line.103"></a>

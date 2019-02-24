@@ -529,14 +529,14 @@
 <span class="sourceLineNo">521</span>                }<a name="line.521"></a>
 <span class="sourceLineNo">522</span>            }<a name="line.522"></a>
 <span class="sourceLineNo">523</span><a name="line.523"></a>
-<span class="sourceLineNo">524</span>            if (subCommands.get(DEFAULT) != null &amp;&amp; args.length == 0) {<a name="line.524"></a>
-<span class="sourceLineNo">525</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.525"></a>
-<span class="sourceLineNo">526</span>            } else if (subCommands.get(CATCHUNKNOWN) != null) {<a name="line.526"></a>
-<span class="sourceLineNo">527</span>                if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {<a name="line.527"></a>
-<span class="sourceLineNo">528</span>                    help(issuer, args);<a name="line.528"></a>
-<span class="sourceLineNo">529</span>                }<a name="line.529"></a>
-<span class="sourceLineNo">530</span>            } else if (subCommands.get(DEFAULT) != null) {<a name="line.530"></a>
-<span class="sourceLineNo">531</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.531"></a>
+<span class="sourceLineNo">524</span>            Set&lt;RegisteredCommand&gt; defaultCommands = subCommands.get(DEFAULT);<a name="line.524"></a>
+<span class="sourceLineNo">525</span>            RegisteredCommand defCommand = !defaultCommands.isEmpty() ? ACFUtil.getFirstElement(defaultCommands) : null;<a name="line.525"></a>
+<span class="sourceLineNo">526</span>            if (defCommand != null &amp;&amp; (args.length == 0 || defCommand.consumeInputResolvers &gt; 0)) {<a name="line.526"></a>
+<span class="sourceLineNo">527</span>                findAndExecuteCommand(commandContext, DEFAULT, issuer, args);<a name="line.527"></a>
+<span class="sourceLineNo">528</span>            } else if (subCommands.get(CATCHUNKNOWN) != null) {<a name="line.528"></a>
+<span class="sourceLineNo">529</span>                if (!findAndExecuteCommand(commandContext, CATCHUNKNOWN, issuer, args)) {<a name="line.529"></a>
+<span class="sourceLineNo">530</span>                    help(issuer, args);<a name="line.530"></a>
+<span class="sourceLineNo">531</span>                }<a name="line.531"></a>
 <span class="sourceLineNo">532</span>            }<a name="line.532"></a>
 <span class="sourceLineNo">533</span><a name="line.533"></a>
 <span class="sourceLineNo">534</span>        } finally {<a name="line.534"></a>
@@ -974,40 +974,39 @@
 <span class="sourceLineNo">966</span>        List&lt;RegisteredCommand&gt; registeredCommands = new ArrayList&lt;&gt;();<a name="line.966"></a>
 <span class="sourceLineNo">967</span>        registeredCommands.addAll(this.subCommands.values());<a name="line.967"></a>
 <span class="sourceLineNo">968</span>        return registeredCommands;<a name="line.968"></a>
-<span class="sourceLineNo">969</span><a name="line.969"></a>
-<span class="sourceLineNo">970</span>    }<a name="line.970"></a>
-<span class="sourceLineNo">971</span><a name="line.971"></a>
-<span class="sourceLineNo">972</span>    private static class CommandSearch {<a name="line.972"></a>
-<span class="sourceLineNo">973</span>        RegisteredCommand cmd;<a name="line.973"></a>
-<span class="sourceLineNo">974</span>        int argIndex;<a name="line.974"></a>
-<span class="sourceLineNo">975</span>        String checkSub;<a name="line.975"></a>
-<span class="sourceLineNo">976</span><a name="line.976"></a>
-<span class="sourceLineNo">977</span>        CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {<a name="line.977"></a>
-<span class="sourceLineNo">978</span>            this.cmd = cmd;<a name="line.978"></a>
-<span class="sourceLineNo">979</span>            this.argIndex = argIndex;<a name="line.979"></a>
-<span class="sourceLineNo">980</span>            this.checkSub = checkSub;<a name="line.980"></a>
-<span class="sourceLineNo">981</span>        }<a name="line.981"></a>
-<span class="sourceLineNo">982</span><a name="line.982"></a>
-<span class="sourceLineNo">983</span>        String getCheckSub() {<a name="line.983"></a>
-<span class="sourceLineNo">984</span>            return this.checkSub;<a name="line.984"></a>
-<span class="sourceLineNo">985</span>        }<a name="line.985"></a>
-<span class="sourceLineNo">986</span><a name="line.986"></a>
-<span class="sourceLineNo">987</span>        @Override<a name="line.987"></a>
-<span class="sourceLineNo">988</span>        public boolean equals(Object o) {<a name="line.988"></a>
-<span class="sourceLineNo">989</span>            if (this == o) return true;<a name="line.989"></a>
-<span class="sourceLineNo">990</span>            if (o == null || getClass() != o.getClass()) return false;<a name="line.990"></a>
-<span class="sourceLineNo">991</span>            CommandSearch that = (CommandSearch) o;<a name="line.991"></a>
-<span class="sourceLineNo">992</span>            return argIndex == that.argIndex &amp;&amp;<a name="line.992"></a>
-<span class="sourceLineNo">993</span>                    Objects.equals(cmd, that.cmd) &amp;&amp;<a name="line.993"></a>
-<span class="sourceLineNo">994</span>                    Objects.equals(checkSub, that.checkSub);<a name="line.994"></a>
-<span class="sourceLineNo">995</span>        }<a name="line.995"></a>
-<span class="sourceLineNo">996</span><a name="line.996"></a>
-<span class="sourceLineNo">997</span>        @Override<a name="line.997"></a>
-<span class="sourceLineNo">998</span>        public int hashCode() {<a name="line.998"></a>
-<span class="sourceLineNo">999</span>            return Objects.hash(cmd, argIndex, checkSub);<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>        }<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>    }<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>}<a name="line.1002"></a>
+<span class="sourceLineNo">969</span>    }<a name="line.969"></a>
+<span class="sourceLineNo">970</span><a name="line.970"></a>
+<span class="sourceLineNo">971</span>    private static class CommandSearch {<a name="line.971"></a>
+<span class="sourceLineNo">972</span>        RegisteredCommand cmd;<a name="line.972"></a>
+<span class="sourceLineNo">973</span>        int argIndex;<a name="line.973"></a>
+<span class="sourceLineNo">974</span>        String checkSub;<a name="line.974"></a>
+<span class="sourceLineNo">975</span><a name="line.975"></a>
+<span class="sourceLineNo">976</span>        CommandSearch(RegisteredCommand cmd, int argIndex, String checkSub) {<a name="line.976"></a>
+<span class="sourceLineNo">977</span>            this.cmd = cmd;<a name="line.977"></a>
+<span class="sourceLineNo">978</span>            this.argIndex = argIndex;<a name="line.978"></a>
+<span class="sourceLineNo">979</span>            this.checkSub = checkSub;<a name="line.979"></a>
+<span class="sourceLineNo">980</span>        }<a name="line.980"></a>
+<span class="sourceLineNo">981</span><a name="line.981"></a>
+<span class="sourceLineNo">982</span>        String getCheckSub() {<a name="line.982"></a>
+<span class="sourceLineNo">983</span>            return this.checkSub;<a name="line.983"></a>
+<span class="sourceLineNo">984</span>        }<a name="line.984"></a>
+<span class="sourceLineNo">985</span><a name="line.985"></a>
+<span class="sourceLineNo">986</span>        @Override<a name="line.986"></a>
+<span class="sourceLineNo">987</span>        public boolean equals(Object o) {<a name="line.987"></a>
+<span class="sourceLineNo">988</span>            if (this == o) return true;<a name="line.988"></a>
+<span class="sourceLineNo">989</span>            if (o == null || getClass() != o.getClass()) return false;<a name="line.989"></a>
+<span class="sourceLineNo">990</span>            CommandSearch that = (CommandSearch) o;<a name="line.990"></a>
+<span class="sourceLineNo">991</span>            return argIndex == that.argIndex &amp;&amp;<a name="line.991"></a>
+<span class="sourceLineNo">992</span>                    Objects.equals(cmd, that.cmd) &amp;&amp;<a name="line.992"></a>
+<span class="sourceLineNo">993</span>                    Objects.equals(checkSub, that.checkSub);<a name="line.993"></a>
+<span class="sourceLineNo">994</span>        }<a name="line.994"></a>
+<span class="sourceLineNo">995</span><a name="line.995"></a>
+<span class="sourceLineNo">996</span>        @Override<a name="line.996"></a>
+<span class="sourceLineNo">997</span>        public int hashCode() {<a name="line.997"></a>
+<span class="sourceLineNo">998</span>            return Objects.hash(cmd, argIndex, checkSub);<a name="line.998"></a>
+<span class="sourceLineNo">999</span>        }<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>    }<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>}<a name="line.1001"></a>
 
 
 
