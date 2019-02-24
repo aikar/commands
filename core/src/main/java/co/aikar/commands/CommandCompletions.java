@@ -38,7 +38,7 @@ import java.util.stream.IntStream;
 
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
-public class CommandCompletions <C extends CommandCompletionContext> {
+public class CommandCompletions<C extends CommandCompletionContext> {
     private final CommandManager manager;
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
     private Map<Class, String> defaultCompletions = new HashMap<>();
@@ -146,22 +146,22 @@ public class CommandCompletions <C extends CommandCompletionContext> {
     }
 
     /**
-     * @deprecated Feature Not done yet
      * @param id
      * @param classes
      * @return
+     * @deprecated Feature Not done yet
      */
     CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
         // get completion with specified id
         id = id.toLowerCase();
         CommandCompletionHandler completion = completionMap.get(id);
 
-        if(completion == null) {
+        if (completion == null) {
             // Throw something because no completion with specified id
-            ACFUtil.sneaky(new CommandCompletionTextLookupException());
+            throw new IllegalStateException("Completion not registered for " + id);
         }
 
-        for(Class clazz : classes) {
+        for (Class clazz : classes) {
             defaultCompletions.put(clazz, id);
         }
 
@@ -229,10 +229,12 @@ public class CommandCompletions <C extends CommandCompletionContext> {
         return allCompletions;
     }
 
-    public interface CommandCompletionHandler <C extends CommandCompletionContext> {
+    public interface CommandCompletionHandler<C extends CommandCompletionContext> {
         Collection<String> getCompletions(C context) throws InvalidCommandArgument;
     }
-    public interface AsyncCommandCompletionHandler <C extends CommandCompletionContext> extends  CommandCompletionHandler <C> {}
+
+    public interface AsyncCommandCompletionHandler<C extends CommandCompletionContext> extends CommandCompletionHandler<C> {
+    }
 
     public static class SyncCompletionRequired extends RuntimeException {
     }

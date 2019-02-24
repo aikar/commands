@@ -24,7 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.contexts.CommandResultSupplier;
-import co.aikar.commands.contexts.OnlinePlayer;
+import co.aikar.commands.contexts.sponge.OnlinePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;

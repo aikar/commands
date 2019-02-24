@@ -35,6 +35,7 @@ public final class ACFExample extends JavaPlugin {
 
     private static ACFExample plugin;
     private static PaperCommandManager commandManager;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -53,7 +54,7 @@ public final class ACFExample extends JavaPlugin {
                 // key - value
                 "test", "foobar",
                 // key - demonstrate that % is ignored  - value
-                "%foo",                                  "barbaz");
+                "%foo", "barbaz");
         // Another replacement for piped values
         commandManager.getCommandReplacements().addReplacement("testcmd", "test4|foobar|barbaz");
 
@@ -93,14 +94,15 @@ public final class ACFExample extends JavaPlugin {
 
         // 7: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
-                sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
-                return true; // mark as handeled, default message will not be send to sender
+            sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
+            return true; // mark as handeled, default message will not be send to sender
         }));
 
         // 8: Register an additional command. This one happens to share the same CommandAlias as the previous command
         // This means it simply registers additional sub commands under the same command, but organized into separate
         // Classes (Maybe different permission sets)
         commandManager.registerCommand(new SomeCommand_ExtraSubs());
+        commandManager.registerCommand(new SomeOtherCommand());
 
         // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {

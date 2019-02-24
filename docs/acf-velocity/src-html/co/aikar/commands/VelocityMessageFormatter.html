@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package co.aikar.commands;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import net.kyori.text.format.TextColor;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import net.kyori.text.serializer.ComponentSerializers;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>public class VelocityMessageFormatter extends MessageFormatter&lt;TextColor&gt; {<a name="line.6"></a>
+<span class="sourceLineNo">007</span><a name="line.7"></a>
+<span class="sourceLineNo">008</span>    public VelocityMessageFormatter(TextColor... colors) {<a name="line.8"></a>
+<span class="sourceLineNo">009</span>        super(colors);<a name="line.9"></a>
+<span class="sourceLineNo">010</span>    }<a name="line.10"></a>
+<span class="sourceLineNo">011</span><a name="line.11"></a>
+<span class="sourceLineNo">012</span>    @Override<a name="line.12"></a>
+<span class="sourceLineNo">013</span>    @SuppressWarnings("deprecation")<a name="line.13"></a>
+<span class="sourceLineNo">014</span>    String format(TextColor color, String message) {<a name="line.14"></a>
+<span class="sourceLineNo">015</span>        return ComponentSerializers.LEGACY.serialize(ComponentSerializers.LEGACY.deserialize(message).color(color));<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    }<a name="line.16"></a>
+<span class="sourceLineNo">017</span>}<a name="line.17"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

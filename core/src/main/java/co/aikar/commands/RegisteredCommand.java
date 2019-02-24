@@ -49,7 +49,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
-public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
+public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     final BaseCommand scope;
     final Method method;
     final CommandParameter<CEC>[] parameters;
@@ -153,8 +153,12 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
         }
         postCommand();
     }
-    public void preCommand() {}
-    public void postCommand() {}
+
+    public void preCommand() {
+    }
+
+    public void postCommand() {
+    }
 
     void handleException(CommandIssuer sender, List<String> args, Exception e) {
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
@@ -209,7 +213,7 @@ public class RegisteredCommand <CEC extends CommandExecutionContext<CEC, ? exten
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
             final CommandParameter<CEC> parameter = parameters[i];
-            if (parameter.isCommandIssuer()) {
+            if (!parameter.canConsumeInput()) {
                 argLimit++;
             }
             final String parameterName = parameter.getName();
