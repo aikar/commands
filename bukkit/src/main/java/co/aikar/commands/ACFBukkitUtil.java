@@ -62,6 +62,7 @@ public class ACFBukkitUtil {
 
     /**
      * Move to Message Keys on the CommandIssuer
+     *
      * @deprecated
      */
     @Deprecated
@@ -75,6 +76,7 @@ public class ACFBukkitUtil {
     public static Location stringToLocation(String storedLoc) {
         return stringToLocation(storedLoc, null);
     }
+
     public static Location stringToLocation(String storedLoc, World forcedWorld) {
         if (storedLoc == null) {
             return null;
@@ -162,15 +164,18 @@ public class ACFBukkitUtil {
     public static double distance(@NotNull Entity e1, @NotNull Entity e2) {
         return distance(e1.getLocation(), e2.getLocation());
     }
+
     public static double distance2d(@NotNull Entity e1, @NotNull Entity e2) {
         return distance2d(e1.getLocation(), e2.getLocation());
     }
-    public static double distance2d(@NotNull  Location loc1, @NotNull Location loc2) {
+
+    public static double distance2d(@NotNull Location loc1, @NotNull Location loc2) {
         loc1 = loc1.clone();
         loc1.setY(loc2.getY());
         return distance(loc1, loc2);
     }
-    public static double distance(@NotNull  Location loc1, @NotNull Location loc2) {
+
+    public static double distance(@NotNull Location loc1, @NotNull Location loc2) {
         if (loc1.getWorld() != loc2.getWorld()) {
             return 0;
         }
@@ -180,9 +185,11 @@ public class ACFBukkitUtil {
     public static Location getTargetLoc(Player player) {
         return getTargetLoc(player, 128);
     }
+
     public static Location getTargetLoc(Player player, int maxDist) {
         return getTargetLoc(player, maxDist, 1.5);
     }
+
     public static Location getTargetLoc(Player player, int maxDist, double addY) {
         try {
             Location target = player.getTargetBlock((Set<Material>) null, maxDist).getLocation();
@@ -196,14 +203,17 @@ public class ACFBukkitUtil {
     public static Location getRandLoc(Location loc, int radius) {
         return getRandLoc(loc, radius, radius, radius);
     }
+
     public static Location getRandLoc(Location loc, int xzRadius, int yRadius) {
         return getRandLoc(loc, xzRadius, yRadius, xzRadius);
     }
-    @NotNull public static Location getRandLoc(Location loc, int xRadius, int yRadius, int zRadius) {
+
+    @NotNull
+    public static Location getRandLoc(Location loc, int xRadius, int yRadius, int zRadius) {
         Location newLoc = loc.clone();
-        newLoc.setX(ACFUtil.rand(loc.getX()-xRadius, loc.getX()+xRadius));
-        newLoc.setY(ACFUtil.rand(loc.getY()-yRadius, loc.getY()+yRadius));
-        newLoc.setZ(ACFUtil.rand(loc.getZ()-zRadius, loc.getZ()+zRadius));
+        newLoc.setX(ACFUtil.rand(loc.getX() - xRadius, loc.getX() + xRadius));
+        newLoc.setY(ACFUtil.rand(loc.getY() - yRadius, loc.getY() + yRadius));
+        newLoc.setZ(ACFUtil.rand(loc.getZ() - zRadius, loc.getZ() + zRadius));
         return newLoc;
     }
 
@@ -215,6 +225,7 @@ public class ACFBukkitUtil {
     public static String replaceChatString(String message, String replace, String with) {
         return replaceChatString(message, Pattern.compile(Pattern.quote(replace), Pattern.CASE_INSENSITIVE), with);
     }
+
     public static String replaceChatString(String message, Pattern replace, String with) {
         final String[] split = replace.split(message + "1");
 
@@ -233,12 +244,14 @@ public class ACFBukkitUtil {
     public static boolean isWithinDistance(@NotNull Player p1, @NotNull Player p2, int dist) {
         return isWithinDistance(p1.getLocation(), p2.getLocation(), dist);
     }
+
     public static boolean isWithinDistance(@NotNull Location loc1, @NotNull Location loc2, int dist) {
         return loc1.getWorld() == loc2.getWorld() && loc1.distance(loc2) <= dist;
     }
 
     /**
      * Please move to the CommandIssuer version
+     *
      * @deprecated
      */
     public static Player findPlayerSmart(CommandSender requester, String search) {
@@ -275,12 +288,11 @@ public class ACFBukkitUtil {
 
         //noinspection Duplicates
         if (matches.isEmpty()) {
-            if (confirmList.isEmpty()) {
-                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
-                        "{search}", name);
+            Player player = ACFUtil.getFirstElement(confirmList);
+            if (player == null) {
+                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);
                 return null;
             } else {
-                Player player = ACFUtil.getFirstElement(confirmList);
                 issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }

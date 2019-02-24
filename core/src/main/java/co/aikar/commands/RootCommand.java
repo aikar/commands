@@ -113,26 +113,25 @@ public interface RootCommand {
 
     default BaseCommand getBaseCommand(String[] args) {
         SetMultimap<String, RegisteredCommand> subCommands = getSubCommands();
-        Set<RegisteredCommand> registeredCommands;
+        RegisteredCommand command;
         for (int i = args.length; i >= 0; i--) {
             String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
-            registeredCommands = subCommands.get(checkSub);
-            if (!registeredCommands.isEmpty()) {
-                return ACFUtil.getFirstElement(registeredCommands).scope;
+            command = ACFUtil.getFirstElement(subCommands.get(checkSub));
+            if (command != null) {
+                return command.scope;
             }
         }
 
-        registeredCommands = subCommands.get(DEFAULT);
-        if (!registeredCommands.isEmpty()) {
-            RegisteredCommand command = ACFUtil.getFirstElement(registeredCommands);
+        command = ACFUtil.getFirstElement(subCommands.get(DEFAULT));
+        if (command != null) {
             if (args.length == 0 || command.consumeInputResolvers > 0) {
                 return command.scope;
             }
         }
 
-        registeredCommands = subCommands.get(CATCHUNKNOWN);
-        if (!registeredCommands.isEmpty()) {
-            return ACFUtil.getFirstElement(registeredCommands).scope;
+        command = ACFUtil.getFirstElement(subCommands.get(CATCHUNKNOWN));
+        if (command != null) {
+            return command.scope;
         }
         return getDefCommand();
     }

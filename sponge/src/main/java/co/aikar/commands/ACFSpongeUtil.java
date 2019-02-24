@@ -39,12 +39,12 @@ public class ACFSpongeUtil {
         }
 
         if (matches.isEmpty()) {
-            if (confirmList.isEmpty()) {
-                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
-                        "{search}", name);
+            Player player = ACFUtil.getFirstElement(confirmList);
+            if (player == null) {
+                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);
                 return null;
             } else {
-                Player player = ACFUtil.getFirstElement(confirmList);
+
                 issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
                 return null;
             }

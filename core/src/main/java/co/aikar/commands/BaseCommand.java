@@ -522,7 +522,7 @@ public abstract class BaseCommand {
             }
 
             Set<RegisteredCommand> defaultCommands = subCommands.get(DEFAULT);
-            RegisteredCommand defCommand = !defaultCommands.isEmpty() ? ACFUtil.getFirstElement(defaultCommands) : null;
+            RegisteredCommand defCommand = ACFUtil.getFirstElement(defaultCommands);
             if (defCommand != null && (args.length == 0 || defCommand.consumeInputResolvers > 0)) {
                 findAndExecuteCommand(commandContext, DEFAULT, issuer, args);
             } else if (subCommands.get(CATCHUNKNOWN) != null) {
