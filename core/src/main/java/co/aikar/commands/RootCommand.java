@@ -31,6 +31,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static co.aikar.commands.BaseCommand.CATCHUNKNOWN;
+import static co.aikar.commands.BaseCommand.DEFAULT;
+
 public interface RootCommand {
     void addChild(BaseCommand command);
 
@@ -46,7 +49,7 @@ public interface RootCommand {
         command.subCommands.entries().forEach(e -> {
             String key = e.getKey();
             RegisteredCommand registeredCommand = e.getValue();
-            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
+            if (key.equals(DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
                 return;
             }
             Set<RegisteredCommand> registered = subCommands.get(key);
@@ -109,16 +112,24 @@ public interface RootCommand {
     }
 
     default BaseCommand getBaseCommand(String[] args) {
-        BaseCommand command = getDefCommand();
         for (int i = args.length; i >= 0; i--) {
             String checkSub = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
             Set<RegisteredCommand> registeredCommands = getSubCommands().get(checkSub);
             if (!registeredCommands.isEmpty()) {
-                command = registeredCommands.iterator().next().scope;
-                break;
+                return registeredCommands.iterator().next().scope;
             }
         }
-        return command;
+        if (args.length == 0) {
+            Set<RegisteredCommand> registeredCommands = getSubCommands().get(DEFAULT);
+            if (!registeredCommands.isEmpty()) {
+                return registeredCommands.iterator().next().scope;
+            }
+        }
+        Set<RegisteredCommand> registeredCommands = getSubCommands().get(CATCHUNKNOWN);
+        if (!registeredCommands.isEmpty()) {
+            return registeredCommands.iterator().next().scope;
+        }
+        return getDefCommand();
     }
 
     default List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args) {
