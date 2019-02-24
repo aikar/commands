@@ -21,7 +21,7 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts.bukkit;
+package co.aikar.commands.bukkit.contexts;
 
 import org.bukkit.entity.Player;
 
@@ -53,8 +53,6 @@ public class OnlinePlayer {
 
     @Override
     public String toString() {
-        return "OnlinePlayer{" +
-                "player=" + player +
-                '}';
+        return "OnlinePlayer{player=" + player + '}';
     }
 }

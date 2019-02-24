@@ -23,8 +23,7 @@
 
 package co.aikar.commands;
 
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.contexts.bukkit.OnlinePlayer;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -40,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,7 +49,11 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
     public BukkitCommandContexts(BukkitCommandManager manager) {
         super(manager);
 
-        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.hasAnnotation(Optional.class)));
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional()));
+        registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -> {
+            OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional());
+            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer()) : null;
+        });
         registerContext(OnlinePlayer[].class, (c) -> {
             BukkitCommandIssuer issuer = c.getIssuer();
             final String search = c.popFirstArg();
@@ -92,7 +94,7 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         });
         registerIssuerAwareContext(CommandSender.class, BukkitCommandExecutionContext::getSender);
         registerIssuerAwareContext(Player.class, (c) -> {
-            boolean isOptional = c.hasAnnotation(Optional.class);
+            boolean isOptional = c.isOptional();
             CommandSender sender = c.getSender();
             boolean isPlayerSender = sender instanceof Player;
             if (!c.hasFlag("other")) {

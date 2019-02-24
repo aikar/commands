@@ -30,30 +30,25 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.contexts.velocity.OnlinePlayer;
+import co.aikar.commands.velocity.contexts.OnlinePlayer;
 import net.kyori.text.format.TextColor;
 import net.kyori.text.format.TextDecoration;
 import net.kyori.text.format.TextFormat;
+import org.jetbrains.annotations.Nullable;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
 
     VelocityCommandContexts(ProxyServer server, CommandManager manager) {
         super(manager);
-        registerContext(OnlinePlayer.class, (c) -> {
-            Player proxiedPlayer = ACFVelocityUtil.findPlayerSmart(server, c.getIssuer(), c.popFirstArg());
-            if (proxiedPlayer == null) {
-                if (c.hasAnnotation(Optional.class)) {
-                    return null;
-                }
-                throw new InvalidCommandArgument(false);
-            }
-            return new OnlinePlayer(proxiedPlayer);
+        registerContext(OnlinePlayer.class, (c) -> getOnlinePlayer(server, c));
+        registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -> {
+            OnlinePlayer onlinePlayer = getOnlinePlayer(server, c);
+            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer()) : null;
         });
         registerIssuerAwareContext(CommandSource.class, VelocityCommandExecutionContext::getSender);
         registerIssuerAwareContext(Player.class, (c) -> {
             Player proxiedPlayer = c.getSender() instanceof Player ? (Player) c.getSender() : null;
-            if (proxiedPlayer == null && !c.hasAnnotation(Optional.class)) {
+            if (proxiedPlayer == null && !c.isOptional()) {
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
             return proxiedPlayer;
@@ -81,5 +76,17 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
             }
             return match;
         });
+    }
+
+    @Nullable
+    private OnlinePlayer getOnlinePlayer(ProxyServer server, VelocityCommandExecutionContext c) throws InvalidCommandArgument {
+        Player proxiedPlayer = ACFVelocityUtil.findPlayerSmart(server, c.getIssuer(), c.popFirstArg());
+        if (proxiedPlayer == null) {
+            if (c.isOptional()) {
+                return null;
+            }
+            throw new InvalidCommandArgument(false);
+        }
+        return new OnlinePlayer(proxiedPlayer);
     }
 }

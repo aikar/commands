@@ -26,10 +26,10 @@ package co.aikar.commands.contexts;
 import com.velocitypowered.api.proxy.Player;
 
 /**
- * @deprecated Use {@link co.aikar.commands.contexts.velocity.OnlinePlayer instead}
+ * @deprecated Use {@link co.aikar.commands.velocity.contexts.OnlinePlayer instead}
  */
 @Deprecated
-public class OnlinePlayer extends co.aikar.commands.contexts.velocity.OnlinePlayer {
+public class OnlinePlayer extends co.aikar.commands.velocity.contexts.OnlinePlayer {
     public OnlinePlayer(Player player) {
         super(player);
     }

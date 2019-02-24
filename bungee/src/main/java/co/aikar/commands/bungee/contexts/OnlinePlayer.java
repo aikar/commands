@@ -21,21 +21,22 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.contexts.sponge;
+package co.aikar.commands.bungee.contexts;
 
-import org.spongepowered.api.entity.living.player.Player;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Objects;
 
 public class OnlinePlayer {
-    public final Player player;
 
-    public OnlinePlayer(Player player) {
+    public final ProxiedPlayer player;
+
+    public OnlinePlayer(ProxiedPlayer player) {
         this.player = player;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public ProxiedPlayer getPlayer() {
+        return player;
     }
 
     @Override
@@ -53,8 +54,6 @@ public class OnlinePlayer {
 
     @Override
     public String toString() {
-        return "OnlinePlayer{" +
-                "player=" + player +
-                '}';
+        return "OnlinePlayer{player=" + player + '}';
     }
 }

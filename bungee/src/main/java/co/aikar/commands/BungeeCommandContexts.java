@@ -25,10 +25,11 @@ package co.aikar.commands;
 
 
 import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.contexts.OnlineProxiedPlayer;
+import co.aikar.commands.bungee.contexts.OnlinePlayer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,15 +38,10 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
 
     BungeeCommandContexts(CommandManager manager) {
         super(manager);
-        registerContext(OnlineProxiedPlayer.class, (c) -> {
-            ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), c.popFirstArg());
-            if (proxiedPlayer == null) {
-                if (c.hasAnnotation(Optional.class)) {
-                    return null;
-                }
-                throw new InvalidCommandArgument(false);
-            }
-            return new OnlineProxiedPlayer(proxiedPlayer);
+        registerContext(OnlinePlayer.class, this::getOnlinePlayer);
+        registerContext(co.aikar.commands.contexts.OnlineProxiedPlayer.class, c -> {
+            OnlinePlayer onlinePlayer = getOnlinePlayer(c);
+            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlineProxiedPlayer(onlinePlayer.getPlayer()) : null;
         });
         registerIssuerAwareContext(CommandSender.class, BungeeCommandExecutionContext::getSender);
         registerIssuerAwareContext(ProxiedPlayer.class, (c) -> {
@@ -79,5 +75,17 @@ public class BungeeCommandContexts extends CommandContexts<BungeeCommandExecutio
             }
             return match;
         });
+    }
+
+    @Nullable
+    private co.aikar.commands.contexts.OnlineProxiedPlayer getOnlinePlayer(BungeeCommandExecutionContext c) throws InvalidCommandArgument {
+        ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), c.popFirstArg());
+        if (proxiedPlayer == null) {
+            if (c.hasAnnotation(Optional.class)) {
+                return null;
+            }
+            throw new InvalidCommandArgument(false);
+        }
+        return new co.aikar.commands.contexts.OnlineProxiedPlayer(proxiedPlayer);
     }
 }
