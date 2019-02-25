@@ -86,6 +86,7 @@ public abstract class CommandManager <
     private Set<String> unstableAPIs = new HashSet<>();
 
     private Annotations annotations = new Annotations<>(this);
+    private CommandRouter router = new CommandRouter(this);
 
     public static CommandOperationContext getCurrentCommandOperationContext() {
         return commandOperationContext.get().peek();
@@ -199,6 +200,10 @@ public abstract class CommandManager <
         return helpFormatter;
     }
 
+    CommandRouter getRouter() {
+        return router;
+    }
+
     /**
      * Registers a command with ACF
      *
@@ -268,14 +273,6 @@ public abstract class CommandManager <
             }
         }
         return true;
-    }
-
-    BaseCommand getBaseCommand(String commandLabel, @NotNull String[] args) {
-        RootCommand rootCommand = obtainRootCommand(commandLabel);
-        if (rootCommand == null) {
-            return null;
-        }
-        return rootCommand.getBaseCommand(args);
     }
 
     public synchronized RootCommand getRootCommand(@NotNull String cmd) {

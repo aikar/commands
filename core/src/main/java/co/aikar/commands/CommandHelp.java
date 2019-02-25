@@ -43,7 +43,7 @@ public class CommandHelp {
     private int page;
     private int perPage;
     List<String> search;
-    private HelpEntry selectedEntry;
+    private Set<HelpEntry> selectedEntry = new HashSet<>();
     private int totalResults;
     private int totalPages;
     private boolean lastPage;
@@ -117,14 +117,14 @@ public class CommandHelp {
         return manager;
     }
 
-    public boolean isExactMatch(String command) {
+    public boolean testExactMatch(String command) {
+        selectedEntry.clear();
         for (HelpEntry helpEntry : helpEntries) {
             if (helpEntry.getCommand().endsWith(" " + command)) {
-                selectedEntry = helpEntry;
-                return true;
+                selectedEntry.add(helpEntry);
             }
         }
-        return false;
+        return !selectedEntry.isEmpty();
     }
 
     public void showHelp() {
@@ -133,8 +133,15 @@ public class CommandHelp {
 
     public void showHelp(CommandIssuer issuer) {
         CommandHelpFormatter formatter = manager.getHelpFormatter();
-        if (selectedEntry != null) {
-            formatter.showDetailedHelp(this, selectedEntry);
+        if (!selectedEntry.isEmpty()) {
+            HelpEntry first = ACFUtil.getFirstElement(selectedEntry);
+            formatter.printDetailedHelpHeader(this, issuer, first);
+
+            for (HelpEntry helpEntry : selectedEntry) {
+                formatter.showDetailedHelp(this, helpEntry);
+            }
+
+            formatter.printDetailedHelpFooter(this, issuer, first);
             return;
         }
 
@@ -224,7 +231,7 @@ public class CommandHelp {
         return search;
     }
 
-    public HelpEntry getSelectedEntry() {
+    public Set<HelpEntry> getSelectedEntry() {
         return selectedEntry;
     }
 

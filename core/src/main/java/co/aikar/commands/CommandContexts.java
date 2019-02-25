@@ -177,8 +177,6 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
         });
         registerContext(String[].class, (c) -> {
             String val;
-            // Go home IDEA, you're drunk
-            //noinspection unchecked
             List<String> args = c.getArgs();
             if (c.isLastArg() && !c.hasAnnotation(Single.class)) {
                 val = ACFUtil.join(args);
@@ -195,7 +193,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
                 ACFUtil.sneaky(new IllegalStateException("Weird Command signature... String[] should be last or @Split"));
             }
 
-            String[] result = args.toArray(new String[args.size()]);
+            String[] result = args.toArray(new String[0]);
             args.clear();
             return result;
         });
@@ -241,7 +239,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
             // check if we have an exact match and should display the help page for that sub command instead
             if (search != null) {
                 String cmd = String.join(" ", search);
-                if (commandHelp.isExactMatch(cmd)) {
+                if (commandHelp.testExactMatch(cmd)) {
                     return commandHelp;
                 }
             }

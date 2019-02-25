@@ -78,8 +78,9 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
-    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {
-        command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));
+    public void execute(CommandIssuer issuer, CommandRouter.CommandRouteResult result) {
+        result = new CommandRouter.CommandRouteResult(result, ApacheCommonsLangUtil.addAll(baseArgs, result.args));
+        command.execute(issuer, result);
     }
 
     BaseCommand getCommand() {

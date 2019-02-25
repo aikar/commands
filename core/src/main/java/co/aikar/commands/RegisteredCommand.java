@@ -106,7 +106,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         StringBuilder syntaxBuilder = new StringBuilder(64);
 
         for (int i = 0; i < parameters.length; i++) {
-            CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i);
+            CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i, i == parameters.length - 1);
             if (!parameter.isCommandIssuer()) {
                 if (!parameter.requiresInput()) {
                     optionalResolvers++;

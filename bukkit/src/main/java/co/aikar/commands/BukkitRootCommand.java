@@ -52,8 +52,9 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return getTabCompletions(manager.getCommandIssuer(sender), alias, args);
+    public List<String> tabComplete(CommandSender sender, String commandLabel, String[] args) throws IllegalArgumentException {
+        if (commandLabel.contains(":")) commandLabel = ACFPatterns.COLON.split(commandLabel, 2)[1];
+        return getTabCompletions(manager.getCommandIssuer(sender), commandLabel, args);
     }
 
     @Override
@@ -71,8 +72,6 @@ public class BukkitRootCommand extends Command implements RootCommand {
     public void addChild(BaseCommand command) {
         if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {
             this.defCommand = command;
-            //this.setDescription(command.getDescription());
-            //this.setUsage(command.getUsage());
         }
         addChildShared(this.children, this.subCommands, command);
         setPermission(getUniquePermission());

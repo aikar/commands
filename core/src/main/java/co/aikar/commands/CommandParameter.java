@@ -28,6 +28,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
 import co.aikar.commands.contexts.ContextResolver;
@@ -58,12 +59,12 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
     private Map<String, String> flags;
     private boolean canConsumeInput;
     private boolean optionalResolver;
+    boolean consumesRest;
 
-    public CommandParameter(RegisteredCommand<CEC> command, Parameter param, int paramIndex) {
+    public CommandParameter(RegisteredCommand<CEC> command, Parameter param, int paramIndex, boolean isLast) {
         this.parameter = param;
         this.type = param.getType();
         this.name = param.getName(); // do we care for an annotation to supply name?
-        //noinspection unchecked
         this.manager = command.manager;
         this.paramIndex = paramIndex;
         Annotations annotations = manager.getAnnotations();
@@ -80,12 +81,13 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
             ));
         }
 
-        this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null;
+        this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null || (isLast && type == String[].class);
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
         this.commandIssuer = paramIndex == 0 && manager.isCommandIssuer(type);
         this.canConsumeInput = !this.commandIssuer && !(resolver instanceof IssuerOnlyContextResolver);
+        this.consumesRest = (type == String.class && !annotations.hasAnnotation(param, Single.class)) || (isLast && type == String[].class);
 
         this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
