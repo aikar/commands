@@ -40,6 +40,7 @@ public class ForwardingCommand extends BaseCommand {
         this.command = baseCommand;
         this.baseArgs = baseArgs;
         this.manager = baseCommand.manager;
+        this.subCommands.put(DEFAULT, regCommand);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class ForwardingCommand extends BaseCommand {
 
     @Override
     public void execute(CommandIssuer issuer, CommandRouter.CommandRouteResult result) {
-        result = new CommandRouter.CommandRouteResult(result, ApacheCommonsLangUtil.addAll(baseArgs, result.args));
+        result = new CommandRouter.CommandRouteResult(regCommand, result.args, ACFUtil.join(baseArgs), result.commandLabel);
         command.execute(issuer, result);
     }
 

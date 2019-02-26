@@ -138,10 +138,6 @@ class CommandRouter {
             this(cmd, search.args, search.subcommand, search.commandLabel);
         }
 
-        CommandRouteResult(CommandRouteResult result, String[] args) {
-            this(result.cmd, args, result.subcommand, result.commandLabel);
-        }
-
         CommandRouteResult(RegisteredCommand cmd, String[] args, String subcommand, String commandLabel) {
             this.cmd = cmd;
             this.args = args;
