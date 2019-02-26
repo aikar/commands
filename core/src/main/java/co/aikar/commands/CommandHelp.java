@@ -60,8 +60,11 @@ public class CommandHelp {
         Set<RegisteredCommand> seen = new HashSet<>();
         
         if (!rootCommand.getDefCommand().hasHelpCommand) {
-            helpEntries.add(new HelpEntry(this, rootCommand.getDefaultRegisteredCommand()));
-            seen.add(rootCommand.getDefaultRegisteredCommand());
+            RegisteredCommand defCommand = rootCommand.getDefaultRegisteredCommand();
+            if (defCommand != null) {
+                helpEntries.add(new HelpEntry(this, defCommand));
+                seen.add(defCommand);
+            }
         }
         
         subCommands.entries().forEach(e -> {
