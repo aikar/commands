@@ -122,7 +122,7 @@ public interface RootCommand {
         Set<String> completions = new HashSet<>();
         getChildren().forEach(child -> {
             if (!commandsOnly) {
-                completions.addAll(child.tabComplete(sender, alias, args, isAsync));
+                completions.addAll(child.tabComplete(sender, this, args, isAsync));
             }
             completions.addAll(child.getCommandsForCompletion(sender, args));
         });

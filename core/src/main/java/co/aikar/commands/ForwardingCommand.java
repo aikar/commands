@@ -74,8 +74,8 @@ public class ForwardingCommand extends BaseCommand {
     }
 
     @Override
-    public List<String> tabComplete(CommandIssuer issuer, String alias, String[] args, boolean isAsync) throws IllegalArgumentException {
-        return command.tabComplete(issuer, alias, ApacheCommonsLangUtil.addAll(baseArgs, args), isAsync);
+    public List<String> tabComplete(CommandIssuer issuer, RootCommand rootCommand, String[] args, boolean isAsync) throws IllegalArgumentException {
+        return command.tabComplete(issuer, rootCommand, args, isAsync);
     }
 
     @Override

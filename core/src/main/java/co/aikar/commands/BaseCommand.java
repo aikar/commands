@@ -609,16 +609,21 @@ public abstract class BaseCommand {
     @SuppressWarnings("WeakerAccess")
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)
             throws IllegalArgumentException {
+        return tabComplete(issuer, manager.getRootCommand(commandLabel.toLowerCase()), args, isAsync);
+    }
 
-        commandLabel = commandLabel.toLowerCase();
+    List<String> tabComplete(CommandIssuer issuer, RootCommand rootCommand, String[] args, boolean isAsync)
+            throws IllegalArgumentException {
         if (args.length == 0) {
             args = new String[]{""};
         }
+        String commandLabel = rootCommand.getCommandName();
         try {
             CommandRouter router = manager.getRouter();
+
             preCommandOperation(issuer, commandLabel, args, isAsync);
 
-            final RouteSearch search = router.routeCommand(commandLabel, args, true);
+            final RouteSearch search = router.routeCommand(rootCommand, commandLabel, args, true);
 
             final List<String> cmds = new ArrayList<>();
             if (search != null) {

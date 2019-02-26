@@ -123,11 +123,6 @@ class CommandRouter {
         return null;
     }
 
-    RouteSearch routeCommand(String commandLabel, String[] args, boolean completion) {
-        return routeCommand(manager.getRootCommand(commandLabel), commandLabel, args, completion);
-    }
-
-
     static class CommandRouteResult {
         final RegisteredCommand cmd;
         final String[] args;
