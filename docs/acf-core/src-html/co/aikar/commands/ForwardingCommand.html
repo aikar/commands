@@ -86,14 +86,15 @@
 <span class="sourceLineNo">078</span>    }<a name="line.78"></a>
 <span class="sourceLineNo">079</span><a name="line.79"></a>
 <span class="sourceLineNo">080</span>    @Override<a name="line.80"></a>
-<span class="sourceLineNo">081</span>    public void execute(CommandIssuer issuer, String commandLabel, String[] args) {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        command.execute(issuer, commandLabel, ApacheCommonsLangUtil.addAll(baseArgs, args));<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>    BaseCommand getCommand() {<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        return command;<a name="line.86"></a>
-<span class="sourceLineNo">087</span>    }<a name="line.87"></a>
-<span class="sourceLineNo">088</span>}<a name="line.88"></a>
+<span class="sourceLineNo">081</span>    public void execute(CommandIssuer issuer, CommandRouter.CommandRouteResult result) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        result = new CommandRouter.CommandRouteResult(result, ApacheCommonsLangUtil.addAll(baseArgs, result.args));<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        command.execute(issuer, result);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    }<a name="line.84"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>    BaseCommand getCommand() {<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        return command;<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
+<span class="sourceLineNo">089</span>}<a name="line.89"></a>
 
 
 
