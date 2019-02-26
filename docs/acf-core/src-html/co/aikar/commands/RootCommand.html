@@ -130,7 +130,7 @@
 <span class="sourceLineNo">122</span>        Set&lt;String&gt; completions = new HashSet&lt;&gt;();<a name="line.122"></a>
 <span class="sourceLineNo">123</span>        getChildren().forEach(child -&gt; {<a name="line.123"></a>
 <span class="sourceLineNo">124</span>            if (!commandsOnly) {<a name="line.124"></a>
-<span class="sourceLineNo">125</span>                completions.addAll(child.tabComplete(sender, alias, args, isAsync));<a name="line.125"></a>
+<span class="sourceLineNo">125</span>                completions.addAll(child.tabComplete(sender, this, args, isAsync));<a name="line.125"></a>
 <span class="sourceLineNo">126</span>            }<a name="line.126"></a>
 <span class="sourceLineNo">127</span>            completions.addAll(child.getCommandsForCompletion(sender, args));<a name="line.127"></a>
 <span class="sourceLineNo">128</span>        });<a name="line.128"></a>
