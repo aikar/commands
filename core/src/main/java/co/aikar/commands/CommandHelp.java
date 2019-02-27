@@ -40,7 +40,7 @@ public class CommandHelp {
     private final List<HelpEntry> helpEntries = new ArrayList<>();
     private final String commandName;
     final String commandPrefix;
-    private int page;
+    private int page = 1;
     private int perPage;
     List<String> search;
     private Set<HelpEntry> selectedEntry = new HashSet<>();
