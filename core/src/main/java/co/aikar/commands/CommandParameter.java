@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
@@ -40,7 +41,7 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
+public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     private final Parameter parameter;
     private final Class<?> type;
     private final String name;
@@ -49,6 +50,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     private ContextResolver<?, CEC> resolver;
     private boolean optional;
+    private String permission;
     private String description;
     private String defaultValue;
     private String syntax;
@@ -82,6 +84,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         }
 
         this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null || (isLast && type == String[].class);
+        this.permission = annotations.getAnnotationValue(param, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
@@ -136,8 +139,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
         return resolver instanceof IssuerAwareContextResolver
-            || resolver instanceof IssuerOnlyContextResolver
-            || resolver instanceof OptionalContextResolver;
+                || resolver instanceof IssuerOnlyContextResolver
+                || resolver instanceof OptionalContextResolver;
     }
 
 
@@ -255,5 +258,13 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     public void setConditions(String conditions) {
         this.conditions = conditions;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 }

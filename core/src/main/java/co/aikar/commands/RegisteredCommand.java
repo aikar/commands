@@ -226,8 +226,13 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
             }
+            String parameterPermission = parameter.getPermission();
             if (args.isEmpty() && !(isLast && type == String[].class)) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
+                    if (parameterPermission != null && !parameterPermission.isEmpty() && !sender.hasPermission(parameterPermission)) {
+                        sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
+                        return null;
+                    }
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
@@ -242,6 +247,17 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 } else if (requiresInput) {
                     scope.showSyntax(sender, this);
                     return null;
+                }
+            } else {
+                if (parameterPermission != null && !parameterPermission.isEmpty()) {
+                    if (allowOptional && parameter.isOptional()) {
+                        if (!sender.hasPermission(parameterPermission)) {
+                            sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
+                            return null;
+                        }
+                    } else {
+                        throw new IllegalStateException("Using CommandPermission annotation on parameter that is not optional is useless and you should not do it.");
+                    }
                 }
             }
             if (parameter.getValues() != null) {
@@ -258,7 +274,6 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                         possible.add(s.toLowerCase());
                     }
                 }
-
                 if (!possible.contains(arg.toLowerCase())) {
                     throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,
                             "{valid}", ACFUtil.join(possible, ", "));
