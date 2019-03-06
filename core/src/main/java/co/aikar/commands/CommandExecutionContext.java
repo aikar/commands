@@ -27,6 +27,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"WeakerAccess"})
 public class CommandExecutionContext<CEC extends CommandExecutionContext, I extends CommandIssuer> {
@@ -108,8 +109,8 @@ public class CommandExecutionContext<CEC extends CommandExecutionContext, I exte
         return null;
     }
 
-    public String getPermission() {
-        return param.getPermission();
+    public Set getPermissions() {
+        return param.getPermissions();
     }
 
     public boolean isOptional() {

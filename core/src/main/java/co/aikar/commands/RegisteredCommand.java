@@ -226,16 +226,13 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
             }
-            String parameterPermission = parameter.getPermission();
+
             if (args.isEmpty() && !(isLast && type == String[].class)) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
-                    if (parameterPermission != null && !parameterPermission.isEmpty() && !sender.hasPermission(parameterPermission)) {
-                        sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-                        return null;
-                    }
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
+
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
@@ -249,17 +246,21 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     return null;
                 }
             } else {
-                if (parameterPermission != null && !parameterPermission.isEmpty()) {
+                Set<String> parameterPermissions = parameter.getPermissions();
+                if (parameterPermissions != null && !parameterPermissions.isEmpty()) {
                     if (allowOptional && parameter.isOptional()) {
-                        if (!sender.hasPermission(parameterPermission)) {
-                            sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-                            return null;
+                        for (String perm : parameterPermissions) {
+                            if (!perm.isEmpty() && !sender.hasPermission(perm)) {
+                                sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
+                                return null;
+                            }
                         }
                     } else {
                         throw new IllegalStateException("Using CommandPermission annotation on parameter that is not optional is useless and you should not do it.");
                     }
                 }
             }
+
             if (parameter.getValues() != null) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 

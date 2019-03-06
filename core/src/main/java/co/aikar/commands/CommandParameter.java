@@ -38,8 +38,11 @@ import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     private final Parameter parameter;
@@ -50,6 +53,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     private ContextResolver<?, CEC> resolver;
     private boolean optional;
+    private Set<String> permissions = new HashSet<>();
     private String permission;
     private String description;
     private String defaultValue;
@@ -112,6 +116,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
             parseFlags(flags);
         }
         inheritContextFlags(command.scope);
+        this.computePermissions();
     }
 
     private void inheritContextFlags(BaseCommand scope) {
@@ -134,6 +139,13 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
                     this.flags.put(v[0], v.length > 1 ? v[1] : null);
                 }
             }
+        }
+    }
+
+    private void computePermissions() {
+        this.permissions.clear();
+        if (this.permission != null && !this.permission.isEmpty()) {
+            this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
         }
     }
 
@@ -260,11 +272,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.conditions = conditions;
     }
 
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public Set<String> getPermissions() {
+        return permissions;
     }
 }
