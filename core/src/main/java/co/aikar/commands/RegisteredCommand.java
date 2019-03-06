@@ -245,20 +245,6 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     scope.showSyntax(sender, this);
                     return null;
                 }
-            } else {
-                Set<String> parameterPermissions = parameter.getPermissions();
-                if (parameterPermissions != null && !parameterPermissions.isEmpty()) {
-                    if (allowOptional && parameter.isOptional()) {
-                        for (String perm : parameterPermissions) {
-                            if (!perm.isEmpty() && !sender.hasPermission(perm)) {
-                                sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-                                return null;
-                            }
-                        }
-                    } else {
-                        throw new IllegalStateException("Using CommandPermission annotation on parameter that is not optional is useless and you should not do it.");
-                    }
-                }
             }
 
             if (parameter.getValues() != null) {
@@ -281,6 +267,21 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 }
             }
             Object paramValue = resolver.getContext(context);
+
+            Set<String> parameterPermissions = parameter.getPermissions();
+            if (parameterPermissions != null && !parameterPermissions.isEmpty()) {
+                if (allowOptional && parameter.isOptional()) {
+                    for (String perm : parameterPermissions) {
+                        if (!perm.isEmpty() && !sender.hasPermission(perm)) {
+                            sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
+                            return null;
+                        }
+                    }
+                } else {
+                    throw new IllegalStateException("Using CommandPermission annotation on parameter that is not optional is useless and you should not do it.");
+                }
+            }
+
             //noinspection unchecked
             this.manager.conditions.validateConditions(context, paramValue);
             passedArgs.put(parameterName, paramValue);
