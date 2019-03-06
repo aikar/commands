@@ -269,7 +269,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             Object paramValue = resolver.getContext(context);
 
             Set<String> parameterPermissions = parameter.getPermissions();
-            if (parameterPermissions != null && !parameterPermissions.isEmpty()) {
+            if (!parameter.isOptionalResolver() && parameterPermissions != null && !parameterPermissions.isEmpty()) {
                 if (allowOptional && parameter.isOptional()) {
                     for (String perm : parameterPermissions) {
                         if (!perm.isEmpty() && !sender.hasPermission(perm)) {
