@@ -48,6 +48,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -311,8 +312,11 @@ public abstract class BaseCommand {
         final Annotations annotations = manager.getAnnotations();
         boolean foundCatchUnknown = false;
         boolean isParentEmpty = parentSubcommand == null || parentSubcommand.isEmpty();
+        Set<Method> methods = new LinkedHashSet<>();
+        Collections.addAll(methods, this.getClass().getDeclaredMethods());
+        Collections.addAll(methods, this.getClass().getMethods());
 
-        for (Method method : this.getClass().getMethods()) {
+        for (Method method : methods) {
             method.setAccessible(true);
             String sublist = null;
             String sub = getSubcommandValue(method);
