@@ -109,7 +109,7 @@ public class CommandExecutionContext<CEC extends CommandExecutionContext, I exte
         return null;
     }
 
-    public Set getPermissions() {
+    public Set<String> getPermissions() {
         return param.getPermissions();
     }
 
