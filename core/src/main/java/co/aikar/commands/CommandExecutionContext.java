@@ -27,9 +27,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"WeakerAccess"})
-public class CommandExecutionContext <CEC extends CommandExecutionContext, I extends CommandIssuer> {
+public class CommandExecutionContext<CEC extends CommandExecutionContext, I extends CommandIssuer> {
     private final RegisteredCommand cmd;
     private final CommandParameter param;
     protected final I issuer;
@@ -69,7 +70,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     }
 
     public boolean isLastArg() {
-        return cmd.parameters.length -1 == index;
+        return cmd.parameters.length - 1 == index;
     }
 
     public int getNumParams() {
@@ -106,6 +107,10 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
         }
 
         return null;
+    }
+
+    public Set<String> getPermissions() {
+        return param.getPermissions();
     }
 
     public boolean isOptional() {
@@ -170,6 +175,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
 
     /**
      * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     *
      * @deprecated Use {@link #getAnnotationValue(Class)}
      */
     @Deprecated
@@ -226,6 +232,7 @@ public class CommandExecutionContext <CEC extends CommandExecutionContext, I ext
     public String joinArgs() {
         return ACFUtil.join(args, " ");
     }
+
     public String joinArgs(String sep) {
         return ACFUtil.join(args, sep);
     }

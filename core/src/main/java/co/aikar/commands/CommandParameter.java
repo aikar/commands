@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
@@ -37,10 +38,13 @@ import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
 
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
+public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends CommandIssuer>> {
     private final Parameter parameter;
     private final Class<?> type;
     private final String name;
@@ -49,6 +53,8 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     private ContextResolver<?, CEC> resolver;
     private boolean optional;
+    private Set<String> permissions = new HashSet<>();
+    private String permission;
     private String description;
     private String defaultValue;
     private String syntax;
@@ -82,6 +88,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         }
 
         this.optional = annotations.hasAnnotation(param, Optional.class) || this.defaultValue != null || (isLast && type == String[].class);
+        this.permission = annotations.getAnnotationValue(param, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.optionalResolver = isOptionalResolver(resolver);
         this.requiresInput = !this.optional && !this.optionalResolver;
         //noinspection unchecked
@@ -109,6 +116,7 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
             parseFlags(flags);
         }
         inheritContextFlags(command.scope);
+        this.computePermissions();
     }
 
     private void inheritContextFlags(BaseCommand scope) {
@@ -134,10 +142,17 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
         }
     }
 
+    private void computePermissions() {
+        this.permissions.clear();
+        if (this.permission != null && !this.permission.isEmpty()) {
+            this.permissions.addAll(Arrays.asList(ACFPatterns.COMMA.split(this.permission)));
+        }
+    }
+
     private boolean isOptionalResolver(ContextResolver<?, CEC> resolver) {
         return resolver instanceof IssuerAwareContextResolver
-            || resolver instanceof IssuerOnlyContextResolver
-            || resolver instanceof OptionalContextResolver;
+                || resolver instanceof IssuerOnlyContextResolver
+                || resolver instanceof OptionalContextResolver;
     }
 
 
@@ -255,5 +270,9 @@ public class CommandParameter <CEC extends CommandExecutionContext<CEC, ? extend
 
     public void setConditions(String conditions) {
         this.conditions = conditions;
+    }
+
+    public Set<String> getPermissions() {
+        return permissions;
     }
 }
