@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings({"WeakerAccess"})
+@SuppressWarnings({"WeakerAccess", "unchecked"})
 public class CommandExecutionContext<CEC extends CommandExecutionContext, I extends CommandIssuer> {
     private final RegisteredCommand cmd;
     private final CommandParameter param;
@@ -101,7 +101,6 @@ public class CommandExecutionContext<CEC extends CommandExecutionContext, I exte
         final Object o = passedArgs.get(key);
         for (Class<?> clazz : classes) {
             if (clazz.isInstance(o)) {
-                //noinspection unchecked
                 return (T) o;
             }
         }
@@ -109,8 +108,8 @@ public class CommandExecutionContext<CEC extends CommandExecutionContext, I exte
         return null;
     }
 
-    public Set<String> getPermissions() {
-        return param.getPermissions();
+    public Set<String> getParameterPermissions() {
+        return param.getRequiredPermissions();
     }
 
     public boolean isOptional() {

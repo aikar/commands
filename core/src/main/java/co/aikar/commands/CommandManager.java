@@ -48,14 +48,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 @SuppressWarnings("WeakerAccess")
-public abstract class CommandManager <
+public abstract class CommandManager<
         IT,
         I extends CommandIssuer,
         FT,
         MF extends MessageFormatter<FT>,
         CEC extends CommandExecutionContext<CEC, I>,
         CC extends ConditionContext<I>
-    > {
+        > {
 
     /**
      * This is a stack incase a command calls a command
@@ -113,7 +113,7 @@ public abstract class CommandManager <
     public void setFormat(MessageType type, FT... colors) {
         MF format = getFormat(type);
         for (int i = 1; i <= colors.length; i++) {
-            format.setColor(i, colors[i-1]);
+            format.setColor(i, colors[i - 1]);
         }
     }
 
@@ -136,17 +136,23 @@ public abstract class CommandManager <
 
     /**
      * Gets the command contexts manager
+     *
      * @return Command Contexts
      */
     public abstract CommandContexts<?> getCommandContexts();
 
     /**
      * Gets the command completions manager
+     *
      * @return Command Completions
      */
     public abstract CommandCompletions<?> getCommandCompletions();
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelp generateCommandHelp(@NotNull String command) {
         verifyUnstableAPI("help");
         CommandOperationContext context = getCurrentCommandOperationContext();
@@ -156,13 +162,21 @@ public abstract class CommandManager <
         return generateCommandHelp(context.getCommandIssuer(), command);
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelp generateCommandHelp(CommandIssuer issuer, @NotNull String command) {
         verifyUnstableAPI("help");
         return generateCommandHelp(issuer, obtainRootCommand(command));
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelp generateCommandHelp() {
         verifyUnstableAPI("help");
         CommandOperationContext context = getCurrentCommandOperationContext();
@@ -173,29 +187,50 @@ public abstract class CommandManager <
         return generateCommandHelp(context.getCommandIssuer(), this.obtainRootCommand(commandLabel));
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelp generateCommandHelp(CommandIssuer issuer, RootCommand rootCommand) {
         verifyUnstableAPI("help");
         return new CommandHelp(this, rootCommand, issuer);
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public int getDefaultHelpPerPage() {
         verifyUnstableAPI("help");
         return defaultHelpPerPage;
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public void setDefaultHelpPerPage(int defaultHelpPerPage) {
         verifyUnstableAPI("help");
         this.defaultHelpPerPage = defaultHelpPerPage;
     }
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public void setHelpFormatter(CommandHelpFormatter helpFormatter) {
         this.helpFormatter = helpFormatter;
     }
 
-    /** @deprecated Unstable API */ @Deprecated @UnstableAPI
+    /**
+     * @deprecated Unstable API
+     */
+    @Deprecated
+    @UnstableAPI
     public CommandHelpFormatter getHelpFormatter() {
         return helpFormatter;
     }
@@ -211,7 +246,9 @@ public abstract class CommandManager <
      * @return boolean
      */
     public abstract void registerCommand(BaseCommand command);
+
     public abstract boolean hasRegisteredCommands();
+
     public abstract boolean isCommandIssuer(Class<?> type);
 
     // TODO: Change this to IT if we make a breaking change
@@ -221,6 +258,7 @@ public abstract class CommandManager <
 
     /**
      * Returns a Locales Manager to add and modify language tables for your commands.
+     *
      * @return
      */
     public abstract Locales getLocales();
@@ -253,14 +291,24 @@ public abstract class CommandManager <
     /**
      * Lets you add custom string replacements that can be applied to annotation values,
      * to reduce duplication/repetition of common values such as permission nodes and command prefixes.
-     *
+     * <p>
      * Any replacement registered starts with a %
-     *
+     * <p>
      * So for ex @CommandPermission("%staff")
+     *
      * @return Replacements Manager
      */
     public CommandReplacements getCommandReplacements() {
         return replacements;
+    }
+
+    public boolean hasPermission(CommandIssuer issuer, Set<String> permissions) {
+        for (String permission : permissions) {
+            if (!hasPermission(issuer, permission)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean hasPermission(CommandIssuer issuer, String permission) {
@@ -422,6 +470,7 @@ public abstract class CommandManager <
     /**
      * Gets a list of all currently supported languages for this manager.
      * These locales will be automatically loaded from
+     *
      * @return
      */
     public Set<Locale> getSupportedLanguages() {
@@ -444,11 +493,11 @@ public abstract class CommandManager <
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
-     * @param clazz the class the injector should look for when injecting
+     * @param clazz    the class the injector should look for when injecting
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
-    public <T> void registerDependency(Class<? extends T> clazz, T instance){
+    public <T> void registerDependency(Class<? extends T> clazz, T instance) {
         registerDependency(clazz, clazz.getName(), instance);
     }
 
@@ -457,12 +506,12 @@ public abstract class CommandManager <
      * The command manager will attempt to inject all fields in a command class that are annotated with
      * {@link co.aikar.commands.annotation.Dependency} with the provided instance.
      *
-     * @param clazz the class the injector should look for when injecting
-     * @param key the key which needs to be present if that
+     * @param clazz    the class the injector should look for when injecting
+     * @param key      the key which needs to be present if that
      * @param instance the instance of the class that should be injected
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
-    public <T> void registerDependency(Class<? extends T> clazz, String key, T instance){
+    public <T> void registerDependency(Class<? extends T> clazz, String key, T instance) {
         if (dependencies.containsKey(clazz, key)) {
             throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
         }
@@ -514,6 +563,7 @@ public abstract class CommandManager <
     public void enableUnstableAPI(String api) {
         unstableAPIs.add(api);
     }
+
     void verifyUnstableAPI(String api) {
         if (!unstableAPIs.contains(api)) {
             throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");

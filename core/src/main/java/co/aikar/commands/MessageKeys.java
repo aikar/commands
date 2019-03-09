@@ -32,6 +32,7 @@ import co.aikar.locales.MessageKeyProvider;
 @SuppressWarnings("WeakerAccess")
 public enum MessageKeys implements MessageKeyProvider {
     PERMISSION_DENIED,
+    PERMISSION_DENIED_PARAMETER,
     ERROR_GENERIC_LOGGED,
     UNKNOWN_COMMAND,
     INVALID_SYNTAX,
@@ -58,6 +59,7 @@ public enum MessageKeys implements MessageKeyProvider {
     ;
 
     private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
+
     public MessageKey getMessageKey() {
         return key;
     }

@@ -227,10 +227,15 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 remainingRequired--;
             }
 
+            Set<String> parameterPermissions = parameter.getRequiredPermissions();
             if (args.isEmpty() && !(isLast && type == String[].class)) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
+                    if (!this.manager.hasPermission(sender, parameterPermissions)) {
+                        sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED_PARAMETER, "{param}", parameterName);
+                        throw new InvalidCommandArgument(false);
+                    }
                     Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
 
                     if (value == null && parameter.getClass().isPrimitive()) {
@@ -239,11 +244,15 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     //noinspection unchecked
                     this.manager.conditions.validateConditions(context, value);
                     passedArgs.put(parameterName, value);
-                    //noinspection UnnecessaryContinue
                     continue;
                 } else if (requiresInput) {
                     scope.showSyntax(sender, this);
                     return null;
+                }
+            } else {
+                if (!this.manager.hasPermission(sender, parameterPermissions)) {
+                    sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED_PARAMETER, "{param}", parameterName);
+                    throw new InvalidCommandArgument(false);
                 }
             }
 
@@ -266,21 +275,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                             "{valid}", ACFUtil.join(possible, ", "));
                 }
             }
-            Object paramValue = resolver.getContext(context);
 
-            Set<String> parameterPermissions = parameter.getPermissions();
-            if (!parameter.isOptionalResolver() && parameterPermissions != null && !parameterPermissions.isEmpty()) {
-                if (allowOptional && parameter.isOptional()) {
-                    for (String perm : parameterPermissions) {
-                        if (!perm.isEmpty() && !sender.hasPermission(perm)) {
-                            sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);
-                            return null;
-                        }
-                    }
-                } else {
-                    throw new IllegalStateException("Using CommandPermission annotation on parameter that is not optional is useless and you should not do it.");
-                }
-            }
+            Object paramValue = resolver.getContext(context);
 
             //noinspection unchecked
             this.manager.conditions.validateConditions(context, paramValue);
@@ -290,9 +286,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     boolean hasPermission(CommandIssuer issuer) {
-        return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) && scope.hasPermission(issuer);
+        return this.manager.hasPermission(issuer, getRequiredPermissions());
     }
-
 
     /**
      * @see #getRequiredPermissions()

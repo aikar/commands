@@ -272,7 +272,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.conditions = conditions;
     }
 
-    public Set<String> getPermissions() {
+    public Set<String> getRequiredPermissions() {
         return permissions;
     }
 }
