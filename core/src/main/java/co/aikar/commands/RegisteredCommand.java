@@ -226,24 +226,36 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
             }
+
+            Set<String> parameterPermissions = parameter.getRequiredPermissions();
             if (args.isEmpty() && !(isLast && type == String[].class)) {
                 if (allowOptional && parameter.getDefaultValue() != null) {
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
+                    if (!this.manager.hasPermission(sender, parameterPermissions)) {
+                        sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED_PARAMETER, "{param}", parameterName);
+                        throw new InvalidCommandArgument(false);
+                    }
                     Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
+
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
                     //noinspection unchecked
                     this.manager.conditions.validateConditions(context, value);
                     passedArgs.put(parameterName, value);
-                    //noinspection UnnecessaryContinue
                     continue;
                 } else if (requiresInput) {
                     scope.showSyntax(sender, this);
                     return null;
                 }
+            } else {
+                if (!this.manager.hasPermission(sender, parameterPermissions)) {
+                    sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED_PARAMETER, "{param}", parameterName);
+                    throw new InvalidCommandArgument(false);
+                }
             }
+
             if (parameter.getValues() != null) {
                 String arg = !args.isEmpty() ? args.get(0) : "";
 
@@ -258,13 +270,14 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                         possible.add(s.toLowerCase());
                     }
                 }
-
                 if (!possible.contains(arg.toLowerCase())) {
                     throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,
                             "{valid}", ACFUtil.join(possible, ", "));
                 }
             }
+
             Object paramValue = resolver.getContext(context);
+
             //noinspection unchecked
             this.manager.conditions.validateConditions(context, paramValue);
             passedArgs.put(parameterName, paramValue);
@@ -273,9 +286,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     boolean hasPermission(CommandIssuer issuer) {
-        return (permission == null || permission.isEmpty() || scope.manager.hasPermission(issuer, permission)) && scope.hasPermission(issuer);
+        return this.manager.hasPermission(issuer, getRequiredPermissions());
     }
-
 
     /**
      * @see #getRequiredPermissions()

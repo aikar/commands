@@ -30,11 +30,11 @@ import java.lang.annotation.Target;
 
 /**
  * Sets the permission required to perform this command.
- *
+ * <p>
  * Permission format will vary based on implementation platform
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER})
 public @interface CommandPermission {
     String value();
 }
