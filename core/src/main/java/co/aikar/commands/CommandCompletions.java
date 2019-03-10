@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -176,6 +177,12 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         String input = args[argIndex];
 
         String completion = argIndex < completions.length ? completions[argIndex] : null;
+        if (completion == null
+                && cmd.parameters[cmd.parameters.length - 1].consumesRest
+                && completions.length > 1
+                && argIndex >= completions.length) {
+            completion = completions[completions.length - 1];
+        }
         if (completion == null && completions.length > 0) {
             completion = completions[completions.length - 1];
         }
@@ -206,6 +213,21 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                 try {
                     //noinspection unchecked
                     Collection<String> completions = handler.getCompletions(context);
+
+                    //Handle completions with more than one word:
+                    if (command.parameters[command.parameters.length - 1].consumesRest
+                            && args.length > ACFPatterns.SPACE.split(command.complete).length) {
+                        String start = String.join(" ", args);
+                        completions = completions.stream()
+                                .filter(s -> s.split(" ").length >= args.length)
+                                .filter(s -> ApacheCommonsLangUtil.startsWithIgnoreCase(s, start))
+                                .map(s -> {
+                                    String[] completionArgs = s.split(" ");
+                                    return String.join(" ",
+                                            Arrays.copyOfRange(completionArgs, args.length - 1, completionArgs.length));
+                                }).collect(Collectors.toList());
+                    }
+
                     if (completions != null) {
                         allCompletions.addAll(completions);
                         continue;

@@ -680,7 +680,11 @@ public abstract class BaseCommand {
      * @return All results to complete the command.
      */
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
-        if (!cmd.hasPermission(issuer) || args.length > cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {
+        if (!cmd.hasPermission(issuer) || args.length == 0 || cmd.complete == null) {
+            return Collections.emptyList();
+        }
+
+        if (!cmd.parameters[cmd.parameters.length - 1].consumesRest && args.length > cmd.consumeInputResolvers) {
             return Collections.emptyList();
         }
 
