@@ -177,8 +177,12 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
         String completion = argIndex < completions.length ? completions[argIndex] : null;
         if (completion == null && completions.length > 0) {
-            completion = completions[completions.length - 1];
+            String last = completions[completions.length - 1];
+            if (last.startsWith("repeat@")) {
+                completion = last;
+            }
         }
+
         if (completion == null) {
             return Collections.singletonList(input);
         }
@@ -187,6 +191,9 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     }
 
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
+        if (completion.startsWith("repeat@")) {
+            completion = completion.substring(6);
+        }
         completion = manager.getCommandReplacements().replace(completion);
 
         List<String> allCompletions = new ArrayList<>();
