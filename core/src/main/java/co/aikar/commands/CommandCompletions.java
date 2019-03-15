@@ -39,7 +39,9 @@ import java.util.stream.IntStream;
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class CommandCompletions<C extends CommandCompletionContext> {
+    private static final String DEFAULT_ENUM_ID = "@__defaultenum__";
     private final CommandManager manager;
+    // TODO: use a CompletionProvider that can return a delegated Id or provide values such as enum support
     private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
     private Map<Class, String> defaultCompletions = new HashMap<>();
 
@@ -75,7 +77,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
-        return this.completionMap.put("@" + id.toLowerCase(), handler);
+        return this.completionMap.put(prepareCompletionId(id), handler);
     }
 
     /**
@@ -94,7 +96,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
-        return this.completionMap.put("@" + id.toLowerCase(), handler);
+        return this.completionMap.put(prepareCompletionId(id), handler);
     }
 
     /**
@@ -146,14 +148,16 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     }
 
     /**
+     * Registers a completion handler such as @players to default apply to all command parameters of the specified types
+     * <p>
+     * This enables automatic completion support for parameters without manually defining it for custom objects
+     *
      * @param id
      * @param classes
-     * @return
-     * @deprecated Feature Not done yet
      */
-    CommandCompletionHandler setDefaultCompletion(String id, Class... classes) {
+    public void setDefaultCompletion(String id, Class... classes) {
         // get completion with specified id
-        id = id.toLowerCase();
+        id = prepareCompletionId(id);
         CommandCompletionHandler completion = completionMap.get(id);
 
         if (completion == null) {
@@ -164,8 +168,11 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         for (Class clazz : classes) {
             defaultCompletions.put(clazz, id);
         }
+    }
 
-        return completion;
+    @NotNull
+    private static String prepareCompletionId(String id) {
+        return (id.startsWith("@") ? "" : "@") + id.toLowerCase();
     }
 
     @NotNull
@@ -176,6 +183,10 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         String input = args[argIndex];
 
         String completion = argIndex < completions.length ? completions[argIndex] : null;
+        if (completion == null || "*".equals(completion)) {
+            completion = findDefaultCompletion(cmd, args);
+        }
+
         if (completion == null && completions.length > 0) {
             String last = completions[completions.length - 1];
             if (last.startsWith("repeat@")) {
@@ -190,7 +201,35 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         return getCompletionValues(cmd, sender, completion, args, isAsync);
     }
 
+    String findDefaultCompletion(RegisteredCommand cmd, String[] args) {
+        int i = 0;
+        for (CommandParameter param : cmd.parameters) {
+            if (param.canConsumeInput() && ++i == args.length) {
+                Class type = param.getType();
+                while (type != null) {
+                    String completion = this.defaultCompletions.get(type);
+                    if (completion != null) {
+                        return completion;
+                    }
+                    type = type.getSuperclass();
+                }
+                if (param.getType().isEnum()) {
+                    CommandOperationContext ctx = CommandManager.getCurrentCommandOperationContext();
+                    //noinspection unchecked
+                    ctx.enumCompletionValues = ACFUtil.enumNames((Class<? extends Enum<?>>) param.getType());
+                    return DEFAULT_ENUM_ID;
+                }
+                break;
+            }
+        }
+        return null;
+    }
+
     List<String> getCompletionValues(RegisteredCommand command, CommandIssuer sender, String completion, String[] args, boolean isAsync) {
+        if (DEFAULT_ENUM_ID.equals(completion)) {
+            CommandOperationContext<?> ctx = CommandManager.getCurrentCommandOperationContext();
+            return ctx.enumCompletionValues;
+        }
         if (completion.startsWith("repeat@")) {
             completion = completion.substring(6);
         }

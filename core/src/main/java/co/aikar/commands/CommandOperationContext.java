@@ -24,11 +24,12 @@
 package co.aikar.commands;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 /**
  * Holds information about the currently executing command on this thread
  */
-public class CommandOperationContext <I extends CommandIssuer> {
+public class CommandOperationContext<I extends CommandIssuer> {
 
     private final CommandManager manager;
     private final I issuer;
@@ -37,6 +38,7 @@ public class CommandOperationContext <I extends CommandIssuer> {
     private final String[] args;
     private final boolean isAsync;
     private RegisteredCommand registeredCommand;
+    List<String> enumCompletionValues;
 
     CommandOperationContext(CommandManager manager, I issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
         this.manager = manager;
@@ -81,6 +83,7 @@ public class CommandOperationContext <I extends CommandIssuer> {
 
     /**
      * This method will not support annotation processors!! use getAnnotationValue or hasAnnotation
+     *
      * @deprecated Use {@link #getAnnotationValue(Class)}
      */
     @Deprecated
