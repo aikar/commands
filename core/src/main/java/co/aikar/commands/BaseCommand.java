@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.PreCommand;
 import co.aikar.commands.annotation.Subcommand;
@@ -247,7 +248,7 @@ public abstract class BaseCommand {
 
         this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
         this.permission = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
-        this.description = this.commandName + " commands";
+        this.description = annotations.getAnnotationValue(self, Description.class, Annotations.NO_EMPTY | Annotations.REPLACEMENTS);
         this.parentSubcommand = getParentSubcommand(self);
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 

@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Values;
@@ -40,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 @CommandAlias("acf|somecommand|sc|somcom")
+@Description("Some ACF Command")
 public class SomeCommand extends BaseCommand {
 
     {
@@ -91,6 +93,7 @@ public class SomeCommand extends BaseCommand {
     @Subcommand("admin")
     @CommandPermission("some.perm")
     @CommandAlias("acfadmin|acfa")
+    @Description("Test Admin Commands")
     public void onAdminCommand(Player player) {
         player.sendMessage("You got permission!");
     }
@@ -123,6 +126,7 @@ public class SomeCommand extends BaseCommand {
     // Then the enum will also pick up default of its values even though it was left off of the completion
     @Subcommand("completions")
     @CommandAlias("acfcompletions|acfc")
+    @Description("Test Completions")
     @CommandCompletion("* * @test foo1|foo2|foo3")
     public void onTestCompletion(CommandSender sender, OnlinePlayer player, World world, String test, String foo1, TestEnum e) {
         sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + foo1 + " - " + e.name());
