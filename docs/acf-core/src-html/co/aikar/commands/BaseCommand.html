@@ -688,7 +688,7 @@
 <span class="sourceLineNo">680</span>     * @return All results to complete the command.<a name="line.680"></a>
 <span class="sourceLineNo">681</span>     */<a name="line.681"></a>
 <span class="sourceLineNo">682</span>    private List&lt;String&gt; completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {<a name="line.682"></a>
-<span class="sourceLineNo">683</span>        if (!cmd.hasPermission(issuer) || args.length &gt; cmd.consumeInputResolvers || args.length == 0 || cmd.complete == null) {<a name="line.683"></a>
+<span class="sourceLineNo">683</span>        if (!cmd.hasPermission(issuer) || args.length &gt; cmd.consumeInputResolvers || args.length == 0) {<a name="line.683"></a>
 <span class="sourceLineNo">684</span>            return Collections.emptyList();<a name="line.684"></a>
 <span class="sourceLineNo">685</span>        }<a name="line.685"></a>
 <span class="sourceLineNo">686</span><a name="line.686"></a>
@@ -796,7 +796,7 @@
 <span class="sourceLineNo">788</span>    }<a name="line.788"></a>
 <span class="sourceLineNo">789</span><a name="line.789"></a>
 <span class="sourceLineNo">790</span>    public boolean hasPermission(CommandIssuer issuer) {<a name="line.790"></a>
-<span class="sourceLineNo">791</span>        return getRequiredPermissions().isEmpty() || getRequiredPermissions().stream().allMatch(permission -&gt; manager.hasPermission(issuer, permission));<a name="line.791"></a>
+<span class="sourceLineNo">791</span>        return this.manager.hasPermission(issuer, getRequiredPermissions());<a name="line.791"></a>
 <span class="sourceLineNo">792</span>    }<a name="line.792"></a>
 <span class="sourceLineNo">793</span><a name="line.793"></a>
 <span class="sourceLineNo">794</span>    public Set&lt;String&gt; getRequiredPermissions() {<a name="line.794"></a>
