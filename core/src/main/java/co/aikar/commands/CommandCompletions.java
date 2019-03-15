@@ -47,7 +47,9 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
     public CommandCompletions(CommandManager manager) {
         this.manager = manager;
-        registerAsyncCompletion("nothing", c -> Collections.emptyList());
+        registerStaticCompletion("empty", Collections.emptyList());
+        registerStaticCompletion("nothing", Collections.emptyList());
+        registerStaticCompletion("timeunits", Arrays.asList("minutes", "hours", "days", "weeks", "months", "years"));
         registerAsyncCompletion("range", (c) -> {
             String config = c.getConfig();
             if (config == null) {
@@ -65,8 +67,6 @@ public class CommandCompletions<C extends CommandCompletionContext> {
             }
             return IntStream.rangeClosed(start, end).mapToObj(Integer::toString).collect(Collectors.toList());
         });
-        List<String> timeunits = Arrays.asList("minutes", "hours", "days", "weeks", "months", "years");
-        registerAsyncCompletion("timeunits", (c) -> timeunits);
     }
 
     /**
