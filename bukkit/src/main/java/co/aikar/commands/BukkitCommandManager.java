@@ -37,6 +37,7 @@ import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.help.GenericCommandHelpTopic;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -107,6 +108,13 @@ public class BukkitCommandManager extends CommandManager<
             this.mcMinorVersion = -1;
             this.mcPatchVersion = -1;
         }
+        Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -> {
+            if (hasUnstableAPI("help")) {
+                return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);
+            } else {
+                return new GenericCommandHelpTopic(command);
+            }
+        });
 
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
 
