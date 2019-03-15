@@ -86,6 +86,7 @@ public abstract class BaseCommand {
      * A map of all the registered commands for this base command, keyed to each potential subcommand to access it.
      */
     final SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
+    final Set<BaseCommand> subScopes = new HashSet<>();
 
     /**
      * A map of flags to pass to Context Resolution for every parameter of the type. This is like an automatic @Flags on each.
@@ -279,23 +280,24 @@ public abstract class BaseCommand {
         for (Class<?> clazz : this.getClass().getDeclaredClasses()) {
             if (BaseCommand.class.isAssignableFrom(clazz)) {
                 try {
-                    BaseCommand subCommand = null;
+                    BaseCommand subScope = null;
                     Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
                     for (Constructor<?> declaredConstructor : declaredConstructors) {
 
                         declaredConstructor.setAccessible(true);
                         Parameter[] parameters = declaredConstructor.getParameters();
                         if (parameters.length == 1) {
-                            subCommand = (BaseCommand) declaredConstructor.newInstance(this);
+                            subScope = (BaseCommand) declaredConstructor.newInstance(this);
                         } else {
                             manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
                         }
                     }
-                    if (subCommand != null) {
-                        subCommand.parentCommand = this;
-                        subCommand.onRegister(manager, cmd);
-                        this.subCommands.putAll(subCommand.subCommands);
-                        this.registeredCommands.putAll(subCommand.registeredCommands);
+                    if (subScope != null) {
+                        subScope.parentCommand = this;
+                        this.subScopes.add(subScope);
+                        subScope.onRegister(manager, cmd);
+                        this.subCommands.putAll(subScope.subCommands);
+                        this.registeredCommands.putAll(subScope.registeredCommands);
                     } else {
                         this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());
                     }
@@ -380,6 +382,8 @@ public abstract class BaseCommand {
         if (this.parentCommand != null) {
             this.permissions.addAll(this.parentCommand.getRequiredPermissions());
         }
+        this.subCommands.values().forEach(RegisteredCommand::computePermissions);
+        this.subScopes.forEach(BaseCommand::computePermissions);
     }
 
     /**

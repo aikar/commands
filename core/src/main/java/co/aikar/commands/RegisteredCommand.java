@@ -304,7 +304,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    private void computePermissions() {
+    void computePermissions() {
         this.permissions.clear();
         this.permissions.addAll(this.scope.getRequiredPermissions());
         if (this.permission != null && !this.permission.isEmpty()) {
