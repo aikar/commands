@@ -252,8 +252,8 @@ public abstract class BaseCommand {
         this.parentSubcommand = getParentSubcommand(self);
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
+        computePermissions(); // Must be before any subcommands so they can inherit permissions
         registerSubcommands();
-        computePermissions();
         registerSubclasses(cmd);
 
         if (cmdAliases != null) {
