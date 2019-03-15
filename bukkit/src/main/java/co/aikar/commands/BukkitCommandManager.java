@@ -35,6 +35,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.plugin.Plugin;
@@ -118,6 +119,9 @@ public class BukkitCommandManager extends CommandManager<
         }, 5, 5);
 
         registerDependency(plugin.getClass(), plugin);
+        registerDependency(Logger.class, plugin.getLogger());
+        registerDependency(FileConfiguration.class, plugin.getConfig());
+        registerDependency(FileConfiguration.class, "config", plugin.getConfig());
         registerDependency(Plugin.class, plugin);
         registerDependency(JavaPlugin.class, plugin);
         registerDependency(PluginManager.class, Bukkit.getPluginManager());
