@@ -88,7 +88,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class);
+        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.DEFAULT_EMPTY); // no replacements as it should be per-issuer
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -262,6 +262,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 Set<String> possible = new HashSet<>();
                 CommandCompletions commandCompletions = this.manager.getCommandCompletions();
                 for (String s : parameter.getValues()) {
+                    if ("*".equals(s) || "@completions".equals(s)) {
+                        s = commandCompletions.findDefaultCompletion(this, origArgs);
+                    }
                     //noinspection unchecked
                     List<String> check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
@@ -301,7 +304,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         return ACFPatterns.COMMA.split(this.permission)[0];
     }
 
-    private void computePermissions() {
+    void computePermissions() {
         this.permissions.clear();
         this.permissions.addAll(this.scope.getRequiredPermissions());
         if (this.permission != null && !this.permission.isEmpty()) {

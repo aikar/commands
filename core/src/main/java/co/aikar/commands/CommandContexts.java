@@ -205,7 +205,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
             Enum<?> match = ACFUtil.simpleMatch(enumCls, first);
             if (match == null) {
                 List<String> names = ACFUtil.enumNames(enumCls);
-                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", ACFUtil.join(names));
+                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", ACFUtil.join(names, ", "));
             }
             return match;
         });

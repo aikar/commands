@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -65,7 +66,7 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
         });
         registerAsyncCompletion("dyecolors", c -> ACFUtil.enumNames(DyeColor.values()));
         registerCompletion("worlds", c -> (
-            Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
+                Bukkit.getWorlds().stream().map(World::getName).collect(Collectors.toList())
         ));
 
         registerCompletion("players", c -> {
@@ -86,6 +87,9 @@ public class BukkitCommandCompletions extends CommandCompletions<BukkitCommandCo
             matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);
             return matchedPlayers;
         });
+
+        setDefaultCompletion("players", OnlinePlayer.class, co.aikar.commands.contexts.OnlinePlayer.class, Player.class);
+        setDefaultCompletion("worlds", World.class);
     }
 
 }

@@ -47,6 +47,22 @@ public class BukkitRootCommand extends Command implements RootCommand {
     }
 
     @Override
+    public String getDescription() {
+        RegisteredCommand command = getDefaultRegisteredCommand();
+
+        if (command != null && !command.getHelpText().isEmpty()) {
+            return command.getHelpText();
+        }
+        if (command != null && command.scope.description != null) {
+            return command.scope.description;
+        }
+        if (defCommand.description != null) {
+            return defCommand.description;
+        }
+        return super.getDescription();
+    }
+
+    @Override
     public String getCommandName() {
         return name;
     }

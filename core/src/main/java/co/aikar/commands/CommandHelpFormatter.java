@@ -193,6 +193,7 @@ public class CommandHelpFormatter {
         //{name} {description}
         return new String[]{
                 "{name}", param.getName(),
+                "{syntaxorname}", ACFUtil.nullDefault(param.getSyntax(), param.getName()),
                 "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),
                 "{description}", ACFUtil.nullDefault(param.getDescription(), ""),
                 "{command}", help.getCommandName(),

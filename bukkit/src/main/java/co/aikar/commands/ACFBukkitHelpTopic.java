@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License
+ * Copyright (c) 2016-2019 Daniel Ennis (Aikar) - MIT License
  *
  *  Permission is hereby granted, free of charge, to any person obtaining
  *  a copy of this software and associated documentation files (the
@@ -21,19 +21,27 @@
  *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package co.aikar.commands.annotation;
+package co.aikar.commands;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.bukkit.Bukkit;
+import org.bukkit.help.GenericCommandHelpTopic;
 
-/**
- * Sets a description to the parameter or method this is attached to.
- * This is used in the help menus.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
-public @interface Description {
-    String value();
+import java.util.ArrayList;
+import java.util.List;
+
+public class ACFBukkitHelpTopic extends GenericCommandHelpTopic {
+
+    public ACFBukkitHelpTopic(BukkitCommandManager manager, BukkitRootCommand command) {
+        super(command);
+
+        List<String> messages = new ArrayList<>();
+        BukkitCommandIssuer captureIssuer = new BukkitCommandIssuer(manager, Bukkit.getConsoleSender()) {
+            @Override
+            public void sendMessageInternal(String message) {
+                messages.add(message);
+            }
+        };
+        manager.generateCommandHelp(captureIssuer, command).showHelp(captureIssuer);
+        this.fullText = ACFUtil.join(messages, "\n");
+    }
 }

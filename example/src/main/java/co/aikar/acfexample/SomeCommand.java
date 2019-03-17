@@ -30,6 +30,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Values;
@@ -40,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 @CommandAlias("acf|somecommand|sc|somcom")
+@Description("Some ACF Command")
 public class SomeCommand extends BaseCommand {
 
     {
@@ -63,7 +65,7 @@ public class SomeCommand extends BaseCommand {
     private String testString3;
 
     @Subcommand("testDI")
-    public void onTestDI(CommandSender sender){
+    public void onTestDI(CommandSender sender) {
         sender.sendMessage("The value for the injected SomeHandler is " + someHandler.getSomeField());
         sender.sendMessage("Plugin is null? " + (plugin == null));
         sender.sendMessage("Test String 1: " + testString);
@@ -91,6 +93,7 @@ public class SomeCommand extends BaseCommand {
     @Subcommand("admin")
     @CommandPermission("some.perm")
     @CommandAlias("acfadmin|acfa")
+    @Description("Test Admin Commands")
     public void onAdminCommand(Player player) {
         player.sendMessage("You got permission!");
     }
@@ -117,11 +120,16 @@ public class SomeCommand extends BaseCommand {
     // /acf Aikar wo<tab> with a world named "world" would provide world as a completion.
     // @test was custom defined in ACFExample as foobar, so only that value would show up as a completion
     // then finally /acfc Aikar world foobar <tab> would show foo1, foo2, foo3 statically
+    // * means 'default', which is registered to @players for OnlinePlayer. Same for worlds.
+    // @test is a manually defined handler to a String input, can't default that one.
+    // the foo1|foo2|foo3 defines a static list of completion values for the foo1 parameter
+    // Then the enum will also pick up default of its values even though it was left off of the completion
     @Subcommand("completions")
     @CommandAlias("acfcompletions|acfc")
-    @CommandCompletion("@players @worlds @test foo1|foo2|foo3")
-    public void onTestCompletion(CommandSender sender, OnlinePlayer player, World world, String test, String misc) {
-        sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + misc);
+    @Description("Test Completions")
+    @CommandCompletion("* * @test foo1|foo2|foo3")
+    public void onTestCompletion(CommandSender sender, OnlinePlayer player, World world, String test, String foo1, TestEnum e) {
+        sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + foo1 + " - " + e.name());
     }
 
 
@@ -166,6 +174,7 @@ public class SomeCommand extends BaseCommand {
             public void onTest1(Player player, String testX) {
                 player.sendMessage("You got test inner inner test3: " + testX);
             }
+
             // Requires /acf test next test4 or simply /deepinner command alias
             @CommandAlias("deepinner")
             @Subcommand("test4|td4")
@@ -174,5 +183,10 @@ public class SomeCommand extends BaseCommand {
                 player.sendMessage("You got test inner inner test4: " + testY);
             }
         }
+    }
+
+    public enum TestEnum {
+        FOOTEST1,
+        BARTEST2
     }
 }
