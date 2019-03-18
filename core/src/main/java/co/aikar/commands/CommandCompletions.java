@@ -188,17 +188,18 @@ public class CommandCompletions<C extends CommandCompletionContext> {
             completion = findDefaultCompletion(cmd, args);
         }
 
-        if (completion == null
-                && cmd.parameters[cmd.parameters.length - 1].consumesRest
-                && completions.length > 1
-                && argIndex >= completions.length) {
-            completion = completions[completions.length - 1];
-        }
         if (completion == null && completions.length > 0) {
             String last = completions[completions.length - 1];
             if (last.startsWith("repeat@")) {
                 completion = last;
             }
+        }
+
+        if (completion == null
+                && cmd.parameters[cmd.parameters.length - 1].consumesRest
+                && completions.length > 1
+                && argIndex >= completions.length) {
+            completion = completions[completions.length - 1];
         }
 
         if (completion == null) {
