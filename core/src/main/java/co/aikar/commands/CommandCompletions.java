@@ -192,14 +192,9 @@ public class CommandCompletions<C extends CommandCompletionContext> {
             String last = completions[completions.length - 1];
             if (last.startsWith("repeat@")) {
                 completion = last;
+            } else if (argIndex >= completions.length && cmd.parameters[cmd.parameters.length - 1].consumesRest) {
+                completion = last;
             }
-        }
-
-        if (completion == null
-                && cmd.parameters[cmd.parameters.length - 1].consumesRest
-                && completions.length > 1
-                && argIndex >= completions.length) {
-            completion = completions[completions.length - 1];
         }
 
         if (completion == null) {
@@ -238,7 +233,8 @@ public class CommandCompletions<C extends CommandCompletionContext> {
             CommandOperationContext<?> ctx = CommandManager.getCurrentCommandOperationContext();
             return ctx.enumCompletionValues;
         }
-        if (completion.startsWith("repeat@")) {
+        boolean repeat = completion.startsWith("repeat@");
+        if (repeat) {
             completion = completion.substring(6);
         }
         completion = manager.getCommandReplacements().replace(completion);
@@ -262,7 +258,8 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                     Collection<String> completions = handler.getCompletions(context);
 
                     //Handle completions with more than one word:
-                    if (command.parameters[command.parameters.length - 1].consumesRest
+                    if (!repeat &&
+                            command.parameters[command.parameters.length - 1].consumesRest
                             && args.length > ACFPatterns.SPACE.split(command.complete).length) {
                         String start = String.join(" ", args);
                         completions = completions.stream()
