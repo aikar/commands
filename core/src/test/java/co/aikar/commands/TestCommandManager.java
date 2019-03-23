@@ -77,12 +77,12 @@ public class TestCommandManager extends CommandManager<
 
     public void unregisterCommand(BaseCommand command) {
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String jdaCommandName = entry.getKey().toLowerCase();
-            TestRootCommand jdaCommand = (TestRootCommand) entry.getValue();
-            jdaCommand.getSubCommands().values().removeAll(command.subCommands.values());
-            if (jdaCommand.isRegistered && jdaCommand.getSubCommands().isEmpty()) {
-                jdaCommand.isRegistered = false;
-                commands.remove(jdaCommandName);
+            String commandName = entry.getKey().toLowerCase();
+            TestRootCommand cmd = (TestRootCommand) entry.getValue();
+            cmd.getSubCommands().values().removeAll(command.subCommands.values());
+            if (cmd.isRegistered && cmd.getSubCommands().isEmpty()) {
+                cmd.isRegistered = false;
+                commands.remove(commandName);
             }
         }
     }
