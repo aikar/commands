@@ -258,8 +258,8 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                     Collection<String> completions = handler.getCompletions(context);
 
                     //Handle completions with more than one word:
-                    if (!repeat &&
-                            command.parameters[command.parameters.length - 1].consumesRest
+                    if (!repeat && completions != null
+                            && command.parameters[command.parameters.length - 1].consumesRest
                             && args.length > ACFPatterns.SPACE.split(command.complete).length) {
                         String start = String.join(" ", args);
                         completions = completions.stream()
