@@ -263,7 +263,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                             && args.length > ACFPatterns.SPACE.split(command.complete).length) {
                         String start = String.join(" ", args);
                         completions = completions.stream()
-                                .filter(s -> s.split(" ").length >= args.length)
+                                .filter(s -> s != null && s.split(" ").length >= args.length)
                                 .filter(s -> ApacheCommonsLangUtil.startsWithIgnoreCase(s, start))
                                 .map(s -> {
                                     String[] completionArgs = s.split(" ");
