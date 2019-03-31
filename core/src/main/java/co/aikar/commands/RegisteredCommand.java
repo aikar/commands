@@ -46,6 +46,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
@@ -147,7 +149,14 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
-            method.invoke(scope, passedArgs.values().toArray());
+            Object obj = method.invoke(scope, passedArgs.values().toArray());
+            if (obj instanceof CompletableFuture) {
+                CompletableFuture<?> future = (CompletableFuture) obj;
+                future.exceptionally(t -> {
+                    handleException(sender, args, t);
+                    return null;
+                });
+            }
         } catch (Exception e) {
             handleException(sender, args, e);
         } finally {
@@ -161,9 +170,12 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     public void postCommand() {
     }
 
-    void handleException(CommandIssuer sender, List<String> args, Exception e) {
+    void handleException(CommandIssuer sender, List<String> args, Throwable e) {
+        while (e instanceof ExecutionException) {
+            e = e.getCause();
+        }
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
-            e = (Exception) e.getCause();
+            e = e.getCause();
         }
         if (e instanceof ShowCommandHelp) {
             ShowCommandHelp showHelp = (ShowCommandHelp) e;
