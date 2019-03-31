@@ -159,8 +159,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             }
         } catch (Exception e) {
             handleException(sender, args, e);
+        } finally {
+            postCommand();
         }
-        postCommand();
     }
 
     public void preCommand() {
@@ -244,11 +245,12 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 if (allowOptional && parameter.getDefaultValue() != null) {
                     args.add(parameter.getDefaultValue());
                 } else if (allowOptional && parameter.isOptional()) {
-                    if (!this.manager.hasPermission(sender, parameterPermissions)) {
-                        sender.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED_PARAMETER, "{param}", parameterName);
-                        throw new InvalidCommandArgument(false);
+                    Object value;
+                    if (!parameter.isOptionalResolver() || !this.manager.hasPermission(sender, parameterPermissions)) {
+                       value = null;
+                    } else {
+                       value = resolver.getContext(context);
                     }
-                    Object value = parameter.isOptionalResolver() ? resolver.getContext(context) : null;
 
                     if (value == null && parameter.getClass().isPrimitive()) {
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
