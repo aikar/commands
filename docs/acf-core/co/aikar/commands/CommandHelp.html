@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -108,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.37">CommandHelp</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.38">CommandHelp</a>
 extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
 </li>
 </ul>
@@ -196,35 +196,39 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#isLastPage--">isLastPage</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i12" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#isOnlyPage--">isOnlyPage</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#setPage-int-">setPage</a></span>(int&nbsp;page)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#setPage-int-int-">setPage</a></span>(int&nbsp;page,
        int&nbsp;perPage)</code>&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#setPerPage-int-">setPerPage</a></span>(int&nbsp;perPage)</code>&nbsp;</td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#setSearch-java.util.List-">setSearch</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;search)</code>&nbsp;</td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#showHelp--">showHelp</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#showHelp-co.aikar.commands.CommandIssuer-">showHelp</a></span>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code>&nbsp;</td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#testExactMatch-java.lang.String-">testExactMatch</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;command)</code>&nbsp;</td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/CommandHelp.html#updateSearchScore-co.aikar.commands.HelpEntry-">updateSearchScore</a></span>(<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;help)</code>&nbsp;</td>
 </tr>
@@ -256,7 +260,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>CommandHelp</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.51">CommandHelp</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager,
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.52">CommandHelp</a>(<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;manager,
                    <a href="../../../co/aikar/commands/RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&nbsp;rootCommand,
                    <a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
@@ -275,7 +279,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>updateSearchScore</h4>
-<pre>protected&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.86">updateSearchScore</a>(<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;help)</pre>
+<pre>protected&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.87">updateSearchScore</a>(<a href="../../../co/aikar/commands/HelpEntry.html" title="class in co.aikar.commands">HelpEntry</a>&nbsp;help)</pre>
 </li>
 </ul>
 <a name="getManager--">
@@ -284,7 +288,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.119">getManager</a>()</pre>
+<pre>public&nbsp;<a href="../../../co/aikar/commands/CommandManager.html" title="class in co.aikar.commands">CommandManager</a>&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.120">getManager</a>()</pre>
 </li>
 </ul>
 <a name="testExactMatch-java.lang.String-">
@@ -293,7 +297,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>testExactMatch</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.123">testExactMatch</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;command)</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.124">testExactMatch</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;command)</pre>
 </li>
 </ul>
 <a name="showHelp--">
@@ -302,7 +306,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>showHelp</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.133">showHelp</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.134">showHelp</a>()</pre>
 </li>
 </ul>
 <a name="showHelp-co.aikar.commands.CommandIssuer-">
@@ -311,7 +315,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockList">
 <li class="blockList">
 <h4>showHelp</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.137">showHelp</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.138">showHelp</a>(<a href="../../../co/aikar/commands/CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
 <a name="getHelpEntries--">
@@ -441,13 +445,22 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <pre>public&nbsp;int&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.245">getTotalPages</a>()</pre>
 </li>
 </ul>
+<a name="isOnlyPage--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isOnlyPage</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.249">isOnlyPage</a>()</pre>
+</li>
+</ul>
 <a name="isLastPage--">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>isLastPage</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.249">isLastPage</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/CommandHelp.html#line.253">isLastPage</a>()</pre>
 </li>
 </ul>
 </li>

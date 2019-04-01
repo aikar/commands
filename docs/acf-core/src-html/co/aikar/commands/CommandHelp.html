@@ -40,125 +40,125 @@
 <span class="sourceLineNo">032</span>import java.util.List;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import java.util.Set;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import java.util.regex.Pattern;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>@SuppressWarnings("WeakerAccess")<a name="line.36"></a>
-<span class="sourceLineNo">037</span>public class CommandHelp {<a name="line.37"></a>
-<span class="sourceLineNo">038</span>    private final CommandManager manager;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    private final CommandIssuer issuer;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>    private final List&lt;HelpEntry&gt; helpEntries = new ArrayList&lt;&gt;();<a name="line.40"></a>
-<span class="sourceLineNo">041</span>    private final String commandName;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    final String commandPrefix;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>    private int page = 1;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>    private int perPage;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    List&lt;String&gt; search;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>    private Set&lt;HelpEntry&gt; selectedEntry = new HashSet&lt;&gt;();<a name="line.46"></a>
-<span class="sourceLineNo">047</span>    private int totalResults;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    private int totalPages;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    private boolean lastPage;<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>    public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>        this.manager = manager;<a name="line.52"></a>
-<span class="sourceLineNo">053</span>        this.issuer = issuer;<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        this.perPage = manager.defaultHelpPerPage;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>        this.commandPrefix = manager.getCommandPrefix(issuer);<a name="line.55"></a>
-<span class="sourceLineNo">056</span>        this.commandName = rootCommand.getCommandName();<a name="line.56"></a>
-<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">035</span>import java.util.stream.Collectors;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>@SuppressWarnings("WeakerAccess")<a name="line.37"></a>
+<span class="sourceLineNo">038</span>public class CommandHelp {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    private final CommandManager manager;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    private final CommandIssuer issuer;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    private final List&lt;HelpEntry&gt; helpEntries = new ArrayList&lt;&gt;();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    private final String commandName;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    final String commandPrefix;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    private int page = 1;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>    private int perPage;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    List&lt;String&gt; search;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    private Set&lt;HelpEntry&gt; selectedEntry = new HashSet&lt;&gt;();<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    private int totalResults;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    private int totalPages;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    private boolean lastPage;<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    public CommandHelp(CommandManager manager, RootCommand rootCommand, CommandIssuer issuer) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        this.manager = manager;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>        this.issuer = issuer;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>        this.perPage = manager.defaultHelpPerPage;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        this.commandPrefix = manager.getCommandPrefix(issuer);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        this.commandName = rootCommand.getCommandName();<a name="line.57"></a>
 <span class="sourceLineNo">058</span><a name="line.58"></a>
-<span class="sourceLineNo">059</span>        SetMultimap&lt;String, RegisteredCommand&gt; subCommands = rootCommand.getSubCommands();<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        Set&lt;RegisteredCommand&gt; seen = new HashSet&lt;&gt;();<a name="line.60"></a>
-<span class="sourceLineNo">061</span>        <a name="line.61"></a>
-<span class="sourceLineNo">062</span>        if (!rootCommand.getDefCommand().hasHelpCommand) {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>            RegisteredCommand defCommand = rootCommand.getDefaultRegisteredCommand();<a name="line.63"></a>
-<span class="sourceLineNo">064</span>            if (defCommand != null) {<a name="line.64"></a>
-<span class="sourceLineNo">065</span>                helpEntries.add(new HelpEntry(this, defCommand));<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                seen.add(defCommand);<a name="line.66"></a>
-<span class="sourceLineNo">067</span>            }<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        }<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        <a name="line.69"></a>
-<span class="sourceLineNo">070</span>        subCommands.entries().forEach(e -&gt; {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            String key = e.getKey();<a name="line.71"></a>
-<span class="sourceLineNo">072</span>            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>                return;<a name="line.73"></a>
-<span class="sourceLineNo">074</span>            }<a name="line.74"></a>
-<span class="sourceLineNo">075</span><a name="line.75"></a>
-<span class="sourceLineNo">076</span>            RegisteredCommand regCommand = e.getValue();<a name="line.76"></a>
-<span class="sourceLineNo">077</span><a name="line.77"></a>
-<span class="sourceLineNo">078</span>            if (!regCommand.isPrivate &amp;&amp; regCommand.hasPermission(issuer) &amp;&amp; !seen.contains(regCommand)) {<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                this.helpEntries.add(new HelpEntry(this, regCommand));<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                seen.add(regCommand);<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            }<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        });<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>    @UnstableAPI // Not sure on this one yet even when API becomes unstable<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    protected void updateSearchScore(HelpEntry help) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        if (this.search == null || this.search.isEmpty()) {<a name="line.87"></a>
-<span class="sourceLineNo">088</span>            help.setSearchScore(1);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            return;<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        }<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        final RegisteredCommand&lt;?&gt; cmd = help.getRegisteredCommand();<a name="line.91"></a>
-<span class="sourceLineNo">092</span><a name="line.92"></a>
-<span class="sourceLineNo">093</span>        int searchScore = 0;<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        for (String word : this.search) {<a name="line.94"></a>
-<span class="sourceLineNo">095</span>            Pattern pattern = Pattern.compile(".*" + Pattern.quote(word) + ".*", Pattern.CASE_INSENSITIVE);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>            for (String subCmd : cmd.registeredSubcommands) {<a name="line.96"></a>
-<span class="sourceLineNo">097</span>                Pattern subCmdPattern = Pattern.compile(".*" + Pattern.quote(subCmd) + ".*", Pattern.CASE_INSENSITIVE);<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                if (pattern.matcher(subCmd).matches()) {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>                    searchScore += 3;<a name="line.99"></a>
-<span class="sourceLineNo">100</span>                } else if (subCmdPattern.matcher(word).matches()) {<a name="line.100"></a>
-<span class="sourceLineNo">101</span>                    searchScore++;<a name="line.101"></a>
-<span class="sourceLineNo">102</span>                }<a name="line.102"></a>
-<span class="sourceLineNo">103</span>            }<a name="line.103"></a>
-<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>        SetMultimap&lt;String, RegisteredCommand&gt; subCommands = rootCommand.getSubCommands();<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        Set&lt;RegisteredCommand&gt; seen = new HashSet&lt;&gt;();<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>        if (!rootCommand.getDefCommand().hasHelpCommand) {<a name="line.63"></a>
+<span class="sourceLineNo">064</span>            RegisteredCommand defCommand = rootCommand.getDefaultRegisteredCommand();<a name="line.64"></a>
+<span class="sourceLineNo">065</span>            if (defCommand != null) {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                helpEntries.add(new HelpEntry(this, defCommand));<a name="line.66"></a>
+<span class="sourceLineNo">067</span>                seen.add(defCommand);<a name="line.67"></a>
+<span class="sourceLineNo">068</span>            }<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        }<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>        subCommands.entries().forEach(e -&gt; {<a name="line.71"></a>
+<span class="sourceLineNo">072</span>            String key = e.getKey();<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                return;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>            }<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>            RegisteredCommand regCommand = e.getValue();<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>            if (!regCommand.isPrivate &amp;&amp; regCommand.hasPermission(issuer) &amp;&amp; !seen.contains(regCommand)) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                this.helpEntries.add(new HelpEntry(this, regCommand));<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                seen.add(regCommand);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            }<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        });<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    }<a name="line.84"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>    @UnstableAPI // Not sure on this one yet even when API becomes unstable<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    protected void updateSearchScore(HelpEntry help) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        if (this.search == null || this.search.isEmpty()) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>            help.setSearchScore(1);<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            return;<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        }<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        final RegisteredCommand&lt;?&gt; cmd = help.getRegisteredCommand();<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>        int searchScore = 0;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        for (String word : this.search) {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>            Pattern pattern = Pattern.compile(".*" + Pattern.quote(word) + ".*", Pattern.CASE_INSENSITIVE);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            for (String subCmd : cmd.registeredSubcommands) {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>                Pattern subCmdPattern = Pattern.compile(".*" + Pattern.quote(subCmd) + ".*", Pattern.CASE_INSENSITIVE);<a name="line.98"></a>
+<span class="sourceLineNo">099</span>                if (pattern.matcher(subCmd).matches()) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>                    searchScore += 3;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>                } else if (subCmdPattern.matcher(word).matches()) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                    searchScore++;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>                }<a name="line.103"></a>
+<span class="sourceLineNo">104</span>            }<a name="line.104"></a>
 <span class="sourceLineNo">105</span><a name="line.105"></a>
-<span class="sourceLineNo">106</span>            if (pattern.matcher(help.getDescription()).matches()) {<a name="line.106"></a>
-<span class="sourceLineNo">107</span>                searchScore += 2;<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            }<a name="line.108"></a>
-<span class="sourceLineNo">109</span>            if (pattern.matcher(help.getParameterSyntax()).matches()) {<a name="line.109"></a>
-<span class="sourceLineNo">110</span>                searchScore++;<a name="line.110"></a>
-<span class="sourceLineNo">111</span>            }<a name="line.111"></a>
-<span class="sourceLineNo">112</span>            if (help.getSearchTags() != null &amp;&amp; pattern.matcher(help.getSearchTags()).matches()) {<a name="line.112"></a>
-<span class="sourceLineNo">113</span>                searchScore += 2;<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            }<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        }<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        help.setSearchScore(searchScore);<a name="line.116"></a>
-<span class="sourceLineNo">117</span>    }<a name="line.117"></a>
-<span class="sourceLineNo">118</span><a name="line.118"></a>
-<span class="sourceLineNo">119</span>    public CommandManager getManager() {<a name="line.119"></a>
-<span class="sourceLineNo">120</span>        return manager;<a name="line.120"></a>
-<span class="sourceLineNo">121</span>    }<a name="line.121"></a>
-<span class="sourceLineNo">122</span><a name="line.122"></a>
-<span class="sourceLineNo">123</span>    public boolean testExactMatch(String command) {<a name="line.123"></a>
-<span class="sourceLineNo">124</span>        selectedEntry.clear();<a name="line.124"></a>
-<span class="sourceLineNo">125</span>        for (HelpEntry helpEntry : helpEntries) {<a name="line.125"></a>
-<span class="sourceLineNo">126</span>            if (helpEntry.getCommand().endsWith(" " + command)) {<a name="line.126"></a>
-<span class="sourceLineNo">127</span>                selectedEntry.add(helpEntry);<a name="line.127"></a>
-<span class="sourceLineNo">128</span>            }<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        }<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        return !selectedEntry.isEmpty();<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>    public void showHelp() {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>        showHelp(issuer);<a name="line.134"></a>
-<span class="sourceLineNo">135</span>    }<a name="line.135"></a>
-<span class="sourceLineNo">136</span><a name="line.136"></a>
-<span class="sourceLineNo">137</span>    public void showHelp(CommandIssuer issuer) {<a name="line.137"></a>
-<span class="sourceLineNo">138</span>        CommandHelpFormatter formatter = manager.getHelpFormatter();<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        if (!selectedEntry.isEmpty()) {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>            HelpEntry first = ACFUtil.getFirstElement(selectedEntry);<a name="line.140"></a>
-<span class="sourceLineNo">141</span>            formatter.printDetailedHelpHeader(this, issuer, first);<a name="line.141"></a>
-<span class="sourceLineNo">142</span><a name="line.142"></a>
-<span class="sourceLineNo">143</span>            for (HelpEntry helpEntry : selectedEntry) {<a name="line.143"></a>
-<span class="sourceLineNo">144</span>                formatter.showDetailedHelp(this, helpEntry);<a name="line.144"></a>
-<span class="sourceLineNo">145</span>            }<a name="line.145"></a>
-<span class="sourceLineNo">146</span><a name="line.146"></a>
-<span class="sourceLineNo">147</span>            formatter.printDetailedHelpFooter(this, issuer, first);<a name="line.147"></a>
-<span class="sourceLineNo">148</span>            return;<a name="line.148"></a>
-<span class="sourceLineNo">149</span>        }<a name="line.149"></a>
-<span class="sourceLineNo">150</span><a name="line.150"></a>
-<span class="sourceLineNo">151</span>        List&lt;HelpEntry&gt; helpEntries = getHelpEntries();<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        Iterator&lt;HelpEntry&gt; results = helpEntries.stream()<a name="line.152"></a>
-<span class="sourceLineNo">153</span>                .filter(HelpEntry::shouldShow)<a name="line.153"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>            if (pattern.matcher(help.getDescription()).matches()) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                searchScore += 2;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            if (pattern.matcher(help.getParameterSyntax()).matches()) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                searchScore++;<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>            if (help.getSearchTags() != null &amp;&amp; pattern.matcher(help.getSearchTags()).matches()) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                searchScore += 2;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>            }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        }<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        help.setSearchScore(searchScore);<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    }<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>    public CommandManager getManager() {<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        return manager;<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>    public boolean testExactMatch(String command) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        selectedEntry.clear();<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        for (HelpEntry helpEntry : helpEntries) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>            if (helpEntry.getCommand().endsWith(" " + command)) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>                selectedEntry.add(helpEntry);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>            }<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        return !selectedEntry.isEmpty();<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    }<a name="line.132"></a>
+<span class="sourceLineNo">133</span><a name="line.133"></a>
+<span class="sourceLineNo">134</span>    public void showHelp() {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        showHelp(issuer);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>    public void showHelp(CommandIssuer issuer) {<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        CommandHelpFormatter formatter = manager.getHelpFormatter();<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        if (!selectedEntry.isEmpty()) {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>            HelpEntry first = ACFUtil.getFirstElement(selectedEntry);<a name="line.141"></a>
+<span class="sourceLineNo">142</span>            formatter.printDetailedHelpHeader(this, issuer, first);<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>            for (HelpEntry helpEntry : selectedEntry) {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                formatter.showDetailedHelp(this, helpEntry);<a name="line.145"></a>
+<span class="sourceLineNo">146</span>            }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>            formatter.printDetailedHelpFooter(this, issuer, first);<a name="line.148"></a>
+<span class="sourceLineNo">149</span>            return;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
+<span class="sourceLineNo">151</span><a name="line.151"></a>
+<span class="sourceLineNo">152</span>        List&lt;HelpEntry&gt; helpEntries = getHelpEntries().stream().filter(HelpEntry::shouldShow).collect(Collectors.toList());<a name="line.152"></a>
+<span class="sourceLineNo">153</span>        Iterator&lt;HelpEntry&gt; results = helpEntries.stream()<a name="line.153"></a>
 <span class="sourceLineNo">154</span>                .sorted(Comparator.comparingInt(helpEntry -&gt; helpEntry.getSearchScore() * -1)).iterator();<a name="line.154"></a>
 <span class="sourceLineNo">155</span>        if (!results.hasNext()) {<a name="line.155"></a>
 <span class="sourceLineNo">156</span>            issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));<a name="line.156"></a>
@@ -254,10 +254,14 @@
 <span class="sourceLineNo">246</span>        return totalPages;<a name="line.246"></a>
 <span class="sourceLineNo">247</span>    }<a name="line.247"></a>
 <span class="sourceLineNo">248</span><a name="line.248"></a>
-<span class="sourceLineNo">249</span>    public boolean isLastPage() {<a name="line.249"></a>
-<span class="sourceLineNo">250</span>        return lastPage;<a name="line.250"></a>
+<span class="sourceLineNo">249</span>    public boolean isOnlyPage() {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>        return this.page == 1 &amp;&amp; lastPage;<a name="line.250"></a>
 <span class="sourceLineNo">251</span>    }<a name="line.251"></a>
-<span class="sourceLineNo">252</span>}<a name="line.252"></a>
+<span class="sourceLineNo">252</span><a name="line.252"></a>
+<span class="sourceLineNo">253</span>    public boolean isLastPage() {<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        return lastPage;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>}<a name="line.256"></a>
 
 
 

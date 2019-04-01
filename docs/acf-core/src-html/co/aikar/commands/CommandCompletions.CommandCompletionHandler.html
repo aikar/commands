@@ -266,12 +266,12 @@
 <span class="sourceLineNo">258</span>                    Collection&lt;String&gt; completions = handler.getCompletions(context);<a name="line.258"></a>
 <span class="sourceLineNo">259</span><a name="line.259"></a>
 <span class="sourceLineNo">260</span>                    //Handle completions with more than one word:<a name="line.260"></a>
-<span class="sourceLineNo">261</span>                    if (!repeat &amp;&amp;<a name="line.261"></a>
-<span class="sourceLineNo">262</span>                            command.parameters[command.parameters.length - 1].consumesRest<a name="line.262"></a>
+<span class="sourceLineNo">261</span>                    if (!repeat &amp;&amp; completions != null<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                            &amp;&amp; command.parameters[command.parameters.length - 1].consumesRest<a name="line.262"></a>
 <span class="sourceLineNo">263</span>                            &amp;&amp; args.length &gt; ACFPatterns.SPACE.split(command.complete).length) {<a name="line.263"></a>
 <span class="sourceLineNo">264</span>                        String start = String.join(" ", args);<a name="line.264"></a>
 <span class="sourceLineNo">265</span>                        completions = completions.stream()<a name="line.265"></a>
-<span class="sourceLineNo">266</span>                                .filter(s -&gt; s.split(" ").length &gt;= args.length)<a name="line.266"></a>
+<span class="sourceLineNo">266</span>                                .filter(s -&gt; s != null &amp;&amp; s.split(" ").length &gt;= args.length)<a name="line.266"></a>
 <span class="sourceLineNo">267</span>                                .filter(s -&gt; ApacheCommonsLangUtil.startsWithIgnoreCase(s, start))<a name="line.267"></a>
 <span class="sourceLineNo">268</span>                                .map(s -&gt; {<a name="line.268"></a>
 <span class="sourceLineNo">269</span>                                    String[] completionArgs = s.split(" ");<a name="line.269"></a>

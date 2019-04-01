@@ -93,7 +93,7 @@
 <span class="sourceLineNo">085</span>    }<a name="line.85"></a>
 <span class="sourceLineNo">086</span><a name="line.86"></a>
 <span class="sourceLineNo">087</span>    public void printHelpFooter(CommandHelp help, CommandIssuer issuer) {<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        if (help.isLastPage()) {<a name="line.88"></a>
+<span class="sourceLineNo">088</span>        if (help.isOnlyPage()) {<a name="line.88"></a>
 <span class="sourceLineNo">089</span>            return;<a name="line.89"></a>
 <span class="sourceLineNo">090</span>        }<a name="line.90"></a>
 <span class="sourceLineNo">091</span>        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));<a name="line.91"></a>
@@ -115,7 +115,7 @@
 <span class="sourceLineNo">107</span>    }<a name="line.107"></a>
 <span class="sourceLineNo">108</span><a name="line.108"></a>
 <span class="sourceLineNo">109</span>    public void printSearchFooter(CommandHelp help, CommandIssuer issuer) {<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        if (help.isLastPage()) {<a name="line.110"></a>
+<span class="sourceLineNo">110</span>        if (help.isOnlyPage()) {<a name="line.110"></a>
 <span class="sourceLineNo">111</span>            return;<a name="line.111"></a>
 <span class="sourceLineNo">112</span>        }<a name="line.112"></a>
 <span class="sourceLineNo">113</span>        issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));<a name="line.113"></a>
