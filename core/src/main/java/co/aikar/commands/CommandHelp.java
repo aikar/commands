@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHelp {
@@ -58,7 +59,7 @@ public class CommandHelp {
 
         SetMultimap<String, RegisteredCommand> subCommands = rootCommand.getSubCommands();
         Set<RegisteredCommand> seen = new HashSet<>();
-        
+
         if (!rootCommand.getDefCommand().hasHelpCommand) {
             RegisteredCommand defCommand = rootCommand.getDefaultRegisteredCommand();
             if (defCommand != null) {
@@ -66,7 +67,7 @@ public class CommandHelp {
                 seen.add(defCommand);
             }
         }
-        
+
         subCommands.entries().forEach(e -> {
             String key = e.getKey();
             if (key.equals(BaseCommand.DEFAULT) || key.equals(BaseCommand.CATCHUNKNOWN)) {
@@ -148,9 +149,8 @@ public class CommandHelp {
             return;
         }
 
-        List<HelpEntry> helpEntries = getHelpEntries();
+        List<HelpEntry> helpEntries = getHelpEntries().stream().filter(HelpEntry::shouldShow).collect(Collectors.toList());
         Iterator<HelpEntry> results = helpEntries.stream()
-                .filter(HelpEntry::shouldShow)
                 .sorted(Comparator.comparingInt(helpEntry -> helpEntry.getSearchScore() * -1)).iterator();
         if (!results.hasNext()) {
             issuer.sendMessage(MessageType.ERROR, MessageKeys.NO_COMMAND_MATCHED_SEARCH, "{search}", ACFUtil.join(this.search, " "));
@@ -244,6 +244,10 @@ public class CommandHelp {
 
     public int getTotalPages() {
         return totalPages;
+    }
+
+    public boolean isOnlyPage() {
+        return this.page == 1 && lastPage;
     }
 
     public boolean isLastPage() {

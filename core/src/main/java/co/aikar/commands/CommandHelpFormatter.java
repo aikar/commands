@@ -85,7 +85,7 @@ public class CommandHelpFormatter {
     }
 
     public void printHelpFooter(CommandHelp help, CommandIssuer issuer) {
-        if (help.isLastPage()) {
+        if (help.isOnlyPage()) {
             return;
         }
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));
@@ -107,7 +107,7 @@ public class CommandHelpFormatter {
     }
 
     public void printSearchFooter(CommandHelp help, CommandIssuer issuer) {
-        if (help.isLastPage()) {
+        if (help.isOnlyPage()) {
             return;
         }
         issuer.sendMessage(MessageType.HELP, MessageKeys.HELP_PAGE_INFORMATION, getHeaderFooterFormatReplacements(help));
