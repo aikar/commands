@@ -242,6 +242,7 @@ public class BukkitCommandManager extends CommandManager<
             knownCommands.remove(key);
         }
         knownCommands.remove(plugin + ":" + key);
+        registeredCommands.remove(command.getCommandName().toLowerCase());
     }
 
     public void unregisterCommands() {
