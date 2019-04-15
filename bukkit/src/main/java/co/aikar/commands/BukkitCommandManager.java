@@ -271,6 +271,7 @@ public class BukkitCommandManager extends CommandManager<
             knownCommands.remove(key);
         }
         knownCommands.remove(plugin + ":" + key);
+        registeredCommands.remove(key);
     }
 
     public void unregisterCommands() {
