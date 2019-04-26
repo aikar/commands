@@ -24,16 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Conditions;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -43,12 +34,6 @@ import org.bukkit.plugin.Plugin;
 @CommandAlias("acf|somecommand|sc|somcom")
 @Description("Some ACF Command")
 public class SomeCommand extends BaseCommand {
-
-    {
-        // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this command that
-        // has a SomeObject parameter
-        setContextFlags(SomeObject.class, "foo=bar");
-    }
 
     // marking fields with @Dependency allows you to define  instances that should be easily accessible to commands
     @Dependency
@@ -63,6 +48,12 @@ public class SomeCommand extends BaseCommand {
     private String testString2;
     @Dependency
     private String testString3;
+
+    {
+        // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this command that
+        // has a SomeObject parameter
+        setContextFlags(SomeObject.class, "foo=bar");
+    }
 
     @Subcommand("testDI")
     public void onTestDI(CommandSender sender) {
@@ -140,6 +131,11 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage(hi);
     }
 
+    public enum TestEnum {
+        FOOTEST1,
+        BARTEST2
+    }
+
     // Nested inner classes are automatically loaded when the parent is registered.
     // When @Subcommand is defined in an inner class, it is assumed that the values defined here are automatically prepended
     // to all of the children methods @Subcommand
@@ -183,10 +179,5 @@ public class SomeCommand extends BaseCommand {
                 player.sendMessage("You got test inner inner test4: " + testY);
             }
         }
-    }
-
-    public enum TestEnum {
-        FOOTEST1,
-        BARTEST2
     }
 }

@@ -25,11 +25,7 @@ package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.HelpCommand;
-import co.aikar.commands.annotation.Private;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import org.bukkit.command.CommandSender;
 
 @CommandAlias("acf")
@@ -43,12 +39,12 @@ public class SomeCommand_ExtraSubs extends BaseCommand {
 
     @Private
     @Subcommand("testsub private")
-    public void privateSub(CommandSender sender){
+    public void privateSub(CommandSender sender) {
         sender.sendMessage("Am a sneaky ninja!");
     }
 
     @HelpCommand
-    public void help(CommandSender sender, CommandHelp help){
+    public void help(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }
 }

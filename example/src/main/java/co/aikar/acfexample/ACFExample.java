@@ -23,10 +23,10 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -35,6 +35,16 @@ public final class ACFExample extends JavaPlugin {
 
     private static ACFExample plugin;
     private static PaperCommandManager commandManager;
+
+    // Typical Bukkit Plugin Scaffolding
+    public static ACFExample getPlugin() {
+        return plugin;
+    }
+
+    // A way to access your command manager from other files if you do not use a Dependency Injection approach
+    public static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
 
     @Override
     public void onEnable() {
@@ -109,15 +119,5 @@ public final class ACFExample extends JavaPlugin {
             getLogger().warning("Error occured while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
-    }
-
-    // Typical Bukkit Plugin Scaffolding
-    public static ACFExample getPlugin() {
-        return plugin;
-    }
-
-    // A way to access your command manager from other files if you do not use a Dependency Injection approach
-    public static PaperCommandManager getCommandManager() {
-        return commandManager;
     }
 }
