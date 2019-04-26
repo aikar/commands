@@ -81,14 +81,14 @@ public final class ACFExample extends JavaPlugin {
         );
 
         // 5: Register Command Conditions
-        commandManager.getCommandConditions().addCondition(SomeObject.class, "limits", (c, exec, value) -> {
+        commandManager.getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
             }
-            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value.getValue()) {
+            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("Min value must be " + c.getConfigValue("min", 0));
             }
-            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value.getValue()) {
+            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
                 throw new ConditionFailedException("Max value must be " + c.getConfigValue("max", 3));
             }
         });
