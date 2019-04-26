@@ -28,6 +28,7 @@ import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -35,7 +36,7 @@ import org.bukkit.plugin.Plugin;
 @Description("Some ACF Command")
 public class SomeCommand extends BaseCommand {
 
-    // marking fields with @Dependency allows you to define  instances that should be easily accessible to commands
+    // marking fields with @Dependency allows you to define instances that should be easily accessible to commands
     @Dependency
     private SomeHandler someHandler;
     // some classes like your plugin are automatically registered for injection
@@ -71,6 +72,13 @@ public class SomeCommand extends BaseCommand {
     @CommandAlias("%testcmd")
     public void onCommand(CommandSender sender, SomeObject someObject) {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
+    }
+
+    // This is the syntax for parameters with conditions
+    // /limitstest 5 through //limitstest 10 will work, but anything outside that range will return an error
+    @CommandAlias("limitstest")
+    public void onLimitsTest(CommandSender sender, @Default("7") @Conditions("limits:min=5,max=10") Integer number) {
+        sender.sendMessage(number.toString());
     }
 
     @Subcommand("condition")
