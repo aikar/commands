@@ -35,10 +35,6 @@ public abstract class SomeObject {
         this.thisValue = thisValue;
     }
 
-    public Integer getValue() {
-        return this.thisValue;
-    }
-
     // Dynamically returns up to 3 different objects based on the users input.
     // A command signature using SomeObject doesn't care about all this logic, its defined once
     // And it knows it will receive SomeObject
@@ -60,16 +56,22 @@ public abstract class SomeObject {
         };
     }
 
+    public Integer getValue() {
+        return this.thisValue;
+    }
+
     public static class Test1 extends SomeObject {
         Test1() {
             super(1);
         }
     }
+
     public static class Test2 extends SomeObject {
         Test2() {
             super(2);
         }
     }
+
     public static class TestOther extends SomeObject {
         TestOther(Integer other) {
             super(other);

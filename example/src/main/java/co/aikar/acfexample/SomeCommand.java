@@ -40,29 +40,30 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+// Can be accessed with /acf, /somecommand, /sc, and /somcom.
 @CommandAlias("acf|somecommand|sc|somcom")
 @Description("Some ACF Command")
 public class SomeCommand extends BaseCommand {
 
-    {
-        // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this command that
-        // has a SomeObject parameter
-        setContextFlags(SomeObject.class, "foo=bar");
-    }
-
-    // marking fields with @Dependency allows you to define  instances that should be easily accessible to commands
+    // Marking fields with @Dependency allows you to define instances that should be easily accessible to commands.
     @Dependency
     private SomeHandler someHandler;
-    // some classes like your plugin are automatically registered for injection
+    // Some classes like your plugin are automatically registered for injection.
     @Dependency
     private Plugin plugin;
-    // you can even use named injections to have multiple instances of the same type
+    // You can even use named injections to have multiple instances of the same type.
     @Dependency("test")
     private String testString;
     @Dependency("test2")
     private String testString2;
     @Dependency
     private String testString3;
+
+    {
+        // This is the same thing as adding @Flags("foo=bar") to ALL parameters in this
+        // command that have a have a SomeObject parameter
+        setContextFlags(SomeObject.class, "foo=bar");
+    }
 
     @Subcommand("testDI")
     public void onTestDI(CommandSender sender) {
@@ -73,10 +74,10 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("Test String 3: " + testString3);
     }
 
-    // %testcmd was defined in ACFExample plugin and defined as "test4|foobar|barbaz"
-    // This means, /test4, /foobar and /barbaz all are aliased here.
-    // functionally equivalent to @CommandAlias("test4|foobar|barbaz") but could be dynamic (Read from config)
-    // Any @CommandAlias implies an automatic @Subcommand too, so this is also accessible from /acf test4
+    // $testcmd was defined in the Main class (ACFExample), as "test4|foobar|barbaz"
+    // This means that /test4, /foobar, and /barbaz are all aliased here.
+    // Functionally equivalent to @CommandAlias("test4|foobar|barbaz") but could be dynamic, such as read from a config.
+    // Any @CommandAlias implies @Subcommand too, so this is also accessible from /acf test4, /acf foobar, and /acf barbaz
     @CommandAlias("%testcmd")
     public void onCommand(CommandSender sender, SomeObject someObject) {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
@@ -85,11 +86,11 @@ public class SomeCommand extends BaseCommand {
     @Subcommand("condition")
     @Conditions("condition=1")
     public void onCondition(CommandSender sender) {
-
+        sender.sendMessage("Condition test.");
     }
 
     // /acf admin - requires permission some.perm
-    // May also be accessed with /acfa or /acfadmin
+    // May also be accessed with /acfadmin or /acfa
     @Subcommand("admin")
     @CommandPermission("some.perm")
     @CommandAlias("acfadmin|acfa")
@@ -98,22 +99,31 @@ public class SomeCommand extends BaseCommand {
         player.sendMessage("You got permission!");
     }
 
-    // Has an optional parameter opt, /acfo and /acfo <something> both work
+    // Has @Optional parameter "something", /acfo and /acfo <something> both work.
     @Subcommand("optional")
     @CommandAlias("acfoptional|acfo")
-    public void onOptional(CommandSender sender, @Optional String opt) {
-        if (opt == null) {
+    public void onOptional(CommandSender sender, @Optional String something) {
+        if (something == null) {
             sender.sendMessage("You did not supply an option.");
         } else {
-            sender.sendMessage("You supplied: " + opt);
+            sender.sendMessage("You supplied: " + something);
         }
     }
 
-    // Like optional above, but name will always have a value, Unknown User if /acfd is executed
+    // Like @Optional above, but if no value is supplied, will use the value in the parenthesis rather than being null.
+    // Which is in this case, "Unknown User"
     @Subcommand("default")
     @CommandAlias("acfdefault|acfd")
     public void onTestDefault(CommandSender sender, @Default("Unknown User") String name) {
         sender.sendMessage("Hello, " + name);
+    }
+
+    // The syntax for conditions with parameters is @Conditions("condition:parameter1=123,parameter2=456") etc.
+    // /limitstest 5 through /limitstest 10 will work, but anything outside that range
+    // will throw a ConditionFailedException, according to the condition.
+    @CommandAlias("limitstest")
+    public void onLimitsTest(CommandSender sender, @Default("7") @Conditions("limits:min=5,max=10") Integer number) {
+        sender.sendMessage(number.toString());
     }
 
     // Pressing tab after typing /acfc A<tab> might pop up command completions for Aikar if Aikar was online,
@@ -132,12 +142,16 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + foo1 + " - " + e.name());
     }
 
-
-    // This sub command requires that `/acf testsub test1` be typed to be executed, or /Foo
+    // This subcommand requires that "/acf testsub test1" be typed to be executed.
     @Subcommand("testsub test1")
     @CommandCompletion("@test")
     public void onTestSub1(CommandSender sender, String hi) {
         sender.sendMessage(hi);
+    }
+
+    public enum TestEnum {
+        FOOTEST1,
+        BARTEST2
     }
 
     // Nested inner classes are automatically loaded when the parent is registered.
@@ -183,10 +197,5 @@ public class SomeCommand extends BaseCommand {
                 player.sendMessage("You got test inner inner test4: " + testY);
             }
         }
-    }
-
-    public enum TestEnum {
-        FOOTEST1,
-        BARTEST2
     }
 }

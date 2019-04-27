@@ -43,12 +43,12 @@ public class SomeCommand_ExtraSubs extends BaseCommand {
 
     @Private
     @Subcommand("testsub private")
-    public void privateSub(CommandSender sender){
+    public void privateSub(CommandSender sender) {
         sender.sendMessage("Am a sneaky ninja!");
     }
 
     @HelpCommand
-    public void help(CommandSender sender, CommandHelp help){
+    public void help(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }
 }

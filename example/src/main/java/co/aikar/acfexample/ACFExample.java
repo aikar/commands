@@ -23,10 +23,10 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -35,6 +35,16 @@ public final class ACFExample extends JavaPlugin {
 
     private static ACFExample plugin;
     private static PaperCommandManager commandManager;
+
+    // Typical Bukkit Plugin Scaffolding
+    public static ACFExample getPlugin() {
+        return plugin;
+    }
+
+    // A way to access your command manager from other files if you do not use a Dependency Injection approach
+    public static PaperCommandManager getCommandManager() {
+        return commandManager;
+    }
 
     @Override
     public void onEnable() {
@@ -46,7 +56,7 @@ public final class ACFExample extends JavaPlugin {
         // 1: Create Command Manager for your respective platform
         commandManager = new PaperCommandManager(this);
 
-        // optional: enable unstable api to use help
+        // Optional: Enable unstable API to use ACF's help
         commandManager.enableUnstableAPI("help");
 
         // 2: Setup some replacement values that may be used inside of the annotations dynamically.
@@ -60,31 +70,31 @@ public final class ACFExample extends JavaPlugin {
 
         // 3: Register Custom Command Contexts
         commandManager.getCommandContexts().registerContext(
-                /* The class of the object to resolve*/
+                /* The class of the object to resolve */
                 SomeObject.class,
                 /* A resolver method - Placed the resolver in its own class for organizational purposes */
                 SomeObject.getContextResolver());
 
-        // 4: Register Command Completions - this will be accessible with @CommandCompletion("@test")
+        // 4: Register Command Completions - This will be accessible with @CommandCompletion("@test")
         commandManager.getCommandCompletions().registerAsyncCompletion("test", c ->
                 Arrays.asList("foo123", "bar123", "baz123")
         );
 
         // 5: Register Command Conditions
-        commandManager.getCommandConditions().addCondition(SomeObject.class, "limits", (c, exec, value) -> {
+        commandManager.getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
             }
-            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value.getValue()) {
+            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("Min value must be " + c.getConfigValue("min", 0));
             }
-            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value.getValue()) {
+            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
                 throw new ConditionFailedException("Max value must be " + c.getConfigValue("max", 3));
             }
         });
 
         // 6: (Optionally) Register dependencies - Dependencies can be injected into fields of command classes by
-        // marking them with @Dependency. Some classes, like your Plugin, are already registered by default.
+        // marking them with @Dependency. Some classes, like your plugin, are already registered by default.
         SomeHandler someHandler = new SomeHandler();
         someHandler.setSomeField("Secret");
         commandManager.registerDependency(SomeHandler.class, someHandler);
@@ -95,7 +105,7 @@ public final class ACFExample extends JavaPlugin {
         // 7: Register your commands - This first command demonstrates adding an exception handler to that command
         commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
             sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
-            return true; // mark as handeled, default message will not be send to sender
+            return true; // mark as handled, default message will not be sent to sender
         }));
 
         // 8: Register an additional command. This one happens to share the same CommandAlias as the previous command
@@ -107,17 +117,7 @@ public final class ACFExample extends JavaPlugin {
         // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             getLogger().warning("Error occured while executing command " + command.getName());
-            return false; // mark as unhandeled, sender will see default message
+            return false; // mark as unhandled, sender will see default message
         });
-    }
-
-    // Typical Bukkit Plugin Scaffolding
-    public static ACFExample getPlugin() {
-        return plugin;
-    }
-
-    // A way to access your command manager from other files if you do not use a Dependency Injection approach
-    public static PaperCommandManager getCommandManager() {
-        return commandManager;
     }
 }
