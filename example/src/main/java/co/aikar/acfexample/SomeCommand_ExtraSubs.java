@@ -25,7 +25,11 @@ package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.HelpCommand;
+import co.aikar.commands.annotation.Private;
+import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.command.CommandSender;
 
 @CommandAlias("acf")
