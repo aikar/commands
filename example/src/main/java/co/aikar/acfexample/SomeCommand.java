@@ -24,16 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Conditions;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Dependency;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Subcommand;
-import co.aikar.commands.annotation.Values;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -82,7 +73,7 @@ public class SomeCommand extends BaseCommand {
         sender.sendMessage("You got an object of type: " + someObject.getClass().getName() + " with a value of: " + someObject.getValue());
     }
 
-    
+
     // The syntax for conditions with parameters is @Conditions("condition:parameter1=123,parameter2=456") etc.
     // /limitstest 5 through /limitstest 10 will work, but anything outside that range 
     // will throw a ConditionFailedException, according to the condition.
@@ -117,7 +108,7 @@ public class SomeCommand extends BaseCommand {
             sender.sendMessage("You supplied: " + something);
         }
     }
-    
+
     // Like @Optional above, but if no value is supplied, will use the value in the parenthesis rather than being null.
     // Which is in this case, "Unknown User"
     @Subcommand("default")
