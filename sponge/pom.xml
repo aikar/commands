@@ -35,7 +35,6 @@
     </parent>
 
     <artifactId>acf-sponge</artifactId>
-    <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
 
     <name>ACF (Sponge)</name>
 
