@@ -40,7 +40,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>co.aikar</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>acf-bukkit</artifactId>
             <scope>compile</scope>
         </dependency>

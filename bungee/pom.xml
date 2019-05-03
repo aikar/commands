@@ -23,7 +23,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>co.aikar</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>acf-core</artifactId>
             <scope>compile</scope>
         </dependency>
