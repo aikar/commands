@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * For array based parameters, defines the regex pattern to split on
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Split {
     String value() default ",";
 }

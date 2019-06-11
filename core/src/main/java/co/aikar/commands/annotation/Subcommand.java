@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * Defines the part after root command like so: "/rootcommand {@link #value()}".
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface Subcommand {
     String value();
 }

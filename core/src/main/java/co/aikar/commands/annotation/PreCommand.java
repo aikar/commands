@@ -33,5 +33,5 @@ import java.lang.annotation.Target;
  * This runs before any other command method each time it is invoked.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface PreCommand {}

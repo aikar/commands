@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * You may also use {@link CommandCompletion} handler codes here to feed dynamic values and avoid repetition.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Values {
     String value();
 }

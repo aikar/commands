@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  * Use {@link Description} together with the help menu for that purpose.
  **/
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.PARAMETER})
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Syntax {
     String value();
 }

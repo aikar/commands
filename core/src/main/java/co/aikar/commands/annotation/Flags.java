@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * If you want to restrict if an issuer can use the command, please use {@link co.aikar.commands.CommandConditions.Condition} instead.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Flags {
     String value();
 }

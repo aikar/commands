@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * be used for help in discovering the correct command, then you can add it as a tag.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface HelpSearchTags {
     String value();
 }
