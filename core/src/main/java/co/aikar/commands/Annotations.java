@@ -108,9 +108,11 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
             return object.getAnnotation(annoClass);
         } else {
             for (Annotation otherAnnotation : object.getDeclaredAnnotations()) {
-                final Annotation foundAnnotation = getAnnotationRecursive(otherAnnotation.annotationType(), annoClass);
-                if (foundAnnotation != null) {
-                    return foundAnnotation;
+                if (!otherAnnotation.annotationType().getPackage().getName().startsWith("java.")) {
+                    final Annotation foundAnnotation = getAnnotationRecursive(otherAnnotation.annotationType(), annoClass);
+                    if (foundAnnotation != null) {
+                        return foundAnnotation;
+                    }
                 }
             }
         }
