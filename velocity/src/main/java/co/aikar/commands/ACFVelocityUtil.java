@@ -12,13 +12,13 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.ComponentSerializers;
+import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ACFVelocityUtil {
 
     @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return ComponentSerializers.LEGACY.deserialize(message);
+        return LegacyComponentSerializer.legacy().deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
@@ -51,7 +51,7 @@ public class ACFVelocityUtil {
 
     /*
      * Original code written by md_5
-     * 
+     *
      * Modified to work with Velocity by Crypnotic
      */
     private static Collection<Player> matchPlayer(ProxyServer server, final String partialName) {
