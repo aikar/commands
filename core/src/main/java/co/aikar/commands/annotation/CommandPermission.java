@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * Permission format will vary based on implementation platform
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface CommandPermission {
     String value();
 }

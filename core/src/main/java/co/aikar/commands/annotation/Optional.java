@@ -36,6 +36,6 @@ import java.lang.annotation.Target;
  * you will need to allow for a nullable value.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Optional {
 }

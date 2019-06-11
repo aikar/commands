@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * @see {@link co.aikar.commands.CommandConditions}
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface Conditions {
     String value();
 }

@@ -38,6 +38,6 @@ import java.lang.annotation.Target;
  * Only one instance of this annotation can be used per root command.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface CatchUnknown {
 }

@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * Used on a method, defines a root command alias to that specific command
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface CommandAlias {
     String value();
 }
