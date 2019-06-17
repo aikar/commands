@@ -52,6 +52,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -275,8 +276,8 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     public void unregisterCommands() {
-        while (!registeredCommands.isEmpty()) {
-            unregisterCommand(registeredCommands.values().toArray(new BukkitRootCommand[]{})[0]);
+        for (String key : new HashSet<>(registeredCommands.keySet())) {
+            unregisterCommand(registeredCommands.get(key));
         }
     }
 
