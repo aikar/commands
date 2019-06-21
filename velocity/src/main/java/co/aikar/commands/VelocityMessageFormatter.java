@@ -1,7 +1,7 @@
 package co.aikar.commands;
 
 import net.kyori.text.format.TextColor;
-import net.kyori.text.serializer.ComponentSerializers;
+import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 
 public class VelocityMessageFormatter extends MessageFormatter<TextColor> {
 
@@ -12,6 +12,6 @@ public class VelocityMessageFormatter extends MessageFormatter<TextColor> {
     @Override
     @SuppressWarnings("deprecation")
     String format(TextColor color, String message) {
-        return ComponentSerializers.LEGACY.serialize(ComponentSerializers.LEGACY.deserialize(message).color(color));
+        return LegacyComponentSerializer.legacy().serialize(LegacyComponentSerializer.legacy().deserialize(message).color(color));
     }
 }
