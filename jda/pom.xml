@@ -57,7 +57,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.5.0_327</version>
+            <version>4.BETA.0_9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -76,7 +76,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
+                    </dependencyReducedPomLocation>
                     <!-- when downloading via Maven we can pull depends individually -->
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <relocations>
