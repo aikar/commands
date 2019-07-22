@@ -24,7 +24,7 @@ public class ACFVelocityUtil {
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
         CommandSource requester = issuer.getIssuer();
         String name = ACFUtil.replace(search, ":confirm", "");
-        if (name.length() < 3) {
+        if (name.length() < 2) {
             issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);
             return null;
         }

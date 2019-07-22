@@ -41,6 +41,7 @@ public class ACFBungeeUtil {
 
     /**
      * Move to Message Keys on the CommandIssuer
+     *
      * @deprecated
      */
     @Deprecated
@@ -112,7 +113,7 @@ public class ACFBungeeUtil {
     public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {
         CommandSender requester = issuer.getIssuer();
         String name = ACFUtil.replace(search, ":confirm", "");
-        if (name.length() < 3) {
+        if (name.length() < 2) {
             issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);
             return null;
         }
@@ -141,6 +142,7 @@ public class ACFBungeeUtil {
 
     /**
      * Please move to the CommandIssuer version
+     *
      * @deprecated
      */
     public static ProxiedPlayer findPlayerSmart(CommandSender requester, String search) {
