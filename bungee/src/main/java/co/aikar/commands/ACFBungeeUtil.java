@@ -113,10 +113,6 @@ public class ACFBungeeUtil {
     public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {
         CommandSender requester = issuer.getIssuer();
         String name = ACFUtil.replace(search, ":confirm", "");
-        if (name.length() < 2) {
-            issuer.sendError(MinecraftMessageKeys.USERNAME_TOO_SHORT);
-            return null;
-        }
         if (!isValidName(name)) {
             issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
             return null;
