@@ -92,7 +92,7 @@ public class BukkitCommandManager extends CommandManager<
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
-        this.logger = Logger.getLogger(this.plugin.getName());
+        this.logger = Logger.getLogger(this.plugin.getDescription().getPrefix());
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
         this.commandMap = hookCommandMap();
