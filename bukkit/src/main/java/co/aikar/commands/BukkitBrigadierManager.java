@@ -23,30 +23,30 @@
 
 package co.aikar.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.LiteralMessage;
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
+/**
+ * Brigadier Manager that hacks craftbukkit to handle command suggestions
+ *
+ * @param <S>
+ * @author MiniDigger
+ * @deprecated Unstable API
+ */
+@Deprecated
+@UnstableAPI
 public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
 
-    public BukkitBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, CommandDispatcher<S> dispatcher) {
-        super(manager, dispatcher);
+    public BukkitBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, ACFBrigadierProvider provider) {
+        super(manager, provider);
 
         //TODO custom argument types?
 //        registerArgument(Player.class, new ArgumentType<Player>() {
@@ -71,6 +71,22 @@ public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
 
     private static final String SERVER_VERSION = getServerVersion();
 
+
+    private static Object bukkitCommandWrapper;
+    private static Method getSuggestionsMethod;
+
+    static {
+        try {
+            Class<?> craftServerClass = Class.forName("org.bukkit.craftbukkit" + SERVER_VERSION + "CraftServer");
+            Class<?> bukkitCommandWrapperClass = Class.forName("org.bukkit.craftbukkit" + SERVER_VERSION + "command.BukkitCommandWrapper");
+            bukkitCommandWrapper = bukkitCommandWrapperClass.getConstructor(craftServerClass, Command.class).newInstance(Bukkit.getServer(), null);
+
+            getSuggestionsMethod = bukkitCommandWrapperClass.getDeclaredMethod("getSuggestions", CommandContext.class, SuggestionsBuilder.class);
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String getServerVersion() {
         Class<?> server = Bukkit.getServer().getClass();
         if (!server.getSimpleName().equals("CraftServer")) {
@@ -85,32 +101,14 @@ public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
         }
     }
 
-    static Object bukkitCommandWrapper;
-    static Method getSuggestionsMethod;
-
-    static {
-        try {
-            Class<?> craftServerClass = Class.forName("org.bukkit.craftbukkit" + SERVER_VERSION + "CraftServer");
-            Class<?> bukkitCommandWrapperClass = Class.forName("org.bukkit.craftbukkit" + SERVER_VERSION + "command.BukkitCommandWrapper");
-            bukkitCommandWrapper = bukkitCommandWrapperClass.getConstructor(craftServerClass, Command.class).newInstance(Bukkit.getServer(), null);
-
-            getSuggestionsMethod = bukkitCommandWrapperClass.getDeclaredMethod("getSuggestions", CommandContext.class, SuggestionsBuilder.class);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) throws CommandSyntaxException {
         try {
+            //noinspection unchecked
             return (CompletableFuture<Suggestions>) getSuggestionsMethod.invoke(bukkitCommandWrapper, context, builder);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        builder.suggest("FATAL_ERROR!", new LiteralMessage("TEST?"));
-//        for (int i = 0; i < 10; i++) {
-//            builder.suggest(i, new LiteralMessage(i + "?"));
-//        }
         return builder.buildFuture();
     }
 }

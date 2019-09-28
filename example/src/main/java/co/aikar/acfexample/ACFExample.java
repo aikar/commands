@@ -23,11 +23,13 @@
 
 package co.aikar.acfexample;
 
+import co.aikar.commands.ACFBrigadierManager;
+import co.aikar.commands.BukkitBrigadierManager;
+import co.aikar.commands.BukkitCommandDispatcherProvider;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
-import com.mojang.brigadier.CommandDispatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -120,13 +122,13 @@ public final class ACFExample extends JavaPlugin {
         BrigadierTest test = new BrigadierTest();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
-            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager, (com.mojang.brigadier.CommandDispatcher) provider.getCommandDispatcher());
+            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager, provider);
 
             commandManager.registerCommand(test);// later so that bukkit doesn't ruin it
             brigadierManager.register(test);
 
             File file = new File("test.json");
-            ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a(file);
+//            ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a(file);
             System.out.println("WROTE TO " + file.getAbsolutePath());
         }, 1);
     }

@@ -1,9 +1,6 @@
 package co.aikar.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.LiteralMessage;
-import com.mojang.brigadier.Message;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -25,6 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Handles registering of commands into brigadier
+ *
+ * @param <S>
+ * @author MiniDigger
+ * @deprecated Unstable API
+ */
 @Deprecated
 @UnstableAPI
 public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
@@ -34,9 +38,16 @@ public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
 
     private Map<Class<?>, ArgumentType<?>> arguments = new HashMap<>();
 
-    public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, CommandDispatcher<S> dispatcher) {
+    /**
+     * Constructs a new brigadier manager, utilizing the currently active command manager and an brigadier provider.
+     *
+     * @param manager
+     * @param provider
+     */
+    public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, ACFBrigadierProvider provider) {
         this.manager = manager;
-        this.dispatcher = dispatcher;
+        //noinspection unchecked
+        this.dispatcher = (CommandDispatcher<S>) provider.getCommandDispatcher();
 
         manager.verifyUnstableAPI("brigadier");
 
@@ -45,7 +56,7 @@ public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
         registerArgument(float.class, FloatArgumentType.floatArg());
         registerArgument(double.class, DoubleArgumentType.doubleArg());
         registerArgument(boolean.class, BoolArgumentType.bool());
-        registerArgument(int.class, IntegerArgumentType.integer(20, 40));
+        registerArgument(int.class, IntegerArgumentType.integer());
     }
 
     public <T> void registerArgument(Class<T> clazz, ArgumentType<T> type) {
@@ -56,6 +67,10 @@ public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
         System.out.println("* registering command " + command.commandName);
         CommandNode<S> baseCmd = LiteralArgumentBuilder.<S>literal(command.commandName).build();
         for (Map.Entry<String, RegisteredCommand> entry : command.getSubCommands().entries()) {
+            if (entry.getKey().startsWith("__")) {
+                // don't register stuff like __catchunknown
+                continue;
+            }
             System.out.println("* * registering subcommand " + entry.getKey());
             LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(entry.getKey()).build();
             CommandNode<S> paramNode = subCommandNode;
