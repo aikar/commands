@@ -106,7 +106,7 @@ public final class ACFExample extends JavaPlugin {
 
         // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
-            getLogger().warning("Error occured while executing command " + command.getName());
+            getLogger().warning("Error occurred while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
     }
