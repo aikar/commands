@@ -153,7 +153,7 @@
 <span class="sourceLineNo">145</span>        }<a name="line.145"></a>
 <span class="sourceLineNo">146</span>        preCommand();<a name="line.146"></a>
 <span class="sourceLineNo">147</span>        try {<a name="line.147"></a>
-<span class="sourceLineNo">148</span>            this.manager.conditions.validateConditions(context);<a name="line.148"></a>
+<span class="sourceLineNo">148</span>            this.manager.getCommandConditions().validateConditions(context);<a name="line.148"></a>
 <span class="sourceLineNo">149</span>            Map&lt;String, Object&gt; passedArgs = resolveContexts(sender, args);<a name="line.149"></a>
 <span class="sourceLineNo">150</span>            if (passedArgs == null) return;<a name="line.150"></a>
 <span class="sourceLineNo">151</span><a name="line.151"></a>
@@ -264,7 +264,7 @@
 <span class="sourceLineNo">256</span>                        throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");<a name="line.256"></a>
 <span class="sourceLineNo">257</span>                    }<a name="line.257"></a>
 <span class="sourceLineNo">258</span>                    //noinspection unchecked<a name="line.258"></a>
-<span class="sourceLineNo">259</span>                    this.manager.conditions.validateConditions(context, value);<a name="line.259"></a>
+<span class="sourceLineNo">259</span>                    this.manager.getCommandConditions().validateConditions(context, value);<a name="line.259"></a>
 <span class="sourceLineNo">260</span>                    passedArgs.put(parameterName, value);<a name="line.260"></a>
 <span class="sourceLineNo">261</span>                    continue;<a name="line.261"></a>
 <span class="sourceLineNo">262</span>                } else if (requiresInput) {<a name="line.262"></a>
@@ -304,7 +304,7 @@
 <span class="sourceLineNo">296</span>            Object paramValue = resolver.getContext(context);<a name="line.296"></a>
 <span class="sourceLineNo">297</span><a name="line.297"></a>
 <span class="sourceLineNo">298</span>            //noinspection unchecked<a name="line.298"></a>
-<span class="sourceLineNo">299</span>            this.manager.conditions.validateConditions(context, paramValue);<a name="line.299"></a>
+<span class="sourceLineNo">299</span>            this.manager.getCommandConditions().validateConditions(context, paramValue);<a name="line.299"></a>
 <span class="sourceLineNo">300</span>            passedArgs.put(parameterName, paramValue);<a name="line.300"></a>
 <span class="sourceLineNo">301</span>        }<a name="line.301"></a>
 <span class="sourceLineNo">302</span>        return passedArgs;<a name="line.302"></a>
