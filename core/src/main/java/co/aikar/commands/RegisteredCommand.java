@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -171,7 +172,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     void handleException(CommandIssuer sender, List<String> args, Throwable e) {
-        while (e instanceof ExecutionException) {
+        while (e instanceof ExecutionException || e instanceof CompletionException) {
             e = e.getCause();
         }
         if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
