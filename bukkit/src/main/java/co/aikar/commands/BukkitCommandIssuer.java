@@ -23,6 +23,7 @@
 
 package co.aikar.commands;
 
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +78,7 @@ public class BukkitCommandIssuer implements CommandIssuer {
 
     @Override
     public boolean hasPermission(String name) {
-        return sender.hasPermission(name);
+        return sender instanceof ConsoleCommandSender || sender.hasPermission(name);
     }
 
     @Override
