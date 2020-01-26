@@ -145,7 +145,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         }
         preCommand();
         try {
-            this.manager.conditions.validateConditions(context);
+            this.manager.getCommandConditions().validateConditions(context);
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
@@ -256,7 +256,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                         throw new IllegalStateException("Parameter " + parameter.getName() + " is primitive and does not support Optional.");
                     }
                     //noinspection unchecked
-                    this.manager.conditions.validateConditions(context, value);
+                    this.manager.getCommandConditions().validateConditions(context, value);
                     passedArgs.put(parameterName, value);
                     continue;
                 } else if (requiresInput) {
@@ -296,7 +296,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             Object paramValue = resolver.getContext(context);
 
             //noinspection unchecked
-            this.manager.conditions.validateConditions(context, paramValue);
+            this.manager.getCommandConditions().validateConditions(context, paramValue);
             passedArgs.put(parameterName, paramValue);
         }
         return passedArgs;

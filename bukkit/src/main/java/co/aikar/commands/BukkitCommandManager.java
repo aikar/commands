@@ -311,6 +311,7 @@ public class BukkitCommandManager extends CommandManager<
             Object nmsPlayer = entityField.get(player);
             if (nmsPlayer != null) {
                 Field localeField = nmsPlayer.getClass().getDeclaredField("locale");
+                localeField.setAccessible(true);
                 Object localeString = localeField.get(nmsPlayer);
                 if (localeString instanceof String) {
                     String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);

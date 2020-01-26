@@ -693,7 +693,7 @@
 <span class="sourceLineNo">685</span>     * @return All results to complete the command.<a name="line.685"></a>
 <span class="sourceLineNo">686</span>     */<a name="line.686"></a>
 <span class="sourceLineNo">687</span>    private List&lt;String&gt; completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {<a name="line.687"></a>
-<span class="sourceLineNo">688</span>        if (!cmd.hasPermission(issuer) || args.length == 0) {<a name="line.688"></a>
+<span class="sourceLineNo">688</span>        if (!cmd.hasPermission(issuer) || args.length == 0 || cmd.parameters.length == 0) {<a name="line.688"></a>
 <span class="sourceLineNo">689</span>            return Collections.emptyList();<a name="line.689"></a>
 <span class="sourceLineNo">690</span>        }<a name="line.690"></a>
 <span class="sourceLineNo">691</span><a name="line.691"></a>

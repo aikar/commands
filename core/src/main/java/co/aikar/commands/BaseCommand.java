@@ -685,7 +685,7 @@ public abstract class BaseCommand {
      * @return All results to complete the command.
      */
     private List<String> completeCommand(CommandIssuer issuer, RegisteredCommand cmd, String[] args, String commandLabel, boolean isAsync) {
-        if (!cmd.hasPermission(issuer) || args.length == 0) {
+        if (!cmd.hasPermission(issuer) || args.length == 0 || cmd.parameters.length == 0) {
             return Collections.emptyList();
         }
 

@@ -18,7 +18,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -113,7 +113,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <hr>
 <br>
-<pre>public class <a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.3">BungeeLocales</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.12">BungeeLocales</a>
 extends co.aikar.commands.Locales</pre>
 </li>
 </ul>
@@ -132,7 +132,7 @@ extends co.aikar.commands.Locales</pre>
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;co.aikar.commands.Locales</h3>
-<code>AFRIKAANS, ARABIC, BULGARIAN, CHINESE, CZECH, DANISH, DUTCH, ENGLISH, FINNISH, FRENCH, GERMAN, GREEK, HEBREW, HINDI, ITALIAN, JAPANESE, KOREAN, LATIN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK, POLISH, PORTUGUESE, ROMANIAN, RUSSIAN, SIMPLIFIED_CHINESE, SPANISH, SWEDISH, THAI, TRADITIONAL_CHINESE, TURKISH, UKRANIAN, VIETNAMESE, WELSH</code></li>
+<code>AFRIKAANS, ARABIC, BULGARIAN, CHINESE, CZECH, DANISH, DUTCH, ENGLISH, FINNISH, FRENCH, GERMAN, GREEK, HEBREW, HINDI, HUNGARIAN, ITALIAN, JAPANESE, KOREAN, LATIN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK, POLISH, PORTUGUESE, ROMANIAN, RUSSIAN, SIMPLIFIED_CHINESE, SPANISH, SWEDISH, THAI, TRADITIONAL_CHINESE, TURKISH, UKRANIAN, VIETNAMESE, WELSH</code></li>
 </ul>
 </li>
 </ul>
@@ -166,8 +166,29 @@ extends co.aikar.commands.Locales</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeLocales.html#loadLanguage-net.md_5.bungee.config.Configuration-java.util.Locale-">loadLanguage</a></span>(net.md_5.bungee.config.Configuration&nbsp;config,
+            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>
+<div class="block">Loads every message from the Configuration object.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeLocales.html#loadLanguages--">loadLanguages</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeLocales.html#loadYamlLanguageFile-java.io.File-java.util.Locale-">loadYamlLanguageFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;file,
+                    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>
+<div class="block">Loads the given file</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../co/aikar/commands/BungeeLocales.html#loadYamlLanguageFile-java.lang.String-java.util.Locale-">loadYamlLanguageFile</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;file,
+                    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</code>
+<div class="block">Loads a file out of the plugins data folder by the given name</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -204,7 +225,7 @@ extends co.aikar.commands.Locales</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>BungeeLocales</h4>
-<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.6">BungeeLocales</a>(<a href="../../../co/aikar/commands/BungeeCommandManager.html" title="class in co.aikar.commands">BungeeCommandManager</a>&nbsp;manager)</pre>
+<pre>public&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.15">BungeeLocales</a>(<a href="../../../co/aikar/commands/BungeeCommandManager.html" title="class in co.aikar.commands">BungeeCommandManager</a>&nbsp;manager)</pre>
 </li>
 </ul>
 </li>
@@ -218,13 +239,74 @@ extends co.aikar.commands.Locales</pre>
 <a name="loadLanguages--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>loadLanguages</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.14">loadLanguages</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.23">loadLanguages</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>loadLanguages</code>&nbsp;in class&nbsp;<code>co.aikar.commands.Locales</code></dd>
+</dl>
+</li>
+</ul>
+<a name="loadYamlLanguageFile-java.io.File-java.util.Locale-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>loadYamlLanguageFile</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.37">loadYamlLanguageFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;file,
+                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)
+                             throws <a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></pre>
+<div class="block">Loads the given file</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>file</code> - </dd>
+<dd><code>locale</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>If any language keys were added</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="loadYamlLanguageFile-java.lang.String-java.util.Locale-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>loadYamlLanguageFile</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.50">loadYamlLanguageFile</a>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;file,
+                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)
+                             throws <a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></pre>
+<div class="block">Loads a file out of the plugins data folder by the given name</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>file</code> - </dd>
+<dd><code>locale</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>If any language keys were added</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="loadLanguage-net.md_5.bungee.config.Configuration-java.util.Locale-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>loadLanguage</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeLocales.html#line.64">loadLanguage</a>(net.md_5.bungee.config.Configuration&nbsp;config,
+                            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util">Locale</a>&nbsp;locale)</pre>
+<div class="block">Loads every message from the Configuration object. Any nested values will be treated as namespace
+ so acf-core:\n\tfoo: bar will be acf-core.foo = bar</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>config</code> - </dd>
+<dd><code>locale</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>If any language keys were added</dd>
 </dl>
 </li>
 </ul>
