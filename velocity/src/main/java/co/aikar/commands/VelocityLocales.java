@@ -1,5 +1,7 @@
 package co.aikar.commands;
 
+import java.util.Locale;
+
 public class VelocityLocales extends Locales {
     private final VelocityCommandManager manager;
 
