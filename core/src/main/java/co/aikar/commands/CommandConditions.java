@@ -27,6 +27,7 @@ import co.aikar.util.Table;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong
@@ -44,12 +45,12 @@ public class CommandConditions <
     }
 
     public Condition<I> addCondition(@NotNull String id, @NotNull Condition<I> handler) {
-        return this.conditions.put(id.toLowerCase(), handler);
+        return this.conditions.put(id.toLowerCase(Locale.ENGLISH), handler);
     }
 
     public <P> ParameterCondition addCondition(Class<P> clazz, @NotNull String id,
                                                @NotNull ParameterCondition<P, CEC, I> handler) {
-        return this.paramConditions.put(clazz, id.toLowerCase(), handler);
+        return this.paramConditions.put(clazz, id.toLowerCase(Locale.ENGLISH), handler);
     }
 
     void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {
@@ -76,7 +77,7 @@ public class CommandConditions <
         CommandIssuer issuer = context.getCommandIssuer();
         for (String cond : ACFPatterns.PIPE.split(conditions)) {
             String[] split = ACFPatterns.COLON.split(cond, 2);
-            String id = split[0].toLowerCase();
+            String id = split[0].toLowerCase(Locale.ENGLISH);
             Condition<I> condition = this.conditions.get(id);
             if (condition == null) {
                 RegisteredCommand cmd = context.getRegisteredCommand();
@@ -103,7 +104,7 @@ public class CommandConditions <
             String[] split = ACFPatterns.COLON.split(cond, 2);
             ParameterCondition condition;
             Class<?> cls = execContext.getParam().getType();
-            String id = split[0].toLowerCase();
+            String id = split[0].toLowerCase(Locale.ENGLISH);
             do {
                 condition = this.paramConditions.get(cls, id);
                 if (condition == null && cls.getSuperclass() != null && cls.getSuperclass() != Object.class) {

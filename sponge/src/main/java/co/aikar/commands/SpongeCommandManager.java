@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
@@ -60,7 +61,7 @@ public class SpongeCommandManager extends CommandManager<
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
         String pluginName = "acf-" + plugin.getName();
-        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
         this.commandTiming = Timings.of(plugin, "Commands");
 
         this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
@@ -119,7 +120,7 @@ public class SpongeCommandManager extends CommandManager<
         command.onRegister(this);
 
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();
             if (!spongeCommand.isRegistered) {
                 Sponge.getCommandManager().register(this.plugin, spongeCommand, commandName);

@@ -119,7 +119,7 @@ public class VelocityCommandManager extends
     public void registerCommand(BaseCommand command) {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             VelocityRootCommand velocityCommand = (VelocityRootCommand) entry.getValue();
             if (!velocityCommand.isRegistered) {
                 proxy.getCommandManager().register(velocityCommand, commandName);
@@ -131,7 +131,7 @@ public class VelocityCommandManager extends
 
     public void unregisterCommand(BaseCommand command) {
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             VelocityRootCommand velocityCommand = (VelocityRootCommand) entry.getValue();
             velocityCommand.getSubCommands().values().removeAll(command.subCommands.values());
             if (velocityCommand.getSubCommands().isEmpty() && velocityCommand.isRegistered)  {

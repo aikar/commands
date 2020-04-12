@@ -26,6 +26,8 @@ package co.aikar.commands;
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 
+import java.util.Locale;
+
 /**
  * Enum Name = MessageKey in lowercase prefixed with acf-core.
  */
@@ -58,7 +60,7 @@ public enum MessageKeys implements MessageKeyProvider {
     HELP_SEARCH_HEADER,
     ;
 
-    private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase());
+    private final MessageKey key = MessageKey.of("acf-core." + this.name().toLowerCase(Locale.ENGLISH));
 
     public MessageKey getMessageKey() {
         return key;

@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,7 +67,7 @@ public class TestCommandManager extends CommandManager<
     public void registerCommand(BaseCommand command) {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             TestRootCommand cmd = (TestRootCommand) entry.getValue();
             if (!cmd.isRegistered) {
                 cmd.isRegistered = true;
@@ -77,7 +78,7 @@ public class TestCommandManager extends CommandManager<
 
     public void unregisterCommand(BaseCommand command) {
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             TestRootCommand cmd = (TestRootCommand) entry.getValue();
             cmd.getSubCommands().values().removeAll(command.subCommands.values());
             if (cmd.isRegistered && cmd.getSubCommands().isEmpty()) {
@@ -150,7 +151,7 @@ public class TestCommandManager extends CommandManager<
         if (args.length == 0) {
             return;
         }
-        String cmd = args[0].toLowerCase();
+        String cmd = args[0].toLowerCase(Locale.ENGLISH);
         TestRootCommand rootCommand = commands.get(cmd);
         if (rootCommand == null) {
             return;
