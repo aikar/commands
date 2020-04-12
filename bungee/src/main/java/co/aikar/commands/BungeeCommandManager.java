@@ -122,7 +122,7 @@ public class BungeeCommandManager extends CommandManager<
     public void registerCommand(BaseCommand command) {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
             if (!bungeeCommand.isRegistered) {
                 this.plugin.getProxy().getPluginManager().registerCommand(this.plugin, bungeeCommand);
@@ -134,7 +134,7 @@ public class BungeeCommandManager extends CommandManager<
 
     public void unregisterCommand(BaseCommand command) {
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
             bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());
             if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered)  {

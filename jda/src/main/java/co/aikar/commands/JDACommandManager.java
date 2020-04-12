@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -152,7 +153,7 @@ public class JDACommandManager extends CommandManager<
     public void registerCommand(BaseCommand command) {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String commandName = entry.getKey().toLowerCase();
+            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             JDARootCommand cmd = (JDARootCommand) entry.getValue();
             if (!cmd.isRegistered) {
                 cmd.isRegistered = true;
@@ -163,7 +164,7 @@ public class JDACommandManager extends CommandManager<
 
     public void unregisterCommand(BaseCommand command) {
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
-            String jdaCommandName = entry.getKey().toLowerCase();
+            String jdaCommandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             JDARootCommand jdaCommand = (JDARootCommand) entry.getValue();
             jdaCommand.getSubCommands().values().removeAll(command.subCommands.values());
             if (jdaCommand.isRegistered && jdaCommand.getSubCommands().isEmpty()) {
@@ -254,7 +255,7 @@ public class JDACommandManager extends CommandManager<
         if (args.length == 0) {
             return;
         }
-        String cmd = args[0].toLowerCase();
+        String cmd = args[0].toLowerCase(Locale.ENGLISH);
         JDARootCommand rootCommand = this.commands.get(cmd);
         if (rootCommand == null) {
             return;

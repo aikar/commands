@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -173,7 +174,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
     @NotNull
     private static String prepareCompletionId(String id) {
-        return (id.startsWith("@") ? "" : "@") + id.toLowerCase();
+        return (id.startsWith("@") ? "" : "@") + id.toLowerCase(Locale.ENGLISH);
     }
 
     @NotNull
@@ -244,7 +245,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
         for (String value : ACFPatterns.PIPE.split(completion)) {
             String[] complete = ACFPatterns.COLONEQUALS.split(value, 2);
-            CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase());
+            CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase(Locale.ENGLISH));
             if (handler != null) {
                 if (isAsync && !(handler instanceof AsyncCommandCompletionHandler)) {
                     ACFUtil.sneaky(new SyncCompletionRequired());

@@ -14,6 +14,6 @@ public class VelocityLocales extends Locales {
     public void loadLanguages() {
         super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getDescription().getName().get();
-        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
     }
 }

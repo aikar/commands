@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -247,7 +248,7 @@ public abstract class BaseCommand {
             cmd = cmdAliases[0];
         }
 
-        this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase();
+        this.commandName = cmd != null ? cmd : self.getSimpleName().toLowerCase(Locale.ENGLISH);
         this.permission = annotations.getAnnotationValue(self, CommandPermission.class, Annotations.REPLACEMENTS);
         this.description = annotations.getAnnotationValue(self, Description.class, Annotations.NO_EMPTY | Annotations.REPLACEMENTS);
         this.parentSubcommand = getParentSubcommand(self);
@@ -422,7 +423,7 @@ public abstract class BaseCommand {
      * @param cmd  The {@link BaseCommand} to add as a child to the {@link RootCommand} owned name field.
      */
     private void register(String name, BaseCommand cmd) {
-        String nameLower = name.toLowerCase();
+        String nameLower = name.toLowerCase(Locale.ENGLISH);
         RootCommand rootCommand = manager.obtainRootCommand(nameLower);
         rootCommand.addChild(cmd);
 
@@ -436,7 +437,7 @@ public abstract class BaseCommand {
      * @param subCommand The subcommand's name(s).
      */
     private void registerSubcommand(Method method, String subCommand) {
-        subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase());
+        subCommand = manager.getCommandReplacements().replace(subCommand.toLowerCase(Locale.ENGLISH));
         final String[] subCommandParts = ACFPatterns.SPACE.split(subCommand);
         // Must run getSubcommandPossibility BEFORE we rewrite it just after this.
         Set<String> cmdList = getSubCommandPossibilityList(subCommandParts);
@@ -618,7 +619,7 @@ public abstract class BaseCommand {
     @SuppressWarnings("WeakerAccess")
     public List<String> tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)
             throws IllegalArgumentException {
-        return tabComplete(issuer, manager.getRootCommand(commandLabel.toLowerCase()), args, isAsync);
+        return tabComplete(issuer, manager.getRootCommand(commandLabel.toLowerCase(Locale.ENGLISH)), args, isAsync);
     }
 
     List<String> tabComplete(CommandIssuer issuer, RootCommand rootCommand, String[] args, boolean isAsync)
@@ -658,7 +659,7 @@ public abstract class BaseCommand {
     List<String> getCommandsForCompletion(CommandIssuer issuer, String[] args) {
         final Set<String> cmds = new HashSet<>();
         final int cmdIndex = Math.max(0, args.length - 1);
-        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase();
+        String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase(Locale.ENGLISH);
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
             if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {

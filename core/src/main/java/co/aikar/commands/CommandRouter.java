@@ -28,6 +28,7 @@ import com.google.common.collect.SetMultimap;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -85,7 +86,7 @@ class CommandRouter {
         SetMultimap<String, RegisteredCommand> subCommands = command.getSubCommands();
         int argLength = args.length;
         for (int i = argLength; i >= 0; i--) {
-            String subcommand = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase();
+            String subcommand = ApacheCommonsLangUtil.join(args, " ", 0, i).toLowerCase(Locale.ENGLISH);
             Set<RegisteredCommand> cmds = subCommands.get(subcommand);
 
             if (!cmds.isEmpty()) {
@@ -151,7 +152,7 @@ class CommandRouter {
         RouteSearch(Set<RegisteredCommand> commands, String[] args, String commandLabel, String subcommand, boolean completion) {
             this.commands = commands;
             this.args = args;
-            this.commandLabel = commandLabel.toLowerCase();
+            this.commandLabel = commandLabel.toLowerCase(Locale.ENGLISH);
             this.subcommand = subcommand;
         }
     }

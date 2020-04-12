@@ -1,5 +1,7 @@
 package co.aikar.commands;
 
+import java.util.Locale;
+
 public class SpongeLocales extends Locales{
     private final SpongeCommandManager manager;
 
@@ -13,6 +15,6 @@ public class SpongeLocales extends Locales{
     public void loadLanguages() {
         super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getName();
-        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
     }
 }

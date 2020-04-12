@@ -324,11 +324,11 @@ public abstract class CommandManager<
     }
 
     public synchronized RootCommand getRootCommand(@NotNull String cmd) {
-        return rootCommands.get(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0]);
+        return rootCommands.get(ACFPatterns.SPACE.split(cmd.toLowerCase(Locale.ENGLISH), 2)[0]);
     }
 
     public synchronized RootCommand obtainRootCommand(@NotNull String cmd) {
-        return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0], this::createRootCommand);
+        return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(Locale.ENGLISH), 2)[0], this::createRootCommand);
     }
 
     public abstract Collection<RootCommand> getRegisteredRootCommands();
