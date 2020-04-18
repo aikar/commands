@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -189,7 +190,7 @@ public final class ACFUtil {
         if (str == null) {
             return null;
         }
-        return ACFPatterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase()).replaceAll("");
+        return ACFPatterns.NON_ALPHA_NUMERIC.matcher(str.toLowerCase(Locale.ENGLISH)).replaceAll("");
     }
 
     public static double round(double x, int scale) {
@@ -382,7 +383,7 @@ public final class ACFUtil {
     }
 
     public static String capitalizeFirst(String name, char separator) {
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.ENGLISH);
         String[] split = name.split(Character.toString(separator));
         StringBuilder total = new StringBuilder(3);
         for (String s : split) {

@@ -19,6 +19,7 @@ package co.aikar.commands.apachecommonslang;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Select methods copied from Apache Commons to avoid importing entire lib
@@ -159,7 +160,7 @@ public class ApacheCommonsLangUtil {
         if (str == null || str.isEmpty() || delimLen == 0) {
             return str;
         }
-        str = str.toLowerCase();
+        str = str.toLowerCase(Locale.ENGLISH);
         return capitalize(str, delimiters);
     }
 

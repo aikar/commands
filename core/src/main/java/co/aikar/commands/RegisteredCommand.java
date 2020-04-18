@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -285,10 +286,10 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     if (!check.isEmpty()) {
                         possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
                     } else {
-                        possible.add(s.toLowerCase());
+                        possible.add(s.toLowerCase(Locale.ENGLISH));
                     }
                 }
-                if (!possible.contains(arg.toLowerCase())) {
+                if (!possible.contains(arg.toLowerCase(Locale.ENGLISH))) {
                     throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF,
                             "{valid}", ACFUtil.join(possible, ", "));
                 }

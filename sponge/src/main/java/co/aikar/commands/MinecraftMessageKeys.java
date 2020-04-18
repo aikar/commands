@@ -26,6 +26,8 @@ package co.aikar.commands;
 import co.aikar.locales.MessageKey;
 import co.aikar.locales.MessageKeyProvider;
 
+import java.util.Locale;
+
 public enum MinecraftMessageKeys implements MessageKeyProvider {
     INVALID_WORLD,
     YOU_MUST_BE_HOLDING_ITEM,
@@ -37,7 +39,7 @@ public enum MinecraftMessageKeys implements MessageKeyProvider {
     NO_PLAYER_FOUND
     ;
 
-    private final MessageKey key = MessageKey.of("acf-minecraft." + this.name().toLowerCase());
+    private final MessageKey key = MessageKey.of("acf-minecraft." + this.name().toLowerCase(Locale.ENGLISH));
     public MessageKey getMessageKey() {
         return key;
     }

@@ -32,6 +32,6 @@ import java.lang.annotation.Target;
  * Marks a command to not be included in stuff like tab completion and help pages
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface Private {
 }

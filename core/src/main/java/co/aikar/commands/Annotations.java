@@ -50,7 +50,7 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
     }
 
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
-        Annotation annotation = object.getAnnotation(annoClass);
+        Annotation annotation = getAnnotationRecursive(object, annoClass);
         String value = null;
 
         if (annotation != null) {
@@ -101,6 +101,22 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
         }
 
         return value;
+    }
+
+    private static Annotation getAnnotationRecursive(AnnotatedElement object, Class<? extends Annotation> annoClass) {
+        if (object.isAnnotationPresent(annoClass)) {
+            return object.getAnnotation(annoClass);
+        } else {
+            for (Annotation otherAnnotation : object.getDeclaredAnnotations()) {
+                if (!otherAnnotation.annotationType().getPackage().getName().startsWith("java.")) {
+                    final Annotation foundAnnotation = getAnnotationRecursive(otherAnnotation.annotationType(), annoClass);
+                    if (foundAnnotation != null) {
+                        return foundAnnotation;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private static boolean hasOption(int options, int option) {

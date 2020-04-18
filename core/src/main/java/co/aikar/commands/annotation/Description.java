@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * This is used in the help menus.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 public @interface Description {
     String value();
 }

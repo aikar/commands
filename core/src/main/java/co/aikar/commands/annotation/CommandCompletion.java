@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * @see {@link co.aikar.commands.CommandCompletions}
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface CommandCompletion {
     String value();
 }

@@ -32,5 +32,5 @@ import java.lang.annotation.Target;
  * Don't join remaining arguments. Used on String parameters, which normally would combine the remaining arguments
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Single {}

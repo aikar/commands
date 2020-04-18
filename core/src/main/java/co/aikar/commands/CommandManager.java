@@ -76,7 +76,7 @@ public abstract class CommandManager<
 
     protected boolean usePerIssuerLocale = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = new ArrayList<>();
-    protected Set<Locale> supportedLanguages = new HashSet<>(Arrays.asList(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.FRENCH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN, Locales.BULGARIAN, Locales.HUNGARIAN));
+    protected Set<Locale> supportedLanguages = new HashSet<>(Arrays.asList(Locales.ENGLISH, Locales.GERMAN, Locales.SPANISH, Locales.FRENCH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN, Locales.BULGARIAN, Locales.HUNGARIAN, Locales.TURKISH));
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
     protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
@@ -324,11 +324,11 @@ public abstract class CommandManager<
     }
 
     public synchronized RootCommand getRootCommand(@NotNull String cmd) {
-        return rootCommands.get(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0]);
+        return rootCommands.get(ACFPatterns.SPACE.split(cmd.toLowerCase(Locale.ENGLISH), 2)[0]);
     }
 
     public synchronized RootCommand obtainRootCommand(@NotNull String cmd) {
-        return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(), 2)[0], this::createRootCommand);
+        return rootCommands.computeIfAbsent(ACFPatterns.SPACE.split(cmd.toLowerCase(Locale.ENGLISH), 2)[0], this::createRootCommand);
     }
 
     public abstract Collection<RootCommand> getRegisteredRootCommands();

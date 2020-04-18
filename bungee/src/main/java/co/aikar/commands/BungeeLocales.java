@@ -23,7 +23,7 @@ public class BungeeLocales extends Locales {
     public void loadLanguages() {
         super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getDescription().getName();
-        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
     }
 
     /**

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +60,7 @@ public class CommandReplacements {
 
     @Nullable
     private String addReplacement0(String key, String val) {
-        key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase()).replaceAll("");
+        key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase(Locale.ENGLISH)).replaceAll("");
         Pattern pattern = Pattern.compile("%" + Pattern.quote(key) + "\\b", Pattern.CASE_INSENSITIVE);
 
         Map.Entry<Pattern, String> entry = new AbstractMap.SimpleImmutableEntry<>(pattern, val);

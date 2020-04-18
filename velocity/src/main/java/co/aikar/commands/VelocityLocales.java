@@ -1,5 +1,7 @@
 package co.aikar.commands;
 
+import java.util.Locale;
+
 public class VelocityLocales extends Locales {
     private final VelocityCommandManager manager;
 
@@ -14,6 +16,6 @@ public class VelocityLocales extends Locales {
     public void loadLanguages() {
         super.loadLanguages();
         String pluginName = "acf-" + manager.plugin.getDescription().getName().get();
-        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase());
+        addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
     }
 }
