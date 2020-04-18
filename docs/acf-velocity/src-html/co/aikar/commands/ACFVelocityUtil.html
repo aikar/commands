@@ -1,91 +1,92 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package co.aikar.commands;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.util.ArrayList;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.util.Collection;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.util.Collections;<a name="line.5"></a>
-<span class="sourceLineNo">006</span>import java.util.List;<a name="line.6"></a>
-<span class="sourceLineNo">007</span>import java.util.Optional;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import java.util.stream.Collectors;<a name="line.8"></a>
-<span class="sourceLineNo">009</span><a name="line.9"></a>
-<span class="sourceLineNo">010</span>import com.velocitypowered.api.command.CommandSource;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import com.velocitypowered.api.proxy.Player;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import com.velocitypowered.api.proxy.ProxyServer;<a name="line.12"></a>
-<span class="sourceLineNo">013</span><a name="line.13"></a>
-<span class="sourceLineNo">014</span>import net.kyori.text.TextComponent;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import net.kyori.text.serializer.legacy.LegacyComponentSerializer;<a name="line.15"></a>
-<span class="sourceLineNo">016</span><a name="line.16"></a>
-<span class="sourceLineNo">017</span>public class ACFVelocityUtil {<a name="line.17"></a>
-<span class="sourceLineNo">018</span><a name="line.18"></a>
-<span class="sourceLineNo">019</span>    @SuppressWarnings("deprecation")<a name="line.19"></a>
-<span class="sourceLineNo">020</span>    public static TextComponent color(String message) {<a name="line.20"></a>
-<span class="sourceLineNo">021</span>        return LegacyComponentSerializer.legacy().deserialize(message);<a name="line.21"></a>
-<span class="sourceLineNo">022</span>    }<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>    public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {<a name="line.24"></a>
-<span class="sourceLineNo">025</span>        CommandSource requester = issuer.getIssuer();<a name="line.25"></a>
-<span class="sourceLineNo">026</span>        String name = ACFUtil.replace(search, ":confirm", "");<a name="line.26"></a>
-<span class="sourceLineNo">027</span>        if (!isValidName(name)) {<a name="line.27"></a>
-<span class="sourceLineNo">028</span>            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);<a name="line.28"></a>
-<span class="sourceLineNo">029</span>            return null;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>        }<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>        List&lt;Player&gt; matches = new ArrayList&lt;&gt;(matchPlayer(server, name));<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>        if (matches.size() &gt; 1) {<a name="line.34"></a>
-<span class="sourceLineNo">035</span>            String allMatches = matches.stream().map(Player::getUsername).collect(Collectors.joining(", "));<a name="line.35"></a>
-<span class="sourceLineNo">036</span>            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH, "{search}", name, "{all}", allMatches);<a name="line.36"></a>
-<span class="sourceLineNo">037</span>            return null;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>        }<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>        if (matches.isEmpty()) {<a name="line.40"></a>
-<span class="sourceLineNo">041</span>            issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);<a name="line.41"></a>
-<span class="sourceLineNo">042</span>            return null;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        }<a name="line.43"></a>
-<span class="sourceLineNo">044</span><a name="line.44"></a>
-<span class="sourceLineNo">045</span>        return matches.get(0);<a name="line.45"></a>
-<span class="sourceLineNo">046</span>    }<a name="line.46"></a>
-<span class="sourceLineNo">047</span><a name="line.47"></a>
-<span class="sourceLineNo">048</span>    /*<a name="line.48"></a>
-<span class="sourceLineNo">049</span>     * Original code written by md_5<a name="line.49"></a>
-<span class="sourceLineNo">050</span>     *<a name="line.50"></a>
-<span class="sourceLineNo">051</span>     * Modified to work with Velocity by Crypnotic<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     */<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    private static Collection&lt;Player&gt; matchPlayer(ProxyServer server, final String partialName) {<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        // A better error message might be nice. This just mimics the previous output<a name="line.54"></a>
-<span class="sourceLineNo">055</span>        if (partialName == null) {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>            throw new NullPointerException("partialName");<a name="line.56"></a>
-<span class="sourceLineNo">057</span>        }<a name="line.57"></a>
-<span class="sourceLineNo">058</span><a name="line.58"></a>
-<span class="sourceLineNo">059</span>        Optional&lt;Player&gt; exactMatch = server.getPlayer(partialName);<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        //noinspection OptionalIsPresent<a name="line.60"></a>
-<span class="sourceLineNo">061</span>        if (exactMatch.isPresent()) {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>            return Collections.singleton(exactMatch.get());<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        }<a name="line.63"></a>
-<span class="sourceLineNo">064</span><a name="line.64"></a>
-<span class="sourceLineNo">065</span>        return server.getAllPlayers().stream()<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                .filter(player -&gt; player.getUsername().regionMatches(true, 0, partialName, 0, partialName.length()))<a name="line.66"></a>
-<span class="sourceLineNo">067</span>                .collect(Collectors.toList());<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    }<a name="line.68"></a>
-<span class="sourceLineNo">069</span><a name="line.69"></a>
-<span class="sourceLineNo">070</span>    public static boolean isValidName(String name) {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        return name != null &amp;&amp; !name.isEmpty() &amp;&amp; ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    }<a name="line.72"></a>
-<span class="sourceLineNo">073</span><a name="line.73"></a>
-<span class="sourceLineNo">074</span>    public static &lt;T&gt; T validate(T object, String message, Object... values) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        if (object == null) {<a name="line.75"></a>
-<span class="sourceLineNo">076</span>            throw new NullPointerException(String.format(message, values));<a name="line.76"></a>
-<span class="sourceLineNo">077</span>        }<a name="line.77"></a>
-<span class="sourceLineNo">078</span>        return object;<a name="line.78"></a>
-<span class="sourceLineNo">079</span>    }<a name="line.79"></a>
-<span class="sourceLineNo">080</span>}<a name="line.80"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package co.aikar.commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.ArrayList;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.Collection;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Collections;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.List;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Optional;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.stream.Collectors;</a>
+<span class="sourceLineNo">009</span><a id="line.9"></a>
+<span class="sourceLineNo">010</span><a id="line.10">import com.velocitypowered.api.command.CommandSource;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import com.velocitypowered.api.proxy.Player;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import com.velocitypowered.api.proxy.ProxyServer;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import net.kyori.text.TextComponent;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import net.kyori.text.serializer.legacy.LegacyComponentSerializer;</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">public class ACFVelocityUtil {</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">    @SuppressWarnings("deprecation")</a>
+<span class="sourceLineNo">020</span><a id="line.20">    public static TextComponent color(String message) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">        return LegacyComponentSerializer.legacy().deserialize(message);</a>
+<span class="sourceLineNo">022</span><a id="line.22">    }</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">    public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {</a>
+<span class="sourceLineNo">025</span><a id="line.25">        CommandSource requester = issuer.getIssuer();</a>
+<span class="sourceLineNo">026</span><a id="line.26">        String name = ACFUtil.replace(search, ":confirm", "");</a>
+<span class="sourceLineNo">027</span><a id="line.27">        if (!isValidName(name)) {</a>
+<span class="sourceLineNo">028</span><a id="line.28">            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</a>
+<span class="sourceLineNo">029</span><a id="line.29">            return null;</a>
+<span class="sourceLineNo">030</span><a id="line.30">        }</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">        List&lt;Player&gt; matches = new ArrayList&lt;&gt;(matchPlayer(server, name));</a>
+<span class="sourceLineNo">033</span><a id="line.33"></a>
+<span class="sourceLineNo">034</span><a id="line.34">        if (matches.size() &gt; 1) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">            String allMatches = matches.stream().map(Player::getUsername).collect(Collectors.joining(", "));</a>
+<span class="sourceLineNo">036</span><a id="line.36">            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH, "{search}", name, "{all}", allMatches);</a>
+<span class="sourceLineNo">037</span><a id="line.37">            return null;</a>
+<span class="sourceLineNo">038</span><a id="line.38">        }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">        if (matches.isEmpty()) {</a>
+<span class="sourceLineNo">041</span><a id="line.41">            issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);</a>
+<span class="sourceLineNo">042</span><a id="line.42">            return null;</a>
+<span class="sourceLineNo">043</span><a id="line.43">        }</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">        return matches.get(0);</a>
+<span class="sourceLineNo">046</span><a id="line.46">    }</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">    /*</a>
+<span class="sourceLineNo">049</span><a id="line.49">     * Original code written by md_5</a>
+<span class="sourceLineNo">050</span><a id="line.50">     *</a>
+<span class="sourceLineNo">051</span><a id="line.51">     * Modified to work with Velocity by Crypnotic</a>
+<span class="sourceLineNo">052</span><a id="line.52">     */</a>
+<span class="sourceLineNo">053</span><a id="line.53">    private static Collection&lt;Player&gt; matchPlayer(ProxyServer server, final String partialName) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">        // A better error message might be nice. This just mimics the previous output</a>
+<span class="sourceLineNo">055</span><a id="line.55">        if (partialName == null) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">            throw new NullPointerException("partialName");</a>
+<span class="sourceLineNo">057</span><a id="line.57">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">        Optional&lt;Player&gt; exactMatch = server.getPlayer(partialName);</a>
+<span class="sourceLineNo">060</span><a id="line.60">        //noinspection OptionalIsPresent</a>
+<span class="sourceLineNo">061</span><a id="line.61">        if (exactMatch.isPresent()) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">            return Collections.singleton(exactMatch.get());</a>
+<span class="sourceLineNo">063</span><a id="line.63">        }</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">        return server.getAllPlayers().stream()</a>
+<span class="sourceLineNo">066</span><a id="line.66">                .filter(player -&gt; player.getUsername().regionMatches(true, 0, partialName, 0, partialName.length()))</a>
+<span class="sourceLineNo">067</span><a id="line.67">                .collect(Collectors.toList());</a>
+<span class="sourceLineNo">068</span><a id="line.68">    }</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">    public static boolean isValidName(String name) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">        return name != null &amp;&amp; !name.isEmpty() &amp;&amp; ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();</a>
+<span class="sourceLineNo">072</span><a id="line.72">    }</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">    public static &lt;T&gt; T validate(T object, String message, Object... values) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">        if (object == null) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">            throw new NullPointerException(String.format(message, values));</a>
+<span class="sourceLineNo">077</span><a id="line.77">        }</a>
+<span class="sourceLineNo">078</span><a id="line.78">        return object;</a>
+<span class="sourceLineNo">079</span><a id="line.79">    }</a>
+<span class="sourceLineNo">080</span><a id="line.80">}</a>
 
 
 
@@ -148,5 +149,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>
