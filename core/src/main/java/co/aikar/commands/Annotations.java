@@ -27,8 +27,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -52,7 +52,7 @@ class Annotations <M extends CommandManager> extends AnnotationLookups {
     }
 
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
-        Annotation annotation = getAnnotationRecursive(object, annoClass, new ArrayList<>()); // TODO: Better collection impl?
+        Annotation annotation = getAnnotationRecursive(object, annoClass, new HashSet<>());
         String value = null;
 
         if (annotation != null) {
