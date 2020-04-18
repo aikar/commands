@@ -81,7 +81,7 @@ public abstract class BaseCommand {
      * This is a field which contains the magic key in the {@link #subCommands} map for the method which is default for the
      * entire base command.
      */
-    static final String DEFAULT = "__default";
+    public static final String DEFAULT = "__default";
 
     /**
      * A map of all the registered commands for this base command, keyed to each potential subcommand to access it.
@@ -224,7 +224,7 @@ public abstract class BaseCommand {
      *
      * @param manager The manager to register as this command's owner and handler.
      */
-    void onRegister(CommandManager manager) {
+    public void onRegister(CommandManager manager) {
         onRegister(manager, this.commandName);
     }
 
@@ -838,5 +838,13 @@ public abstract class BaseCommand {
         List<RegisteredCommand> registeredCommands = new ArrayList<>();
         registeredCommands.addAll(this.subCommands.values());
         return registeredCommands;
+    }
+
+    public Map<String, RootCommand> getRegisteredRootCommands() {
+        return registeredCommands;
+    }
+
+    public SetMultimap<String, RegisteredCommand> getSubCommands() {
+        return subCommands;
     }
 }

@@ -32,7 +32,7 @@ public class ConditionContext <I extends CommandIssuer> {
     private final String config;
     private final Map<String, String> configs;
 
-    ConditionContext(I issuer, String config) {
+    public ConditionContext(I issuer, String config) {
         this.issuer = issuer;
         this.config = config;
         this.configs = new HashMap<>();

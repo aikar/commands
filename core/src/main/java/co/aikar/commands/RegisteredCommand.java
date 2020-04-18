@@ -78,7 +78,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
 
     final Set<String> permissions = new HashSet<>();
 
-    RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
+    public RegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         this.scope = scope;
         this.manager = this.scope.manager;
         final Annotations annotations = this.manager.getAnnotations();

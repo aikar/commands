@@ -77,7 +77,7 @@ public abstract class MessageFormatter <FT> {
         return getColor(1);
     }
 
-    abstract String format(FT color, String message);
+    public abstract String format(FT color, String message);
 
     public String format(int index, String message) {
         return format(getColor(index), message);

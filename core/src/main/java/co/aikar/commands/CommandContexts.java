@@ -43,7 +43,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
     protected final Map<Class<?>, ContextResolver<?, R>> contextMap = new HashMap<>();
     protected final CommandManager manager;
 
-    CommandContexts(CommandManager manager) {
+    public CommandContexts(CommandManager manager) {
         this.manager = manager;
         registerIssuerOnlyContext(CommandIssuer.class, c -> c.getIssuer());
         registerContext(Short.class, (c) -> {

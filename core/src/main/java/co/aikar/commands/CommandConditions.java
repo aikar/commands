@@ -40,7 +40,7 @@ public class CommandConditions <
     private Map<String, Condition<I>> conditions = new HashMap<>();
     private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = new Table<>();
 
-    CommandConditions(CommandManager manager) {
+    public CommandConditions(CommandManager manager) {
         this.manager = manager;
     }
 

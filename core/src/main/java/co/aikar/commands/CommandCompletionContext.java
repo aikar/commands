@@ -37,7 +37,7 @@ public class CommandCompletionContext<I extends CommandIssuer> {
     private final Map<String, String> configs = new HashMap<>();
     private final List<String> args;
 
-    CommandCompletionContext(RegisteredCommand command, I issuer, String input, String config, String[] args) {
+    public CommandCompletionContext(RegisteredCommand command, I issuer, String input, String config, String[] args) {
         this.command = command;
         this.issuer = issuer;
         this.input = input;

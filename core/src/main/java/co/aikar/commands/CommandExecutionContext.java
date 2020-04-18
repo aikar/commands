@@ -40,7 +40,7 @@ public class CommandExecutionContext<CEC extends CommandExecutionContext, I exte
     private final Map<String, String> flags;
     private final CommandManager manager;
 
-    CommandExecutionContext(RegisteredCommand cmd, CommandParameter param, I sender, List<String> args,
+    public CommandExecutionContext(RegisteredCommand cmd, CommandParameter param, I sender, List<String> args,
                             int index, Map<String, Object> passedArgs) {
         this.cmd = cmd;
         this.manager = cmd.scope.manager;

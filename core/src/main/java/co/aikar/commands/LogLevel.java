@@ -23,9 +23,9 @@
 
 package co.aikar.commands;
 
-enum LogLevel {
+public enum LogLevel {
     INFO,
     ERROR;
 
-    static final String LOG_PREFIX = "[ACF] ";
+    public static final String LOG_PREFIX = "[ACF] ";
 }

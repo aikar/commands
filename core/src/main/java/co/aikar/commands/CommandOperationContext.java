@@ -40,7 +40,7 @@ public class CommandOperationContext<I extends CommandIssuer> {
     private RegisteredCommand registeredCommand;
     List<String> enumCompletionValues;
 
-    CommandOperationContext(CommandManager manager, I issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
+    public CommandOperationContext(CommandManager manager, I issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {
         this.manager = manager;
         this.issuer = issuer;
         this.command = command;

@@ -40,7 +40,7 @@ public class CommandReplacements {
     private final CommandManager manager;
     private final Map<String, Map.Entry<Pattern, String>> replacements = new LinkedHashMap<>();
 
-    CommandReplacements(CommandManager manager) {
+    public CommandReplacements(CommandManager manager) {
         this.manager = manager;
         addReplacement0("truthy", "true|false|yes|no|1|0|on|off|t|f");
     }
