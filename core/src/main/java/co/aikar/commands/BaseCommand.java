@@ -840,7 +840,7 @@ public abstract class BaseCommand {
         return registeredCommands;
     }
 
-    public SetMultimap<String, RegisteredCommand> getSubCommands(){
+    protected SetMultimap<String, RegisteredCommand> getSubCommands() {
         return subCommands;
     }
 }

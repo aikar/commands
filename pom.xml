@@ -104,7 +104,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
+                    </dependencyReducedPomLocation>
                     <!-- when downloading via Maven we can pull depends individually -->
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                 </configuration>
@@ -188,5 +189,6 @@
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
+        <module>example</module>
     </modules>
 </project>

@@ -24,7 +24,6 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.ACFBrigadierManager;
-import co.aikar.commands.BukkitBrigadierManager;
 import co.aikar.commands.BukkitCommandDispatcherProvider;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
@@ -131,7 +130,7 @@ public final class ACFExample extends JavaPlugin {
                 Arrays.asList("1", "2", "3", "4", "5")
         );
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager);
+            ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, new BukkitCommandDispatcherProvider());
             brigadierManager.register(test);
 
             File file = new File("test.json");
