@@ -11,6 +11,7 @@ import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,7 @@ public class BrigadierTest extends BaseCommand {
 
     @Subcommand("hello")
     @Syntax("<player>")
-    @CommandCompletion("@player")
+    @CommandCompletion("@players")
     @Description("Says hello to a player")
     public static void onHello(Player player, @Flags("other") Player arg) {
         player.sendMessage("You said hello to " + arg.getDisplayName());
@@ -31,10 +32,17 @@ public class BrigadierTest extends BaseCommand {
         help.showHelp();
     }
 
-    @Subcommand("test")
+    @Subcommand("test|test2")
     @Description("Says hello to a player")
     @CommandCompletion("true|false @range:20 @range:1-5 @range:20-30 test|test2|foo|bar true|false")
     public static void onTest(Player player, boolean booleanParam, float floatParam, double doubleParam, int integerParam, String stringParam, boolean test2) {
         player.sendMessage("You said: " + booleanParam + " - " + floatParam + " - " + doubleParam + " - " + integerParam + " - " + stringParam + " - " + test2 + "!");
+    }
+
+    @Subcommand("custom")
+    @Description("Try custom completions")
+    @CommandCompletion("@someobject")
+    public static void onCustom(Player player, SomeObject object) {
+        player.sendMessage("You said: " + object);
     }
 }

@@ -32,6 +32,8 @@ import org.bukkit.command.Command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -44,30 +46,6 @@ import java.util.concurrent.CompletableFuture;
 @Deprecated
 @UnstableAPI
 public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
-
-    public BukkitBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, ACFBrigadierProvider provider) {
-        super(manager, provider);
-
-        //TODO custom argument types?
-//        registerArgument(Player.class, new ArgumentType<Player>() {
-//            @Override
-//            public Player parse(StringReader reader) throws CommandSyntaxException {
-//                return Bukkit.getPlayer(reader.readString());
-//            }
-//
-//            @Override
-//            public Collection<String> getExamples() {
-//                List<String> list = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
-//                list.add("TEST");
-//                return list;
-//            }
-//
-//            @Override
-//            public String toString() {
-//                return super.toString();
-//            }
-//        });
-    }
 
     private static final String SERVER_VERSION = getServerVersion();
 
@@ -85,6 +63,35 @@ public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Constructs a new brigadier manager, utilizing the currently active command manager and an brigadier provider.
+     *
+     * @param manager
+     * @param provider
+     */
+    public BukkitBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, ACFBrigadierProvider provider) {
+        super(manager, provider);
+    }
+
+    public BukkitBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager) {
+        super(manager, new BukkitCommandDispatcherProvider());
+    }
+
+    @Override
+    protected void registerACF(BaseCommand command) {
+// try to register only to acf, not to bukkit, didnt work as expected, we wil need to register to bukkit
+//        BukkitCommandManager bukkitCommandManager = (BukkitCommandManager) manager;
+//        command.onRegister(manager);
+//        for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
+//            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
+//            BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();
+//            bukkitCommand.isRegistered = true;
+//            bukkitCommandManager.registeredCommands.put(commandName, bukkitCommand);
+//        }
+
+        manager.registerCommand(command);
     }
 
     private static String getServerVersion() {
@@ -110,5 +117,15 @@ public class BukkitBrigadierManager<S> extends ACFBrigadierManager<S> {
             e.printStackTrace();
         }
         return builder.buildFuture();
+    }
+
+    @Override
+    public int run(CommandContext<S> commandContext) throws CommandSyntaxException {
+        return 0;
+    }
+
+    @Override
+    public boolean test(S s) {
+        return false;
     }
 }

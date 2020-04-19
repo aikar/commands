@@ -249,9 +249,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value;
                     if (!parameter.isOptionalResolver() || !this.manager.hasPermission(sender, parameterPermissions)) {
-                       value = null;
+                        value = null;
                     } else {
-                       value = resolver.getContext(context);
+                        value = resolver.getContext(context);
                     }
 
                     if (value == null && parameter.getClass().isPrimitive()) {

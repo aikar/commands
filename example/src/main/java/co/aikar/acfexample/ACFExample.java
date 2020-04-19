@@ -26,14 +26,21 @@ package co.aikar.acfexample;
 import co.aikar.commands.ACFBrigadierManager;
 import co.aikar.commands.BukkitBrigadierManager;
 import co.aikar.commands.BukkitCommandDispatcherProvider;
-import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperCommandManager;
+import com.google.common.io.Files;
+import com.google.gson.GsonBuilder;
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.server.v1_15_R1.ArgumentRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public final class ACFExample extends JavaPlugin {
@@ -120,17 +127,25 @@ public final class ACFExample extends JavaPlugin {
         commandManager.enableUnstableAPI("brigadier");
 
         BrigadierTest test = new BrigadierTest();
+        commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->
+                Arrays.asList("1", "2", "3", "4", "5")
+        );
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            BukkitCommandDispatcherProvider provider = new BukkitCommandDispatcherProvider();
-            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager, provider);
-
-            commandManager.registerCommand(test);// later so that bukkit doesn't ruin it
+            ACFBrigadierManager brigadierManager = new BukkitBrigadierManager(commandManager);
             brigadierManager.register(test);
 
             File file = new File("test.json");
-//            ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a(file);
+            writeCommandTreeAsGson(file, ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a());
             System.out.println("WROTE TO " + file.getAbsolutePath());
         }, 1);
+    }
+
+    public void writeCommandTreeAsGson(File fileIn, CommandDispatcher dispatcher) {
+        try {
+            Files.write((new GsonBuilder()).setPrettyPrinting().create().toJson(ArgumentRegistry.a(dispatcher, dispatcher.getRoot())), fileIn, StandardCharsets.UTF_8);
+        } catch (IOException ioexception) {
+            getSLF4JLogger().error("Couldn't write out command tree!", (Throwable) ioexception);
+        }
     }
 
     // Typical Bukkit Plugin Scaffolding

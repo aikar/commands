@@ -1,5 +1,6 @@
 package co.aikar.commands;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -9,18 +10,16 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Handles registering of commands into brigadier
@@ -31,10 +30,10 @@ import java.util.concurrent.CompletableFuture;
  */
 @Deprecated
 @UnstableAPI
-public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
+public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S>, Command<S>, Predicate<S> {
 
-    private CommandManager<?, ?, ?, ?, ?, ?> manager;
-    private CommandDispatcher<S> dispatcher;
+    protected CommandManager<?, ?, ?, ?, ?, ?> manager;
+    protected CommandDispatcher<S> dispatcher;
 
     private Map<Class<?>, ArgumentType<?>> arguments = new HashMap<>();
 
@@ -57,45 +56,46 @@ public abstract class ACFBrigadierManager<S> implements SuggestionProvider<S> {
         registerArgument(double.class, DoubleArgumentType.doubleArg());
         registerArgument(boolean.class, BoolArgumentType.bool());
         registerArgument(int.class, IntegerArgumentType.integer());
+
+        manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
     }
 
-    public <T> void registerArgument(Class<T> clazz, ArgumentType<T> type) {
+    public <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
         arguments.put(clazz, type);
     }
 
     public void register(BaseCommand command) {
-        System.out.println("* registering command " + command.commandName);
+        registerACF(command);
+        registerBrigadier(command);
+    }
+
+    protected abstract void registerACF(BaseCommand command);
+
+    protected void registerBrigadier(BaseCommand command) {
         CommandNode<S> baseCmd = LiteralArgumentBuilder.<S>literal(command.commandName).build();
+        Set<RegisteredCommand> seen = new HashSet<>();
         for (Map.Entry<String, RegisteredCommand> entry : command.getSubCommands().entries()) {
-            if (entry.getKey().startsWith("__")) {
-                // don't register stuff like __catchunknown
+            if (entry.getKey().startsWith("__") || (!entry.getKey().equals("help") && entry.getValue().prefSubCommand.equals("help"))) {
+                // don't register stuff like __catchunknown and don't help command aliases
                 continue;
             }
-            System.out.println("* * registering subcommand " + entry.getKey());
             LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(entry.getKey()).build();
             CommandNode<S> paramNode = subCommandNode;
             for (CommandParameter param : entry.getValue().parameters) {
                 if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
                     continue;
                 }
-                paramNode.addChild(paramNode = RequiredArgumentBuilder.<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(this).build());
-                System.out.println("* * * registering param " + param.getName() + " of type " + param.getType().getSimpleName() + " with argument type " + ((ArgumentCommandNode) paramNode).getType().getClass().
-                        getSimpleName());
+                paramNode.addChild(paramNode = RequiredArgumentBuilder.<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(this).executes(this).build());
             }
             baseCmd.addChild(subCommandNode);
-            System.out.println("* * registered subcommand " + entry.getKey());
+            seen.add(entry.getValue());
         }
 
         dispatcher.getRoot().addChild(baseCmd);
-
-        System.out.println("* registered " + command.commandName);
     }
 
     private ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
         //noinspection unchecked
         return (ArgumentType<Object>) arguments.getOrDefault(clazz, StringArgumentType.string());
     }
-
-    @Override
-    public abstract CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) throws CommandSyntaxException;
 }
