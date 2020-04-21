@@ -33,11 +33,11 @@ public class ACFBrigadierManager<S> {
     private final Map<Class<?>, ArgumentType<?>> arguments = new HashMap<>();
 
     /**
-     * Constructs a new brigadier manager, utilizing the currently active command manager and an brigadier provider.
+     * Constructs a new brigadier manager, utilizing the currently active command manager
      *
      * @param manager
      */
-    public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager) {
+    ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager) {
         manager.verifyUnstableAPI("brigadier");
 
         this.manager = manager;
@@ -52,16 +52,19 @@ public class ACFBrigadierManager<S> {
         registerArgument(int.class, IntegerArgumentType.integer());
     }
 
-    public <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
+    <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
         arguments.put(clazz, type);
     }
 
-    public ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
+    private ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
         //noinspection unchecked
         return (ArgumentType<Object>) arguments.getOrDefault(clazz, StringArgumentType.string());
     }
 
-    public void register(RootCommand acfCommand, LiteralCommandNode<S> root, SuggestionProvider<S> suggestionProvider, Command<S> executor, BiPredicate<RegisteredCommand, S> permChecker) {
+    /**
+     * Registers the given RootCommand into the given brigadir command node, utilizing the provided suggestion provider, executor and permission predicate
+     */
+    void register(RootCommand acfCommand, LiteralCommandNode<S> root, SuggestionProvider<S> suggestionProvider, Command<S> executor, BiPredicate<RegisteredCommand, S> permChecker) {
         for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
             if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases

@@ -24,7 +24,6 @@
 package co.aikar.commands;
 
 import com.destroystokyo.paper.brigadier.BukkitBrigadierCommandSource;
-import com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent;
 import com.destroystokyo.paper.event.brigadier.CommandRegisteredEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
