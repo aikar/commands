@@ -54,17 +54,14 @@ public class PaperBrigadierManager implements Listener {
     }
 
     @EventHandler
-    public void onCommandsSend(AsyncPlayerSendCommandsEvent event) {
-        if (event.isAsynchronous() || !event.hasFiredAsync()) {
-
+    public void onCommandRegister(CommandRegisteredEvent<BukkitBrigadierCommandSource> event) {
+        RootCommand acfCommand = manager.getRootCommand(event.getCommandLabel());
+        if (acfCommand != null) {
+            brigadierManager.register(acfCommand, event.getLiteral(), event.getBrigadierCommand(), event.getBrigadierCommand(), this::checkPerm);
         }
     }
 
-    @EventHandler
-    public void onCommandRegister(CommandRegisteredEvent event) {
-        RootCommand acfCommand = manager.getRootCommand(event.getCommandLabel());
-        if (acfCommand != null) {
-            brigadierManager.register(acfCommand, event.getLiteral(), event.getBrigadierCommand());
-        }
+    private boolean checkPerm(RegisteredCommand registeredCommand, BukkitBrigadierCommandSource bukkitBrigadierCommandSource) {
+        return registeredCommand.hasPermission(manager.getCommandIssuer(bukkitBrigadierCommandSource.getBukkitSender()));
     }
 }

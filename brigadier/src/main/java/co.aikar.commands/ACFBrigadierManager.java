@@ -1,5 +1,6 @@
 package co.aikar.commands;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -14,6 +15,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiPredicate;
 
 /**
  * Handles registering of commands into brigadier
@@ -37,7 +39,7 @@ public class ACFBrigadierManager<S> {
      */
     public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager) {
         manager.verifyUnstableAPI("brigadier");
-        
+
         this.manager = manager;
 
         manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
@@ -59,19 +61,29 @@ public class ACFBrigadierManager<S> {
         return (ArgumentType<Object>) arguments.getOrDefault(clazz, StringArgumentType.string());
     }
 
-    public void register(RootCommand acfCommand, LiteralCommandNode root, SuggestionProvider suggestionProvider) {
+    public void register(RootCommand acfCommand, LiteralCommandNode<S> root, SuggestionProvider<S> suggestionProvider, Command<S> executor, BiPredicate<RegisteredCommand, S> permChecker) {
         for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
             if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
                 continue;
             }
-            LiteralCommandNode subCommandNode = LiteralArgumentBuilder.literal(subCommand.getKey()).build();
-            CommandNode paramNode = subCommandNode;
+            LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(subCommand.getKey())
+                    .executes(executor)
+                    .requires(sender -> permChecker.test(subCommand.getValue(), sender))
+                    .build();
+            CommandNode<S> paramNode = subCommandNode;
             for (CommandParameter param : subCommand.getValue().parameters) {
                 if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
                     continue;
                 }
-                paramNode.addChild(paramNode = RequiredArgumentBuilder.argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(suggestionProvider).build());
+                CommandNode<S> subSubCommand = RequiredArgumentBuilder
+                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType()))
+                        .suggests(suggestionProvider)
+                        .executes(executor)
+                        .requires(sender -> permChecker.test(subCommand.getValue(), sender))
+                        .build();
+                paramNode.addChild(subSubCommand);
+                paramNode = subSubCommand;
             }
             root.addChild(subCommandNode);
         }

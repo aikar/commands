@@ -24,17 +24,12 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.ConditionFailedException;
+import co.aikar.commands.MessageKeys;
+import co.aikar.commands.MessageType;
 import co.aikar.commands.PaperBrigadierManager;
 import co.aikar.commands.PaperCommandManager;
-import com.google.common.io.Files;
-import com.google.gson.GsonBuilder;
-import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.server.v1_15_R1.ArgumentRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public final class ACFExample extends JavaPlugin {
@@ -99,16 +94,16 @@ public final class ACFExample extends JavaPlugin {
         commandManager.registerDependency(String.class, "test2", "Test2");
 
         // 7: Register your commands - This first command demonstrates adding an exception handler to that command
-//        commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
-//            sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
-//            return true; // mark as handeled, default message will not be send to sender
-//        }));
+        commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
+            return true; // mark as handeled, default message will not be send to sender
+        }));
 
         // 8: Register an additional command. This one happens to share the same CommandAlias as the previous command
         // This means it simply registers additional sub commands under the same command, but organized into separate
         // Classes (Maybe different permission sets)
-//        commandManager.registerCommand(new SomeCommand_ExtraSubs());
-//        commandManager.registerCommand(new SomeOtherCommand());
+        commandManager.registerCommand(new SomeCommand_ExtraSubs());
+        commandManager.registerCommand(new SomeOtherCommand());
 
         // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
@@ -121,20 +116,11 @@ public final class ACFExample extends JavaPlugin {
         commandManager.enableUnstableAPI("brigadier");
         new PaperBrigadierManager(this, commandManager);
 
-        // TEST STUFF
+        // test command for brigadier
         commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->
                 Arrays.asList("1", "2", "3", "4", "5")
         );
-        BrigadierTest test = new BrigadierTest();
-        commandManager.registerCommand(test);
-    }
-
-    public void writeCommandTreeAsGson(File fileIn, CommandDispatcher dispatcher) {
-        try {
-            Files.write((new GsonBuilder()).setPrettyPrinting().create().toJson(ArgumentRegistry.a(dispatcher, dispatcher.getRoot())), fileIn, StandardCharsets.UTF_8);
-        } catch (IOException ioexception) {
-            getSLF4JLogger().error("Couldn't write out command tree!", (Throwable) ioexception);
-        }
+        commandManager.registerCommand(new BrigadierTest());
     }
 
     // Typical Bukkit Plugin Scaffolding

@@ -4,14 +4,13 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.HelpCommand;
-import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,5 +43,11 @@ public class BrigadierTest extends BaseCommand {
     @CommandCompletion("@someobject")
     public static void onCustom(Player player, SomeObject object) {
         player.sendMessage("You said: " + object);
+    }
+
+    @Subcommand("dummy admin")
+    @CommandPermission("dummy")
+    public static void onPerm(Player player) {
+        player.sendMessage("You shall pass");
     }
 }
