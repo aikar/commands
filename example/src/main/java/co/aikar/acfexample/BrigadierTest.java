@@ -51,4 +51,24 @@ public class BrigadierTest extends BaseCommand {
     public static void onPerm(Player player) {
         player.sendMessage("You shall pass");
     }
+
+    @Subcommand("sub3")
+    public static void sub3(Player player, String wooo) {
+        player.sendMessage("Wooo " + wooo);
+    }
+
+    @Subcommand("sub sub")
+    public static void onSubSub(Player player, String wooo) {
+        player.sendMessage("Wooo " + wooo);
+    }
+
+    @Subcommand("sub2")
+    public static void onSub2(Player player) {
+        player.sendMessage("Sub2");
+    }
+
+    @Subcommand("sub2 sub")
+    public static void onSub2Sub(Player player, String test) {
+        player.sendMessage("Sub2 sub " + test);
+    }
 }

@@ -73,20 +73,52 @@ public class ACFBrigadierManager<S> {
                                    BiPredicate<RootCommand, S> permCheckerRoot,
                                    BiPredicate<RegisteredCommand, S> permCheckerSub) {
         // recreate root to get rid of bukkits default arg
-        root = LiteralArgumentBuilder.<S>literal(root.getLiteral())
-                .requires(sender -> permCheckerRoot.test(acfCommand, sender))
-                .executes(executor)
-                .build();
+        LiteralArgumentBuilder<S> rootBuilder = LiteralArgumentBuilder.<S>literal(root.getLiteral())
+                .requires(sender -> permCheckerRoot.test(acfCommand, sender));
+
+        // if we have no subcommands, this command is actually executable
+        if (acfCommand.getSubCommands().size() == 0) {
+            rootBuilder.executes(executor);
+        }
+
+        root = rootBuilder.build();
 
         for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
             if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
                 continue;
             }
-            LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(subCommand.getKey())
-                    .executes(executor)
-                    .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender))
-                    .build();
+
+            // handle sub sub commands
+            String commandName = subCommand.getKey();
+            CommandNode<S> currentParent = root;
+            if (commandName.contains(" ")) {
+                String[] split = ACFPatterns.SPACE.split(commandName);
+                for (int i = 0; i < split.length - 1; i++) {
+                    if (currentParent.getChild(split[i]) == null) {
+                        LiteralCommandNode<S> sub = LiteralArgumentBuilder.<S>literal(split[i])
+                                .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender)).build();
+                        currentParent.addChild(sub);
+                        currentParent = sub;
+                    } else {
+                        currentParent = currentParent.getChild(split[i]);
+                    }
+                }
+                commandName = split[split.length - 1];
+            }
+
+            CommandNode<S> subCommandNode = currentParent.getChild(commandName);
+            if (subCommandNode == null) {
+                LiteralArgumentBuilder<S> argumentBuilder = LiteralArgumentBuilder.<S>literal(commandName)
+                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
+
+                // if we have no params, this command is actually executable
+                if (subCommand.getValue().consumeInputResolvers == 0) {
+                    argumentBuilder.executes(executor);
+                }
+                subCommandNode = argumentBuilder.build();
+            }
+
             CommandNode<S> paramNode = subCommandNode;
             for (CommandParameter param : subCommand.getValue().parameters) {
                 if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
@@ -101,7 +133,7 @@ public class ACFBrigadierManager<S> {
                 paramNode.addChild(subSubCommand);
                 paramNode = subSubCommand;
             }
-            root.addChild(subCommandNode);
+            currentParent.addChild(subCommandNode);
         }
 
         return root;
