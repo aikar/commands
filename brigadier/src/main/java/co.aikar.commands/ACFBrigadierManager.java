@@ -120,16 +120,27 @@ public class ACFBrigadierManager<S> {
             }
 
             CommandNode<S> paramNode = subCommandNode;
-            for (CommandParameter param : subCommand.getValue().parameters) {
+            CommandParameter[] parameters = subCommand.getValue().parameters;
+            for (int i = 0; i < parameters.length; i++) {
+                CommandParameter param = parameters[i];
                 if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
                     continue;
                 }
-                CommandNode<S> subSubCommand = RequiredArgumentBuilder
+                RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
                         .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType()))
                         .suggests(suggestionProvider)
-                        .executes(executor)
-                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender))
-                        .build();
+                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
+
+                // last param -> execute
+                if (i == parameters.length - 1) {
+                    builder.executes(executor);
+                }
+                // current param is optional or next param is optional -> execute
+                if (param.isOptional() || i < parameters.length - 1 && parameters[i + 1].isOptional()) {
+                    builder.executes(executor);
+                }
+
+                CommandNode<S> subSubCommand = builder.build();
                 paramNode.addChild(subSubCommand);
                 paramNode = subSubCommand;
             }
