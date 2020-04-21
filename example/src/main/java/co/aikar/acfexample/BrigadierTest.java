@@ -40,6 +40,7 @@ public class BrigadierTest extends BaseCommand {
 
     @Subcommand("custom")
     @Description("Try custom completions")
+    @Syntax("<syntaxTest>")
     @CommandCompletion("@someobject")
     public static void onCustom(Player player, SomeObject object) {
         player.sendMessage("You said: " + object);

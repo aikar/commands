@@ -62,9 +62,22 @@ public class ACFBrigadierManager<S> {
     }
 
     /**
-     * Registers the given RootCommand into the given brigadir command node, utilizing the provided suggestion provider, executor and permission predicate
+     * Registers the given RootCommand into the given brigadir command node, utilizing the provided suggestion provider, executor and permission predicate.<br>
+     * <p>
+     * It recreates the root command node!
      */
-    void register(RootCommand acfCommand, LiteralCommandNode<S> root, SuggestionProvider<S> suggestionProvider, Command<S> executor, BiPredicate<RegisteredCommand, S> permChecker) {
+    LiteralCommandNode<S> register(RootCommand acfCommand,
+                                   LiteralCommandNode<S> root,
+                                   SuggestionProvider<S> suggestionProvider,
+                                   Command<S> executor,
+                                   BiPredicate<RootCommand, S> permCheckerRoot,
+                                   BiPredicate<RegisteredCommand, S> permCheckerSub) {
+        // recreate root to get rid of bukkits default arg
+        root = LiteralArgumentBuilder.<S>literal(root.getLiteral())
+                .requires(sender -> permCheckerRoot.test(acfCommand, sender))
+                .executes(executor)
+                .build();
+
         for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
             if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
@@ -72,7 +85,7 @@ public class ACFBrigadierManager<S> {
             }
             LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(subCommand.getKey())
                     .executes(executor)
-                    .requires(sender -> permChecker.test(subCommand.getValue(), sender))
+                    .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender))
                     .build();
             CommandNode<S> paramNode = subCommandNode;
             for (CommandParameter param : subCommand.getValue().parameters) {
@@ -83,12 +96,14 @@ public class ACFBrigadierManager<S> {
                         .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType()))
                         .suggests(suggestionProvider)
                         .executes(executor)
-                        .requires(sender -> permChecker.test(subCommand.getValue(), sender))
+                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender))
                         .build();
                 paramNode.addChild(subSubCommand);
                 paramNode = subSubCommand;
             }
             root.addChild(subCommandNode);
         }
+
+        return root;
     }
 }
