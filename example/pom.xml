@@ -64,12 +64,12 @@
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
                     </dependencyReducedPomLocation>
-                    <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>com.exampleplugin.acf</shadedPattern>
-                        </relocation>
-                    </relocations>
+                    <!--                    <relocations>-->
+                    <!--                        <relocation>-->
+                    <!--                            <pattern>co.aikar.commands</pattern>-->
+                    <!--                            <shadedPattern>com.exampleplugin.acf</shadedPattern>-->
+                    <!--                        </relocation>-->
+                    <!--                    </relocations>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -106,7 +106,7 @@
     <dependencies>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
+            <artifactId>paper</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
