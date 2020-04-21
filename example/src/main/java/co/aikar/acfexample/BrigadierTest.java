@@ -35,7 +35,7 @@ public class BrigadierTest extends BaseCommand {
     @Subcommand("test|test2")
     @Description("Says hello to a player")
     @CommandCompletion("true|false @range:20 @range:1-5 @range:20-30 test|test2|foo|bar true|false")
-    public static void onTest(Player player, boolean booleanParam, float floatParam, double doubleParam, int integerParam, String stringParam, @Optional boolean test2) {
+    public static void onTest(Player player, boolean booleanParam, float floatParam, double doubleParam, int integerParam, String stringParam, @Optional Boolean test2) {
         player.sendMessage("You said: " + booleanParam + " - " + floatParam + " - " + doubleParam + " - " + integerParam + " - " + stringParam + " - " + test2 + "!");
     }
 
