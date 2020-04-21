@@ -23,18 +23,13 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.ACFBrigadierManager;
-import co.aikar.commands.BukkitCommandDispatcherProvider;
 import co.aikar.commands.ConditionFailedException;
-import co.aikar.commands.MessageKeys;
-import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperBrigadierManager;
 import co.aikar.commands.PaperCommandManager;
 import com.google.common.io.Files;
 import com.google.gson.GsonBuilder;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.v1_15_R1.ArgumentRegistry;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -104,16 +99,16 @@ public final class ACFExample extends JavaPlugin {
         commandManager.registerDependency(String.class, "test2", "Test2");
 
         // 7: Register your commands - This first command demonstrates adding an exception handler to that command
-        commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
-            sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
-            return true; // mark as handeled, default message will not be send to sender
-        }));
+//        commandManager.registerCommand(new SomeCommand().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
+//            sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
+//            return true; // mark as handeled, default message will not be send to sender
+//        }));
 
         // 8: Register an additional command. This one happens to share the same CommandAlias as the previous command
         // This means it simply registers additional sub commands under the same command, but organized into separate
         // Classes (Maybe different permission sets)
-        commandManager.registerCommand(new SomeCommand_ExtraSubs());
-        commandManager.registerCommand(new SomeOtherCommand());
+//        commandManager.registerCommand(new SomeCommand_ExtraSubs());
+//        commandManager.registerCommand(new SomeOtherCommand());
 
         // 9: Register default exception handler for any command that doesn't supply its own
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
@@ -122,21 +117,16 @@ public final class ACFExample extends JavaPlugin {
         });
 
 
-        // TEST STUFF
+        // 10: (optionally enable brigadier integration, paper only)
         commandManager.enableUnstableAPI("brigadier");
+        new PaperBrigadierManager(this, commandManager);
 
-        BrigadierTest test = new BrigadierTest();
+        // TEST STUFF
         commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->
                 Arrays.asList("1", "2", "3", "4", "5")
         );
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            ACFBrigadierManager brigadierManager = new ACFBrigadierManager(commandManager, new BukkitCommandDispatcherProvider());
-            brigadierManager.register(test);
-
-            File file = new File("test.json");
-            writeCommandTreeAsGson(file, ((CraftServer) Bukkit.getServer()).getServer().commandDispatcher.a());
-            System.out.println("WROTE TO " + file.getAbsolutePath());
-        }, 1);
+        BrigadierTest test = new BrigadierTest();
+        commandManager.registerCommand(test);
     }
 
     public void writeCommandTreeAsGson(File fileIn, CommandDispatcher dispatcher) {

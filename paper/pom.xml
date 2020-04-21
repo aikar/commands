@@ -47,6 +47,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-brigadier</artifactId>
+            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>

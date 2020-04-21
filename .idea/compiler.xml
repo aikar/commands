@@ -7,20 +7,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="acf-sponge" />
         <module name="acf" />
+        <module name="acf-example" />
+        <module name="example-plugin" />
+        <module name="acf-brigadier" />
+        <module name="acf-paper" />
+        <module name="acf-jda" />
+        <module name="acf-core" />
+        <module name="acf-velocity" />
         <module name="acf-bukkit" />
         <module name="acf-bungee" />
-        <module name="acf-core" />
-        <module name="acf-example" />
-        <module name="acf-jda" />
-        <module name="acf-paper" />
-        <module name="acf-sponge" />
-        <module name="acf-velocity" />
-        <module name="example-plugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
+      <module name="acf-brigadier" target="1.8" />
       <module name="acf-bukkit" target="1.8" />
       <module name="acf-bungee" target="1.8" />
       <module name="acf-core" target="1.8" />
@@ -36,6 +38,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="acf-brigadier" options="-parameters" />
       <module name="acf-bukkit" options="-parameters" />
       <module name="acf-bungee" options="-parameters" />
       <module name="acf-core" options="-parameters" />

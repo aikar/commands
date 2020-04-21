@@ -1,6 +1,5 @@
 package co.aikar.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -9,17 +8,12 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Handles registering of commands into brigadier
@@ -30,10 +24,9 @@ import java.util.concurrent.CompletableFuture;
  */
 @Deprecated
 @UnstableAPI
-public class ACFBrigadierManager<S> implements SuggestionProvider<S> {
+public class ACFBrigadierManager<S> {
 
     protected final CommandManager<?, ?, ?, ?, ?, ?> manager;
-    protected final CommandDispatcher<S> dispatcher;
 
     private final Map<Class<?>, ArgumentType<?>> arguments = new HashMap<>();
 
@@ -41,14 +34,13 @@ public class ACFBrigadierManager<S> implements SuggestionProvider<S> {
      * Constructs a new brigadier manager, utilizing the currently active command manager and an brigadier provider.
      *
      * @param manager
-     * @param provider
      */
-    public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager, ACFBrigadierProvider provider) {
-        this.manager = manager;
-        //noinspection unchecked
-        this.dispatcher = (CommandDispatcher<S>) provider.getCommandDispatcher();
-
+    public ACFBrigadierManager(CommandManager<?, ?, ?, ?, ?, ?> manager) {
         manager.verifyUnstableAPI("brigadier");
+        
+        this.manager = manager;
+
+        manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
 
         // TODO support stuff like min max via brigadier?
         registerArgument(String.class, StringArgumentType.string());
@@ -56,48 +48,32 @@ public class ACFBrigadierManager<S> implements SuggestionProvider<S> {
         registerArgument(double.class, DoubleArgumentType.doubleArg());
         registerArgument(boolean.class, BoolArgumentType.bool());
         registerArgument(int.class, IntegerArgumentType.integer());
-
-        manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
     }
 
     public <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
         arguments.put(clazz, type);
     }
 
-    public void register(BaseCommand command) {
-        manager.registerCommand(command);
-
-        registerBrigadier(command);
-    }
-
-    protected void registerBrigadier(BaseCommand command) {
-        CommandNode<S> baseCmd = LiteralArgumentBuilder.<S>literal(command.commandName).build();
-        for (Map.Entry<String, RegisteredCommand> entry : command.getSubCommands().entries()) {
-            if (entry.getKey().startsWith("__") || (!entry.getKey().equals("help") && entry.getValue().prefSubCommand.equals("help"))) {
-                // don't register stuff like __catchunknown and don't help command aliases
-                continue;
-            }
-            LiteralCommandNode<S> subCommandNode = LiteralArgumentBuilder.<S>literal(entry.getKey()).build();
-            CommandNode<S> paramNode = subCommandNode;
-            for (CommandParameter param : entry.getValue().parameters) {
-                if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
-                    continue;
-                }
-                paramNode.addChild(paramNode = RequiredArgumentBuilder.<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(this).build());
-            }
-            baseCmd.addChild(subCommandNode);
-        }
-
-        dispatcher.getRoot().addChild(baseCmd);
-    }
-
-    private ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
+    public ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
         //noinspection unchecked
         return (ArgumentType<Object>) arguments.getOrDefault(clazz, StringArgumentType.string());
     }
 
-    @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<S> commandContext, SuggestionsBuilder suggestionsBuilder) throws CommandSyntaxException {
-        throw new UnsupportedOperationException("This method shouldn't be called");
+    public void register(RootCommand acfCommand, LiteralCommandNode root, SuggestionProvider suggestionProvider) {
+        for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
+            if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
+                // don't register stuff like __catchunknown and don't help command aliases
+                continue;
+            }
+            LiteralCommandNode subCommandNode = LiteralArgumentBuilder.literal(subCommand.getKey()).build();
+            CommandNode paramNode = subCommandNode;
+            for (CommandParameter param : subCommand.getValue().parameters) {
+                if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
+                    continue;
+                }
+                paramNode.addChild(paramNode = RequiredArgumentBuilder.argument(param.getName(), getArgumentTypeByClazz(param.getType())).suggests(suggestionProvider).build());
+            }
+            root.addChild(subCommandNode);
+        }
     }
 }
