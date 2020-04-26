@@ -13,7 +13,8 @@
 .idea/usage.statistics.xml
 .idea/checkstyle-idea.xml
 **/*.iml
-
+docs/**/*.zip
+*/docs
 
 # Package Files #
 *.jar

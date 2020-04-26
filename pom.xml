@@ -130,10 +130,11 @@
                 <configuration>
                     <destDir>../docs/${project.artifactId}/</destDir>
                     <quiet>true</quiet>
+                    <detectOfflineLinks>false</detectOfflineLinks>
                     <notimestamp>true</notimestamp>
                     <linksource>true</linksource>
                     <nohelp>true</nohelp>
-                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <doclint>none</doclint>
                     <source>8</source>
                 </configuration>
                 <executions>
