@@ -46,7 +46,7 @@ public class ACFBrigadierManager<S> {
         manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
 
         // TODO support stuff like min max via brigadier?
-        registerArgument(String.class, StringArgumentType.string());
+        registerArgument(String.class, StringArgumentType.word());
         registerArgument(float.class, FloatArgumentType.floatArg());
         registerArgument(Float.class, FloatArgumentType.floatArg());
         registerArgument(double.class, DoubleArgumentType.doubleArg());
