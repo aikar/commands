@@ -45,6 +45,7 @@ public class PaperBrigadierManager implements Listener {
 
     public PaperBrigadierManager(Plugin plugin, PaperCommandManager manager) {
         manager.verifyUnstableAPI("brigadier");
+        manager.log(LogLevel.INFO, "Enabled Brigadier Support!");
 
         this.manager = manager;
         this.brigadierManager = new ACFBrigadierManager<>(manager);
