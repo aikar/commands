@@ -72,4 +72,11 @@ public class BrigadierTest extends BaseCommand {
     public static void onSub2Sub(Player player, String test) {
         player.sendMessage("Sub2 sub " + test);
     }
+
+    @Subcommand("find|where")
+    @CommandPermission("hyperverse.find")
+    @CommandAlias("hvf|hvfind")
+    @CommandCompletion("@players")
+    @Description("{@@command.find}")
+    public void findPlayer(final CommandSender sender, final String player) { /* stub */ }
 }

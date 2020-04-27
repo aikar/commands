@@ -90,8 +90,14 @@ public class ACFBrigadierManager<S> {
 
         root = rootBuilder.build();
 
+        // proxy?
+        boolean isProxy = false;
+        if (acfCommand.getSubCommands().size() == 1 && acfCommand.getSubCommands().containsKey("__default")) {
+            isProxy = true;
+        }
+
         for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
-            if (subCommand.getKey().startsWith("__") || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
+            if ((subCommand.getKey().startsWith("__") && !isProxy) || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
                 continue;
             }
@@ -99,31 +105,36 @@ public class ACFBrigadierManager<S> {
             // handle sub sub commands
             String commandName = subCommand.getKey();
             CommandNode<S> currentParent = root;
-            if (commandName.contains(" ")) {
-                String[] split = ACFPatterns.SPACE.split(commandName);
-                for (int i = 0; i < split.length - 1; i++) {
-                    if (currentParent.getChild(split[i]) == null) {
-                        LiteralCommandNode<S> sub = LiteralArgumentBuilder.<S>literal(split[i])
-                                .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender)).build();
-                        currentParent.addChild(sub);
-                        currentParent = sub;
-                    } else {
-                        currentParent = currentParent.getChild(split[i]);
+            CommandNode<S> subCommandNode;
+            if (!isProxy) {
+                if (commandName.contains(" ")) {
+                    String[] split = ACFPatterns.SPACE.split(commandName);
+                    for (int i = 0; i < split.length - 1; i++) {
+                        if (currentParent.getChild(split[i]) == null) {
+                            LiteralCommandNode<S> sub = LiteralArgumentBuilder.<S>literal(split[i])
+                                    .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender)).build();
+                            currentParent.addChild(sub);
+                            currentParent = sub;
+                        } else {
+                            currentParent = currentParent.getChild(split[i]);
+                        }
                     }
+                    commandName = split[split.length - 1];
                 }
-                commandName = split[split.length - 1];
-            }
 
-            CommandNode<S> subCommandNode = currentParent.getChild(commandName);
-            if (subCommandNode == null) {
-                LiteralArgumentBuilder<S> argumentBuilder = LiteralArgumentBuilder.<S>literal(commandName)
-                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
+                subCommandNode = currentParent.getChild(commandName);
+                if (subCommandNode == null) {
+                    LiteralArgumentBuilder<S> argumentBuilder = LiteralArgumentBuilder.<S>literal(commandName)
+                            .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
 
-                // if we have no params, this command is actually executable
-                if (subCommand.getValue().consumeInputResolvers == 0) {
-                    argumentBuilder.executes(executor);
+                    // if we have no params, this command is actually executable
+                    if (subCommand.getValue().consumeInputResolvers == 0) {
+                        argumentBuilder.executes(executor);
+                    }
+                    subCommandNode = argumentBuilder.build();
                 }
-                subCommandNode = argumentBuilder.build();
+            } else {
+                subCommandNode = root;
             }
 
             CommandNode<S> paramNode = subCommandNode;
@@ -151,7 +162,10 @@ public class ACFBrigadierManager<S> {
                 paramNode.addChild(subSubCommand);
                 paramNode = subSubCommand;
             }
-            currentParent.addChild(subCommandNode);
+
+            if (!isProxy) {
+                currentParent.addChild(subCommandNode);
+            }
         }
 
         return root;
