@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -47,9 +48,15 @@ public class ACFBrigadierManager<S> {
         // TODO support stuff like min max via brigadier?
         registerArgument(String.class, StringArgumentType.string());
         registerArgument(float.class, FloatArgumentType.floatArg());
+        registerArgument(Float.class, FloatArgumentType.floatArg());
         registerArgument(double.class, DoubleArgumentType.doubleArg());
+        registerArgument(Double.class, DoubleArgumentType.doubleArg());
         registerArgument(boolean.class, BoolArgumentType.bool());
+        registerArgument(Boolean.class, BoolArgumentType.bool());
         registerArgument(int.class, IntegerArgumentType.integer());
+        registerArgument(Integer.class, IntegerArgumentType.integer());
+        registerArgument(long.class, LongArgumentType.longArg());
+        registerArgument(Long.class, LongArgumentType.longArg());
     }
 
     <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
