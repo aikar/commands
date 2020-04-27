@@ -1,109 +1,110 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
-<span class="sourceLineNo">003</span> *<a name="line.3"></a>
-<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
-<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
-<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
-<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
-<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
-<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
-<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
-<span class="sourceLineNo">011</span> *<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
-<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
-<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
-<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
-<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
-<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
-<span class="sourceLineNo">022</span> */<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
-<span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import java.util.ArrayList;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import java.util.Arrays;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import java.util.Collections;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import java.util.List;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import java.util.regex.Matcher;<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>/**<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * Handles formatting Messages and managing colors<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * @param &lt;FT&gt; The platform specific color object<a name="line.34"></a>
-<span class="sourceLineNo">035</span> */<a name="line.35"></a>
-<span class="sourceLineNo">036</span>public abstract class MessageFormatter &lt;FT&gt; {<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>    private final List&lt;FT&gt; colors = new ArrayList&lt;&gt;();<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>    @SafeVarargs<a name="line.40"></a>
-<span class="sourceLineNo">041</span>    public MessageFormatter(FT... colors) {<a name="line.41"></a>
-<span class="sourceLineNo">042</span>        this.colors.addAll(Arrays.asList(colors));<a name="line.42"></a>
-<span class="sourceLineNo">043</span><a name="line.43"></a>
-<span class="sourceLineNo">044</span>    }<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    public FT setColor(int index, FT color) {<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        if (index &gt; 0) {<a name="line.46"></a>
-<span class="sourceLineNo">047</span>            index--;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        } else {<a name="line.48"></a>
-<span class="sourceLineNo">049</span>            index = 0;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>        }<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        if (this.colors.size() &lt;= index) {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>            int needed = index - this.colors.size();<a name="line.52"></a>
-<span class="sourceLineNo">053</span>            if (needed &gt; 0) {<a name="line.53"></a>
-<span class="sourceLineNo">054</span>                this.colors.addAll(Collections.nCopies(needed, null));<a name="line.54"></a>
-<span class="sourceLineNo">055</span>            }<a name="line.55"></a>
-<span class="sourceLineNo">056</span>            colors.add(color);<a name="line.56"></a>
-<span class="sourceLineNo">057</span>            return null;<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        } else {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>            return colors.set(index, color);<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        }<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    }<a name="line.61"></a>
-<span class="sourceLineNo">062</span><a name="line.62"></a>
-<span class="sourceLineNo">063</span>    public FT getColor(int index) {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        if (index &gt; 0) {<a name="line.64"></a>
-<span class="sourceLineNo">065</span>            index--;<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        } else {<a name="line.66"></a>
-<span class="sourceLineNo">067</span>            index = 0;<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        }<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        FT color = colors.get(index);<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        if (color == null) {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            color = getDefaultColor();<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        }<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        return color;<a name="line.73"></a>
-<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
-<span class="sourceLineNo">075</span><a name="line.75"></a>
-<span class="sourceLineNo">076</span>    public FT getDefaultColor() {<a name="line.76"></a>
-<span class="sourceLineNo">077</span>        return getColor(1);<a name="line.77"></a>
-<span class="sourceLineNo">078</span>    }<a name="line.78"></a>
-<span class="sourceLineNo">079</span><a name="line.79"></a>
-<span class="sourceLineNo">080</span>    abstract String format(FT color, String message);<a name="line.80"></a>
-<span class="sourceLineNo">081</span><a name="line.81"></a>
-<span class="sourceLineNo">082</span>    public String format(int index, String message) {<a name="line.82"></a>
-<span class="sourceLineNo">083</span>        return format(getColor(index), message);<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    }<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    public String format(String message) {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        String def = format(1, "");<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        Matcher matcher = ACFPatterns.FORMATTER.matcher(message);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        StringBuffer sb = new StringBuffer(message.length());<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        while (matcher.find()) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>            Integer color = ACFUtil.parseInt(matcher.group("color"), 1);<a name="line.91"></a>
-<span class="sourceLineNo">092</span>            String msg = format(color, matcher.group("msg")) + def;<a name="line.92"></a>
-<span class="sourceLineNo">093</span>            matcher.appendReplacement(sb, Matcher.quoteReplacement(msg));<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        }<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        matcher.appendTail(sb);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        return def + sb.toString();<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
-<span class="sourceLineNo">098</span>}<a name="line.98"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">/*</a>
+<span class="sourceLineNo">002</span><a id="line.2"> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License</a>
+<span class="sourceLineNo">003</span><a id="line.3"> *</a>
+<span class="sourceLineNo">004</span><a id="line.4"> *  Permission is hereby granted, free of charge, to any person obtaining</a>
+<span class="sourceLineNo">005</span><a id="line.5"> *  a copy of this software and associated documentation files (the</a>
+<span class="sourceLineNo">006</span><a id="line.6"> *  "Software"), to deal in the Software without restriction, including</a>
+<span class="sourceLineNo">007</span><a id="line.7"> *  without limitation the rights to use, copy, modify, merge, publish,</a>
+<span class="sourceLineNo">008</span><a id="line.8"> *  distribute, sublicense, and/or sell copies of the Software, and to</a>
+<span class="sourceLineNo">009</span><a id="line.9"> *  permit persons to whom the Software is furnished to do so, subject to</a>
+<span class="sourceLineNo">010</span><a id="line.10"> *  the following conditions:</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *  The above copyright notice and this permission notice shall be</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *  included in all copies or substantial portions of the Software.</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</a>
+<span class="sourceLineNo">020</span><a id="line.20"> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</a>
+<span class="sourceLineNo">022</span><a id="line.22"> */</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">package co.aikar.commands;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">import java.util.ArrayList;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import java.util.Arrays;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.util.Collections;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import java.util.List;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import java.util.regex.Matcher;</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">/**</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * Handles formatting Messages and managing colors</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * @param &lt;FT&gt; The platform specific color object</a>
+<span class="sourceLineNo">035</span><a id="line.35"> */</a>
+<span class="sourceLineNo">036</span><a id="line.36">public abstract class MessageFormatter &lt;FT&gt; {</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">    private final List&lt;FT&gt; colors = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    @SafeVarargs</a>
+<span class="sourceLineNo">041</span><a id="line.41">    public MessageFormatter(FT... colors) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">        this.colors.addAll(Arrays.asList(colors));</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">    }</a>
+<span class="sourceLineNo">045</span><a id="line.45">    public FT setColor(int index, FT color) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">        if (index &gt; 0) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">            index--;</a>
+<span class="sourceLineNo">048</span><a id="line.48">        } else {</a>
+<span class="sourceLineNo">049</span><a id="line.49">            index = 0;</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">        if (this.colors.size() &lt;= index) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">            int needed = index - this.colors.size();</a>
+<span class="sourceLineNo">053</span><a id="line.53">            if (needed &gt; 0) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                this.colors.addAll(Collections.nCopies(needed, null));</a>
+<span class="sourceLineNo">055</span><a id="line.55">            }</a>
+<span class="sourceLineNo">056</span><a id="line.56">            colors.add(color);</a>
+<span class="sourceLineNo">057</span><a id="line.57">            return null;</a>
+<span class="sourceLineNo">058</span><a id="line.58">        } else {</a>
+<span class="sourceLineNo">059</span><a id="line.59">            return colors.set(index, color);</a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62"></a>
+<span class="sourceLineNo">063</span><a id="line.63">    public FT getColor(int index) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">        if (index &gt; 0) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">            index--;</a>
+<span class="sourceLineNo">066</span><a id="line.66">        } else {</a>
+<span class="sourceLineNo">067</span><a id="line.67">            index = 0;</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
+<span class="sourceLineNo">069</span><a id="line.69">        FT color = colors.get(index);</a>
+<span class="sourceLineNo">070</span><a id="line.70">        if (color == null) {</a>
+<span class="sourceLineNo">071</span><a id="line.71">            color = getDefaultColor();</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">        return color;</a>
+<span class="sourceLineNo">074</span><a id="line.74">    }</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">    public FT getDefaultColor() {</a>
+<span class="sourceLineNo">077</span><a id="line.77">        return getColor(1);</a>
+<span class="sourceLineNo">078</span><a id="line.78">    }</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    abstract String format(FT color, String message);</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">    public String format(int index, String message) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">        return format(getColor(index), message);</a>
+<span class="sourceLineNo">084</span><a id="line.84">    }</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    public String format(String message) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">        String def = format(1, "");</a>
+<span class="sourceLineNo">088</span><a id="line.88">        Matcher matcher = ACFPatterns.FORMATTER.matcher(message);</a>
+<span class="sourceLineNo">089</span><a id="line.89">        StringBuffer sb = new StringBuffer(message.length());</a>
+<span class="sourceLineNo">090</span><a id="line.90">        while (matcher.find()) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">            Integer color = ACFUtil.parseInt(matcher.group("color"), 1);</a>
+<span class="sourceLineNo">092</span><a id="line.92">            String msg = format(color, matcher.group("msg")) + def;</a>
+<span class="sourceLineNo">093</span><a id="line.93">            matcher.appendReplacement(sb, Matcher.quoteReplacement(msg));</a>
+<span class="sourceLineNo">094</span><a id="line.94">        }</a>
+<span class="sourceLineNo">095</span><a id="line.95">        matcher.appendTail(sb);</a>
+<span class="sourceLineNo">096</span><a id="line.96">        return def + sb.toString();</a>
+<span class="sourceLineNo">097</span><a id="line.97">    }</a>
+<span class="sourceLineNo">098</span><a id="line.98">}</a>
 
 
 
@@ -166,5 +167,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

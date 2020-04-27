@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"co.aikar.commands","l":"PaperCommandCompletions"},{"p":"co.aikar.commands","l":"PaperCommandContexts"},{"p":"co.aikar.commands","l":"PaperCommandManager"}]

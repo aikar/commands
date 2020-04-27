@@ -1,68 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package co.aikar.commands;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import com.google.common.collect.HashMultimap;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import com.google.common.collect.SetMultimap;<a name="line.4"></a>
-<span class="sourceLineNo">005</span><a name="line.5"></a>
-<span class="sourceLineNo">006</span>import java.util.ArrayList;<a name="line.6"></a>
-<span class="sourceLineNo">007</span>import java.util.List;<a name="line.7"></a>
-<span class="sourceLineNo">008</span><a name="line.8"></a>
-<span class="sourceLineNo">009</span>public class JDARootCommand implements RootCommand {<a name="line.9"></a>
-<span class="sourceLineNo">010</span><a name="line.10"></a>
-<span class="sourceLineNo">011</span>    private final String name;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>    boolean isRegistered = false;<a name="line.12"></a>
-<span class="sourceLineNo">013</span>    private JDACommandManager manager;<a name="line.13"></a>
-<span class="sourceLineNo">014</span>    private BaseCommand defCommand;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>    private SetMultimap&lt;String, RegisteredCommand&gt; subCommands = HashMultimap.create();<a name="line.15"></a>
-<span class="sourceLineNo">016</span>    private List&lt;BaseCommand&gt; children = new ArrayList&lt;&gt;();<a name="line.16"></a>
-<span class="sourceLineNo">017</span><a name="line.17"></a>
-<span class="sourceLineNo">018</span>    JDARootCommand(JDACommandManager manager, String name) {<a name="line.18"></a>
-<span class="sourceLineNo">019</span>        this.manager = manager;<a name="line.19"></a>
-<span class="sourceLineNo">020</span>        this.name = name;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>    }<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span>    @Override<a name="line.23"></a>
-<span class="sourceLineNo">024</span><a name="line.24"></a>
-<span class="sourceLineNo">025</span>    public void addChild(BaseCommand command) {<a name="line.25"></a>
-<span class="sourceLineNo">026</span>        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {<a name="line.26"></a>
-<span class="sourceLineNo">027</span>            this.defCommand = command;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>        }<a name="line.28"></a>
-<span class="sourceLineNo">029</span>        addChildShared(this.children, this.subCommands, command);<a name="line.29"></a>
-<span class="sourceLineNo">030</span>    }<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>    @Override<a name="line.32"></a>
-<span class="sourceLineNo">033</span>    public CommandManager getManager() {<a name="line.33"></a>
-<span class="sourceLineNo">034</span>        return this.manager;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>    }<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>    @Override<a name="line.37"></a>
-<span class="sourceLineNo">038</span>    public SetMultimap&lt;String, RegisteredCommand&gt; getSubCommands() {<a name="line.38"></a>
-<span class="sourceLineNo">039</span>        return this.subCommands;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>    }<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span>    @Override<a name="line.42"></a>
-<span class="sourceLineNo">043</span>    public List&lt;BaseCommand&gt; getChildren() {<a name="line.43"></a>
-<span class="sourceLineNo">044</span>        return this.children;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    }<a name="line.45"></a>
-<span class="sourceLineNo">046</span><a name="line.46"></a>
-<span class="sourceLineNo">047</span>    @Override<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    public String getCommandName() {<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        return this.name;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>    }<a name="line.50"></a>
-<span class="sourceLineNo">051</span><a name="line.51"></a>
-<span class="sourceLineNo">052</span>    @Override<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    public BaseCommand getDefCommand() {<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        return defCommand;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    }<a name="line.55"></a>
-<span class="sourceLineNo">056</span><a name="line.56"></a>
-<span class="sourceLineNo">057</span>}<a name="line.57"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package co.aikar.commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.google.common.collect.HashMultimap;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.google.common.collect.SetMultimap;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.util.ArrayList;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.List;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">public class JDARootCommand implements RootCommand {</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">    private final String name;</a>
+<span class="sourceLineNo">012</span><a id="line.12">    boolean isRegistered = false;</a>
+<span class="sourceLineNo">013</span><a id="line.13">    private JDACommandManager manager;</a>
+<span class="sourceLineNo">014</span><a id="line.14">    private BaseCommand defCommand;</a>
+<span class="sourceLineNo">015</span><a id="line.15">    private SetMultimap&lt;String, RegisteredCommand&gt; subCommands = HashMultimap.create();</a>
+<span class="sourceLineNo">016</span><a id="line.16">    private List&lt;BaseCommand&gt; children = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">    JDARootCommand(JDACommandManager manager, String name) {</a>
+<span class="sourceLineNo">019</span><a id="line.19">        this.manager = manager;</a>
+<span class="sourceLineNo">020</span><a id="line.20">        this.name = name;</a>
+<span class="sourceLineNo">021</span><a id="line.21">    }</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    @Override</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">    public void addChild(BaseCommand command) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        if (this.defCommand == null || !command.subCommands.get(BaseCommand.DEFAULT).isEmpty()) {</a>
+<span class="sourceLineNo">027</span><a id="line.27">            this.defCommand = command;</a>
+<span class="sourceLineNo">028</span><a id="line.28">        }</a>
+<span class="sourceLineNo">029</span><a id="line.29">        addChildShared(this.children, this.subCommands, command);</a>
+<span class="sourceLineNo">030</span><a id="line.30">    }</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">    @Override</a>
+<span class="sourceLineNo">033</span><a id="line.33">    public CommandManager getManager() {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        return this.manager;</a>
+<span class="sourceLineNo">035</span><a id="line.35">    }</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">    @Override</a>
+<span class="sourceLineNo">038</span><a id="line.38">    public SetMultimap&lt;String, RegisteredCommand&gt; getSubCommands() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">        return this.subCommands;</a>
+<span class="sourceLineNo">040</span><a id="line.40">    }</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">    @Override</a>
+<span class="sourceLineNo">043</span><a id="line.43">    public List&lt;BaseCommand&gt; getChildren() {</a>
+<span class="sourceLineNo">044</span><a id="line.44">        return this.children;</a>
+<span class="sourceLineNo">045</span><a id="line.45">    }</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    @Override</a>
+<span class="sourceLineNo">048</span><a id="line.48">    public String getCommandName() {</a>
+<span class="sourceLineNo">049</span><a id="line.49">        return this.name;</a>
+<span class="sourceLineNo">050</span><a id="line.50">    }</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">    @Override</a>
+<span class="sourceLineNo">053</span><a id="line.53">    public BaseCommand getDefCommand() {</a>
+<span class="sourceLineNo">054</span><a id="line.54">        return defCommand;</a>
+<span class="sourceLineNo">055</span><a id="line.55">    }</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">}</a>
 
 
 
@@ -125,5 +126,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

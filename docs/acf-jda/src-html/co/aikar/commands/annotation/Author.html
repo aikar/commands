@@ -1,29 +1,30 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package co.aikar.commands.annotation;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.lang.annotation.ElementType;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.lang.annotation.Retention;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.lang.annotation.RetentionPolicy;<a name="line.5"></a>
-<span class="sourceLineNo">006</span>import java.lang.annotation.Target;<a name="line.6"></a>
-<span class="sourceLineNo">007</span><a name="line.7"></a>
-<span class="sourceLineNo">008</span>/**<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * The {@link Author} annotation is to define whether the parameter should be the author object from the event or<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * parsed from the user's input.<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * &lt;p&gt;<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *      Using this on a User/Member will fetch the author and otherwise it'll parse the input.<a name="line.12"></a>
-<span class="sourceLineNo">013</span> * &lt;/p&gt;<a name="line.13"></a>
-<span class="sourceLineNo">014</span> */<a name="line.14"></a>
-<span class="sourceLineNo">015</span>@Target(ElementType.PARAMETER)<a name="line.15"></a>
-<span class="sourceLineNo">016</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.16"></a>
-<span class="sourceLineNo">017</span>public @interface Author {<a name="line.17"></a>
-<span class="sourceLineNo">018</span>}<a name="line.18"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package co.aikar.commands.annotation;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.lang.annotation.ElementType;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.lang.annotation.Retention;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.lang.annotation.RetentionPolicy;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import java.lang.annotation.Target;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * The {@link Author} annotation is to define whether the parameter should be the author object from the event or</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * parsed from the user's input.</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * &lt;p&gt;</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *      Using this on a User/Member will fetch the author and otherwise it'll parse the input.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> */</a>
+<span class="sourceLineNo">015</span><a id="line.15">@Target(ElementType.PARAMETER)</a>
+<span class="sourceLineNo">016</span><a id="line.16">@Retention(RetentionPolicy.RUNTIME)</a>
+<span class="sourceLineNo">017</span><a id="line.17">public @interface Author {</a>
+<span class="sourceLineNo">018</span><a id="line.18">}</a>
 
 
 
@@ -86,5 +87,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

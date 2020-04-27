@@ -1,177 +1,178 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License<a name="line.2"></a>
-<span class="sourceLineNo">003</span> *<a name="line.3"></a>
-<span class="sourceLineNo">004</span> *  Permission is hereby granted, free of charge, to any person obtaining<a name="line.4"></a>
-<span class="sourceLineNo">005</span> *  a copy of this software and associated documentation files (the<a name="line.5"></a>
-<span class="sourceLineNo">006</span> *  "Software"), to deal in the Software without restriction, including<a name="line.6"></a>
-<span class="sourceLineNo">007</span> *  without limitation the rights to use, copy, modify, merge, publish,<a name="line.7"></a>
-<span class="sourceLineNo">008</span> *  distribute, sublicense, and/or sell copies of the Software, and to<a name="line.8"></a>
-<span class="sourceLineNo">009</span> *  permit persons to whom the Software is furnished to do so, subject to<a name="line.9"></a>
-<span class="sourceLineNo">010</span> *  the following conditions:<a name="line.10"></a>
-<span class="sourceLineNo">011</span> *<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *  The above copyright notice and this permission notice shall be<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *  included in all copies or substantial portions of the Software.<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<a name="line.16"></a>
-<span class="sourceLineNo">017</span> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<a name="line.17"></a>
-<span class="sourceLineNo">018</span> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<a name="line.18"></a>
-<span class="sourceLineNo">019</span> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<a name="line.19"></a>
-<span class="sourceLineNo">020</span> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<a name="line.20"></a>
-<span class="sourceLineNo">021</span> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<a name="line.21"></a>
-<span class="sourceLineNo">022</span> */<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>package co.aikar.commands;<a name="line.24"></a>
-<span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import co.aikar.commands.CommandRouter.CommandRouteResult;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import co.aikar.commands.CommandRouter.RouteSearch;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import com.google.common.collect.SetMultimap;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>import java.util.ArrayList;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import java.util.HashSet;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import java.util.List;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import java.util.Set;<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>public interface RootCommand {<a name="line.35"></a>
-<span class="sourceLineNo">036</span>    void addChild(BaseCommand command);<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>    CommandManager getManager();<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>    SetMultimap&lt;String, RegisteredCommand&gt; getSubCommands();<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span>    List&lt;BaseCommand&gt; getChildren();<a name="line.42"></a>
-<span class="sourceLineNo">043</span><a name="line.43"></a>
-<span class="sourceLineNo">044</span>    String getCommandName();<a name="line.44"></a>
-<span class="sourceLineNo">045</span><a name="line.45"></a>
-<span class="sourceLineNo">046</span>    default void addChildShared(List&lt;BaseCommand&gt; children, SetMultimap&lt;String, RegisteredCommand&gt; subCommands, BaseCommand command) {<a name="line.46"></a>
-<span class="sourceLineNo">047</span>        command.subCommands.entries().forEach(e -&gt; {<a name="line.47"></a>
-<span class="sourceLineNo">048</span>            subCommands.put(e.getKey(), e.getValue());<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        });<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>        children.add(command);<a name="line.51"></a>
-<span class="sourceLineNo">052</span>    }<a name="line.52"></a>
-<span class="sourceLineNo">053</span><a name="line.53"></a>
-<span class="sourceLineNo">054</span>    /**<a name="line.54"></a>
-<span class="sourceLineNo">055</span>     * @return If this root command can be summarized to a single required permission node to use it, returns that value. If any RegisteredCommand is permission-less, or has multiple required permission nodes, null is returned.<a name="line.55"></a>
-<span class="sourceLineNo">056</span>     */<a name="line.56"></a>
-<span class="sourceLineNo">057</span>    default String getUniquePermission() {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        Set&lt;String&gt; permissions = new HashSet&lt;&gt;();<a name="line.58"></a>
-<span class="sourceLineNo">059</span>        for (BaseCommand child : getChildren()) {<a name="line.59"></a>
-<span class="sourceLineNo">060</span>            for (RegisteredCommand&lt;?&gt; value : child.subCommands.values()) {<a name="line.60"></a>
-<span class="sourceLineNo">061</span>                Set&lt;String&gt; requiredPermissions = value.getRequiredPermissions();<a name="line.61"></a>
-<span class="sourceLineNo">062</span>                if (requiredPermissions.isEmpty()) {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>                    return null;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                } else {<a name="line.64"></a>
-<span class="sourceLineNo">065</span>                    permissions.addAll(requiredPermissions);<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                }<a name="line.66"></a>
-<span class="sourceLineNo">067</span>            }<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        }<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        return permissions.size() == 1 ? permissions.iterator().next() : null;<a name="line.69"></a>
-<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
-<span class="sourceLineNo">071</span><a name="line.71"></a>
-<span class="sourceLineNo">072</span>    default boolean hasAnyPermission(CommandIssuer issuer) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        List&lt;BaseCommand&gt; children = getChildren();<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        if (children.isEmpty()) {<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            return true;<a name="line.75"></a>
-<span class="sourceLineNo">076</span>        }<a name="line.76"></a>
-<span class="sourceLineNo">077</span><a name="line.77"></a>
-<span class="sourceLineNo">078</span>        for (BaseCommand child : children) {<a name="line.78"></a>
-<span class="sourceLineNo">079</span>            if (!child.hasPermission(issuer)) {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                continue;<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            }<a name="line.81"></a>
-<span class="sourceLineNo">082</span>            for (RegisteredCommand value : child.getRegisteredCommands()) {<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                if (value.hasPermission(issuer)) {<a name="line.83"></a>
-<span class="sourceLineNo">084</span>                    return true;<a name="line.84"></a>
-<span class="sourceLineNo">085</span>                }<a name="line.85"></a>
-<span class="sourceLineNo">086</span>            }<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        }<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        return false;<a name="line.88"></a>
-<span class="sourceLineNo">089</span>    }<a name="line.89"></a>
-<span class="sourceLineNo">090</span><a name="line.90"></a>
-<span class="sourceLineNo">091</span>    default BaseCommand execute(CommandIssuer sender, String commandLabel, String[] args) {<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        CommandRouter router = getManager().getRouter();<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        RouteSearch search = router.routeCommand(this, commandLabel, args, false);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        BaseCommand defCommand = getDefCommand();<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        if (search != null) {<a name="line.95"></a>
-<span class="sourceLineNo">096</span>            CommandRouteResult result = router.matchCommand(search, false);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>            if (result != null) {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                BaseCommand scope = result.cmd.scope;<a name="line.98"></a>
-<span class="sourceLineNo">099</span>                scope.execute(sender, result);<a name="line.99"></a>
-<span class="sourceLineNo">100</span>                return scope;<a name="line.100"></a>
-<span class="sourceLineNo">101</span>            }<a name="line.101"></a>
-<span class="sourceLineNo">102</span><a name="line.102"></a>
-<span class="sourceLineNo">103</span>            RegisteredCommand firstElement = ACFUtil.getFirstElement(search.commands);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            if (firstElement != null) {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>                defCommand = firstElement.scope;<a name="line.105"></a>
-<span class="sourceLineNo">106</span>            }<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        }<a name="line.107"></a>
-<span class="sourceLineNo">108</span><a name="line.108"></a>
-<span class="sourceLineNo">109</span>        defCommand.help(sender, args);<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        return defCommand;<a name="line.110"></a>
-<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
-<span class="sourceLineNo">112</span><a name="line.112"></a>
-<span class="sourceLineNo">113</span>    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args) {<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        return getTabCompletions(sender, alias, args, false);<a name="line.114"></a>
-<span class="sourceLineNo">115</span>    }<a name="line.115"></a>
-<span class="sourceLineNo">116</span><a name="line.116"></a>
-<span class="sourceLineNo">117</span>    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly) {<a name="line.117"></a>
-<span class="sourceLineNo">118</span>        return getTabCompletions(sender, alias, args, commandsOnly, false);<a name="line.118"></a>
-<span class="sourceLineNo">119</span>    }<a name="line.119"></a>
-<span class="sourceLineNo">120</span><a name="line.120"></a>
-<span class="sourceLineNo">121</span>    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly, boolean isAsync) {<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        Set&lt;String&gt; completions = new HashSet&lt;&gt;();<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        getChildren().forEach(child -&gt; {<a name="line.123"></a>
-<span class="sourceLineNo">124</span>            if (!commandsOnly) {<a name="line.124"></a>
-<span class="sourceLineNo">125</span>                completions.addAll(child.tabComplete(sender, this, args, isAsync));<a name="line.125"></a>
-<span class="sourceLineNo">126</span>            }<a name="line.126"></a>
-<span class="sourceLineNo">127</span>            completions.addAll(child.getCommandsForCompletion(sender, args));<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        });<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        return new ArrayList&lt;&gt;(completions);<a name="line.129"></a>
-<span class="sourceLineNo">130</span>    }<a name="line.130"></a>
-<span class="sourceLineNo">131</span><a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>    default RegisteredCommand getDefaultRegisteredCommand() {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>        BaseCommand defCommand = this.getDefCommand();<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        if (defCommand != null) {<a name="line.135"></a>
-<span class="sourceLineNo">136</span>            return defCommand.getDefaultRegisteredCommand();<a name="line.136"></a>
-<span class="sourceLineNo">137</span>        }<a name="line.137"></a>
-<span class="sourceLineNo">138</span>        return null;<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    }<a name="line.139"></a>
-<span class="sourceLineNo">140</span><a name="line.140"></a>
-<span class="sourceLineNo">141</span>    default BaseCommand getDefCommand() {<a name="line.141"></a>
-<span class="sourceLineNo">142</span>        return null;<a name="line.142"></a>
-<span class="sourceLineNo">143</span>    }<a name="line.143"></a>
-<span class="sourceLineNo">144</span><a name="line.144"></a>
-<span class="sourceLineNo">145</span><a name="line.145"></a>
-<span class="sourceLineNo">146</span>    default String getDescription() {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        if (cmd != null) {<a name="line.148"></a>
-<span class="sourceLineNo">149</span>            return cmd.getHelpText();<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        }<a name="line.150"></a>
-<span class="sourceLineNo">151</span>        BaseCommand defCommand = getDefCommand();<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        if (defCommand != null &amp;&amp; defCommand.description != null) {<a name="line.152"></a>
-<span class="sourceLineNo">153</span>            return defCommand.description;<a name="line.153"></a>
-<span class="sourceLineNo">154</span>        }<a name="line.154"></a>
-<span class="sourceLineNo">155</span>        return "";<a name="line.155"></a>
-<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
-<span class="sourceLineNo">157</span><a name="line.157"></a>
-<span class="sourceLineNo">158</span><a name="line.158"></a>
-<span class="sourceLineNo">159</span>    default String getUsage() {<a name="line.159"></a>
-<span class="sourceLineNo">160</span>        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();<a name="line.160"></a>
-<span class="sourceLineNo">161</span>        if (cmd != null) {<a name="line.161"></a>
-<span class="sourceLineNo">162</span>            return cmd.syntaxText != null ? cmd.syntaxText : "";<a name="line.162"></a>
-<span class="sourceLineNo">163</span>        }<a name="line.163"></a>
-<span class="sourceLineNo">164</span>        return "";<a name="line.164"></a>
-<span class="sourceLineNo">165</span>    }<a name="line.165"></a>
-<span class="sourceLineNo">166</span>}<a name="line.166"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">/*</a>
+<span class="sourceLineNo">002</span><a id="line.2"> * Copyright (c) 2016-2017 Daniel Ennis (Aikar) - MIT License</a>
+<span class="sourceLineNo">003</span><a id="line.3"> *</a>
+<span class="sourceLineNo">004</span><a id="line.4"> *  Permission is hereby granted, free of charge, to any person obtaining</a>
+<span class="sourceLineNo">005</span><a id="line.5"> *  a copy of this software and associated documentation files (the</a>
+<span class="sourceLineNo">006</span><a id="line.6"> *  "Software"), to deal in the Software without restriction, including</a>
+<span class="sourceLineNo">007</span><a id="line.7"> *  without limitation the rights to use, copy, modify, merge, publish,</a>
+<span class="sourceLineNo">008</span><a id="line.8"> *  distribute, sublicense, and/or sell copies of the Software, and to</a>
+<span class="sourceLineNo">009</span><a id="line.9"> *  permit persons to whom the Software is furnished to do so, subject to</a>
+<span class="sourceLineNo">010</span><a id="line.10"> *  the following conditions:</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *  The above copyright notice and this permission notice shall be</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *  included in all copies or substantial portions of the Software.</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</a>
+<span class="sourceLineNo">020</span><a id="line.20"> *  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</a>
+<span class="sourceLineNo">022</span><a id="line.22"> */</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">package co.aikar.commands;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">import co.aikar.commands.CommandRouter.CommandRouteResult;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import co.aikar.commands.CommandRouter.RouteSearch;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import com.google.common.collect.SetMultimap;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">import java.util.ArrayList;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import java.util.HashSet;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import java.util.List;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import java.util.Set;</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">public interface RootCommand {</a>
+<span class="sourceLineNo">036</span><a id="line.36">    void addChild(BaseCommand command);</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">    CommandManager getManager();</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    SetMultimap&lt;String, RegisteredCommand&gt; getSubCommands();</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">    List&lt;BaseCommand&gt; getChildren();</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">    String getCommandName();</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    default void addChildShared(List&lt;BaseCommand&gt; children, SetMultimap&lt;String, RegisteredCommand&gt; subCommands, BaseCommand command) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">        command.subCommands.entries().forEach(e -&gt; {</a>
+<span class="sourceLineNo">048</span><a id="line.48">            subCommands.put(e.getKey(), e.getValue());</a>
+<span class="sourceLineNo">049</span><a id="line.49">        });</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">        children.add(command);</a>
+<span class="sourceLineNo">052</span><a id="line.52">    }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">    /**</a>
+<span class="sourceLineNo">055</span><a id="line.55">     * @return If this root command can be summarized to a single required permission node to use it, returns that value. If any RegisteredCommand is permission-less, or has multiple required permission nodes, null is returned.</a>
+<span class="sourceLineNo">056</span><a id="line.56">     */</a>
+<span class="sourceLineNo">057</span><a id="line.57">    default String getUniquePermission() {</a>
+<span class="sourceLineNo">058</span><a id="line.58">        Set&lt;String&gt; permissions = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">059</span><a id="line.59">        for (BaseCommand child : getChildren()) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">            for (RegisteredCommand&lt;?&gt; value : child.subCommands.values()) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">                Set&lt;String&gt; requiredPermissions = value.getRequiredPermissions();</a>
+<span class="sourceLineNo">062</span><a id="line.62">                if (requiredPermissions.isEmpty()) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                    return null;</a>
+<span class="sourceLineNo">064</span><a id="line.64">                } else {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                    permissions.addAll(requiredPermissions);</a>
+<span class="sourceLineNo">066</span><a id="line.66">                }</a>
+<span class="sourceLineNo">067</span><a id="line.67">            }</a>
+<span class="sourceLineNo">068</span><a id="line.68">        }</a>
+<span class="sourceLineNo">069</span><a id="line.69">        return permissions.size() == 1 ? permissions.iterator().next() : null;</a>
+<span class="sourceLineNo">070</span><a id="line.70">    }</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    default boolean hasAnyPermission(CommandIssuer issuer) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">        List&lt;BaseCommand&gt; children = getChildren();</a>
+<span class="sourceLineNo">074</span><a id="line.74">        if (children.isEmpty()) {</a>
+<span class="sourceLineNo">075</span><a id="line.75">            return true;</a>
+<span class="sourceLineNo">076</span><a id="line.76">        }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">        for (BaseCommand child : children) {</a>
+<span class="sourceLineNo">079</span><a id="line.79">            if (!child.hasPermission(issuer)) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">                continue;</a>
+<span class="sourceLineNo">081</span><a id="line.81">            }</a>
+<span class="sourceLineNo">082</span><a id="line.82">            for (RegisteredCommand value : child.getRegisteredCommands()) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">                if (value.hasPermission(issuer)) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                    return true;</a>
+<span class="sourceLineNo">085</span><a id="line.85">                }</a>
+<span class="sourceLineNo">086</span><a id="line.86">            }</a>
+<span class="sourceLineNo">087</span><a id="line.87">        }</a>
+<span class="sourceLineNo">088</span><a id="line.88">        return false;</a>
+<span class="sourceLineNo">089</span><a id="line.89">    }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">    default BaseCommand execute(CommandIssuer sender, String commandLabel, String[] args) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">        CommandRouter router = getManager().getRouter();</a>
+<span class="sourceLineNo">093</span><a id="line.93">        RouteSearch search = router.routeCommand(this, commandLabel, args, false);</a>
+<span class="sourceLineNo">094</span><a id="line.94">        BaseCommand defCommand = getDefCommand();</a>
+<span class="sourceLineNo">095</span><a id="line.95">        if (search != null) {</a>
+<span class="sourceLineNo">096</span><a id="line.96">            CommandRouteResult result = router.matchCommand(search, false);</a>
+<span class="sourceLineNo">097</span><a id="line.97">            if (result != null) {</a>
+<span class="sourceLineNo">098</span><a id="line.98">                BaseCommand scope = result.cmd.scope;</a>
+<span class="sourceLineNo">099</span><a id="line.99">                scope.execute(sender, result);</a>
+<span class="sourceLineNo">100</span><a id="line.100">                return scope;</a>
+<span class="sourceLineNo">101</span><a id="line.101">            }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">            RegisteredCommand firstElement = ACFUtil.getFirstElement(search.commands);</a>
+<span class="sourceLineNo">104</span><a id="line.104">            if (firstElement != null) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                defCommand = firstElement.scope;</a>
+<span class="sourceLineNo">106</span><a id="line.106">            }</a>
+<span class="sourceLineNo">107</span><a id="line.107">        }</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">        defCommand.help(sender, args);</a>
+<span class="sourceLineNo">110</span><a id="line.110">        return defCommand;</a>
+<span class="sourceLineNo">111</span><a id="line.111">    }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">        return getTabCompletions(sender, alias, args, false);</a>
+<span class="sourceLineNo">115</span><a id="line.115">    }</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">        return getTabCompletions(sender, alias, args, commandsOnly, false);</a>
+<span class="sourceLineNo">119</span><a id="line.119">    }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">    default List&lt;String&gt; getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly, boolean isAsync) {</a>
+<span class="sourceLineNo">122</span><a id="line.122">        Set&lt;String&gt; completions = new HashSet&lt;&gt;();</a>
+<span class="sourceLineNo">123</span><a id="line.123">        getChildren().forEach(child -&gt; {</a>
+<span class="sourceLineNo">124</span><a id="line.124">            if (!commandsOnly) {</a>
+<span class="sourceLineNo">125</span><a id="line.125">                completions.addAll(child.tabComplete(sender, this, args, isAsync));</a>
+<span class="sourceLineNo">126</span><a id="line.126">            }</a>
+<span class="sourceLineNo">127</span><a id="line.127">            completions.addAll(child.getCommandsForCompletion(sender, args));</a>
+<span class="sourceLineNo">128</span><a id="line.128">        });</a>
+<span class="sourceLineNo">129</span><a id="line.129">        return new ArrayList&lt;&gt;(completions);</a>
+<span class="sourceLineNo">130</span><a id="line.130">    }</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">    default RegisteredCommand getDefaultRegisteredCommand() {</a>
+<span class="sourceLineNo">134</span><a id="line.134">        BaseCommand defCommand = this.getDefCommand();</a>
+<span class="sourceLineNo">135</span><a id="line.135">        if (defCommand != null) {</a>
+<span class="sourceLineNo">136</span><a id="line.136">            return defCommand.getDefaultRegisteredCommand();</a>
+<span class="sourceLineNo">137</span><a id="line.137">        }</a>
+<span class="sourceLineNo">138</span><a id="line.138">        return null;</a>
+<span class="sourceLineNo">139</span><a id="line.139">    }</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">    default BaseCommand getDefCommand() {</a>
+<span class="sourceLineNo">142</span><a id="line.142">        return null;</a>
+<span class="sourceLineNo">143</span><a id="line.143">    }</a>
+<span class="sourceLineNo">144</span><a id="line.144"></a>
+<span class="sourceLineNo">145</span><a id="line.145"></a>
+<span class="sourceLineNo">146</span><a id="line.146">    default String getDescription() {</a>
+<span class="sourceLineNo">147</span><a id="line.147">        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();</a>
+<span class="sourceLineNo">148</span><a id="line.148">        if (cmd != null) {</a>
+<span class="sourceLineNo">149</span><a id="line.149">            return cmd.getHelpText();</a>
+<span class="sourceLineNo">150</span><a id="line.150">        }</a>
+<span class="sourceLineNo">151</span><a id="line.151">        BaseCommand defCommand = getDefCommand();</a>
+<span class="sourceLineNo">152</span><a id="line.152">        if (defCommand != null &amp;&amp; defCommand.description != null) {</a>
+<span class="sourceLineNo">153</span><a id="line.153">            return defCommand.description;</a>
+<span class="sourceLineNo">154</span><a id="line.154">        }</a>
+<span class="sourceLineNo">155</span><a id="line.155">        return "";</a>
+<span class="sourceLineNo">156</span><a id="line.156">    }</a>
+<span class="sourceLineNo">157</span><a id="line.157"></a>
+<span class="sourceLineNo">158</span><a id="line.158"></a>
+<span class="sourceLineNo">159</span><a id="line.159">    default String getUsage() {</a>
+<span class="sourceLineNo">160</span><a id="line.160">        final RegisteredCommand cmd = this.getDefaultRegisteredCommand();</a>
+<span class="sourceLineNo">161</span><a id="line.161">        if (cmd != null) {</a>
+<span class="sourceLineNo">162</span><a id="line.162">            return cmd.syntaxText != null ? cmd.syntaxText : "";</a>
+<span class="sourceLineNo">163</span><a id="line.163">        }</a>
+<span class="sourceLineNo">164</span><a id="line.164">        return "";</a>
+<span class="sourceLineNo">165</span><a id="line.165">    }</a>
+<span class="sourceLineNo">166</span><a id="line.166">}</a>
 
 
 
@@ -234,5 +235,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

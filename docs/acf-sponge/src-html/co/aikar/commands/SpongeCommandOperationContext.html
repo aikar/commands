@@ -1,29 +1,30 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package co.aikar.commands;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import org.spongepowered.api.command.CommandResult;<a name="line.3"></a>
-<span class="sourceLineNo">004</span><a name="line.4"></a>
-<span class="sourceLineNo">005</span>public class SpongeCommandOperationContext extends CommandOperationContext {<a name="line.5"></a>
-<span class="sourceLineNo">006</span>    private CommandResult result = CommandResult.success();<a name="line.6"></a>
-<span class="sourceLineNo">007</span>    SpongeCommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {<a name="line.7"></a>
-<span class="sourceLineNo">008</span>        super(manager, issuer, command, commandLabel, args, isAsync);<a name="line.8"></a>
-<span class="sourceLineNo">009</span>    }<a name="line.9"></a>
-<span class="sourceLineNo">010</span><a name="line.10"></a>
-<span class="sourceLineNo">011</span>    public CommandResult getResult() {<a name="line.11"></a>
-<span class="sourceLineNo">012</span>        return result;<a name="line.12"></a>
-<span class="sourceLineNo">013</span>    }<a name="line.13"></a>
-<span class="sourceLineNo">014</span><a name="line.14"></a>
-<span class="sourceLineNo">015</span>    public void setResult(CommandResult result) {<a name="line.15"></a>
-<span class="sourceLineNo">016</span>        this.result = result;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>    }<a name="line.17"></a>
-<span class="sourceLineNo">018</span>}<a name="line.18"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package co.aikar.commands;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import org.spongepowered.api.command.CommandResult;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">public class SpongeCommandOperationContext extends CommandOperationContext {</a>
+<span class="sourceLineNo">006</span><a id="line.6">    private CommandResult result = CommandResult.success();</a>
+<span class="sourceLineNo">007</span><a id="line.7">    SpongeCommandOperationContext(CommandManager manager, CommandIssuer issuer, BaseCommand command, String commandLabel, String[] args, boolean isAsync) {</a>
+<span class="sourceLineNo">008</span><a id="line.8">        super(manager, issuer, command, commandLabel, args, isAsync);</a>
+<span class="sourceLineNo">009</span><a id="line.9">    }</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">    public CommandResult getResult() {</a>
+<span class="sourceLineNo">012</span><a id="line.12">        return result;</a>
+<span class="sourceLineNo">013</span><a id="line.13">    }</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">    public void setResult(CommandResult result) {</a>
+<span class="sourceLineNo">016</span><a id="line.16">        this.result = result;</a>
+<span class="sourceLineNo">017</span><a id="line.17">    }</a>
+<span class="sourceLineNo">018</span><a id="line.18">}</a>
 
 
 
@@ -86,5 +87,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>
