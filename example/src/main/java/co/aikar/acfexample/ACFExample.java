@@ -114,7 +114,6 @@ public final class ACFExample extends JavaPlugin {
 
         // 10: (optionally enable brigadier integration, paper only)
         commandManager.enableUnstableAPI("brigadier");
-        new PaperBrigadierManager(this, commandManager);
 
         // test command for brigadier
         commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->

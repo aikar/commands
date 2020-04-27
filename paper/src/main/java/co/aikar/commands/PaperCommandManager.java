@@ -40,6 +40,15 @@ public class PaperCommandManager extends BukkitCommandManager {
     }
 
     @Override
+    public void enableUnstableAPI(String api) {
+        super.enableUnstableAPI(api);
+
+        if ("brigadier".equals(api)) {
+            new PaperBrigadierManager(plugin, this);
+        }
+    }
+
+    @Override
     public synchronized CommandContexts<BukkitCommandExecutionContext> getCommandContexts() {
         if (this.contexts == null) {
             this.contexts = new PaperCommandContexts(this);
