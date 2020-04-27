@@ -63,9 +63,13 @@ public class ACFBrigadierManager<S> {
         arguments.put(clazz, type);
     }
 
-    private ArgumentType<Object> getArgumentTypeByClazz(Class<?> clazz) {
+    private ArgumentType<Object> getArgumentTypeByClazz(CommandParameter param) {
+        if (param.consumesRest) {
+            //noinspection unchecked
+            return (ArgumentType<Object>) (ArgumentType<?>) StringArgumentType.greedyString();
+        }
         //noinspection unchecked
-        return (ArgumentType<Object>) arguments.getOrDefault(clazz, StringArgumentType.string());
+        return (ArgumentType<Object>) arguments.getOrDefault(param.getType(), StringArgumentType.string());
     }
 
     /**
@@ -145,7 +149,7 @@ public class ACFBrigadierManager<S> {
                     continue;
                 }
                 RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
-                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param.getType()))
+                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param))
                         .suggests(suggestionProvider)
                         .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
 

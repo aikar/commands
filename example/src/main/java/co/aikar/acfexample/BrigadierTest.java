@@ -10,6 +10,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import org.bukkit.command.CommandSender;
@@ -79,4 +80,14 @@ public class BrigadierTest extends BaseCommand {
     @CommandCompletion("@players")
     @Description("{@@command.find}")
     public void findPlayer(final CommandSender sender, final String player) { /* stub */ }
+
+    @Subcommand("greedy")
+    public void onGreedy(Player player, String greedyString) {
+        player.sendMessage(greedyString);
+    }
+
+    @Subcommand("notgreedy")
+    public void notGreedy(Player player, @Single String notGreedy) {
+        player.sendMessage(notGreedy);
+    }
 }
