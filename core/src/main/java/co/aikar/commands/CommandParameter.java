@@ -66,9 +66,13 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
     private boolean canConsumeInput;
     private boolean optionalResolver;
     boolean consumesRest;
+    private boolean isLast;
+    private boolean isOptionalInput;
+    private CommandParameter<CEC> nextParam;
 
     public CommandParameter(RegisteredCommand<CEC> command, Parameter param, int paramIndex, boolean isLast) {
         this.parameter = param;
+        this.isLast = isLast;
         this.type = param.getType();
         this.name = param.getName(); // do we care for an annotation to supply name?
         this.manager = command.manager;
@@ -99,10 +103,12 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         this.syntax = null;
+        this.isOptionalInput = !requiresInput && canConsumeInput;
+
         if (!commandIssuer) {
             this.syntax = annotations.getAnnotationValue(param, Syntax.class);
             if (syntax == null) {
-                if (!requiresInput && canConsumeInput) {
+                if (isOptionalInput) {
                     this.syntax = "[" + name + "]";
                 } else if (requiresInput) {
                     this.syntax = "<" + name + ">";
@@ -182,6 +188,10 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     public void setResolver(ContextResolver<?, CEC> resolver) {
         this.resolver = resolver;
+    }
+
+    public boolean isOptionalInput() {
+        return isOptionalInput;
     }
 
     public boolean isOptional() {
@@ -274,5 +284,21 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     public Set<String> getRequiredPermissions() {
         return permissions;
+    }
+
+    public void setNextParam(CommandParameter<CEC> nextParam) {
+        this.nextParam = nextParam;
+    }
+
+    public CommandParameter<CEC> getNextParam() {
+        return nextParam;
+    }
+
+    public boolean canExecuteWithoutInput() {
+        return (!canConsumeInput || isOptionalInput()) && (nextParam == null || nextParam.canExecuteWithoutInput());
+    }
+
+    public boolean isLast() {
+        return isLast;
     }
 }

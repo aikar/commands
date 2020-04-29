@@ -78,7 +78,6 @@ public class BrigadierTest extends BaseCommand {
     @CommandPermission("hyperverse.find")
     @CommandAlias("hvf|hvfind")
     @CommandCompletion("@players")
-    @Description("{@@command.find}")
     public void findPlayer(final CommandSender sender, final String player) { /* stub */ }
 
     @Subcommand("greedy")

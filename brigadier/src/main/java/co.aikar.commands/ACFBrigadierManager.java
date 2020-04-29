@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -17,6 +16,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 /**
  * Handles registering of commands into brigadier
@@ -43,8 +43,6 @@ public class ACFBrigadierManager<S> {
 
         this.manager = manager;
 
-        manager.getCommandContexts().contextMap.forEach((type, contextResolver) -> registerArgument(type, StringArgumentType.string()));
-
         // TODO support stuff like min max via brigadier?
         registerArgument(String.class, StringArgumentType.word());
         registerArgument(float.class, FloatArgumentType.floatArg());
@@ -55,15 +53,16 @@ public class ACFBrigadierManager<S> {
         registerArgument(Boolean.class, BoolArgumentType.bool());
         registerArgument(int.class, IntegerArgumentType.integer());
         registerArgument(Integer.class, IntegerArgumentType.integer());
-        registerArgument(long.class, LongArgumentType.longArg());
-        registerArgument(Long.class, LongArgumentType.longArg());
+        // We use integer for long due to Bungee bug, plus should really be considered same on client
+        registerArgument(long.class, IntegerArgumentType.integer());
+        registerArgument(Long.class, IntegerArgumentType.integer());
     }
 
     <T> void registerArgument(Class<T> clazz, ArgumentType<?> type) {
         arguments.put(clazz, type);
     }
 
-    private ArgumentType<Object> getArgumentTypeByClazz(CommandParameter param) {
+    ArgumentType<Object> getArgumentTypeByClazz(CommandParameter param) {
         if (param.consumesRest) {
             //noinspection unchecked
             return (ArgumentType<Object>) (ArgumentType<?>) StringArgumentType.greedyString();
@@ -77,7 +76,7 @@ public class ACFBrigadierManager<S> {
      * <p>
      * It recreates the root command node!
      */
-    LiteralCommandNode<S> register(RootCommand acfCommand,
+    LiteralCommandNode<S> register(RootCommand rootCommand,
                                    LiteralCommandNode<S> root,
                                    SuggestionProvider<S> suggestionProvider,
                                    Command<S> executor,
@@ -85,23 +84,13 @@ public class ACFBrigadierManager<S> {
                                    BiPredicate<RegisteredCommand, S> permCheckerSub) {
         // recreate root to get rid of bukkits default arg
         LiteralArgumentBuilder<S> rootBuilder = LiteralArgumentBuilder.<S>literal(root.getLiteral())
-                .requires(sender -> permCheckerRoot.test(acfCommand, sender));
-
-        // if we have no subcommands, this command is actually executable
-        if (acfCommand.getSubCommands().size() == 0) {
-            rootBuilder.executes(executor);
-        }
+                .requires(sender -> permCheckerRoot.test(rootCommand, sender));
 
         root = rootBuilder.build();
+        boolean isForwardingCommand = rootCommand.getDefCommand() instanceof ForwardingCommand;
 
-        // proxy?
-        boolean isProxy = false;
-        if (acfCommand.getSubCommands().size() == 1 && acfCommand.getSubCommands().containsKey("__default")) {
-            isProxy = true;
-        }
-
-        for (Map.Entry<String, RegisteredCommand> subCommand : acfCommand.getSubCommands().entries()) {
-            if ((subCommand.getKey().startsWith("__") && !isProxy) || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
+        for (Map.Entry<String, RegisteredCommand> subCommand : rootCommand.getSubCommands().entries()) {
+            if ((BaseCommand.isSpecialSubcommand(subCommand.getKey()) && !isForwardingCommand) || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
                 continue;
             }
@@ -110,13 +99,14 @@ public class ACFBrigadierManager<S> {
             String commandName = subCommand.getKey();
             CommandNode<S> currentParent = root;
             CommandNode<S> subCommandNode;
-            if (!isProxy) {
+            Predicate<S> subPermChecker = sender -> permCheckerSub.test(subCommand.getValue(), sender);
+            if (!isForwardingCommand) {
                 if (commandName.contains(" ")) {
                     String[] split = ACFPatterns.SPACE.split(commandName);
                     for (int i = 0; i < split.length - 1; i++) {
                         if (currentParent.getChild(split[i]) == null) {
                             LiteralCommandNode<S> sub = LiteralArgumentBuilder.<S>literal(split[i])
-                                    .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender)).build();
+                                    .requires(subPermChecker).build();
                             currentParent.addChild(sub);
                             currentParent = sub;
                         } else {
@@ -129,7 +119,7 @@ public class ACFBrigadierManager<S> {
                 subCommandNode = currentParent.getChild(commandName);
                 if (subCommandNode == null) {
                     LiteralArgumentBuilder<S> argumentBuilder = LiteralArgumentBuilder.<S>literal(commandName)
-                            .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
+                            .requires(subPermChecker);
 
                     // if we have no params, this command is actually executable
                     if (subCommand.getValue().consumeInputResolvers == 0) {
@@ -145,7 +135,8 @@ public class ACFBrigadierManager<S> {
             CommandParameter[] parameters = subCommand.getValue().parameters;
             for (int i = 0; i < parameters.length; i++) {
                 CommandParameter param = parameters[i];
-                if (manager.isCommandIssuer(param.getType()) && !param.getFlags().containsKey("other")) {
+                CommandParameter nextParam = param.getNextParam();
+                if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
                     continue;
                 }
                 RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
@@ -153,12 +144,7 @@ public class ACFBrigadierManager<S> {
                         .suggests(suggestionProvider)
                         .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
 
-                // last param -> execute
-                if (i == parameters.length - 1) {
-                    builder.executes(executor);
-                }
-                // current param is optional or next param is optional -> execute
-                if (param.isOptional() || i < parameters.length - 1 && parameters[i + 1].isOptional()) {
+                if (nextParam != null && nextParam.canExecuteWithoutInput()) {
                     builder.executes(executor);
                 }
 
@@ -167,11 +153,12 @@ public class ACFBrigadierManager<S> {
                 paramNode = subSubCommand;
             }
 
-            if (!isProxy) {
+            if (!isForwardingCommand) {
                 currentParent.addChild(subCommandNode);
             }
         }
 
         return root;
     }
+
 }

@@ -47,6 +47,9 @@ public final class ACFExample extends JavaPlugin {
         // 1: Create Command Manager for your respective platform
         commandManager = new PaperCommandManager(this);
 
+        // enable brigadier integration for paper servers
+        commandManager.enableUnstableAPI("brigadier");
+
         // optional: enable unstable api to use help
         commandManager.enableUnstableAPI("help");
 
@@ -110,10 +113,6 @@ public final class ACFExample extends JavaPlugin {
             getLogger().warning("Error occurred while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
-
-
-        // 10: (optionally enable brigadier integration, paper only)
-        commandManager.enableUnstableAPI("brigadier");
 
         // test command for brigadier
         commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->
