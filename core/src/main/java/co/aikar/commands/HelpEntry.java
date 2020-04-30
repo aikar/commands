@@ -46,8 +46,13 @@ public class HelpEntry {
         return this.commandHelp.getCommandPrefix();
     }
 
-    public String getParameterSyntax(){
+    public String getParameterSyntax() {
         return this.command.syntaxText != null ? this.command.syntaxText : "";
+    }
+
+    public String getParameterSyntax(CommandIssuer issuer) {
+        String translated = this.command.getSyntaxText(issuer);
+        return translated != null ? translated : "";
     }
 
     public String getDescription(){

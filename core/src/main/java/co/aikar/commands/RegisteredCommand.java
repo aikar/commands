@@ -97,6 +97,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.syntaxText = annotations.getAnnotationValue(method, Syntax.class, Annotations.REPLACEMENTS);
 
         Parameter[] parameters = method.getParameters();
         //noinspection unchecked
@@ -108,7 +109,6 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         int consumeInputResolvers = 0;
         int doesNotConsumeInputResolvers = 0;
         int optionalResolvers = 0;
-        StringBuilder syntaxBuilder = new StringBuilder(64);
 
         CommandParameter<CEC> previousParam = null;
         for (int i = 0; i < parameters.length; i++) {
@@ -129,16 +129,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     doesNotConsumeInputResolvers++;
                 }
             }
-            if (parameter.getSyntax() != null) {
-                if (syntaxBuilder.length() > 0) {
-                    syntaxBuilder.append(' ');
-                }
-                syntaxBuilder.append(parameter.getSyntax());
-            }
         }
-        String syntaxText = syntaxBuilder.toString().trim();
-        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);
-        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;
+
         this.requiredResolvers = requiredResolvers;
         this.consumeInputResolvers = consumeInputResolvers;
         this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
@@ -345,7 +337,21 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     public String getSyntaxText() {
-        return syntaxText;
+        return getSyntaxText(null);
+    }
+
+    public String getSyntaxText(CommandIssuer issuer) {
+        if (syntaxText != null) return syntaxText;
+        StringBuilder syntaxBuilder = new StringBuilder(64);
+        for (CommandParameter<?> parameter : parameters) {
+            if (parameter.getSyntax(null) != null) {
+                if (syntaxBuilder.length() > 0) {
+                    syntaxBuilder.append(' ');
+                }
+                syntaxBuilder.append(parameter.getSyntax(issuer));
+            }
+        }
+        return syntaxBuilder.toString().trim();
     }
 
     public String getHelpText() {

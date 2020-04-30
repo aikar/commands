@@ -174,7 +174,7 @@ public class CommandHelpFormatter {
         return new String[]{
                 "{command}", entry.getCommand(),
                 "{commandprefix}", help.getCommandPrefix(),
-                "{parameters}", entry.getParameterSyntax(),
+                "{parameters}", entry.getParameterSyntax(help.getIssuer()),
                 "{separator}", entry.getDescription().isEmpty() ? "" : "-",
                 "{description}", entry.getDescription()
         };
@@ -192,9 +192,9 @@ public class CommandHelpFormatter {
     public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry entry) {
         //{name} {description}
         return new String[]{
-                "{name}", param.getName(),
-                "{syntaxorname}", ACFUtil.nullDefault(param.getSyntax(), param.getName()),
-                "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),
+                "{name}", param.getDisplayName(help.getIssuer()),
+                "{syntaxorname}", ACFUtil.nullDefault(param.getSyntax(help.getIssuer()), param.getDisplayName(help.getIssuer())),
+                "{syntax}", ACFUtil.nullDefault(param.getSyntax(help.getIssuer()), ""),
                 "{description}", ACFUtil.nullDefault(param.getDescription(), ""),
                 "{command}", help.getCommandName(),
                 "{fullcommand}", entry.getCommand(),

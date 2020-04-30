@@ -180,6 +180,10 @@ public class Locales {
         return message;
     }
 
+    public String getOptionalMessage(CommandIssuer issuer, MessageKey key) {
+        return this.localeManager.getMessage(issuer, key);
+    }
+
     public String replaceI18NStrings(String message) {
         if (message == null) {
             return null;

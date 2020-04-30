@@ -793,7 +793,7 @@ public abstract class BaseCommand {
     public void showSyntax(CommandIssuer issuer, RegisteredCommand<?> cmd) {
         issuer.sendMessage(MessageType.SYNTAX, MessageKeys.INVALID_SYNTAX,
                 "{command}", manager.getCommandPrefix(issuer) + cmd.command,
-                "{syntax}", cmd.syntaxText
+                "{syntax}", cmd.getSyntaxText(issuer)
         );
     }
 
