@@ -181,6 +181,9 @@ public class Locales {
     }
 
     public String getOptionalMessage(CommandIssuer issuer, MessageKey key) {
+        if (issuer == null) {
+            return this.localeManager.getTable(getDefaultLocale()).getMessage(key);
+        }
         return this.localeManager.getMessage(issuer, key);
     }
 

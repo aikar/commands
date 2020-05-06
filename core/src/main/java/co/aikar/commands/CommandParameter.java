@@ -171,7 +171,6 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
     }
 
     public String getDisplayName(CommandIssuer issuer) {
-        if(issuer == null) return name;
         String translated = manager.getLocales().getOptionalMessage(issuer, MessageKey.of("acf.parameter." + name.toLowerCase()));
         return translated != null ? translated : name;
     }
@@ -266,6 +265,10 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     public void setRequiresInput(boolean requiresInput) {
         this.requiresInput = requiresInput;
+    }
+
+    public String getSyntax() {
+        return getSyntax(null);
     }
 
     public String getSyntax(CommandIssuer issuer) {
