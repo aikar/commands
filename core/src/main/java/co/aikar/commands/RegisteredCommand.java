@@ -214,23 +214,20 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
 
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args) throws InvalidCommandArgument {
-        return resolveContexts(sender, args, parameters.length);
+        return resolveContexts(sender, args, null);
     }
 
     @Nullable
-    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
+    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, String name) throws InvalidCommandArgument {
         args = new ArrayList<>(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
-        for (int i = 0; i < parameters.length && i < argLimit; i++) {
+        for (int i = 0; i < parameters.length && (name == null || !passedArgs.containsKey(name)); i++) {
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
             final CommandParameter<CEC> parameter = parameters[i];
-            if (!parameter.canConsumeInput()) {
-                argLimit++;
-            }
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked

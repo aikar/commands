@@ -102,7 +102,7 @@ public class CommandCompletionContext<I extends CommandIssuer> {
             }
         }
         //noinspection unchecked
-        Map<String, Object> resolved = command.resolveContexts(issuer, args, args.size() - 1);
+        Map<String, Object> resolved = command.resolveContexts(issuer, args, name);
         if (resolved == null || paramIdx > resolved.size()) {
             ACFUtil.sneaky(new CommandCompletionTextLookupException());
         }
