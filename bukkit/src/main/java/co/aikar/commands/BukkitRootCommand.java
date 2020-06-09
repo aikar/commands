@@ -27,11 +27,13 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BukkitRootCommand extends Command implements RootCommand {
+public class BukkitRootCommand extends Command implements RootCommand, PluginIdentifiableCommand {
 
     private final BukkitCommandManager manager;
     private final String name;
@@ -113,4 +115,8 @@ public class BukkitRootCommand extends Command implements RootCommand {
         return defCommand;
     }
 
+    @Override
+    public Plugin getPlugin() {
+        return manager.getPlugin();
+    }
 }
