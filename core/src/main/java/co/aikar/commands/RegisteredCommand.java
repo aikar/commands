@@ -344,11 +344,12 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         if (syntaxText != null) return syntaxText;
         StringBuilder syntaxBuilder = new StringBuilder(64);
         for (CommandParameter<?> parameter : parameters) {
-            if (parameter.getSyntax(null) != null) {
+            String syntax = parameter.getSyntax(issuer);
+            if (syntax != null) {
                 if (syntaxBuilder.length() > 0) {
                     syntaxBuilder.append(' ');
                 }
-                syntaxBuilder.append(parameter.getSyntax(issuer));
+                syntaxBuilder.append(syntax);
             }
         }
         return syntaxBuilder.toString().trim();
