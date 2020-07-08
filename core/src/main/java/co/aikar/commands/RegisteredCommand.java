@@ -32,6 +32,9 @@ import co.aikar.commands.annotation.HelpSearchTags;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
+import co.aikar.commands.kotlin.JavaContinuation;
+import kotlin.coroutines.Continuation;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -71,6 +74,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     public String helpSearchTags;
 
     boolean isPrivate;
+    boolean isKotlinSuspendingFunction;
 
     final int requiredResolvers;
     final int consumeInputResolvers;
@@ -99,8 +103,18 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         Parameter[] parameters = method.getParameters();
+
+        try {
+            if (method.getParameterTypes()[parameters.length - 1] == Continuation.class) {
+                this.isKotlinSuspendingFunction = true;
+            }
+        } catch (NoClassDefFoundError ignored) {
+        }
+
+        int parametersLength = this.isKotlinSuspendingFunction ? parameters.length - 1 : parameters.length;
+
         //noinspection unchecked
-        this.parameters = new CommandParameter[parameters.length];
+        this.parameters = new CommandParameter[parametersLength];
 
         this.isPrivate = annotations.hasAnnotation(method, Private.class) || annotations.getAnnotationFromClass(scope.getClass(), Private.class) != null;
 
@@ -111,8 +125,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         StringBuilder syntaxBuilder = new StringBuilder(64);
 
         CommandParameter<CEC> previousParam = null;
-        for (int i = 0; i < parameters.length; i++) {
-            CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i, i == parameters.length - 1);
+        for (int i = 0; i < parametersLength; i++) {
+            CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i, i == parametersLength - 1);
             if (previousParam != null) {
                 previousParam.setNextParam(parameter);
             }
@@ -157,7 +171,24 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             Map<String, Object> passedArgs = resolveContexts(sender, args);
             if (passedArgs == null) return;
 
-            Object obj = method.invoke(scope, passedArgs.values().toArray());
+            Object[] methodArgs = passedArgs.values().toArray();
+            if (isKotlinSuspendingFunction) {
+                Object[] methodArgsCopy = new Object[methodArgs.length + 1];
+                System.arraycopy(methodArgs, 0, methodArgsCopy, 0, methodArgs.length);
+                methodArgs = methodArgsCopy;
+                methodArgs[methodArgs.length - 1] = new JavaContinuation<Object>() {
+                    @Override
+                    public void resumeWithException(@NotNull Throwable exception) {
+                        handleException(sender, args, exception);
+                    }
+
+                    @Override
+                    public void resume(Object result) {
+                    }
+                };
+            }
+
+            Object obj = method.invoke(scope, methodArgs);
             if (obj instanceof CompletableFuture) {
                 CompletableFuture<?> future = (CompletableFuture) obj;
                 future.exceptionally(t -> {
