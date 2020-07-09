@@ -101,9 +101,13 @@ public class CommandCompletionContext<I extends CommandIssuer> {
                 throw new IllegalStateException("Can not find any parameter that can satisfy " + clazz.getName());
             }
         }
+        return getContextValueByName(clazz, name);
+    }
+
+    public <T> T getContextValueByName(Class<? extends T> clazz, String name) throws InvalidCommandArgument {
         //noinspection unchecked
         Map<String, Object> resolved = command.resolveContexts(issuer, args, name);
-        if (resolved == null || paramIdx > resolved.size()) {
+        if (resolved == null || !resolved.containsKey(name)) {
             ACFUtil.sneaky(new CommandCompletionTextLookupException());
         }
 
