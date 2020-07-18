@@ -105,7 +105,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         Parameter[] parameters = method.getParameters();
 
         try {
-            if (method.getParameterTypes()[parameters.length - 1] == Continuation.class) {
+            if (parameters.length > 0 && method.getParameterTypes()[parameters.length - 1] == Continuation.class) {
                 this.isKotlinSuspendingFunction = true;
             }
         } catch (NoClassDefFoundError ignored) {
