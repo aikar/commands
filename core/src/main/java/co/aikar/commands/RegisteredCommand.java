@@ -237,7 +237,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             final ContextResolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
             CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
-            if (!parameter.getRegexPattern().isEmpty() && !context.getFirstArg().matches(parameter.getRegexPattern())) {
+            if (parameter.getRegexPattern() != null && !context.getFirstArg().matches(parameter.getRegexPattern())) {
                 sender.sendMessage(MessageType.ERROR, MessageKeys.INVALID_SYNTAX,
                         "{command}", manager.getCommandPrefix(sender) + command,
                         "{syntax}", syntaxText);

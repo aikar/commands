@@ -80,7 +80,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
         this.description = annotations.getAnnotationValue(param, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.regexPattern = annotations.getAnnotationValue(param, Regex.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
+        this.regexPattern = annotations.getAnnotationValue(param, Regex.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         //noinspection unchecked
         this.resolver = manager.getCommandContexts().getResolver(type);
         if (this.resolver == null) {
