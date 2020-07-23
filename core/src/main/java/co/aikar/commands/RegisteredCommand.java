@@ -237,6 +237,12 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             final ContextResolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
             CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);
+            if (!parameter.getRegexPattern().isEmpty() && !context.getFirstArg().matches(parameter.getRegexPattern())) {
+                sender.sendMessage(MessageType.ERROR, MessageKeys.INVALID_SYNTAX,
+                        "{command}", manager.getCommandPrefix(sender) + command,
+                        "{syntax}", syntaxText);
+                throw new InvalidCommandArgument(false);
+            }
             boolean requiresInput = parameter.requiresInput();
             if (requiresInput && remainingRequired > 0) {
                 remainingRequired--;
@@ -249,9 +255,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value;
                     if (!parameter.isOptionalResolver() || !this.manager.hasPermission(sender, parameterPermissions)) {
-                       value = null;
+                        value = null;
                     } else {
-                       value = resolver.getContext(context);
+                        value = resolver.getContext(context);
                     }
 
                     if (value == null && parameter.getClass().isPrimitive()) {

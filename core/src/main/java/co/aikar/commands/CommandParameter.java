@@ -29,6 +29,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Regex;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.annotation.Values;
@@ -59,6 +60,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
     private String defaultValue;
     private String syntax;
     private String conditions;
+    private String regexPattern;
     private boolean requiresInput;
     private boolean commandIssuer;
     private String[] values;
@@ -78,7 +80,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
         this.description = annotations.getAnnotationValue(param, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-
+        this.regexPattern = annotations.getAnnotationValue(param, Regex.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         //noinspection unchecked
         this.resolver = manager.getCommandContexts().getResolver(type);
         if (this.resolver == null) {
@@ -270,6 +272,14 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     public void setConditions(String conditions) {
         this.conditions = conditions;
+    }
+
+    public String getRegexPattern() {
+        return regexPattern;
+    }
+
+    public void setRegexPattern(String regexPattern) {
+        this.regexPattern = regexPattern;
     }
 
     public Set<String> getRequiredPermissions() {

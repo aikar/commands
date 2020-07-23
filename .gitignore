@@ -8,6 +8,7 @@
 .idea/misc.xml
 .idea/libraries
 .idea/uiDesigner.xml
+.idea/jarRepositories.xml
 .idea/kotlinc.xml
 .idea/modules.xml
 .idea/usage.statistics.xml
