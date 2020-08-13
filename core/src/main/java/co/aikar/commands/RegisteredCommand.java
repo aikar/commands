@@ -46,6 +46,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -284,7 +285,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     //noinspection unchecked
                     List<String> check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
-                        possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
+                        possible.addAll(check.stream().filter(Objects::nonNull).
+                                map(String::toLowerCase).collect(Collectors.toList()));
                     } else {
                         possible.add(s.toLowerCase(Locale.ENGLISH));
                     }
