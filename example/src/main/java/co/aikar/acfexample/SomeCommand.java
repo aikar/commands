@@ -169,7 +169,7 @@ public class SomeCommand extends BaseCommand {
         @Subcommand("next")
         public class TestInner extends BaseCommand {
 
-            @Subcommand("test3|td4")
+            @Subcommand("test3|td3")
             @CommandCompletion("FOO")
             public void onTest1(Player player, String testX) {
                 player.sendMessage("You got test inner inner test3: " + testX);
