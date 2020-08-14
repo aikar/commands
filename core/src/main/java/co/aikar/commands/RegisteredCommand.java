@@ -84,7 +84,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.manager = this.scope.manager;
         final Annotations annotations = this.manager.getAnnotations();
 
-        if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
+        if (BaseCommand.isSpecialSubcommand(prefSubCommand)) {
             prefSubCommand = "";
             command = command.trim();
         }
@@ -110,8 +110,13 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         int optionalResolvers = 0;
         StringBuilder syntaxBuilder = new StringBuilder(64);
 
+        CommandParameter<CEC> previousParam = null;
         for (int i = 0; i < parameters.length; i++) {
             CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i, i == parameters.length - 1);
+            if (previousParam != null) {
+                previousParam.setNextParam(parameter);
+            }
+            previousParam = parameter;
             if (!parameter.isCommandIssuer()) {
                 if (!parameter.requiresInput()) {
                     optionalResolvers++;
@@ -247,9 +252,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value;
                     if (!parameter.isOptionalResolver() || !this.manager.hasPermission(sender, parameterPermissions)) {
-                       value = null;
+                        value = null;
                     } else {
-                       value = resolver.getContext(context);
+                        value = resolver.getContext(context);
                     }
 
                     if (value == null && parameter.getClass().isPrimitive()) {

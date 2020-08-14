@@ -28,6 +28,8 @@ import org.bukkit.plugin.Plugin;
 @SuppressWarnings("WeakerAccess")
 public class PaperCommandManager extends BukkitCommandManager {
 
+    private boolean brigadierAvailable;
+
     // If we get anything Paper specific
     public PaperCommandManager(Plugin plugin) {
         super(plugin);
@@ -36,6 +38,21 @@ public class PaperCommandManager extends BukkitCommandManager {
             plugin.getServer().getPluginManager().registerEvents(new PaperAsyncTabCompleteHandler(this), plugin);
         } catch (ClassNotFoundException ignored) {
             // Ignored
+        }
+        try {
+            Class.forName("com.destroystokyo.paper.event.brigadier.CommandRegisteredEvent");
+            brigadierAvailable = true;
+        } catch (ClassNotFoundException ignored) {
+            // Ignored
+        }
+    }
+
+    @Override
+    public void enableUnstableAPI(String api) {
+        super.enableUnstableAPI(api);
+
+        if ("brigadier".equals(api) && brigadierAvailable) {
+            new PaperBrigadierManager(plugin, this);
         }
     }
 

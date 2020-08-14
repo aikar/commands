@@ -51,6 +51,10 @@ class PaperAsyncTabCompleteHandler implements Listener {
             if (false) throw new CommandCompletions.SyncCompletionRequired(); // fake compiler due to SneakyThrows
             List<String> completions = getCompletions(buffer, event.getCompletions(), event.getSender(), true);
             if (completions != null) {
+                // if we have no completion data, client will display an error, lets just send a space instead (https://bugs.mojang.com/browse/MC-165562)
+                if (completions.size() == 1 && completions.get(0).equals("")) {
+                    completions.set(0, " ");
+                }
                 event.setCompletions(completions);
                 event.setHandled(true);
             }

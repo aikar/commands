@@ -662,7 +662,7 @@ public abstract class BaseCommand {
         String argString = ApacheCommonsLangUtil.join(args, " ").toLowerCase(Locale.ENGLISH);
         for (Map.Entry<String, RegisteredCommand> entry : subCommands.entries()) {
             final String key = entry.getKey();
-            if (key.startsWith(argString) && !CATCHUNKNOWN.equals(key) && !DEFAULT.equals(key)) {
+            if (key.startsWith(argString) && !isSpecialSubcommand(key)) {
                 final RegisteredCommand value = entry.getValue();
                 if (!value.hasPermission(issuer) || value.isPrivate) {
                     continue;
@@ -673,6 +673,10 @@ public abstract class BaseCommand {
             }
         }
         return new ArrayList<>(cmds);
+    }
+
+    static boolean isSpecialSubcommand(String key) {
+        return CATCHUNKNOWN.equals(key) || DEFAULT.equals(key);
     }
 
     /**
@@ -838,5 +842,9 @@ public abstract class BaseCommand {
         List<RegisteredCommand> registeredCommands = new ArrayList<>();
         registeredCommands.addAll(this.subCommands.values());
         return registeredCommands;
+    }
+
+    protected SetMultimap<String, RegisteredCommand> getSubCommands() {
+        return subCommands;
     }
 }

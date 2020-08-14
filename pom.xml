@@ -197,11 +197,13 @@
 
     <modules>
         <module>core</module>
+        <module>brigadier</module>
         <module>bukkit</module>
         <module>paper</module>
         <module>bungee</module>
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
+        <module>example</module>
     </modules>
 </project>
