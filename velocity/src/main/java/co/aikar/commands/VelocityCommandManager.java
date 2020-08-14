@@ -60,11 +60,11 @@ public class VelocityCommandManager extends
         this.formatters.put(MessageType.SYNTAX, new VelocityMessageFormatter(TextColor.YELLOW, TextColor.GREEN, TextColor.WHITE));
         this.formatters.put(MessageType.INFO, new VelocityMessageFormatter(TextColor.BLUE, TextColor.DARK_GREEN, TextColor.GREEN));
         this.formatters.put(MessageType.HELP, new VelocityMessageFormatter(TextColor.AQUA, TextColor.GREEN, TextColor.YELLOW));
-        
+
         getLocales();
-        
+
         proxy.getEventManager().register(plugin, new ACFVelocityListener(this, this.plugin, proxy));
-        
+
         registerDependency(plugin.getClass(), plugin);
         registerDependency(Plugin.class, plugin);
         registerDependency(ProxyServer.class, proxy);
@@ -117,11 +117,18 @@ public class VelocityCommandManager extends
 
     @Override
     public void registerCommand(BaseCommand command) {
+        registerCommand(command, false);
+    }
+
+    public void registerCommand(BaseCommand command, boolean force) {
         command.onRegister(this);
         for (Map.Entry<String, RootCommand> entry : command.registeredCommands.entrySet()) {
             String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             VelocityRootCommand velocityCommand = (VelocityRootCommand) entry.getValue();
             if (!velocityCommand.isRegistered) {
+                if (force) {
+                    proxy.getCommandManager().unregister(commandName);
+                }
                 proxy.getCommandManager().register(velocityCommand, commandName);
             }
             velocityCommand.isRegistered = true;
@@ -134,7 +141,7 @@ public class VelocityCommandManager extends
             String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             VelocityRootCommand velocityCommand = (VelocityRootCommand) entry.getValue();
             velocityCommand.getSubCommands().values().removeAll(command.subCommands.values());
-            if (velocityCommand.getSubCommands().isEmpty() && velocityCommand.isRegistered)  {
+            if (velocityCommand.getSubCommands().isEmpty() && velocityCommand.isRegistered) {
                 unregisterCommand(velocityCommand);
                 velocityCommand.isRegistered = false;
                 registeredCommands.remove(commandName);
@@ -174,7 +181,7 @@ public class VelocityCommandManager extends
     public RootCommand createRootCommand(String cmd) {
         return new VelocityRootCommand(this, cmd);
     }
-    
+
     @Override
     public Collection<RootCommand> getRegisteredRootCommands() {
         return Collections.unmodifiableCollection(registeredCommands.values());
@@ -209,7 +216,7 @@ public class VelocityCommandManager extends
         } else {
             logger.warn(LogLevel.LOG_PREFIX + message);
         }
-        
+
         if (throwable != null) {
             for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {
                 if (level == LogLevel.INFO) {
