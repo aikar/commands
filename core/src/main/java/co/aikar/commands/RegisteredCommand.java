@@ -176,7 +176,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 Object[] methodArgsCopy = new Object[methodArgs.length + 1];
                 System.arraycopy(methodArgs, 0, methodArgsCopy, 0, methodArgs.length);
                 methodArgs = methodArgsCopy;
-                methodArgs[methodArgs.length - 1] = new JavaContinuation<Object>() {
+                ThreadLocalRestorer threadLocalRestorer = new ThreadLocalRestorer(CommandManager.commandOperationContext.get().peek());
+                methodArgs[methodArgs.length - 1] = new JavaContinuation<Object>(threadLocalRestorer) {
                     @Override
                     public void resumeWithException(@NotNull Throwable exception) {
                         handleException(sender, args, exception);

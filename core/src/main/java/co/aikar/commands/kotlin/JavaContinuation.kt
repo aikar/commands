@@ -27,10 +27,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class JavaContinuation<T> : Continuation<T> {
-    override val context: CoroutineContext
-        get() = EmptyCoroutineContext
-
+abstract class JavaContinuation<T>(override val context: CoroutineContext = EmptyCoroutineContext) : Continuation<T> {
     override fun resumeWith(result: Result<T>) {
         result.fold(::resume, ::resumeWithException)
     }
