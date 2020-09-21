@@ -26,6 +26,7 @@ package co.aikar.commands.kotlin
 import kotlinx.coroutines.ThreadContextElement
 import java.util.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 class ThreadLocalStackRestorer<T> @JvmOverloads constructor(
         private val localStack: ThreadLocal<Stack<T>>,
@@ -44,3 +45,14 @@ class ThreadLocalStackRestorer<T> @JvmOverloads constructor(
         localStack.get().push(this.data)
     }
 }
+
+// This method is required, because we can't have a local variable
+// in code where we're not sure the class (CoroutineContext) exists at runtime.
+// If it doesn't, loading the entire class fails before we have a chance to catch it.
+@JvmOverloads
+fun <T> ThreadLocal<Stack<T>>.toThreadLocalStackRestorerOrEmptyContext(data: T = this.get().peek()) =
+        try {
+            ThreadLocalStackRestorer(this, data)
+        } catch (e: NoClassDefFoundError) {
+            EmptyCoroutineContext
+        }

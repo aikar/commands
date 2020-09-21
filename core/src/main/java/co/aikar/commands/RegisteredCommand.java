@@ -33,10 +33,9 @@ import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.kotlin.JavaContinuation;
-import co.aikar.commands.kotlin.ThreadLocalStackRestorer;
+import co.aikar.commands.kotlin.ThreadLocalStackRestorerKt;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -180,13 +179,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 System.arraycopy(methodArgs, 0, methodArgsCopy, 0, methodArgs.length);
                 methodArgs = methodArgsCopy;
 
-                CoroutineContext contextRestorer;
-                try {
-                    contextRestorer = new ThreadLocalStackRestorer<>(CommandManager.commandOperationContext);
-                } catch (NoClassDefFoundError e) {
-                    contextRestorer = EmptyCoroutineContext.INSTANCE;
-                }
-
+                CoroutineContext contextRestorer = ThreadLocalStackRestorerKt.toThreadLocalStackRestorerOrEmptyContext(CommandManager.commandOperationContext, context);
                 methodArgs[methodArgs.length - 1] = new JavaContinuation<Object>(contextRestorer) {
                     @Override
                     public void resumeWithException(@NotNull Throwable exception) {
