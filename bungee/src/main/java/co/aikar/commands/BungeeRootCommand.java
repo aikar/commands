@@ -90,7 +90,7 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return uniquePermission == null || uniquePermission.isEmpty() || sender.hasPermission(uniquePermission);
+        return hasAnyPermission(manager.getCommandIssuer(sender));
     }
 
     @Override
