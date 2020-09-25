@@ -171,7 +171,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
     }
 
     public String getDisplayName(CommandIssuer issuer) {
-        String translated = manager.getLocales().getOptionalMessage(issuer, MessageKey.of("acf.parameter." + name.toLowerCase()));
+        String translated = manager.getLocales().getOptionalMessage(issuer, MessageKey.of("acf-core.parameter." + name.toLowerCase()));
         return translated != null ? translated : name;
     }
 
