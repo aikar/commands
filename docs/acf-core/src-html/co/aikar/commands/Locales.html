@@ -189,32 +189,39 @@
 <span class="sourceLineNo">180</span><a id="line.180">        return message;</a>
 <span class="sourceLineNo">181</span><a id="line.181">    }</a>
 <span class="sourceLineNo">182</span><a id="line.182"></a>
-<span class="sourceLineNo">183</span><a id="line.183">    public String replaceI18NStrings(String message) {</a>
-<span class="sourceLineNo">184</span><a id="line.184">        if (message == null) {</a>
-<span class="sourceLineNo">185</span><a id="line.185">            return null;</a>
+<span class="sourceLineNo">183</span><a id="line.183">    public String getOptionalMessage(CommandIssuer issuer, MessageKey key) {</a>
+<span class="sourceLineNo">184</span><a id="line.184">        if (issuer == null) {</a>
+<span class="sourceLineNo">185</span><a id="line.185">            return this.localeManager.getTable(getDefaultLocale()).getMessage(key);</a>
 <span class="sourceLineNo">186</span><a id="line.186">        }</a>
-<span class="sourceLineNo">187</span><a id="line.187">        Matcher matcher = ACFPatterns.I18N_STRING.matcher(message);</a>
-<span class="sourceLineNo">188</span><a id="line.188">        if (!matcher.find()) {</a>
-<span class="sourceLineNo">189</span><a id="line.189">            return message;</a>
-<span class="sourceLineNo">190</span><a id="line.190">        }</a>
-<span class="sourceLineNo">191</span><a id="line.191"></a>
-<span class="sourceLineNo">192</span><a id="line.192">        CommandIssuer issuer = CommandManager.getCurrentCommandIssuer();</a>
-<span class="sourceLineNo">193</span><a id="line.193"></a>
-<span class="sourceLineNo">194</span><a id="line.194">        matcher.reset();</a>
-<span class="sourceLineNo">195</span><a id="line.195">        StringBuffer sb = new StringBuffer(message.length());</a>
-<span class="sourceLineNo">196</span><a id="line.196">        while (matcher.find()) {</a>
-<span class="sourceLineNo">197</span><a id="line.197">            MessageKey key = MessageKey.of(matcher.group("key"));</a>
-<span class="sourceLineNo">198</span><a id="line.198">            matcher.appendReplacement(sb, Matcher.quoteReplacement(getMessage(issuer, key)));</a>
-<span class="sourceLineNo">199</span><a id="line.199">        }</a>
-<span class="sourceLineNo">200</span><a id="line.200">        matcher.appendTail(sb);</a>
-<span class="sourceLineNo">201</span><a id="line.201">        return sb.toString();</a>
-<span class="sourceLineNo">202</span><a id="line.202">    }</a>
-<span class="sourceLineNo">203</span><a id="line.203"></a>
-<span class="sourceLineNo">204</span><a id="line.204">    public boolean addBundleClassLoader(ClassLoader classLoader) {</a>
-<span class="sourceLineNo">205</span><a id="line.205">        return !this.registeredClassLoaders.contains(classLoader) &amp;&amp; this.registeredClassLoaders.add(classLoader);</a>
-<span class="sourceLineNo">206</span><a id="line.206"></a>
-<span class="sourceLineNo">207</span><a id="line.207">    }</a>
-<span class="sourceLineNo">208</span><a id="line.208">}</a>
+<span class="sourceLineNo">187</span><a id="line.187">        return this.localeManager.getMessage(issuer, key);</a>
+<span class="sourceLineNo">188</span><a id="line.188">    }</a>
+<span class="sourceLineNo">189</span><a id="line.189"></a>
+<span class="sourceLineNo">190</span><a id="line.190">    public String replaceI18NStrings(String message) {</a>
+<span class="sourceLineNo">191</span><a id="line.191">        if (message == null) {</a>
+<span class="sourceLineNo">192</span><a id="line.192">            return null;</a>
+<span class="sourceLineNo">193</span><a id="line.193">        }</a>
+<span class="sourceLineNo">194</span><a id="line.194">        Matcher matcher = ACFPatterns.I18N_STRING.matcher(message);</a>
+<span class="sourceLineNo">195</span><a id="line.195">        if (!matcher.find()) {</a>
+<span class="sourceLineNo">196</span><a id="line.196">            return message;</a>
+<span class="sourceLineNo">197</span><a id="line.197">        }</a>
+<span class="sourceLineNo">198</span><a id="line.198"></a>
+<span class="sourceLineNo">199</span><a id="line.199">        CommandIssuer issuer = CommandManager.getCurrentCommandIssuer();</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">        matcher.reset();</a>
+<span class="sourceLineNo">202</span><a id="line.202">        StringBuffer sb = new StringBuffer(message.length());</a>
+<span class="sourceLineNo">203</span><a id="line.203">        while (matcher.find()) {</a>
+<span class="sourceLineNo">204</span><a id="line.204">            MessageKey key = MessageKey.of(matcher.group("key"));</a>
+<span class="sourceLineNo">205</span><a id="line.205">            matcher.appendReplacement(sb, Matcher.quoteReplacement(getMessage(issuer, key)));</a>
+<span class="sourceLineNo">206</span><a id="line.206">        }</a>
+<span class="sourceLineNo">207</span><a id="line.207">        matcher.appendTail(sb);</a>
+<span class="sourceLineNo">208</span><a id="line.208">        return sb.toString();</a>
+<span class="sourceLineNo">209</span><a id="line.209">    }</a>
+<span class="sourceLineNo">210</span><a id="line.210"></a>
+<span class="sourceLineNo">211</span><a id="line.211">    public boolean addBundleClassLoader(ClassLoader classLoader) {</a>
+<span class="sourceLineNo">212</span><a id="line.212">        return !this.registeredClassLoaders.contains(classLoader) &amp;&amp; this.registeredClassLoaders.add(classLoader);</a>
+<span class="sourceLineNo">213</span><a id="line.213"></a>
+<span class="sourceLineNo">214</span><a id="line.214">    }</a>
+<span class="sourceLineNo">215</span><a id="line.215">}</a>
 
 
 

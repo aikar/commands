@@ -7,6 +7,6 @@ mvn -T1 javadoc:jar || exit 1
 if [ ! -z "$1" ]; then
 	cd - || exit 1
 fi
-git add docs
 git co docs/**/overview-summary.html docs/**/index.html
+git add docs
 git commit docs -m "(DEPLOYED ACF) Updated JavaDocs"

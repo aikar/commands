@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -342,15 +342,21 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterCommand(co.aikar.commands.BaseCommand)">unregisterCommand</a></span>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerCommand(co.aikar.commands.BaseCommand,boolean)">registerCommand</a></span>&#8203;(co.aikar.commands.BaseCommand&nbsp;command,
+               boolean&nbsp;force)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterCommand(co.aikar.commands.VelocityRootCommand)">unregisterCommand</a></span>&#8203;(<a href="VelocityRootCommand.html" title="class in co.aikar.commands">VelocityRootCommand</a>&nbsp;command)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterCommand(co.aikar.commands.BaseCommand)">unregisterCommand</a></span>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i20" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterCommand(co.aikar.commands.VelocityRootCommand)">unregisterCommand</a></span>&#8203;(<a href="VelocityRootCommand.html" title="class in co.aikar.commands">VelocityRootCommand</a>&nbsp;command)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unregisterCommands()">unregisterCommands</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -549,13 +555,23 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 </dl>
 </li>
 </ul>
+<a id="registerCommand(co.aikar.commands.BaseCommand,boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>registerCommand</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.123">registerCommand</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command,
+                            boolean&nbsp;force)</pre>
+</li>
+</ul>
 <a id="unregisterCommand(co.aikar.commands.BaseCommand)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommand</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.132">unregisterCommand</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.139">unregisterCommand</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 </li>
 </ul>
 <a id="unregisterCommand(co.aikar.commands.VelocityRootCommand)">
@@ -564,7 +580,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommand</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.145">unregisterCommand</a>&#8203;(<a href="VelocityRootCommand.html" title="class in co.aikar.commands">VelocityRootCommand</a>&nbsp;command)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.152">unregisterCommand</a>&#8203;(<a href="VelocityRootCommand.html" title="class in co.aikar.commands">VelocityRootCommand</a>&nbsp;command)</pre>
 </li>
 </ul>
 <a id="unregisterCommands()">
@@ -573,7 +589,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>unregisterCommands</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.149">unregisterCommands</a>()</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.156">unregisterCommands</a>()</pre>
 </li>
 </ul>
 <a id="hasRegisteredCommands()">
@@ -582,7 +598,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>hasRegisteredCommands</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.155">hasRegisteredCommands</a>()</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.162">hasRegisteredCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>hasRegisteredCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>
@@ -595,7 +611,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>isCommandIssuer</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.160">isCommandIssuer</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;aClass)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.167">isCommandIssuer</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;aClass)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>isCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>
@@ -608,7 +624,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandIssuer</h4>
-<pre class="methodSignature">public&nbsp;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.165">getCommandIssuer</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</pre>
+<pre class="methodSignature">public&nbsp;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.172">getCommandIssuer</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandIssuer</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>
@@ -621,7 +637,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>createRootCommand</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.173">createRootCommand</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;cmd)</pre>
+<pre class="methodSignature">public&nbsp;co.aikar.commands.RootCommand&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.180">createRootCommand</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;cmd)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>createRootCommand</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>
@@ -634,7 +650,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>getRegisteredRootCommands</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util" class="externalLink">Collection</a>&lt;co.aikar.commands.RootCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.178">getRegisteredRootCommands</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util" class="externalLink">Collection</a>&lt;co.aikar.commands.RootCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.185">getRegisteredRootCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getRegisteredRootCommands</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>
@@ -647,7 +663,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>createCommandContext</h4>
-<pre class="methodSignature">public&nbsp;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.183">createCommandContext</a>&#8203;(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre class="methodSignature">public&nbsp;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.190">createCommandContext</a>&#8203;(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                             co.aikar.commands.CommandParameter&nbsp;parameter,
                                                             co.aikar.commands.CommandIssuer&nbsp;sender,
                                                             <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;args,
@@ -665,7 +681,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>createCompletionContext</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.188">createCompletionContext</a>&#8203;(co.aikar.commands.RegisteredCommand&nbsp;command,
+<pre class="methodSignature">public&nbsp;co.aikar.commands.CommandCompletionContext&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.195">createCompletionContext</a>&#8203;(co.aikar.commands.RegisteredCommand&nbsp;command,
                                                                           co.aikar.commands.CommandIssuer&nbsp;sender,
                                                                           <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;input,
                                                                           <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;config,
@@ -682,7 +698,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>createRegisteredCommand</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.193">createRegisteredCommand</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command,
+<pre class="methodSignature">public&nbsp;co.aikar.commands.RegisteredCommand&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.200">createRegisteredCommand</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command,
                                                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;cmdName,
                                                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html?is-external=true" title="class or interface in java.lang.reflect" class="externalLink">Method</a>&nbsp;method,
                                                                    <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;prefSubCommand)</pre>
@@ -698,7 +714,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>createConditionContext</h4>
-<pre class="methodSignature">public&nbsp;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.198">createConditionContext</a>&#8203;(co.aikar.commands.CommandIssuer&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.205">createConditionContext</a>&#8203;(co.aikar.commands.CommandIssuer&nbsp;issuer,
                                                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;config)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -712,7 +728,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockList">
 <li class="blockList">
 <h4>log</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.203">log</a>&#8203;(co.aikar.commands.LogLevel&nbsp;level,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.210">log</a>&#8203;(co.aikar.commands.LogLevel&nbsp;level,
                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;message,
                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Throwable</a>&nbsp;throwable)</pre>
 <dl>
@@ -727,7 +743,7 @@ extends co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.Comm
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getCommandPrefix</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.225">getCommandPrefix</a>&#8203;(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/VelocityCommandManager.html#line.232">getCommandPrefix</a>&#8203;(co.aikar.commands.CommandIssuer&nbsp;issuer)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>getCommandPrefix</code>&nbsp;in class&nbsp;<code>co.aikar.commands.CommandManager&lt;com.velocitypowered.api.command.CommandSource,&#8203;<a href="VelocityCommandIssuer.html" title="class in co.aikar.commands">VelocityCommandIssuer</a>,&#8203;net.kyori.text.format.TextColor,&#8203;<a href="VelocityMessageFormatter.html" title="class in co.aikar.commands">VelocityMessageFormatter</a>,&#8203;<a href="VelocityCommandExecutionContext.html" title="class in co.aikar.commands">VelocityCommandExecutionContext</a>,&#8203;<a href="VelocityConditionContext.html" title="class in co.aikar.commands">VelocityConditionContext</a>&gt;</code></dd>

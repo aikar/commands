@@ -101,7 +101,7 @@
 <span class="sourceLineNo">092</span><a id="line.92">    @SuppressWarnings("JavaReflectionMemberAccess")</a>
 <span class="sourceLineNo">093</span><a id="line.93">    public BukkitCommandManager(Plugin plugin) {</a>
 <span class="sourceLineNo">094</span><a id="line.94">        this.plugin = plugin;</a>
-<span class="sourceLineNo">095</span><a id="line.95">        this.logger = Logger.getLogger(this.plugin.getName());</a>
+<span class="sourceLineNo">095</span><a id="line.95">        this.logger = Logger.getLogger(this.plugin.getDescription().getPrefix());</a>
 <span class="sourceLineNo">096</span><a id="line.96">        this.timingManager = TimingManager.of(plugin);</a>
 <span class="sourceLineNo">097</span><a id="line.97">        this.commandTiming = this.timingManager.of("Commands");</a>
 <span class="sourceLineNo">098</span><a id="line.98">        this.commandMap = hookCommandMap();</a>

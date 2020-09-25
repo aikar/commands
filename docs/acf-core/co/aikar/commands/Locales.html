@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -416,23 +416,29 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOptionalMessage(co.aikar.commands.CommandIssuer,co.aikar.locales.MessageKey)">getOptionalMessage</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                  co.aikar.locales.MessageKey&nbsp;key)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadLanguages()">loadLanguages</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadMissingBundles()">loadMissingBundles</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Looks for all previously loaded bundles, and if any new Supported Languages have been added, load them.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#replaceI18NStrings(java.lang.String)">replaceI18NStrings</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;message)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util" class="externalLink">Locale</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDefaultLocale(java.util.Locale)">setDefaultLocale</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html?is-external=true" title="class or interface in java.util" class="externalLink">Locale</a>&nbsp;locale)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -906,13 +912,23 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
                          co.aikar.locales.MessageKeyProvider&nbsp;key)</pre>
 </li>
 </ul>
+<a id="getOptionalMessage(co.aikar.commands.CommandIssuer,co.aikar.locales.MessageKey)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getOptionalMessage</h4>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.183">getOptionalMessage</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+                                 co.aikar.locales.MessageKey&nbsp;key)</pre>
+</li>
+</ul>
 <a id="replaceI18NStrings(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>replaceI18NStrings</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.183">replaceI18NStrings</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;message)</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.190">replaceI18NStrings</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;message)</pre>
 </li>
 </ul>
 <a id="addBundleClassLoader(java.lang.ClassLoader)">
@@ -921,7 +937,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>addBundleClassLoader</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.204">addBundleClassLoader</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassLoader</a>&nbsp;classLoader)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/Locales.html#line.211">addBundleClassLoader</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html?is-external=true" title="class or interface in java.lang" class="externalLink">ClassLoader</a>&nbsp;classLoader)</pre>
 </li>
 </ul>
 </li>

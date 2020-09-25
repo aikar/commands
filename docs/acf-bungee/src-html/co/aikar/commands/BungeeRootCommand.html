@@ -98,15 +98,20 @@
 <span class="sourceLineNo">089</span><a id="line.89">    }</a>
 <span class="sourceLineNo">090</span><a id="line.90"></a>
 <span class="sourceLineNo">091</span><a id="line.91">    @Override</a>
-<span class="sourceLineNo">092</span><a id="line.92">    public Iterable&lt;String&gt; onTabComplete(CommandSender commandSender, String[] strings) {</a>
-<span class="sourceLineNo">093</span><a id="line.93">        return getTabCompletions(manager.getCommandIssuer(commandSender), getName(), strings);</a>
+<span class="sourceLineNo">092</span><a id="line.92">    public boolean hasPermission(CommandSender sender) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">        return hasAnyPermission(manager.getCommandIssuer(sender));</a>
 <span class="sourceLineNo">094</span><a id="line.94">    }</a>
 <span class="sourceLineNo">095</span><a id="line.95"></a>
 <span class="sourceLineNo">096</span><a id="line.96">    @Override</a>
-<span class="sourceLineNo">097</span><a id="line.97">    public BaseCommand getDefCommand() {</a>
-<span class="sourceLineNo">098</span><a id="line.98">        return defCommand;</a>
+<span class="sourceLineNo">097</span><a id="line.97">    public Iterable&lt;String&gt; onTabComplete(CommandSender commandSender, String[] strings) {</a>
+<span class="sourceLineNo">098</span><a id="line.98">        return getTabCompletions(manager.getCommandIssuer(commandSender), getName(), strings);</a>
 <span class="sourceLineNo">099</span><a id="line.99">    }</a>
-<span class="sourceLineNo">100</span><a id="line.100">}</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">    @Override</a>
+<span class="sourceLineNo">102</span><a id="line.102">    public BaseCommand getDefCommand() {</a>
+<span class="sourceLineNo">103</span><a id="line.103">        return defCommand;</a>
+<span class="sourceLineNo">104</span><a id="line.104">    }</a>
+<span class="sourceLineNo">105</span><a id="line.105">}</a>
 
 
 

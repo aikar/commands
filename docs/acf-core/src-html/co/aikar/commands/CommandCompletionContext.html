@@ -110,32 +110,36 @@
 <span class="sourceLineNo">101</span><a id="line.101">                throw new IllegalStateException("Can not find any parameter that can satisfy " + clazz.getName());</a>
 <span class="sourceLineNo">102</span><a id="line.102">            }</a>
 <span class="sourceLineNo">103</span><a id="line.103">        }</a>
-<span class="sourceLineNo">104</span><a id="line.104">        //noinspection unchecked</a>
-<span class="sourceLineNo">105</span><a id="line.105">        Map&lt;String, Object&gt; resolved = command.resolveContexts(issuer, args, args.size() - 1);</a>
-<span class="sourceLineNo">106</span><a id="line.106">        if (resolved == null || paramIdx &gt; resolved.size()) {</a>
-<span class="sourceLineNo">107</span><a id="line.107">            ACFUtil.sneaky(new CommandCompletionTextLookupException());</a>
-<span class="sourceLineNo">108</span><a id="line.108">        }</a>
-<span class="sourceLineNo">109</span><a id="line.109"></a>
-<span class="sourceLineNo">110</span><a id="line.110">        //noinspection unchecked</a>
-<span class="sourceLineNo">111</span><a id="line.111">        return (T) resolved.get(name);</a>
-<span class="sourceLineNo">112</span><a id="line.112">    }</a>
+<span class="sourceLineNo">104</span><a id="line.104">        return getContextValueByName(clazz, name);</a>
+<span class="sourceLineNo">105</span><a id="line.105">    }</a>
+<span class="sourceLineNo">106</span><a id="line.106"></a>
+<span class="sourceLineNo">107</span><a id="line.107">    public &lt;T&gt; T getContextValueByName(Class&lt;? extends T&gt; clazz, String name) throws InvalidCommandArgument {</a>
+<span class="sourceLineNo">108</span><a id="line.108">        //noinspection unchecked</a>
+<span class="sourceLineNo">109</span><a id="line.109">        Map&lt;String, Object&gt; resolved = command.resolveContexts(issuer, args, name);</a>
+<span class="sourceLineNo">110</span><a id="line.110">        if (resolved == null || !resolved.containsKey(name)) {</a>
+<span class="sourceLineNo">111</span><a id="line.111">            ACFUtil.sneaky(new CommandCompletionTextLookupException());</a>
+<span class="sourceLineNo">112</span><a id="line.112">        }</a>
 <span class="sourceLineNo">113</span><a id="line.113"></a>
-<span class="sourceLineNo">114</span><a id="line.114">    public CommandIssuer getIssuer() {</a>
-<span class="sourceLineNo">115</span><a id="line.115">        return issuer;</a>
+<span class="sourceLineNo">114</span><a id="line.114">        //noinspection unchecked</a>
+<span class="sourceLineNo">115</span><a id="line.115">        return (T) resolved.get(name);</a>
 <span class="sourceLineNo">116</span><a id="line.116">    }</a>
 <span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">    public String getInput() {</a>
-<span class="sourceLineNo">119</span><a id="line.119">        return input;</a>
+<span class="sourceLineNo">118</span><a id="line.118">    public CommandIssuer getIssuer() {</a>
+<span class="sourceLineNo">119</span><a id="line.119">        return issuer;</a>
 <span class="sourceLineNo">120</span><a id="line.120">    }</a>
 <span class="sourceLineNo">121</span><a id="line.121"></a>
-<span class="sourceLineNo">122</span><a id="line.122">    public String getConfig() {</a>
-<span class="sourceLineNo">123</span><a id="line.123">        return config;</a>
+<span class="sourceLineNo">122</span><a id="line.122">    public String getInput() {</a>
+<span class="sourceLineNo">123</span><a id="line.123">        return input;</a>
 <span class="sourceLineNo">124</span><a id="line.124">    }</a>
 <span class="sourceLineNo">125</span><a id="line.125"></a>
-<span class="sourceLineNo">126</span><a id="line.126">    public boolean isAsync() {</a>
-<span class="sourceLineNo">127</span><a id="line.127">        return CommandManager.getCurrentCommandOperationContext().isAsync();</a>
+<span class="sourceLineNo">126</span><a id="line.126">    public String getConfig() {</a>
+<span class="sourceLineNo">127</span><a id="line.127">        return config;</a>
 <span class="sourceLineNo">128</span><a id="line.128">    }</a>
-<span class="sourceLineNo">129</span><a id="line.129">}</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">    public boolean isAsync() {</a>
+<span class="sourceLineNo">131</span><a id="line.131">        return CommandManager.getCurrentCommandOperationContext().isAsync();</a>
+<span class="sourceLineNo">132</span><a id="line.132">    }</a>
+<span class="sourceLineNo">133</span><a id="line.133">}</a>
 
 
 

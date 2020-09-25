@@ -116,7 +116,7 @@
 <span class="sourceLineNo">107</span><a id="line.107">            if (pattern.matcher(help.getDescription()).matches()) {</a>
 <span class="sourceLineNo">108</span><a id="line.108">                searchScore += 2;</a>
 <span class="sourceLineNo">109</span><a id="line.109">            }</a>
-<span class="sourceLineNo">110</span><a id="line.110">            if (pattern.matcher(help.getParameterSyntax()).matches()) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">            if (pattern.matcher(help.getParameterSyntax(issuer)).matches()) {</a>
 <span class="sourceLineNo">111</span><a id="line.111">                searchScore++;</a>
 <span class="sourceLineNo">112</span><a id="line.112">            }</a>
 <span class="sourceLineNo">113</span><a id="line.113">            if (help.getSearchTags() != null &amp;&amp; pattern.matcher(help.getSearchTags()).matches()) {</a>

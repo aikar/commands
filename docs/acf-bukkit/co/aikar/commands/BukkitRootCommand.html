@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -137,12 +137,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>co.aikar.commands.RootCommand</code></dd>
+<dd><code>co.aikar.commands.RootCommand</code>, <code>org.bukkit.command.PluginIdentifiableCommand</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.34">BukkitRootCommand</a>
+<pre>public class <a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.36">BukkitRootCommand</a>
 extends org.bukkit.command.Command
-implements co.aikar.commands.RootCommand</pre>
+implements co.aikar.commands.RootCommand, org.bukkit.command.PluginIdentifiableCommand</pre>
 </li>
 </ul>
 </div>
@@ -218,18 +218,23 @@ implements co.aikar.commands.RootCommand</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code>org.bukkit.plugin.Plugin</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPlugin()">getPlugin</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;co.aikar.commands.RegisteredCommand&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubCommands()">getSubCommands</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#tabComplete(org.bukkit.command.CommandSender,java.lang.String,java.lang.String%5B%5D)">tabComplete</a></span>&#8203;(org.bukkit.command.CommandSender&nbsp;sender,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;commandLabel,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#testPermissionSilent(org.bukkit.command.CommandSender)">testPermissionSilent</a></span>&#8203;(org.bukkit.command.CommandSender&nbsp;target)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -278,7 +283,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getDescription</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.49">getDescription</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.51">getDescription</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getDescription</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -293,7 +298,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getCommandName</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.65">getCommandName</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.67">getCommandName</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getCommandName</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -306,7 +311,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>tabComplete</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.70">tabComplete</a>&#8203;(org.bukkit.command.CommandSender&nbsp;sender,
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.72">tabComplete</a>&#8203;(org.bukkit.command.CommandSender&nbsp;sender,
                                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;commandLabel,
                                 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)
                          throws <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang" class="externalLink">IllegalArgumentException</a></pre>
@@ -324,7 +329,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>execute</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.76">execute</a>&#8203;(org.bukkit.command.CommandSender&nbsp;sender,
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.78">execute</a>&#8203;(org.bukkit.command.CommandSender&nbsp;sender,
                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;commandLabel,
                        <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</pre>
 <dl>
@@ -339,7 +344,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>testPermissionSilent</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.83">testPermissionSilent</a>&#8203;(org.bukkit.command.CommandSender&nbsp;target)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.85">testPermissionSilent</a>&#8203;(org.bukkit.command.CommandSender&nbsp;target)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>testPermissionSilent</code>&nbsp;in class&nbsp;<code>org.bukkit.command.Command</code></dd>
@@ -352,7 +357,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addChild</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.88">addChild</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.90">addChild</a>&#8203;(co.aikar.commands.BaseCommand&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>addChild</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -365,7 +370,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getManager</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.96">getManager</a>()</pre>
+<pre class="methodSignature">public&nbsp;co.aikar.commands.CommandManager&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.98">getManager</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -378,7 +383,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubCommands</h4>
-<pre class="methodSignature">public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.101">getSubCommands</a>()</pre>
+<pre class="methodSignature">public&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;co.aikar.commands.RegisteredCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.103">getSubCommands</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getSubCommands</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -391,7 +396,7 @@ implements co.aikar.commands.RootCommand</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getChildren</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.106">getChildren</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;co.aikar.commands.BaseCommand&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.108">getChildren</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getChildren</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -401,13 +406,26 @@ implements co.aikar.commands.RootCommand</pre>
 <a id="getDefCommand()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getDefCommand</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.111">getDefCommand</a>()</pre>
+<pre class="methodSignature">public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.113">getDefCommand</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getDefCommand</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
+</dl>
+</li>
+</ul>
+<a id="getPlugin()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getPlugin</h4>
+<pre class="methodSignature">public&nbsp;org.bukkit.plugin.Plugin&nbsp;<a href="../../../src-html/co/aikar/commands/BukkitRootCommand.html#line.118">getPlugin</a>()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getPlugin</code>&nbsp;in interface&nbsp;<code>org.bukkit.command.PluginIdentifiableCommand</code></dd>
 </dl>
 </li>
 </ul>

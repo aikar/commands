@@ -128,6 +128,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
+                    <sourcepath>src/main/java</sourcepath>
                     <destDir>../docs/${project.artifactId}/</destDir>
                     <quiet>true</quiet>
                     <detectOfflineLinks>false</detectOfflineLinks>
@@ -204,6 +205,5 @@
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
-        <module>example</module>
     </modules>
 </project>
