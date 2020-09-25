@@ -28,6 +28,7 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
+import co.aikar.commands.annotation.Name;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Single;
 import co.aikar.commands.annotation.Syntax;
@@ -36,6 +37,7 @@ import co.aikar.commands.contexts.ContextResolver;
 import co.aikar.commands.contexts.IssuerAwareContextResolver;
 import co.aikar.commands.contexts.IssuerOnlyContextResolver;
 import co.aikar.commands.contexts.OptionalContextResolver;
+import co.aikar.locales.MessageKey;
 
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -74,11 +76,12 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         this.parameter = param;
         this.isLast = isLast;
         this.type = param.getType();
-        this.name = param.getName(); // do we care for an annotation to supply name?
         this.manager = command.manager;
         this.paramIndex = paramIndex;
         Annotations annotations = manager.getAnnotations();
 
+        String annotationName = annotations.getAnnotationValue(param, Name.class, Annotations.REPLACEMENTS);
+        this.name = annotationName != null ? annotationName : param.getName();
         this.defaultValue = annotations.getAnnotationValue(param, Default.class, Annotations.REPLACEMENTS | (type != String.class ? Annotations.NO_EMPTY : 0));
         this.description = annotations.getAnnotationValue(param, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(param, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
@@ -107,13 +110,6 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
         if (!commandIssuer) {
             this.syntax = annotations.getAnnotationValue(param, Syntax.class);
-            if (syntax == null) {
-                if (isOptionalInput) {
-                    this.syntax = "[" + name + "]";
-                } else if (requiresInput) {
-                    this.syntax = "<" + name + ">";
-                }
-            }
         }
 
         this.flags = new HashMap<>();
@@ -172,6 +168,11 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
 
     public String getName() {
         return name;
+    }
+
+    public String getDisplayName(CommandIssuer issuer) {
+        String translated = manager.getLocales().getOptionalMessage(issuer, MessageKey.of("acf-core.parameter." + name.toLowerCase()));
+        return translated != null ? translated : name;
     }
 
     public CommandManager getManager() {
@@ -267,6 +268,18 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
     }
 
     public String getSyntax() {
+        return getSyntax(null);
+    }
+
+    public String getSyntax(CommandIssuer issuer) {
+        if (commandIssuer) return null;
+        if (syntax == null) {
+            if (isOptionalInput) {
+                return "[" + getDisplayName(issuer) + "]";
+            } else if (requiresInput) {
+                return "<" + getDisplayName(issuer) + ">";
+            }
+        }
         return syntax;
     }
 
