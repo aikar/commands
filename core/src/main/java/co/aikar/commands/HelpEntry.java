@@ -47,7 +47,7 @@ public class HelpEntry {
     }
 
     public String getParameterSyntax() {
-        return this.command.syntaxText != null ? this.command.syntaxText : "";
+        return this.getParameterSyntax(null);
     }
 
     public String getParameterSyntax(CommandIssuer issuer) {
