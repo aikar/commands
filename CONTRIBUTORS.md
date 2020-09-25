@@ -11,3 +11,4 @@ If you open a PR and are not already in this file, please feel free to add yours
 * [***Williambraecky***](https://github.com/aikar/commands/commits?author=Williambraecky) - BungeeCord Support
 * [***dumptruckman***](https://github.com/aikar/commands/commits?author=dumptruckman) - JDA Support
 * [***willies952002***](https://github.com/aikar/commands/commits?author=willies952002)
+* [***Machine_Maker***](https://github.com/aikar/commands/commits?author=Machine-Maker)
