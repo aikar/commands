@@ -11,118 +11,117 @@
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import co.aikar.commands.annotation.Author;</a>
 <span class="sourceLineNo">004</span><a id="line.4">import co.aikar.commands.annotation.CrossGuild;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import co.aikar.commands.annotation.Optional;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import co.aikar.commands.annotation.SelfUser;</a>
-<span class="sourceLineNo">007</span><a id="line.7">import net.dv8tion.jda.core.JDA;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import net.dv8tion.jda.core.entities.ChannelType;</a>
-<span class="sourceLineNo">009</span><a id="line.9">import net.dv8tion.jda.core.entities.Guild;</a>
-<span class="sourceLineNo">010</span><a id="line.10">import net.dv8tion.jda.core.entities.Message;</a>
-<span class="sourceLineNo">011</span><a id="line.11">import net.dv8tion.jda.core.entities.MessageChannel;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import net.dv8tion.jda.core.entities.Role;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import net.dv8tion.jda.core.entities.TextChannel;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import net.dv8tion.jda.core.entities.User;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import net.dv8tion.jda.core.events.message.MessageReceivedEvent;</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">import java.util.List;</a>
-<span class="sourceLineNo">018</span><a id="line.18"></a>
-<span class="sourceLineNo">019</span><a id="line.19">// TODO: Message Keys !!!</a>
-<span class="sourceLineNo">020</span><a id="line.20">public class JDACommandContexts extends CommandContexts&lt;JDACommandExecutionContext&gt; {</a>
-<span class="sourceLineNo">021</span><a id="line.21">    private final JDACommandManager manager;</a>
-<span class="sourceLineNo">022</span><a id="line.22">    private final JDA jda;</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">    public JDACommandContexts(JDACommandManager manager) {</a>
-<span class="sourceLineNo">025</span><a id="line.25">        super(manager);</a>
-<span class="sourceLineNo">026</span><a id="line.26">        this.manager = manager;</a>
-<span class="sourceLineNo">027</span><a id="line.27">        this.jda = this.manager.getJDA();</a>
-<span class="sourceLineNo">028</span><a id="line.28">        this.registerIssuerOnlyContext(JDACommandEvent.class, CommandExecutionContext::getIssuer);</a>
-<span class="sourceLineNo">029</span><a id="line.29">        this.registerIssuerOnlyContext(MessageReceivedEvent.class, c -&gt; c.getIssuer().getIssuer());</a>
-<span class="sourceLineNo">030</span><a id="line.30">        this.registerIssuerOnlyContext(Message.class, c -&gt; c.issuer.getIssuer().getMessage());</a>
-<span class="sourceLineNo">031</span><a id="line.31">        this.registerIssuerOnlyContext(ChannelType.class, c -&gt; c.issuer.getIssuer().getChannelType());</a>
-<span class="sourceLineNo">032</span><a id="line.32">        this.registerIssuerOnlyContext(JDA.class, c -&gt; jda);</a>
-<span class="sourceLineNo">033</span><a id="line.33">        this.registerIssuerOnlyContext(Guild.class, c -&gt; {</a>
-<span class="sourceLineNo">034</span><a id="line.34">            MessageReceivedEvent event = c.getIssuer().getIssuer();</a>
-<span class="sourceLineNo">035</span><a id="line.35">            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; !c.isOptional()) {</a>
-<span class="sourceLineNo">036</span><a id="line.36">                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);</a>
-<span class="sourceLineNo">037</span><a id="line.37">            } else {</a>
-<span class="sourceLineNo">038</span><a id="line.38">                return event.getGuild();</a>
-<span class="sourceLineNo">039</span><a id="line.39">            }</a>
-<span class="sourceLineNo">040</span><a id="line.40">        });</a>
-<span class="sourceLineNo">041</span><a id="line.41">        this.registerIssuerAwareContext(MessageChannel.class, c -&gt; {</a>
-<span class="sourceLineNo">042</span><a id="line.42">            if (c.hasAnnotation(Author.class)) {</a>
-<span class="sourceLineNo">043</span><a id="line.43">                return c.issuer.getIssuer().getChannel();</a>
-<span class="sourceLineNo">044</span><a id="line.44">            }</a>
-<span class="sourceLineNo">045</span><a id="line.45">            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);</a>
-<span class="sourceLineNo">046</span><a id="line.46">            String argument = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated</a>
-<span class="sourceLineNo">047</span><a id="line.47">            MessageChannel channel = null;</a>
-<span class="sourceLineNo">048</span><a id="line.48">            if (argument.startsWith("&lt;#")) {</a>
-<span class="sourceLineNo">049</span><a id="line.49">                String id = argument.substring(2, argument.length() - 1);</a>
-<span class="sourceLineNo">050</span><a id="line.50">                channel = isCrossGuild ? jda.getTextChannelById(id) : c.issuer.getIssuer().getGuild().getTextChannelById(id);</a>
-<span class="sourceLineNo">051</span><a id="line.51">            } else {</a>
-<span class="sourceLineNo">052</span><a id="line.52">                List&lt;TextChannel&gt; channelList = isCrossGuild ? jda.getTextChannelsByName(argument, true) :</a>
-<span class="sourceLineNo">053</span><a id="line.53">                        c.issuer.getEvent().getGuild().getTextChannelsByName(argument, true);</a>
-<span class="sourceLineNo">054</span><a id="line.54">                if (channelList.size() &gt; 1) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                    throw new InvalidCommandArgument("Too many channels were found with the given name. Try with the `#channelname` syntax.", false);</a>
-<span class="sourceLineNo">056</span><a id="line.56">                } else if (channelList.size() == 1) {</a>
-<span class="sourceLineNo">057</span><a id="line.57">                    channel = channelList.get(0);</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }</a>
-<span class="sourceLineNo">059</span><a id="line.59">            }</a>
-<span class="sourceLineNo">060</span><a id="line.60">            if (channel == null) {</a>
-<span class="sourceLineNo">061</span><a id="line.61">                throw new InvalidCommandArgument("Couldn't find a channel with that name or ID.");</a>
-<span class="sourceLineNo">062</span><a id="line.62">            }</a>
-<span class="sourceLineNo">063</span><a id="line.63">            return channel;</a>
-<span class="sourceLineNo">064</span><a id="line.64">        });</a>
-<span class="sourceLineNo">065</span><a id="line.65">        this.registerIssuerAwareContext(User.class, c -&gt; {</a>
-<span class="sourceLineNo">066</span><a id="line.66">            if (c.hasAnnotation(SelfUser.class)) {</a>
-<span class="sourceLineNo">067</span><a id="line.67">                return jda.getSelfUser();</a>
-<span class="sourceLineNo">068</span><a id="line.68">            }</a>
-<span class="sourceLineNo">069</span><a id="line.69">            String arg = c.getFirstArg();</a>
-<span class="sourceLineNo">070</span><a id="line.70">            if (c.isOptional() &amp;&amp; (arg == null || arg.isEmpty())) {</a>
-<span class="sourceLineNo">071</span><a id="line.71">                return null;</a>
-<span class="sourceLineNo">072</span><a id="line.72">            }</a>
-<span class="sourceLineNo">073</span><a id="line.73">            arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated</a>
-<span class="sourceLineNo">074</span><a id="line.74">            User user = null;</a>
-<span class="sourceLineNo">075</span><a id="line.75">            if (arg.startsWith("&lt;@!")) { // for some reason a ! is added when @'ing and clicking their name.</a>
-<span class="sourceLineNo">076</span><a id="line.76">                user = jda.getUserById(arg.substring(3, arg.length() - 1));</a>
-<span class="sourceLineNo">077</span><a id="line.77">            } else if (arg.startsWith("&lt;@")) { // users can /also/ be mentioned like this...</a>
-<span class="sourceLineNo">078</span><a id="line.78">                user = jda.getUserById(arg.substring(2, arg.length() - 1));</a>
-<span class="sourceLineNo">079</span><a id="line.79">            } else {</a>
-<span class="sourceLineNo">080</span><a id="line.80">                List&lt;User&gt; users = jda.getUsersByName(arg, true);</a>
-<span class="sourceLineNo">081</span><a id="line.81">                if (users.size() &gt; 1) {</a>
-<span class="sourceLineNo">082</span><a id="line.82">                    throw new InvalidCommandArgument("Too many users were found with the given name. Try with the `@username#0000` syntax.", false);</a>
-<span class="sourceLineNo">083</span><a id="line.83">                }</a>
-<span class="sourceLineNo">084</span><a id="line.84">                if (!users.isEmpty()) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                    user = users.get(0);</a>
-<span class="sourceLineNo">086</span><a id="line.86">                }</a>
-<span class="sourceLineNo">087</span><a id="line.87">            }</a>
-<span class="sourceLineNo">088</span><a id="line.88">            if (user == null) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">                throw new InvalidCommandArgument("Could not find a user with that name or ID.");</a>
-<span class="sourceLineNo">090</span><a id="line.90">            }</a>
-<span class="sourceLineNo">091</span><a id="line.91">            return user;</a>
-<span class="sourceLineNo">092</span><a id="line.92">        });</a>
-<span class="sourceLineNo">093</span><a id="line.93">        this.registerContext(Role.class, c -&gt; {</a>
-<span class="sourceLineNo">094</span><a id="line.94">            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);</a>
-<span class="sourceLineNo">095</span><a id="line.95">            String arg = c.popFirstArg();</a>
-<span class="sourceLineNo">096</span><a id="line.96">            Role role = null;</a>
-<span class="sourceLineNo">097</span><a id="line.97">            if (arg.startsWith("&lt;@&amp;")) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">                String id = arg.substring(3, arg.length() - 1);</a>
-<span class="sourceLineNo">099</span><a id="line.99">                role = isCrossGuild ? jda.getRoleById(id) : c.issuer.getIssuer().getGuild().getRoleById(id);</a>
-<span class="sourceLineNo">100</span><a id="line.100">            } else {</a>
-<span class="sourceLineNo">101</span><a id="line.101">                List&lt;Role&gt; roles = isCrossGuild ? jda.getRolesByName(arg, true)</a>
-<span class="sourceLineNo">102</span><a id="line.102">                        : c.issuer.getIssuer().getGuild().getRolesByName(arg, true);</a>
-<span class="sourceLineNo">103</span><a id="line.103">                if (roles.size() &gt; 1) {</a>
-<span class="sourceLineNo">104</span><a id="line.104">                    throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);</a>
-<span class="sourceLineNo">105</span><a id="line.105">                }</a>
-<span class="sourceLineNo">106</span><a id="line.106">                if (!roles.isEmpty()) {</a>
-<span class="sourceLineNo">107</span><a id="line.107">                    role = roles.get(0);</a>
-<span class="sourceLineNo">108</span><a id="line.108">                }</a>
-<span class="sourceLineNo">109</span><a id="line.109">            }</a>
-<span class="sourceLineNo">110</span><a id="line.110">            if (role == null) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">                throw new InvalidCommandArgument("Could not find a role with that name or ID.");</a>
-<span class="sourceLineNo">112</span><a id="line.112">            }</a>
-<span class="sourceLineNo">113</span><a id="line.113">            return role;</a>
-<span class="sourceLineNo">114</span><a id="line.114">        });</a>
-<span class="sourceLineNo">115</span><a id="line.115">    }</a>
-<span class="sourceLineNo">116</span><a id="line.116">}</a>
+<span class="sourceLineNo">005</span><a id="line.5">import co.aikar.commands.annotation.SelfUser;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import net.dv8tion.jda.api.JDA;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import net.dv8tion.jda.api.entities.ChannelType;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import net.dv8tion.jda.api.entities.Guild;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import net.dv8tion.jda.api.entities.Message;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import net.dv8tion.jda.api.entities.MessageChannel;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import net.dv8tion.jda.api.entities.Role;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import net.dv8tion.jda.api.entities.TextChannel;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import net.dv8tion.jda.api.entities.User;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import net.dv8tion.jda.api.events.message.MessageReceivedEvent;</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.List;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">// TODO: Message Keys !!!</a>
+<span class="sourceLineNo">019</span><a id="line.19">public class JDACommandContexts extends CommandContexts&lt;JDACommandExecutionContext&gt; {</a>
+<span class="sourceLineNo">020</span><a id="line.20">    private final JDACommandManager manager;</a>
+<span class="sourceLineNo">021</span><a id="line.21">    private final JDA jda;</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    public JDACommandContexts(JDACommandManager manager) {</a>
+<span class="sourceLineNo">024</span><a id="line.24">        super(manager);</a>
+<span class="sourceLineNo">025</span><a id="line.25">        this.manager = manager;</a>
+<span class="sourceLineNo">026</span><a id="line.26">        this.jda = this.manager.getJDA();</a>
+<span class="sourceLineNo">027</span><a id="line.27">        this.registerIssuerOnlyContext(JDACommandEvent.class, CommandExecutionContext::getIssuer);</a>
+<span class="sourceLineNo">028</span><a id="line.28">        this.registerIssuerOnlyContext(MessageReceivedEvent.class, c -&gt; c.getIssuer().getIssuer());</a>
+<span class="sourceLineNo">029</span><a id="line.29">        this.registerIssuerOnlyContext(Message.class, c -&gt; c.issuer.getIssuer().getMessage());</a>
+<span class="sourceLineNo">030</span><a id="line.30">        this.registerIssuerOnlyContext(ChannelType.class, c -&gt; c.issuer.getIssuer().getChannelType());</a>
+<span class="sourceLineNo">031</span><a id="line.31">        this.registerIssuerOnlyContext(JDA.class, c -&gt; jda);</a>
+<span class="sourceLineNo">032</span><a id="line.32">        this.registerIssuerOnlyContext(Guild.class, c -&gt; {</a>
+<span class="sourceLineNo">033</span><a id="line.33">            MessageReceivedEvent event = c.getIssuer().getIssuer();</a>
+<span class="sourceLineNo">034</span><a id="line.34">            if (event.isFromType(ChannelType.PRIVATE) &amp;&amp; !c.isOptional()) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">                throw new InvalidCommandArgument("This command can only be executed in a Guild.", false);</a>
+<span class="sourceLineNo">036</span><a id="line.36">            } else {</a>
+<span class="sourceLineNo">037</span><a id="line.37">                return event.getGuild();</a>
+<span class="sourceLineNo">038</span><a id="line.38">            }</a>
+<span class="sourceLineNo">039</span><a id="line.39">        });</a>
+<span class="sourceLineNo">040</span><a id="line.40">        this.registerIssuerAwareContext(MessageChannel.class, c -&gt; {</a>
+<span class="sourceLineNo">041</span><a id="line.41">            if (c.hasAnnotation(Author.class)) {</a>
+<span class="sourceLineNo">042</span><a id="line.42">                return c.issuer.getIssuer().getChannel();</a>
+<span class="sourceLineNo">043</span><a id="line.43">            }</a>
+<span class="sourceLineNo">044</span><a id="line.44">            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);</a>
+<span class="sourceLineNo">045</span><a id="line.45">            String argument = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated</a>
+<span class="sourceLineNo">046</span><a id="line.46">            MessageChannel channel = null;</a>
+<span class="sourceLineNo">047</span><a id="line.47">            if (argument.startsWith("&lt;#")) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">                String id = argument.substring(2, argument.length() - 1);</a>
+<span class="sourceLineNo">049</span><a id="line.49">                channel = isCrossGuild ? jda.getTextChannelById(id) : c.issuer.getIssuer().getGuild().getTextChannelById(id);</a>
+<span class="sourceLineNo">050</span><a id="line.50">            } else {</a>
+<span class="sourceLineNo">051</span><a id="line.51">                List&lt;TextChannel&gt; channelList = isCrossGuild ? jda.getTextChannelsByName(argument, true) :</a>
+<span class="sourceLineNo">052</span><a id="line.52">                        c.issuer.getEvent().getGuild().getTextChannelsByName(argument, true);</a>
+<span class="sourceLineNo">053</span><a id="line.53">                if (channelList.size() &gt; 1) {</a>
+<span class="sourceLineNo">054</span><a id="line.54">                    throw new InvalidCommandArgument("Too many channels were found with the given name. Try with the `#channelname` syntax.", false);</a>
+<span class="sourceLineNo">055</span><a id="line.55">                } else if (channelList.size() == 1) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">                    channel = channelList.get(0);</a>
+<span class="sourceLineNo">057</span><a id="line.57">                }</a>
+<span class="sourceLineNo">058</span><a id="line.58">            }</a>
+<span class="sourceLineNo">059</span><a id="line.59">            if (channel == null) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">                throw new InvalidCommandArgument("Couldn't find a channel with that name or ID.");</a>
+<span class="sourceLineNo">061</span><a id="line.61">            }</a>
+<span class="sourceLineNo">062</span><a id="line.62">            return channel;</a>
+<span class="sourceLineNo">063</span><a id="line.63">        });</a>
+<span class="sourceLineNo">064</span><a id="line.64">        this.registerIssuerAwareContext(User.class, c -&gt; {</a>
+<span class="sourceLineNo">065</span><a id="line.65">            if (c.hasAnnotation(SelfUser.class)) {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                return jda.getSelfUser();</a>
+<span class="sourceLineNo">067</span><a id="line.67">            }</a>
+<span class="sourceLineNo">068</span><a id="line.68">            String arg = c.getFirstArg();</a>
+<span class="sourceLineNo">069</span><a id="line.69">            if (c.isOptional() &amp;&amp; (arg == null || arg.isEmpty())) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">                return null;</a>
+<span class="sourceLineNo">071</span><a id="line.71">            }</a>
+<span class="sourceLineNo">072</span><a id="line.72">            arg = c.popFirstArg(); // we pop because we are only issuer aware if we are annotated</a>
+<span class="sourceLineNo">073</span><a id="line.73">            User user = null;</a>
+<span class="sourceLineNo">074</span><a id="line.74">            if (arg.startsWith("&lt;@!")) { // for some reason a ! is added when @'ing and clicking their name.</a>
+<span class="sourceLineNo">075</span><a id="line.75">                user = jda.getUserById(arg.substring(3, arg.length() - 1));</a>
+<span class="sourceLineNo">076</span><a id="line.76">            } else if (arg.startsWith("&lt;@")) { // users can /also/ be mentioned like this...</a>
+<span class="sourceLineNo">077</span><a id="line.77">                user = jda.getUserById(arg.substring(2, arg.length() - 1));</a>
+<span class="sourceLineNo">078</span><a id="line.78">            } else {</a>
+<span class="sourceLineNo">079</span><a id="line.79">                List&lt;User&gt; users = jda.getUsersByName(arg, true);</a>
+<span class="sourceLineNo">080</span><a id="line.80">                if (users.size() &gt; 1) {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                    throw new InvalidCommandArgument("Too many users were found with the given name. Try with the `@username#0000` syntax.", false);</a>
+<span class="sourceLineNo">082</span><a id="line.82">                }</a>
+<span class="sourceLineNo">083</span><a id="line.83">                if (!users.isEmpty()) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">                    user = users.get(0);</a>
+<span class="sourceLineNo">085</span><a id="line.85">                }</a>
+<span class="sourceLineNo">086</span><a id="line.86">            }</a>
+<span class="sourceLineNo">087</span><a id="line.87">            if (user == null) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">                throw new InvalidCommandArgument("Could not find a user with that name or ID.");</a>
+<span class="sourceLineNo">089</span><a id="line.89">            }</a>
+<span class="sourceLineNo">090</span><a id="line.90">            return user;</a>
+<span class="sourceLineNo">091</span><a id="line.91">        });</a>
+<span class="sourceLineNo">092</span><a id="line.92">        this.registerContext(Role.class, c -&gt; {</a>
+<span class="sourceLineNo">093</span><a id="line.93">            boolean isCrossGuild = c.hasAnnotation(CrossGuild.class);</a>
+<span class="sourceLineNo">094</span><a id="line.94">            String arg = c.popFirstArg();</a>
+<span class="sourceLineNo">095</span><a id="line.95">            Role role = null;</a>
+<span class="sourceLineNo">096</span><a id="line.96">            if (arg.startsWith("&lt;@&amp;")) {</a>
+<span class="sourceLineNo">097</span><a id="line.97">                String id = arg.substring(3, arg.length() - 1);</a>
+<span class="sourceLineNo">098</span><a id="line.98">                role = isCrossGuild ? jda.getRoleById(id) : c.issuer.getIssuer().getGuild().getRoleById(id);</a>
+<span class="sourceLineNo">099</span><a id="line.99">            } else {</a>
+<span class="sourceLineNo">100</span><a id="line.100">                List&lt;Role&gt; roles = isCrossGuild ? jda.getRolesByName(arg, true)</a>
+<span class="sourceLineNo">101</span><a id="line.101">                        : c.issuer.getIssuer().getGuild().getRolesByName(arg, true);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                if (roles.size() &gt; 1) {</a>
+<span class="sourceLineNo">103</span><a id="line.103">                    throw new InvalidCommandArgument("Too many roles were found with the given name. Try with the `@role` syntax.", false);</a>
+<span class="sourceLineNo">104</span><a id="line.104">                }</a>
+<span class="sourceLineNo">105</span><a id="line.105">                if (!roles.isEmpty()) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">                    role = roles.get(0);</a>
+<span class="sourceLineNo">107</span><a id="line.107">                }</a>
+<span class="sourceLineNo">108</span><a id="line.108">            }</a>
+<span class="sourceLineNo">109</span><a id="line.109">            if (role == null) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">                throw new InvalidCommandArgument("Could not find a role with that name or ID.");</a>
+<span class="sourceLineNo">111</span><a id="line.111">            }</a>
+<span class="sourceLineNo">112</span><a id="line.112">            return role;</a>
+<span class="sourceLineNo">113</span><a id="line.113">        });</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115">}</a>
 
 
 

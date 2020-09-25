@@ -123,7 +123,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">java.lang.Object</a></li>
 <li>
 <ul class="inheritance">
-<li>net.dv8tion.jda.core.hooks.ListenerAdapter</li>
+<li>net.dv8tion.jda.api.hooks.ListenerAdapter</li>
 <li>
 <ul class="inheritance">
 <li>co.aikar.commands.JDAListener</li>
@@ -137,11 +137,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>net.dv8tion.jda.core.hooks.EventListener</code></dd>
+<dd><code>net.dv8tion.jda.api.hooks.EventListener</code></dd>
 </dl>
 <hr>
 <pre>public class <a href="../../../src-html/co/aikar/commands/JDAListener.html#line.8">JDAListener</a>
-extends net.dv8tion.jda.core.hooks.ListenerAdapter</pre>
+extends net.dv8tion.jda.api.hooks.ListenerAdapter</pre>
 </li>
 </ul>
 </div>
@@ -164,21 +164,21 @@ extends net.dv8tion.jda.core.hooks.ListenerAdapter</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onMessageReceived(net.dv8tion.jda.core.events.message.MessageReceivedEvent)">onMessageReceived</a></span>&#8203;(net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;event)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onMessageReceived(net.dv8tion.jda.api.events.message.MessageReceivedEvent)">onMessageReceived</a></span>&#8203;(net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onReady(net.dv8tion.jda.core.events.ReadyEvent)">onReady</a></span>&#8203;(net.dv8tion.jda.core.events.ReadyEvent&nbsp;event)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onReady(net.dv8tion.jda.api.events.ReadyEvent)">onReady</a></span>&#8203;(net.dv8tion.jda.api.events.ReadyEvent&nbsp;event)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.net.dv8tion.jda.core.hooks.ListenerAdapter">
+<li class="blockList"><a id="methods.inherited.from.class.net.dv8tion.jda.api.hooks.ListenerAdapter">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;net.dv8tion.jda.core.hooks.ListenerAdapter</h3>
-<code>onCallCreate, onCallDelete, onCallUpdateRegion, onCallUpdateRingingUsers, onCallVoiceJoin, onCallVoiceLeave, onCallVoiceSelfDeafen, onCallVoiceSelfMute, onCategoryCreate, onCategoryDelete, onCategoryUpdateName, onCategoryUpdatePermissions, onCategoryUpdatePosition, onDisconnect, onEmoteAdded, onEmoteRemoved, onEmoteUpdateName, onEmoteUpdateRoles, onEvent, onException, onFriendAdded, onFriendRemoved, onFriendRequestCanceled, onFriendRequestIgnored, onFriendRequestReceived, onFriendRequestSent, onGenericCall, onGenericCallUpdate, onGenericCallVoice, onGenericCategory, onGenericCategoryUpdate, onGenericEmote, onGenericEmoteUpdate, onGenericEvent, onGenericGroup, onGenericGroupMessage, onGenericGroupMessageReaction, onGenericGroupUpdate, onGenericGuild, onGenericGuildMember, onGenericGuildMessage, onGenericGuildMessageReaction, onGenericGuildUpdate, onGenericGuildVoice, onGenericMessage, onGenericMessageReaction, onGenericPrivateMessage, onGenericPrivateMessageReaction, onGenericRelationship, onGenericRelationshipAdd, onGenericRelationshipRemove, onGenericRole, onGenericRoleUpdate, onGenericSelfUpdate, onGenericTextChannel, onGenericTextChannelUpdate, onGenericUpdate, onGenericUser, onGenericUserPresence, onGenericVoiceChannel, onGenericVoiceChannelUpdate, onGroupJoin, onGroupLeave, onGroupMessageDelete, onGroupMessageEmbed, onGroupMessageReactionAdd, onGroupMessageReactionRemove, onGroupMessageReactionRemoveAll, onGroupMessageReceived, onGroupMessageUpdate, onGroupUpdateIcon, onGroupUpdateName, onGroupUpdateOwner, onGroupUserJoin, onGroupUserLeave, onGuildAvailable, onGuildBan, onGuildJoin, onGuildLeave, onGuildMemberJoin, onGuildMemberLeave, onGuildMemberNickChange, onGuildMemberRoleAdd, onGuildMemberRoleRemove, onGuildMessageDelete, onGuildMessageEmbed, onGuildMessageReactionAdd, onGuildMessageReactionRemove, onGuildMessageReactionRemoveAll, onGuildMessageReceived, onGuildMessageUpdate, onGuildReady, onGuildUnavailable, onGuildUnban, onGuildUpdateAfkChannel, onGuildUpdateAfkTimeout, onGuildUpdateExplicitContentLevel, onGuildUpdateFeatures, onGuildUpdateIcon, onGuildUpdateMFALevel, onGuildUpdateName, onGuildUpdateNotificationLevel, onGuildUpdateOwner, onGuildUpdateRegion, onGuildUpdateSplash, onGuildUpdateSystemChannel, onGuildUpdateVerificationLevel, onGuildVoiceDeafen, onGuildVoiceGuildDeafen, onGuildVoiceGuildMute, onGuildVoiceJoin, onGuildVoiceLeave, onGuildVoiceMove, onGuildVoiceMute, onGuildVoiceSelfDeafen, onGuildVoiceSelfMute, onGuildVoiceSuppress, onGuildVoiceUpdate, onHttpRequest, onMessageBulkDelete, onMessageDelete, onMessageEmbed, onMessageReactionAdd, onMessageReactionRemove, onMessageReactionRemoveAll, onMessageUpdate, onPrivateChannelCreate, onPrivateChannelDelete, onPrivateMessageDelete, onPrivateMessageEmbed, onPrivateMessageReactionAdd, onPrivateMessageReactionRemove, onPrivateMessageReceived, onPrivateMessageUpdate, onReconnect, onResume, onRoleCreate, onRoleDelete, onRoleUpdateColor, onRoleUpdateHoisted, onRoleUpdateMentionable, onRoleUpdateName, onRoleUpdatePermissions, onRoleUpdatePosition, onSelfUpdateAvatar, onSelfUpdateEmail, onSelfUpdateMFA, onSelfUpdateName, onSelfUpdateVerified, onShutdown, onStatusChange, onTextChannelCreate, onTextChannelDelete, onTextChannelUpdateName, onTextChannelUpdateNSFW, onTextChannelUpdateParent, onTextChannelUpdatePermissions, onTextChannelUpdatePosition, onTextChannelUpdateSlowmode, onTextChannelUpdateTopic, onUnavailableGuildJoined, onUserBlocked, onUserTyping, onUserUnblocked, onUserUpdateAvatar, onUserUpdateDiscriminator, onUserUpdateGame, onUserUpdateName, onUserUpdateOnlineStatus, onVoiceChannelCreate, onVoiceChannelDelete, onVoiceChannelUpdateBitrate, onVoiceChannelUpdateName, onVoiceChannelUpdateParent, onVoiceChannelUpdatePermissions, onVoiceChannelUpdatePosition, onVoiceChannelUpdateUserLimit</code></li>
+<h3>Methods inherited from class&nbsp;net.dv8tion.jda.api.hooks.ListenerAdapter</h3>
+<code>onCategoryCreate, onCategoryDelete, onCategoryUpdateName, onCategoryUpdatePermissions, onCategoryUpdatePosition, onDisconnect, onEmoteAdded, onEmoteRemoved, onEmoteUpdateName, onEmoteUpdateRoles, onEvent, onException, onGatewayPing, onGenericCategory, onGenericCategoryUpdate, onGenericEmote, onGenericEmoteUpdate, onGenericEvent, onGenericGuild, onGenericGuildInvite, onGenericGuildMember, onGenericGuildMemberUpdate, onGenericGuildMessage, onGenericGuildMessageReaction, onGenericGuildUpdate, onGenericGuildVoice, onGenericMessage, onGenericMessageReaction, onGenericPermissionOverride, onGenericPrivateMessage, onGenericPrivateMessageReaction, onGenericRole, onGenericRoleUpdate, onGenericSelfUpdate, onGenericStoreChannel, onGenericStoreChannelUpdate, onGenericTextChannel, onGenericTextChannelUpdate, onGenericUpdate, onGenericUser, onGenericUserPresence, onGenericVoiceChannel, onGenericVoiceChannelUpdate, onGuildAvailable, onGuildBan, onGuildInviteCreate, onGuildInviteDelete, onGuildJoin, onGuildLeave, onGuildMemberJoin, onGuildMemberLeave, onGuildMemberRemove, onGuildMemberRoleAdd, onGuildMemberRoleRemove, onGuildMemberUpdateBoostTime, onGuildMemberUpdateNickname, onGuildMessageDelete, onGuildMessageEmbed, onGuildMessageReactionAdd, onGuildMessageReactionRemove, onGuildMessageReactionRemoveAll, onGuildMessageReactionRemoveEmote, onGuildMessageReceived, onGuildMessageUpdate, onGuildReady, onGuildUnavailable, onGuildUnban, onGuildUpdateAfkChannel, onGuildUpdateAfkTimeout, onGuildUpdateBanner, onGuildUpdateBoostCount, onGuildUpdateBoostTier, onGuildUpdateDescription, onGuildUpdateExplicitContentLevel, onGuildUpdateFeatures, onGuildUpdateIcon, onGuildUpdateMaxMembers, onGuildUpdateMaxPresences, onGuildUpdateMFALevel, onGuildUpdateName, onGuildUpdateNotificationLevel, onGuildUpdateOwner, onGuildUpdateRegion, onGuildUpdateSplash, onGuildUpdateSystemChannel, onGuildUpdateVanityCode, onGuildUpdateVerificationLevel, onGuildVoiceDeafen, onGuildVoiceGuildDeafen, onGuildVoiceGuildMute, onGuildVoiceJoin, onGuildVoiceLeave, onGuildVoiceMove, onGuildVoiceMute, onGuildVoiceSelfDeafen, onGuildVoiceSelfMute, onGuildVoiceStream, onGuildVoiceSuppress, onGuildVoiceUpdate, onHttpRequest, onMessageBulkDelete, onMessageDelete, onMessageEmbed, onMessageReactionAdd, onMessageReactionRemove, onMessageReactionRemoveAll, onMessageReactionRemoveEmote, onMessageUpdate, onPermissionOverrideCreate, onPermissionOverrideDelete, onPermissionOverrideUpdate, onPrivateChannelCreate, onPrivateChannelDelete, onPrivateMessageDelete, onPrivateMessageEmbed, onPrivateMessageReactionAdd, onPrivateMessageReactionRemove, onPrivateMessageReceived, onPrivateMessageUpdate, onRawGateway, onReconnect, onResume, onRoleCreate, onRoleDelete, onRoleUpdateColor, onRoleUpdateHoisted, onRoleUpdateMentionable, onRoleUpdateName, onRoleUpdatePermissions, onRoleUpdatePosition, onSelfUpdateAvatar, onSelfUpdateEmail, onSelfUpdateMFA, onSelfUpdateName, onSelfUpdateVerified, onShutdown, onStatusChange, onStoreChannelCreate, onStoreChannelDelete, onStoreChannelUpdateName, onStoreChannelUpdatePermissions, onStoreChannelUpdatePosition, onTextChannelCreate, onTextChannelDelete, onTextChannelUpdateName, onTextChannelUpdateNSFW, onTextChannelUpdateParent, onTextChannelUpdatePermissions, onTextChannelUpdatePosition, onTextChannelUpdateSlowmode, onTextChannelUpdateTopic, onUnavailableGuildJoined, onUnavailableGuildLeave, onUserActivityEnd, onUserActivityStart, onUserTyping, onUserUpdateActivityOrder, onUserUpdateAvatar, onUserUpdateDiscriminator, onUserUpdateFlags, onUserUpdateName, onUserUpdateOnlineStatus, onVoiceChannelCreate, onVoiceChannelDelete, onVoiceChannelUpdateBitrate, onVoiceChannelUpdateName, onVoiceChannelUpdateParent, onVoiceChannelUpdatePermissions, onVoiceChannelUpdatePosition, onVoiceChannelUpdateUserLimit</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -203,29 +203,29 @@ extends net.dv8tion.jda.core.hooks.ListenerAdapter</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="onMessageReceived(net.dv8tion.jda.core.events.message.MessageReceivedEvent)">
+<a id="onMessageReceived(net.dv8tion.jda.api.events.message.MessageReceivedEvent)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>onMessageReceived</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDAListener.html#line.17">onMessageReceived</a>&#8203;(net.dv8tion.jda.core.events.message.MessageReceivedEvent&nbsp;event)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDAListener.html#line.17">onMessageReceived</a>&#8203;(net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>onMessageReceived</code>&nbsp;in class&nbsp;<code>net.dv8tion.jda.core.hooks.ListenerAdapter</code></dd>
+<dd><code>onMessageReceived</code>&nbsp;in class&nbsp;<code>net.dv8tion.jda.api.hooks.ListenerAdapter</code></dd>
 </dl>
 </li>
 </ul>
-<a id="onReady(net.dv8tion.jda.core.events.ReadyEvent)">
+<a id="onReady(net.dv8tion.jda.api.events.ReadyEvent)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>onReady</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDAListener.html#line.24">onReady</a>&#8203;(net.dv8tion.jda.core.events.ReadyEvent&nbsp;event)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/JDAListener.html#line.24">onReady</a>&#8203;(net.dv8tion.jda.api.events.ReadyEvent&nbsp;event)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>onReady</code>&nbsp;in class&nbsp;<code>net.dv8tion.jda.core.hooks.ListenerAdapter</code></dd>
+<dd><code>onReady</code>&nbsp;in class&nbsp;<code>net.dv8tion.jda.api.hooks.ListenerAdapter</code></dd>
 </dl>
 </li>
 </ul>
