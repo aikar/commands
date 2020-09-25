@@ -24,7 +24,6 @@
 package co.aikar.commands;
 
 import co.aikar.locales.MessageKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -86,15 +85,12 @@ public class BukkitLocales extends Locales {
      */
     public boolean loadLanguage(FileConfiguration config, Locale locale) {
         boolean loaded = false;
-        for (String parentKey : config.getKeys(false)) {
-            ConfigurationSection inner = config.getConfigurationSection(parentKey);
-            if (inner == null) {
-                continue;
-            }
-            for (String key : inner.getKeys(false)) {
-                String value = inner.getString(key);
+        for (String key : config.getKeys(true)) {
+            if (config.isString(key) || config.isDouble(key) || config.isLong(key) || config.isInt(key)
+                    || config.isBoolean(key)) {
+                String value = config.getString(key);
                 if (value != null && !value.isEmpty()) {
-                    addMessage(locale, MessageKey.of(parentKey + "." + key), value);
+                    addMessage(locale, MessageKey.of(key), value);
                     loaded = true;
                 }
             }
