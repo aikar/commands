@@ -89,6 +89,11 @@ public class BungeeRootCommand extends Command implements RootCommand, TabExecut
     }
 
     @Override
+    public boolean hasPermission(CommandSender sender) {
+        return hasAnyPermission(manager.getCommandIssuer(sender));
+    }
+
+    @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
         return getTabCompletions(manager.getCommandIssuer(commandSender), getName(), strings);
     }
