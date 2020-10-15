@@ -225,17 +225,23 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
         registerOptionalContext(CommandHelp.class, (c) -> {
             String first = c.getFirstArg();
             String last = c.getLastArg();
-            int page = 1;
+            Integer page = 1;
             List<String> search = null;
             if (last != null && ACFUtil.isInteger(last)) {
                 c.popLastArg();
                 page = ACFUtil.parseInt(last);
+                if (page == null) {
+                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", last);
+                }
                 if (!c.getArgs().isEmpty()) {
                     search = c.getArgs();
                 }
             } else if (first != null && ACFUtil.isInteger(first)) {
                 c.popFirstArg();
                 page = ACFUtil.parseInt(first);
+                if (page == null){
+                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", first);
+                }
                 if (!c.getArgs().isEmpty()) {
                     search = c.getArgs();
                 }

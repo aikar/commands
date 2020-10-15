@@ -10,17 +10,17 @@
 <pre><span class="sourceLineNo">001</span><a id="line.1">package co.aikar.commands;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;</a>
-<span class="sourceLineNo">004</span><a id="line.4">import net.dv8tion.jda.core.AccountType;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import net.dv8tion.jda.core.JDA;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import net.dv8tion.jda.core.entities.ChannelType;</a>
-<span class="sourceLineNo">007</span><a id="line.7">import net.dv8tion.jda.core.entities.Message;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import net.dv8tion.jda.core.events.message.MessageReceivedEvent;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import net.dv8tion.jda.api.AccountType;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import net.dv8tion.jda.api.JDA;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import net.dv8tion.jda.api.entities.ChannelType;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import net.dv8tion.jda.api.entities.Message;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import net.dv8tion.jda.api.events.message.MessageReceivedEvent;</a>
 <span class="sourceLineNo">009</span><a id="line.9">import org.jetbrains.annotations.NotNull;</a>
 <span class="sourceLineNo">010</span><a id="line.10"></a>
 <span class="sourceLineNo">011</span><a id="line.11">import java.util.Arrays;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import java.util.HashMap;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collection;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import java.util.Collections;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.Collection;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.Collections;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.HashMap;</a>
 <span class="sourceLineNo">015</span><a id="line.15">import java.util.List;</a>
 <span class="sourceLineNo">016</span><a id="line.16">import java.util.Locale;</a>
 <span class="sourceLineNo">017</span><a id="line.17">import java.util.Map;</a>
@@ -96,7 +96,7 @@
 <span class="sourceLineNo">087</span><a id="line.87">    void initializeBotOwner() {</a>
 <span class="sourceLineNo">088</span><a id="line.88">        if (botOwner == 0L) {</a>
 <span class="sourceLineNo">089</span><a id="line.89">            if (jda.getAccountType() == AccountType.BOT) {</a>
-<span class="sourceLineNo">090</span><a id="line.90">                botOwner = jda.asBot().getApplicationInfo().complete().getOwner().getIdLong();</a>
+<span class="sourceLineNo">090</span><a id="line.90">                botOwner = jda.retrieveApplicationInfo().complete().getOwner().getIdLong();</a>
 <span class="sourceLineNo">091</span><a id="line.91">            } else {</a>
 <span class="sourceLineNo">092</span><a id="line.92">                botOwner = jda.getSelfUser().getIdLong();</a>
 <span class="sourceLineNo">093</span><a id="line.93">            }</a>

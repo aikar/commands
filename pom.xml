@@ -128,6 +128,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
+                    <sourcepath>src/main/java</sourcepath>
                     <destDir>../docs/${project.artifactId}/</destDir>
                     <quiet>true</quiet>
                     <detectOfflineLinks>false</detectOfflineLinks>
@@ -197,6 +198,7 @@
 
     <modules>
         <module>core</module>
+        <module>brigadier</module>
         <module>bukkit</module>
         <module>paper</module>
         <module>bungee</module>

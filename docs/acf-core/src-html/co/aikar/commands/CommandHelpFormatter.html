@@ -183,7 +183,7 @@
 <span class="sourceLineNo">174</span><a id="line.174">        return new String[]{</a>
 <span class="sourceLineNo">175</span><a id="line.175">                "{command}", entry.getCommand(),</a>
 <span class="sourceLineNo">176</span><a id="line.176">                "{commandprefix}", help.getCommandPrefix(),</a>
-<span class="sourceLineNo">177</span><a id="line.177">                "{parameters}", entry.getParameterSyntax(),</a>
+<span class="sourceLineNo">177</span><a id="line.177">                "{parameters}", entry.getParameterSyntax(help.getIssuer()),</a>
 <span class="sourceLineNo">178</span><a id="line.178">                "{separator}", entry.getDescription().isEmpty() ? "" : "-",</a>
 <span class="sourceLineNo">179</span><a id="line.179">                "{description}", entry.getDescription()</a>
 <span class="sourceLineNo">180</span><a id="line.180">        };</a>
@@ -201,9 +201,9 @@
 <span class="sourceLineNo">192</span><a id="line.192">    public String[] getParameterFormatReplacements(CommandHelp help, CommandParameter param, HelpEntry entry) {</a>
 <span class="sourceLineNo">193</span><a id="line.193">        //{name} {description}</a>
 <span class="sourceLineNo">194</span><a id="line.194">        return new String[]{</a>
-<span class="sourceLineNo">195</span><a id="line.195">                "{name}", param.getName(),</a>
-<span class="sourceLineNo">196</span><a id="line.196">                "{syntaxorname}", ACFUtil.nullDefault(param.getSyntax(), param.getName()),</a>
-<span class="sourceLineNo">197</span><a id="line.197">                "{syntax}", ACFUtil.nullDefault(param.getSyntax(), ""),</a>
+<span class="sourceLineNo">195</span><a id="line.195">                "{name}", param.getDisplayName(help.getIssuer()),</a>
+<span class="sourceLineNo">196</span><a id="line.196">                "{syntaxorname}", ACFUtil.nullDefault(param.getSyntax(help.getIssuer()), param.getDisplayName(help.getIssuer())),</a>
+<span class="sourceLineNo">197</span><a id="line.197">                "{syntax}", ACFUtil.nullDefault(param.getSyntax(help.getIssuer()), ""),</a>
 <span class="sourceLineNo">198</span><a id="line.198">                "{description}", ACFUtil.nullDefault(param.getDescription(), ""),</a>
 <span class="sourceLineNo">199</span><a id="line.199">                "{command}", help.getCommandName(),</a>
 <span class="sourceLineNo">200</span><a id="line.200">                "{fullcommand}", entry.getCommand(),</a>

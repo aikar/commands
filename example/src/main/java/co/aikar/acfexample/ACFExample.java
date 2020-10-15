@@ -23,10 +23,11 @@
 
 package co.aikar.acfexample;
 
-import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.MessageKeys;
 import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperBrigadierManager;
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -45,6 +46,9 @@ public final class ACFExample extends JavaPlugin {
     private void registerCommands() {
         // 1: Create Command Manager for your respective platform
         commandManager = new PaperCommandManager(this);
+
+        // enable brigadier integration for paper servers
+        commandManager.enableUnstableAPI("brigadier");
 
         // optional: enable unstable api to use help
         commandManager.enableUnstableAPI("help");
@@ -109,6 +113,12 @@ public final class ACFExample extends JavaPlugin {
             getLogger().warning("Error occurred while executing command " + command.getName());
             return false; // mark as unhandeled, sender will see default message
         });
+
+        // test command for brigadier
+        commandManager.getCommandCompletions().registerAsyncCompletion("someobject", c ->
+                Arrays.asList("1", "2", "3", "4", "5")
+        );
+        commandManager.registerCommand(new BrigadierTest());
     }
 
     // Typical Bukkit Plugin Scaffolding

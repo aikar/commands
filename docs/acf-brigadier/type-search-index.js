@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"co.aikar.commands","l":"ACFBrigadierManager"},{"l":"All Classes","url":"allclasses-index.html"}]

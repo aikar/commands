@@ -1,17 +1,17 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -87,7 +87,7 @@ public class JDACommandManager extends CommandManager<
     void initializeBotOwner() {
         if (botOwner == 0L) {
             if (jda.getAccountType() == AccountType.BOT) {
-                botOwner = jda.asBot().getApplicationInfo().complete().getOwner().getIdLong();
+                botOwner = jda.retrieveApplicationInfo().complete().getOwner().getIdLong();
             } else {
                 botOwner = jda.getSelfUser().getIdLong();
             }

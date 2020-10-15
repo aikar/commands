@@ -1,6 +1,6 @@
 package co.aikar.commands;
 
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.HashMap;
 import java.util.Locale;

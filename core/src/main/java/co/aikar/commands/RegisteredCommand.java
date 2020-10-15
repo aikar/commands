@@ -46,6 +46,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -83,7 +84,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.manager = this.scope.manager;
         final Annotations annotations = this.manager.getAnnotations();
 
-        if (BaseCommand.CATCHUNKNOWN.equals(prefSubCommand) || BaseCommand.DEFAULT.equals(prefSubCommand)) {
+        if (BaseCommand.isSpecialSubcommand(prefSubCommand)) {
             prefSubCommand = "";
             command = command.trim();
         }
@@ -96,6 +97,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.syntaxText = annotations.getAnnotationValue(method, Syntax.class, Annotations.REPLACEMENTS);
 
         Parameter[] parameters = method.getParameters();
         //noinspection unchecked
@@ -107,10 +109,14 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         int consumeInputResolvers = 0;
         int doesNotConsumeInputResolvers = 0;
         int optionalResolvers = 0;
-        StringBuilder syntaxBuilder = new StringBuilder(64);
 
+        CommandParameter<CEC> previousParam = null;
         for (int i = 0; i < parameters.length; i++) {
             CommandParameter<CEC> parameter = this.parameters[i] = new CommandParameter<>(this, parameters[i], i, i == parameters.length - 1);
+            if (previousParam != null) {
+                previousParam.setNextParam(parameter);
+            }
+            previousParam = parameter;
             if (!parameter.isCommandIssuer()) {
                 if (!parameter.requiresInput()) {
                     optionalResolvers++;
@@ -123,16 +129,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     doesNotConsumeInputResolvers++;
                 }
             }
-            if (parameter.getSyntax() != null) {
-                if (syntaxBuilder.length() > 0) {
-                    syntaxBuilder.append(' ');
-                }
-                syntaxBuilder.append(parameter.getSyntax());
-            }
         }
-        String syntaxText = syntaxBuilder.toString().trim();
-        final String syntaxStr = annotations.getAnnotationValue(method, Syntax.class);
-        this.syntaxText = syntaxStr != null ? ACFUtil.replace(syntaxStr, "@syntax", syntaxText) : syntaxText;
+
         this.requiredResolvers = requiredResolvers;
         this.consumeInputResolvers = consumeInputResolvers;
         this.doesNotConsumeInputResolvers = doesNotConsumeInputResolvers;
@@ -214,23 +212,20 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
 
     @Nullable
     Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args) throws InvalidCommandArgument {
-        return resolveContexts(sender, args, parameters.length);
+        return resolveContexts(sender, args, null);
     }
 
     @Nullable
-    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, int argLimit) throws InvalidCommandArgument {
+    Map<String, Object> resolveContexts(CommandIssuer sender, List<String> args, String name) throws InvalidCommandArgument {
         args = new ArrayList<>(args);
         String[] origArgs = args.toArray(new String[args.size()]);
         Map<String, Object> passedArgs = new LinkedHashMap<>();
         int remainingRequired = requiredResolvers;
         CommandOperationContext opContext = CommandManager.getCurrentCommandOperationContext();
-        for (int i = 0; i < parameters.length && i < argLimit; i++) {
+        for (int i = 0; i < parameters.length && (name == null || !passedArgs.containsKey(name)); i++) {
             boolean isLast = i == parameters.length - 1;
             boolean allowOptional = remainingRequired == 0;
             final CommandParameter<CEC> parameter = parameters[i];
-            if (!parameter.canConsumeInput()) {
-                argLimit++;
-            }
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
             //noinspection unchecked
@@ -249,9 +244,9 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                 } else if (allowOptional && parameter.isOptional()) {
                     Object value;
                     if (!parameter.isOptionalResolver() || !this.manager.hasPermission(sender, parameterPermissions)) {
-                       value = null;
+                        value = null;
                     } else {
-                       value = resolver.getContext(context);
+                        value = resolver.getContext(context);
                     }
 
                     if (value == null && parameter.getClass().isPrimitive()) {
@@ -284,7 +279,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
                     //noinspection unchecked
                     List<String> check = commandCompletions.getCompletionValues(this, sender, s, origArgs, opContext.isAsync());
                     if (!check.isEmpty()) {
-                        possible.addAll(check.stream().map(String::toLowerCase).collect(Collectors.toList()));
+                        possible.addAll(check.stream().filter(Objects::nonNull).
+                                map(String::toLowerCase).collect(Collectors.toList()));
                     } else {
                         possible.add(s.toLowerCase(Locale.ENGLISH));
                     }
@@ -341,7 +337,22 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     public String getSyntaxText() {
-        return syntaxText;
+        return getSyntaxText(null);
+    }
+
+    public String getSyntaxText(CommandIssuer issuer) {
+        if (syntaxText != null) return syntaxText;
+        StringBuilder syntaxBuilder = new StringBuilder(64);
+        for (CommandParameter<?> parameter : parameters) {
+            String syntax = parameter.getSyntax(issuer);
+            if (syntax != null) {
+                if (syntaxBuilder.length() > 0) {
+                    syntaxBuilder.append(' ');
+                }
+                syntaxBuilder.append(syntax);
+            }
+        }
+        return syntaxBuilder.toString().trim();
     }
 
     public String getHelpText() {

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -205,6 +205,11 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPermission(net.md_5.bungee.api.CommandSender)">hasPermission</a></span>&#8203;(net.md_5.bungee.api.CommandSender&nbsp;sender)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onTabComplete(net.md_5.bungee.api.CommandSender,java.lang.String%5B%5D)">onTabComplete</a></span>&#8203;(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
              <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;strings)</code></th>
@@ -340,13 +345,26 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 </dl>
 </li>
 </ul>
+<a id="hasPermission(net.md_5.bungee.api.CommandSender)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hasPermission</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.91">hasPermission</a>&#8203;(net.md_5.bungee.api.CommandSender&nbsp;sender)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>hasPermission</code>&nbsp;in class&nbsp;<code>net.md_5.bungee.api.plugin.Command</code></dd>
+</dl>
+</li>
+</ul>
 <a id="onTabComplete(net.md_5.bungee.api.CommandSender,java.lang.String[])">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>onTabComplete</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.91">onTabComplete</a>&#8203;(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang" class="externalLink">Iterable</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.96">onTabComplete</a>&#8203;(net.md_5.bungee.api.CommandSender&nbsp;commandSender,
                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;strings)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -360,7 +378,7 @@ implements co.aikar.commands.RootCommand, net.md_5.bungee.api.plugin.TabExecutor
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getDefCommand</h4>
-<pre class="methodSignature">public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.96">getDefCommand</a>()</pre>
+<pre class="methodSignature">public&nbsp;co.aikar.commands.BaseCommand&nbsp;<a href="../../../src-html/co/aikar/commands/BungeeRootCommand.html#line.101">getDefCommand</a>()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getDefCommand</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>

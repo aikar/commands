@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":42,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":42,"i24":10,"i25":10,"i26":10};
+var data = {"i0":42,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":42,"i25":10,"i26":10,"i27":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -298,44 +298,49 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i16" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPermission(co.aikar.commands.CommandIssuer)">hasPermission</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code></th>
+<td class="colFirst"><code>protected com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubCommands()">getSubCommands</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPermission(java.lang.Object)">hasPermission</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPermission(co.aikar.commands.CommandIssuer)">hasPermission</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i18" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hasPermission(java.lang.Object)">hasPermission</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#help(co.aikar.commands.CommandIssuer,java.lang.String%5B%5D)">help</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
     <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#help(java.lang.Object,java.lang.String%5B%5D)">help</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer,
     <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#requiresPermission(java.lang.String)">requiresPermission</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;permission)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setContextFlags(java.lang.Class,java.lang.String)">setContextFlags</a></span>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;cls,
                <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;flags)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExceptionHandler(co.aikar.commands.ExceptionHandler)">setExceptionHandler</a></span>&#8203;(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#showCommandHelp()">showCommandHelp</a></span>()</code></th>
 <td class="colLast">
@@ -344,13 +349,13 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#showSyntax(co.aikar.commands.CommandIssuer,co.aikar.commands.RegisteredCommand)">showSyntax</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
           <a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;?&gt;&nbsp;cmd)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#tabComplete(co.aikar.commands.CommandIssuer,java.lang.String,java.lang.String%5B%5D)">tabComplete</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;commandLabel,
@@ -359,7 +364,7 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <div class="block">Gets tab completed data from the given command from the user.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#tabComplete(co.aikar.commands.CommandIssuer,java.lang.String,java.lang.String%5B%5D,boolean)">tabComplete</a></span>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
            <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;commandLabel,
@@ -589,7 +594,7 @@ public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseComman
 <li class="blockList">
 <h4>getCommandHelp</h4>
 <pre class="methodSignature"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public&nbsp;<a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.758">getCommandHelp</a>()</pre>
+public&nbsp;<a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.762">getCommandHelp</a>()</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Unstable API</div>
 </div>
@@ -602,7 +607,7 @@ public&nbsp;<a href="CommandHelp.html" title="class in co.aikar.commands">Comman
 <li class="blockList">
 <h4>showCommandHelp</h4>
 <pre class="methodSignature"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang" class="externalLink">@Deprecated</a>
-public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.767">showCommandHelp</a>()</pre>
+public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.771">showCommandHelp</a>()</pre>
 <div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
 <div class="deprecationComment">Unstable API</div>
 </div>
@@ -614,7 +619,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>help</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.773">help</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.777">help</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer,
                  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</pre>
 </li>
 </ul>
@@ -624,7 +629,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>help</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.777">help</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.781">help</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>[]&nbsp;args)</pre>
 </li>
 </ul>
@@ -634,7 +639,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>doHelp</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.781">doHelp</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.785">doHelp</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer,
                    <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>...&nbsp;args)</pre>
 </li>
 </ul>
@@ -644,7 +649,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>doHelp</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.785">doHelp</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.789">doHelp</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                    <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>...&nbsp;args)</pre>
 </li>
 </ul>
@@ -654,7 +659,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>showSyntax</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.789">showSyntax</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.793">showSyntax</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
                        <a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&lt;?&gt;&nbsp;cmd)</pre>
 </li>
 </ul>
@@ -664,7 +669,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>hasPermission</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.796">hasPermission</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.800">hasPermission</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang" class="externalLink">Object</a>&nbsp;issuer)</pre>
 </li>
 </ul>
 <a id="hasPermission(co.aikar.commands.CommandIssuer)">
@@ -673,7 +678,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>hasPermission</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.800">hasPermission</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.804">hasPermission</a>&#8203;(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</pre>
 </li>
 </ul>
 <a id="getRequiredPermissions()">
@@ -682,7 +687,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>getRequiredPermissions</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util" class="externalLink">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.804">getRequiredPermissions</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util" class="externalLink">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.808">getRequiredPermissions</a>()</pre>
 </li>
 </ul>
 <a id="requiresPermission(java.lang.String)">
@@ -691,7 +696,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>requiresPermission</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.808">requiresPermission</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;permission)</pre>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.812">requiresPermission</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;permission)</pre>
 </li>
 </ul>
 <a id="getName()">
@@ -700,7 +705,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>getName</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.812">getName</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.816">getName</a>()</pre>
 </li>
 </ul>
 <a id="getExceptionHandler()">
@@ -709,7 +714,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>getExceptionHandler</h4>
-<pre class="methodSignature">public&nbsp;<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.816">getExceptionHandler</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.820">getExceptionHandler</a>()</pre>
 </li>
 </ul>
 <a id="setExceptionHandler(co.aikar.commands.ExceptionHandler)">
@@ -718,7 +723,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>setExceptionHandler</h4>
-<pre class="methodSignature">public&nbsp;<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.820">setExceptionHandler</a>&#8203;(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</pre>
+<pre class="methodSignature">public&nbsp;<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.824">setExceptionHandler</a>&#8203;(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</pre>
 </li>
 </ul>
 <a id="getDefaultRegisteredCommand()">
@@ -727,7 +732,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>getDefaultRegisteredCommand</h4>
-<pre class="methodSignature">public&nbsp;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.825">getDefaultRegisteredCommand</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.829">getDefaultRegisteredCommand</a>()</pre>
 </li>
 </ul>
 <a id="setContextFlags(java.lang.Class,java.lang.String)">
@@ -736,7 +741,7 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>setContextFlags</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.829">setContextFlags</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;cls,
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.833">setContextFlags</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;cls,
                               <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;flags)</pre>
 </li>
 </ul>
@@ -746,16 +751,25 @@ public&nbsp;void&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.h
 <ul class="blockList">
 <li class="blockList">
 <h4>getContextFlags</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.833">getContextFlags</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;cls)</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.837">getContextFlags</a>&#8203;(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang" class="externalLink">Class</a>&lt;?&gt;&nbsp;cls)</pre>
 </li>
 </ul>
 <a id="getRegisteredCommands()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getRegisteredCommands</h4>
-<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.837">getRegisteredCommands</a>()</pre>
+<pre class="methodSignature">public&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util" class="externalLink">List</a>&lt;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.841">getRegisteredCommands</a>()</pre>
+</li>
+</ul>
+<a id="getSubCommands()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getSubCommands</h4>
+<pre class="methodSignature">protected&nbsp;com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang" class="externalLink">String</a>,&#8203;<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&gt;&nbsp;<a href="../../../src-html/co/aikar/commands/BaseCommand.html#line.847">getSubCommands</a>()</pre>
 </li>
 </ul>
 </li>
