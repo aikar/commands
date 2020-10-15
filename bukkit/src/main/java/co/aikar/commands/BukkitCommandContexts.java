@@ -241,6 +241,20 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         Player player = ACFBukkitUtil.findPlayerSmart(issuer, lookup);
         //noinspection Duplicates
         if (player == null) {
+            if (issuer.getManager() instanceof BukkitCommandManager) {
+                BukkitCommandManager manager = (BukkitCommandManager) issuer.getManager();
+                //Check if mc version is higher than 1.13.1 (added in 1.13.2)
+                if ((manager.mcMinorVersion > 13) || (manager.mcMinorVersion == 13 && manager.mcPatchVersion > 1)) {
+                    try {
+                        Entity entity = Bukkit.selectEntities(issuer.getIssuer(), lookup).get(0);
+                        if (entity instanceof Player) {
+                            return new OnlinePlayer((Player) entity);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        throw new InvalidCommandArgument(false);
+                    }
+                }
+            }
             if (allowMissing) {
                 return null;
             }
