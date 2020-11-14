@@ -67,6 +67,7 @@ Dinosaurs have been dead for a long time, so get off it before you start to smel
 - [ACF (Bukkit)](https://aikar.github.io/commands/acf-bukkit)
 - [ACF (Sponge)](https://aikar.github.io/commands/acf-sponge)
 - [ACF (Bungee)](https://aikar.github.io/commands/acf-bungee)
+- [ACF (JDA)](https://aikar.github.io/commands/acf-jda)
 
 
 ## Contributing
