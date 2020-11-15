@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -237,6 +238,7 @@ public class JDACommandManager extends CommandManager<
     void dispatchEvent(MessageReceivedEvent event) {
         Message message = event.getMessage();
         String msg = message.getContentRaw();
+        String selfUserId = event.getJDA().getSelfUser().getId();
 
         CommandConfig config = getCommandConfig(event);
 
@@ -247,11 +249,19 @@ public class JDACommandManager extends CommandManager<
                 break;
             }
         }
+        if (prefixFound == null && config.mentionPrefixEnabled()) {
+            if (msg.startsWith("<@" + selfUserId + ">")) {
+                prefixFound = "<@" + selfUserId + ">";
+            } else if (msg.startsWith("<@!" + selfUserId + ">")) {
+                prefixFound = "<@!" + selfUserId + ">";
+            }
+        }
         if (prefixFound == null) {
             return;
         }
 
-        String[] args = ACFPatterns.SPACE.split(msg.substring(prefixFound.length()), -1);
+        // str.replaceAll("^[ \t]+", "") - works like String.stripLeading() from Java 11
+        String[] args = ACFPatterns.SPACE.split(msg.substring(prefixFound.length()).replaceAll("^[ \\t]+", ""), -1);
         if (args.length == 0) {
             return;
         }
