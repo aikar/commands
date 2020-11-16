@@ -18,6 +18,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JDACommandManager extends CommandManager<
         MessageReceivedEvent,
@@ -260,8 +262,8 @@ public class JDACommandManager extends CommandManager<
             return;
         }
 
-        // str.replaceAll("^[ \t]+", "") - works like String.stripLeading() from Java 11
-        String[] args = ACFPatterns.SPACE.split(msg.substring(prefixFound.length()).replaceAll("^[ \\t]+", ""), -1);
+        String msgNoPrefix = msg.substring(prefixFound.length());
+        String[] args = ACFPatterns.SPACE.split(ACFUtil.replace(msgNoPrefix, ACFPatterns.getPattern("^[ ]+"), ""), -1);
         if (args.length == 0) {
             return;
         }
