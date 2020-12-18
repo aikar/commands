@@ -12,3 +12,9 @@ dependencies {
 }
 
 description = "ACF (JDA)"
+
+tasks {
+  processResources {
+    from("${project.projectDir}/../languages/minecraft/")
+  }
+}

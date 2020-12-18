@@ -8,7 +8,13 @@ plugins {
 
 dependencies {
     implementation(project(":acf-core"))
-    compileOnly("net.md-5:bungeecord-api:1.13-SNAPSHOT")
+    compileOnly("net.md-5:bungeecord-api:1.14-SNAPSHOT")
 }
 
 description = "ACF (Bungee)"
+
+tasks {
+  processResources {
+    from("${project.projectDir}/../languages/minecraft/")
+  }
+}

@@ -12,3 +12,9 @@ dependencies {
 }
 
 description = "ACF (Sponge)"
+
+tasks {
+  processResources {
+    from("${project.projectDir}/../languages/minecraft/")
+  }
+}

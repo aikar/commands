@@ -12,3 +12,9 @@ dependencies {
 }
 
 description = "ACF (Velocity)"
+
+tasks {
+  processResources {
+    from("${project.projectDir}/../languages/minecraft/")
+  }
+}
