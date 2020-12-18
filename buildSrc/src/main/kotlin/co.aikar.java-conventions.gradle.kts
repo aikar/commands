@@ -47,6 +47,7 @@ dependencies {
     compileOnly("com.google.guava:guava:15.0")
     compileOnly("org.jetbrains:annotations:15.0")
 }
+// TODO: Add shading
 
 group = "co.aikar"
 version = "0.5.0-SNAPSHOT"
