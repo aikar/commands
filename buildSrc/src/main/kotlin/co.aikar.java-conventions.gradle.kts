@@ -46,6 +46,9 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:2.25.1")
     compileOnly("com.google.guava:guava:15.0")
     compileOnly("org.jetbrains:annotations:15.0")
+    // TODO: Figure out how to get rid of duplication
+    testCompileOnly("com.google.guava:guava:15.0")
+    testCompileOnly("org.jetbrains:annotations:15.0")
 }
 // TODO: Add shading
 

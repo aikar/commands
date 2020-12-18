@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":acf-core"))
+    api(project(":acf-core"))
     compileOnly("com.velocitypowered:velocity-api:1.0.0-SNAPSHOT")
 }
 

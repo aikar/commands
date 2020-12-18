@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":acf-bukkit"))
-    implementation(project(":acf-brigadier"))
+    api(project(":acf-bukkit"))
+    api(project(":acf-brigadier"))
     compileOnly("com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT")
     compileOnly("com.destroystokyo.paper:paper-mojangapi:1.15.2-R0.1-SNAPSHOT")
 }

@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":acf-core"))
+    api(project(":acf-core"))
     compileOnly("net.dv8tion:JDA:4.2.0_168")
 }
 

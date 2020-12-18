@@ -3,7 +3,6 @@
  */
 
 plugins {
-    `java-library`
     id("co.aikar.java-conventions")
 }
 

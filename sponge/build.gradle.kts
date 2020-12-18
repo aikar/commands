@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":acf-core"))
+    api(project(":acf-core"))
     compileOnly("org.spongepowered:spongeapi:5.1.0")
 }
 

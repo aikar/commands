@@ -9,7 +9,7 @@ plugins {
 description = "ACF (Bukkit)"
 
 dependencies {
-    implementation(project(":acf-core"))
+    api(project(":acf-core"))
     implementation("co.aikar:minecraft-timings:1.0.4")
     compileOnly("org.bukkit:bukkit:1.12-R0.1-SNAPSHOT")
 }
