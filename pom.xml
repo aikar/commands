@@ -121,6 +121,18 @@
                             <pattern>co.aikar.timings.lib</pattern>
                             <shadedPattern>co.aikar.commands.lib.timings</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.adventure</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.examination</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.checkerframework</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.checkerframework</shadedPattern>
+                        </relocation>
                     </relocations>
                     <dependencyReducedPomLocation>
                         ${project.build.directory}/dependency-reduced-pom.xml
@@ -209,5 +221,7 @@
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
+        <module>adventure/bukkit</module>
+        <module>adventure/bungee</module>
     </modules>
 </project>

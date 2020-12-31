@@ -70,6 +70,7 @@ public abstract class CommandManager<
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
+    protected ACFAdventureManager adventureManager;
     boolean logUnhandledExceptions = true;
     protected Table<Class<?>, String, Object> dependencies = new Table<>();
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
@@ -396,14 +397,22 @@ public abstract class CommandManager<
     }
 
     public void sendMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
-        String message = formatMessage(issuer, type, key, replacements);
-
-        for (String msg : ACFPatterns.NEWLINE.split(message)) {
-            issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+        if (hasUnstableAPI("adventure") && adventureManager != null) {
+            // TODO: Use MessageType to format messages?
+            String message = getAndReplaceMessage(issuer, key, replacements);
+            for (String msg : ACFPatterns.NEWLINE.split(message)) {
+                adventureManager.sendMessage(issuer, msg);
+            }
+        } else {
+            String message = formatMessage(issuer, type, key, replacements);
+            for (String msg : ACFPatterns.NEWLINE.split(message)) {
+                issuer.sendMessageInternal(ACFUtil.rtrim(msg));
+            }
         }
+
     }
 
-    public String formatMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
+    public String getAndReplaceMessage(CommandIssuer issuer, MessageKeyProvider key, String... replacements) {
         String message = getLocales().getMessage(issuer, key.getMessageKey());
         if (replacements.length > 0) {
             message = ACFUtil.replaceStrings(message, replacements);
@@ -411,8 +420,13 @@ public abstract class CommandManager<
 
         message = getCommandReplacements().replace(message);
         message = getLocales().replaceI18NStrings(message);
+        return message;
+    }
 
-        MessageFormatter formatter = formatters.getOrDefault(type, defaultFormatter);
+    public String formatMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
+        String message = getAndReplaceMessage(issuer, key, replacements);
+
+        MF formatter = formatters.getOrDefault(type, defaultFormatter);
         if (formatter != null) {
             message = formatter.format(message);
         }

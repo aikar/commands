@@ -56,12 +56,22 @@ public class BungeeCommandManager extends CommandManager<
     protected BungeeCommandCompletions completions;
     protected BungeeLocales locales;
 
+    private boolean adventureAvailable = false;
+    private ACFBungeeAdventureManager adventureManager;
+
     public BungeeCommandManager(Plugin plugin) {
         this.plugin = plugin;
         this.formatters.put(MessageType.ERROR, defaultFormatter = new BungeeMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BungeeMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
         this.formatters.put(MessageType.INFO, new BungeeMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));
         this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
+
+        try {
+            Class.forName("co.aikar.commands.adventure.text.Component");
+            adventureAvailable = true;
+        } catch (ClassNotFoundException ignored) {
+            // Ignored
+        }
 
         getLocales(); // auto load locales
 
@@ -219,5 +229,18 @@ public class BungeeCommandManager extends CommandManager<
     @Override
     public String getCommandPrefix(CommandIssuer issuer) {
         return issuer.isPlayer() ? "/" : "";
+    }
+
+    @Override
+    public void enableUnstableAPI(String api) {
+        if ("adventure".equals(api) && adventureAvailable) {
+            adventureManager = new ACFBungeeAdventureManager(plugin, this);
+            super.adventureManager = adventureManager;
+        }
+        super.enableUnstableAPI(api);
+    }
+
+    public ACFBungeeAdventureManager getAdventureManager() {
+        return adventureManager;
     }
 }

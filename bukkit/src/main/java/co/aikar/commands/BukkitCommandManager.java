@@ -46,6 +46,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -88,6 +89,8 @@ public class BukkitCommandManager extends CommandManager<
     protected BukkitLocales locales;
     private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
+    private boolean adventureAvailable = false;
+    private ACFBukkitAdventureManager adventureManager;
 
     @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
@@ -110,6 +113,14 @@ public class BukkitCommandManager extends CommandManager<
             this.mcMinorVersion = -1;
             this.mcPatchVersion = -1;
         }
+
+        try {
+            Class.forName("co.aikar.commands.adventure.text.Component");
+            adventureAvailable = true;
+        } catch (ClassNotFoundException ignored) {
+            // Ignored
+        }
+
         Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -> {
             if (hasUnstableAPI("help")) {
                 return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);
@@ -402,5 +413,18 @@ public class BukkitCommandManager extends CommandManager<
             t = t.getCause();
         }
         return super.handleUncaughtException(scope, registeredCommand, sender, args, t);
+    }
+
+    @Override
+    public void enableUnstableAPI(String api) {
+        if ("adventure".equals(api) && adventureAvailable) {
+            adventureManager = new ACFBukkitAdventureManager(plugin, this);
+            super.adventureManager = adventureManager;
+        }
+        super.enableUnstableAPI(api);
+    }
+
+    public @Nullable ACFBukkitAdventureManager getAdventureManager() {
+        return adventureManager;
     }
 }
