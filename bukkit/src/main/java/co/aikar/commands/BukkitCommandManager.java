@@ -115,7 +115,7 @@ public class BukkitCommandManager extends CommandManager<
         }
 
         try {
-            Class.forName("co.aikar.commands.adventure.text.Component");
+            Class.forName("co.aikar.commands.adventure.adventure.text.Component");
             adventureAvailable = true;
         } catch (ClassNotFoundException ignored) {
             // Ignored
@@ -417,11 +417,13 @@ public class BukkitCommandManager extends CommandManager<
 
     @Override
     public void enableUnstableAPI(String api) {
+        super.enableUnstableAPI(api);
+
         if ("adventure".equals(api) && adventureAvailable) {
+            log(LogLevel.INFO, "Enabling Adventure");
             adventureManager = new ACFBukkitAdventureManager(plugin, this);
             super.adventureManager = adventureManager;
         }
-        super.enableUnstableAPI(api);
     }
 
     public @Nullable ACFBukkitAdventureManager getAdventureManager() {

@@ -67,7 +67,7 @@ public class BungeeCommandManager extends CommandManager<
         this.formatters.put(MessageType.HELP, new BungeeMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));
 
         try {
-            Class.forName("co.aikar.commands.adventure.text.Component");
+            Class.forName("co.aikar.commands.adventure.adventure.text.Component");
             adventureAvailable = true;
         } catch (ClassNotFoundException ignored) {
             // Ignored
@@ -233,11 +233,12 @@ public class BungeeCommandManager extends CommandManager<
 
     @Override
     public void enableUnstableAPI(String api) {
+        super.enableUnstableAPI(api);
+
         if ("adventure".equals(api) && adventureAvailable) {
             adventureManager = new ACFBungeeAdventureManager(plugin, this);
             super.adventureManager = adventureManager;
         }
-        super.enableUnstableAPI(api);
     }
 
     public ACFBungeeAdventureManager getAdventureManager() {

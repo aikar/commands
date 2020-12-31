@@ -120,5 +120,11 @@
             <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-adventure-bukkit</artifactId>
+            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

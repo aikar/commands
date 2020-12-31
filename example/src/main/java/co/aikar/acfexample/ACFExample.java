@@ -53,6 +53,9 @@ public final class ACFExample extends JavaPlugin {
         // optional: enable unstable api to use help
         commandManager.enableUnstableAPI("help");
 
+        // optional: enable minimessage parser
+        commandManager.enableUnstableAPI("adventure");
+
         // 2: Setup some replacement values that may be used inside of the annotations dynamically.
         commandManager.getCommandReplacements().addReplacements(
                 // key - value
