@@ -70,7 +70,7 @@ public abstract class CommandManager<
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
-    protected ACFAdventureManager adventureManager;
+    protected ACFAdventureManager<FT> adventureManager;
     boolean logUnhandledExceptions = true;
     protected Table<Class<?>, String, Object> dependencies = new Table<>();
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
@@ -398,7 +398,6 @@ public abstract class CommandManager<
 
     public void sendMessage(CommandIssuer issuer, MessageType type, MessageKeyProvider key, String... replacements) {
         if (hasUnstableAPI("adventure") && adventureManager != null) {
-            // TODO: Use MessageType to format messages?
             String message = getAndReplaceMessage(issuer, key, replacements);
             for (String msg : ACFPatterns.NEWLINE.split(message)) {
                 MF formatter = formatters.getOrDefault(type, defaultFormatter);
