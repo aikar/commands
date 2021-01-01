@@ -8,6 +8,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 public class ACFBungeeAdventureManager extends ACFAdventureManager<ChatColor> {
     private BungeeAudiences audiences;
+    private MiniMessage miniMessage;
 
     public ACFBungeeAdventureManager(Plugin plugin, CommandManager<?, ?, ? extends ChatColor, ?, ?, ?> manager) {
         super(manager);
@@ -15,7 +16,15 @@ public class ACFBungeeAdventureManager extends ACFAdventureManager<ChatColor> {
         this.audiences = BungeeAudiences.create(plugin);
     }
 
-    public Audience wrapIssuer(CommandIssuer issuer) {
+    public MiniMessage getMiniMessage() {
+        return miniMessage;
+    }
+
+    public void setMiniMessage(MiniMessage miniMessage) {
+        this.miniMessage = miniMessage;
+    }
+
+    private Audience wrapIssuer(CommandIssuer issuer) {
         return this.audiences.sender(issuer.getIssuer());
     }
 
@@ -29,7 +38,7 @@ public class ACFBungeeAdventureManager extends ACFAdventureManager<ChatColor> {
                 message = message.replace("</c" + i + ">", "</color:" + colorname + ">");
             }
         }
-        wrapIssuer(issuer).sendMessage(MiniMessage.get().parse(message));
+        wrapIssuer(issuer).sendMessage(miniMessage.parse(message));
     }
 }
 

@@ -420,7 +420,6 @@ public class BukkitCommandManager extends CommandManager<
         super.enableUnstableAPI(api);
 
         if ("adventure".equals(api) && adventureAvailable) {
-            log(LogLevel.INFO, "Enabling Adventure");
             adventureManager = new ACFBukkitAdventureManager(plugin, this);
             super.adventureManager = adventureManager;
         }

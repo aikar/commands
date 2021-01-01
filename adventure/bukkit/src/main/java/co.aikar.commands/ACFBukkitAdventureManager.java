@@ -8,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 public class ACFBukkitAdventureManager extends ACFAdventureManager<ChatColor> {
     private BukkitAudiences audiences;
+    private MiniMessage miniMessage;
 
     public ACFBukkitAdventureManager(Plugin plugin, CommandManager<?, ?, ? extends ChatColor, ?, ?, ?> manager) {
         super(manager);
@@ -15,7 +16,15 @@ public class ACFBukkitAdventureManager extends ACFAdventureManager<ChatColor> {
         this.audiences = BukkitAudiences.create(plugin);
     }
 
-    public Audience wrapIssuer(CommandIssuer issuer) {
+    public MiniMessage getMiniMessage() {
+        return miniMessage;
+    }
+
+    public void setMiniMessage(MiniMessage miniMessage) {
+        this.miniMessage = miniMessage;
+    }
+
+    private Audience wrapIssuer(CommandIssuer issuer) {
         return this.audiences.sender(issuer.getIssuer());
     }
 
@@ -29,8 +38,7 @@ public class ACFBukkitAdventureManager extends ACFAdventureManager<ChatColor> {
                 message = message.replace("</c" + i + ">", "</color:" + colorname + ">");
             }
         }
-        wrapIssuer(issuer).sendMessage(MiniMessage.get().parse(message));
-        manager.log(LogLevel.INFO, message);
+        wrapIssuer(issuer).sendMessage(miniMessage.parse(message));
     }
 }
 
