@@ -23,14 +23,14 @@
 
 package co.aikar.commands;
 
-public abstract class ACFAdventureManager {
-    protected final CommandManager<?, ?, ?, ?, ?, ?> manager;
+public abstract class ACFAdventureManager<C> {
+    protected final CommandManager<?, ?, ? extends C, ?, ?, ?> manager;
 
-    public ACFAdventureManager(CommandManager<?, ? , ?, ?, ?, ?> manager) {
+    public ACFAdventureManager(CommandManager<?, ?, ? extends C, ?, ?, ?> manager) {
         manager.verifyUnstableAPI("adventure");
 
         this.manager = manager;
     }
 
-    public abstract void sendMessage(CommandIssuer issuer, String message);
+    public abstract void sendMessage(CommandIssuer issuer, MessageFormatter<C> formatter, String message);
 }

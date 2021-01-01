@@ -95,4 +95,8 @@ public abstract class MessageFormatter <FT> {
         matcher.appendTail(sb);
         return def + sb.toString();
     }
+
+    public List<FT> getColors() {
+        return colors;
+    }
 }

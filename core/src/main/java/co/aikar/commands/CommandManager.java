@@ -401,7 +401,8 @@ public abstract class CommandManager<
             // TODO: Use MessageType to format messages?
             String message = getAndReplaceMessage(issuer, key, replacements);
             for (String msg : ACFPatterns.NEWLINE.split(message)) {
-                adventureManager.sendMessage(issuer, msg);
+                MF formatter = formatters.getOrDefault(type, defaultFormatter);
+                adventureManager.sendMessage(issuer, formatter, msg);
             }
         } else {
             String message = formatMessage(issuer, type, key, replacements);

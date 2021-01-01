@@ -3,12 +3,13 @@ package co.aikar.commands;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
-public class ACFBukkitAdventureManager extends ACFAdventureManager {
+public class ACFBukkitAdventureManager extends ACFAdventureManager<ChatColor> {
     private BukkitAudiences audiences;
 
-    public ACFBukkitAdventureManager(Plugin plugin, CommandManager<?, ?, ?, ?, ?, ?> manager) {
+    public ACFBukkitAdventureManager(Plugin plugin, CommandManager<?, ?, ? extends ChatColor, ?, ?, ?> manager) {
         super(manager);
 
         this.audiences = BukkitAudiences.create(plugin);
@@ -19,8 +20,17 @@ public class ACFBukkitAdventureManager extends ACFAdventureManager {
     }
 
     @Override
-    public void sendMessage(CommandIssuer issuer, String message) {
+    public void sendMessage(CommandIssuer issuer, MessageFormatter<ChatColor> formatter, String message) {
+        if (formatter != null) {
+            message = "<color:" + formatter.getDefaultColor().name().toLowerCase() + ">" + message;
+            for (int i = 1; i <= formatter.getColors().size(); ++i) {
+                String colorname = formatter.getColor(i).name().toLowerCase();
+                message = message.replace("<c" + i + ">", "<color:" + colorname + ">");
+                message = message.replace("</c" + i + ">", "</color:" + colorname + ">");
+            }
+        }
         wrapIssuer(issuer).sendMessage(MiniMessage.get().parse(message));
+        manager.log(LogLevel.INFO, message);
     }
 }
 
