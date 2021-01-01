@@ -22,7 +22,7 @@ public class ACFBungeeAdventureManager extends ACFAdventureManager<ChatColor> {
     @Override
     public void sendMessage(CommandIssuer issuer, MessageFormatter<ChatColor> formatter, String message) {
         if (formatter != null) {
-            message = "<color:" + Integer.toHexString(formatter.getDefaultColor().getColor().getRGB()).substring(2) + ">" + message;
+            message = "<color:#" + Integer.toHexString(formatter.getDefaultColor().getColor().getRGB()).substring(2) + ">" + message;
             for (int i = 1; i <= formatter.getColors().size(); ++i) {
                 String colorname = "#" + Integer.toHexString(formatter.getColor(i).getColor().getRGB()).substring(2);
                 message = message.replace("<c" + i + ">", "<color:" + colorname + ">");
