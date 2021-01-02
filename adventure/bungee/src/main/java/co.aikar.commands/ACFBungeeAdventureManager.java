@@ -14,6 +14,9 @@ public class ACFBungeeAdventureManager extends ACFAdventureManager<ChatColor> {
         super(manager);
 
         this.audiences = BungeeAudiences.create(plugin);
+
+        CommandContexts<? extends CommandExecutionContext<?, ? extends CommandIssuer>> contexts = manager.getCommandContexts();
+        contexts.registerIssuerOnlyContext(Audience.class, c -> wrapIssuer(c.getIssuer()));
     }
 
     public MiniMessage getMiniMessage() {
