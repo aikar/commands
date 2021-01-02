@@ -131,15 +131,17 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
         });
         registerContext(OfflinePlayer.class, c -> {
             String name = c.popFirstArg();
-            UUID uuid = null;
-            if (c.hasFlag("uuid")) {
-                uuid = UUID.fromString(name);
-            }
             OfflinePlayer offlinePlayer;
-            if (uuid != null) {
+            if (c.hasFlag("uuid")) {
+                UUID uuid;
+                try {
+                    uuid = UUID.fromString(name);
+                } catch (IllegalArgumentException e) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,
+                            "{search}", name);
+                }
                 offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            }
-            else {
+            } else {
                 if (!isValidName(name)) {
                     throw new InvalidCommandArgument(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 }
