@@ -43,6 +43,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static co.aikar.commands.ACFBukkitUtil.isValidName;
+
 @SuppressWarnings("WeakerAccess")
 public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutionContext> {
 
@@ -133,7 +135,16 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
             if (c.hasFlag("uuid")) {
                 uuid = UUID.fromString(name);
             }
-            OfflinePlayer offlinePlayer = uuid != null ? Bukkit.getOfflinePlayer(uuid) : Bukkit.getOfflinePlayer(name);
+            OfflinePlayer offlinePlayer;
+            if (uuid != null) {
+                offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            }
+            else {
+                if (!isValidName(name)) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+                }
+                offlinePlayer = Bukkit.getOfflinePlayer(name);
+            }
             if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
                 throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,
                         "{search}", name);
