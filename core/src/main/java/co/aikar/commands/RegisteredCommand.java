@@ -48,8 +48,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -150,8 +150,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             if (passedArgs == null) return;
 
             Object obj = method.invoke(scope, passedArgs.values().toArray());
-            if (obj instanceof CompletableFuture) {
-                CompletableFuture<?> future = (CompletableFuture) obj;
+            if (obj instanceof CompletionStage<?>) {
+                CompletionStage<?> future = (CompletionStage<?>) obj;
                 future.exceptionally(t -> {
                     handleException(sender, args, t);
                     return null;
