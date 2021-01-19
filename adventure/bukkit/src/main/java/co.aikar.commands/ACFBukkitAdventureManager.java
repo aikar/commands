@@ -14,6 +14,7 @@ public class ACFBukkitAdventureManager extends ACFAdventureManager<ChatColor> {
         super(manager);
 
         this.audiences = BukkitAudiences.create(plugin);
+        this.miniMessage = MiniMessage.get();
 
         CommandContexts<? extends CommandExecutionContext<?, ? extends CommandIssuer>> contexts = manager.getCommandContexts();
         contexts.registerIssuerOnlyContext(Audience.class, c -> wrapIssuer(c.getIssuer()));
