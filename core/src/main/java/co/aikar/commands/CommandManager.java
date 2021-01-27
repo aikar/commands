@@ -75,6 +75,7 @@ public abstract class CommandManager<
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
+    protected boolean hideUnregisteredReplacements = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = new ArrayList<>();
     protected Set<Locale> supportedLanguages = new HashSet<>(Arrays.asList(Locales.ENGLISH, Locales.DUTCH, Locales.GERMAN, Locales.SPANISH, Locales.FRENCH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN, Locales.BULGARIAN, Locales.HUNGARIAN, Locales.TURKISH, Locales.JAPANESE));
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
@@ -270,6 +271,16 @@ public abstract class CommandManager<
     public boolean usePerIssuerLocale(boolean setting) {
         boolean old = usePerIssuerLocale;
         usePerIssuerLocale = setting;
+        return old;
+    }
+
+    public boolean hidingUnregisteredReplacements() {
+        return hideUnregisteredReplacements;
+    }
+
+    public boolean hideUnregisteredReplacements(boolean setting) {
+        boolean old = hideUnregisteredReplacements;
+        hideUnregisteredReplacements = setting;
         return old;
     }
 
