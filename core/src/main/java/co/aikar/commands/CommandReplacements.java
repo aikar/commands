@@ -61,7 +61,7 @@ public class CommandReplacements {
     @Nullable
     private String addReplacement0(String key, String val) {
         key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase(Locale.ENGLISH)).replaceAll("");
-        Pattern pattern = Pattern.compile("%\\{" + Pattern.quote(key) + "}|%" + Pattern.compile(key) + "\\b",
+        Pattern pattern = Pattern.compile("%\\{" + Pattern.quote(key) + "}|%" + Pattern.quote(key) + "\\b",
                 Pattern.CASE_INSENSITIVE);
 
         Map.Entry<Pattern, String> entry = new AbstractMap.SimpleImmutableEntry<>(pattern, val);
@@ -84,8 +84,7 @@ public class CommandReplacements {
         }
 
         // check for unregistered replacements
-        Pattern pattern = Pattern.compile("%\\{.[^\\s]*}");
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = ACFPatterns.REPLACEMENT_PATTERN.matcher(text);
         while (matcher.find()) {
             this.manager.log(LogLevel.ERROR, "Found unregistered replacement: " + matcher.group());
         }
