@@ -171,10 +171,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     }
 
     void handleException(CommandIssuer sender, List<String> args, Throwable e) {
-        while (e instanceof ExecutionException || e instanceof CompletionException) {
-            e = e.getCause();
-        }
-        if (e instanceof InvocationTargetException && e.getCause() instanceof InvalidCommandArgument) {
+        while (e instanceof ExecutionException || e instanceof CompletionException || e instanceof InvocationTargetException) {
             e = e.getCause();
         }
         if (e instanceof ShowCommandHelp) {
