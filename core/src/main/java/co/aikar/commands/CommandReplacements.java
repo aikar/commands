@@ -50,7 +50,7 @@ public class CommandReplacements {
             throw new IllegalArgumentException("Must pass a number of arguments divisible by 2.");
         }
         for (int i = 0; i < replacements.length; i += 2) {
-            addReplacement(replacements[i], replacements[i+1]);
+            addReplacement(replacements[i], replacements[i + 1]);
         }
     }
 
@@ -61,7 +61,8 @@ public class CommandReplacements {
     @Nullable
     private String addReplacement0(String key, String val) {
         key = ACFPatterns.PERCENTAGE.matcher(key.toLowerCase(Locale.ENGLISH)).replaceAll("");
-        Pattern pattern = Pattern.compile("%" + Pattern.quote(key) + "\\b", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("%\\{" + Pattern.quote(key) + "}|%" + Pattern.quote(key) + "\\b",
+                Pattern.CASE_INSENSITIVE);
 
         Map.Entry<Pattern, String> entry = new AbstractMap.SimpleImmutableEntry<>(pattern, val);
         Map.Entry<Pattern, String> replaced = replacements.put(key, entry);
@@ -83,8 +84,7 @@ public class CommandReplacements {
         }
 
         // check for unregistered replacements
-        Pattern pattern = Pattern.compile("%.[^\\s]*");
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = ACFPatterns.REPLACEMENT_PATTERN.matcher(text);
         while (matcher.find()) {
             this.manager.log(LogLevel.ERROR, "Found unregistered replacement: " + matcher.group());
         }

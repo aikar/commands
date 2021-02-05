@@ -49,10 +49,12 @@ final class ACFPatterns {
     public static final Pattern EQUALS = Pattern.compile("=");
     public static final Pattern FORMATTER = Pattern.compile("<c(?<color>\\d+)>(?<msg>.*?)</c\\1>", Pattern.CASE_INSENSITIVE);
     public static final Pattern I18N_STRING = Pattern.compile("\\{@@(?<key>.+?)}", Pattern.CASE_INSENSITIVE);
+    public static final Pattern REPLACEMENT_PATTERN = Pattern.compile("%\\{.[^\\s]*}");
 
 
+    private ACFPatterns() {
+    }
 
-    private ACFPatterns() {}
     @SuppressWarnings("Convert2MethodRef")
     static final Map<String, Pattern> patternCache = ExpiringMap.builder()
             .maxSize(200)
@@ -67,9 +69,7 @@ final class ACFPatterns {
      * <p>
      * The {@link #patternCache} does not contain the constant patterns defined in this class.
      *
-     * @param pattern
-     *         The raw pattern in a String.
-     *
+     * @param pattern The raw pattern in a String.
      * @return The pattern which has been cached.
      */
     public static Pattern getPattern(String pattern) {
