@@ -30,6 +30,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-adventure-bungee</artifactId>
+            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
             <version>1.13-SNAPSHOT</version>

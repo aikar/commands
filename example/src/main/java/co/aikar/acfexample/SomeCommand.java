@@ -24,6 +24,7 @@
 package co.aikar.acfexample;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -130,6 +131,15 @@ public class SomeCommand extends BaseCommand {
     @CommandCompletion("* * @test foo1|foo2|foo3")
     public void onTestCompletion(CommandSender sender, OnlinePlayer player, World world, String test, String foo1, TestEnum e) {
         sender.sendMessage("You got " + player.getPlayer().getName() + " - " + world.getName() + " - " + test + " - " + foo1 + " - " + e.name());
+    }
+
+    @Subcommand("adventure")
+    @CommandAlias("clickable")
+    @Description("Test adventure with clickable text")
+    public void onTestAdventure(CommandIssuer issuer) {
+        issuer.sendMessage("<red>This is a <yellow>" +
+                "<hover:show_text:'<yellow>Click here'>" +
+                "<click:open_url:'https://docs.adventure.kyori.net/minimessage.html'>clickable message</click></hover></yellow>.");
     }
 
 

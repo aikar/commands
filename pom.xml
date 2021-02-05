@@ -53,6 +53,10 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
+        <repository>
+            <id>sonatype-oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <build>
@@ -116,6 +120,18 @@
                         <relocation>
                             <pattern>co.aikar.timings.lib</pattern>
                             <shadedPattern>co.aikar.commands.lib.timings</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.adventure</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.examination</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.checkerframework</pattern>
+                            <shadedPattern>co.aikar.commands.adventure.checkerframework</shadedPattern>
                         </relocation>
                     </relocations>
                     <dependencyReducedPomLocation>
@@ -205,5 +221,7 @@
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
+        <module>adventure/bukkit</module>
+        <module>adventure/bungee</module>
     </modules>
 </project>
