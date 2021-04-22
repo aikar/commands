@@ -28,9 +28,11 @@ import co.aikar.locales.MessageKeyProvider;
 import co.aikar.util.Table;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -553,6 +555,66 @@ public abstract class CommandManager<
             }
             clazz = clazz.getSuperclass();
         } while (!clazz.equals(BaseCommand.class));
+    }
+
+    /**
+     * Instantiates a class with dependencies then registers a command with ACF
+     *
+     * @param commandClass the class of the command
+     */
+    public void registerCommand(Class<? extends BaseCommand> commandClass) {
+        registerCommand(constructCommand(commandClass));
+    }
+
+    /**
+     * Attempts to construct an instance of a command by injecting dependencies registered with
+     * {@link CommandManager#registerDependency(Class, Object)} into either the only constructor or the constructor
+     * annotated with {@link Dependency}.
+     *
+     * @param commandClass the class to instantiate
+     * @return the instance of the command
+     */
+    BaseCommand constructCommand(Class<? extends BaseCommand> commandClass) {
+        Constructor<?> constructor = null;
+        for (Constructor<?> possibleConstructor : commandClass.getConstructors()) {
+            if (annotations.hasAnnotation(possibleConstructor, Dependency.class)) {
+                constructor = possibleConstructor;
+                break;
+            }
+        }
+        if (commandClass.getConstructors().length == 1) {
+            constructor = commandClass.getConstructors()[0];
+        }
+        if (constructor == null) {
+            throw new UnresolvedDependencyException("");
+        }
+
+        Parameter[] parameters = constructor.getParameters();
+        Object[] args = new Object[parameters.length];
+        boolean accessible = constructor.isAccessible();
+        if (!accessible) {
+            constructor.setAccessible(true);
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            String dependency = annotations.getAnnotationValue(parameters[i], Dependency.class);
+            String key = (key = dependency) == null || key.isEmpty() ? parameters[i].getType().getName() : key;
+            Object object = dependencies.row(parameters[i].getType()).get(key);
+            if (object == null) {
+                throw new UnresolvedDependencyException("Could not find a registered instance of " +
+                        parameters[i].getType().getName() + " with key " + key + " for field " + parameters[i].getName() +
+                        " in class " + commandClass.getName());
+            }
+            args[i] = object;
+        }
+
+        BaseCommand instance = null;
+        try {
+            instance = (BaseCommand) constructor.newInstance(args);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalStateException("Error creating instance of " + commandClass.getName(), e);
+        }
+        constructor.setAccessible(accessible);
+        return instance;
     }
 
     /**

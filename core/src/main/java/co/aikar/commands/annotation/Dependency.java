@@ -29,11 +29,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Injects a dependency into the field this is attached to.
+ * Injects a dependency into the field, constructor or parameter this is attached to.
  * Any time a new dependency is registered, this will be overwritten.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
 public @interface Dependency {
     /**
      * The key that should be used to lookup the instances, defaults to \"\"
