@@ -586,7 +586,7 @@ public abstract class CommandManager<
             constructor = commandClass.getConstructors()[0];
         }
         if (constructor == null) {
-            throw new UnresolvedDependencyException("");
+            throw new IllegalStateException("Could not find suitable constructor for " + commandClass.getName());
         }
 
         Parameter[] parameters = constructor.getParameters();
@@ -607,7 +607,7 @@ public abstract class CommandManager<
             args[i] = object;
         }
 
-        BaseCommand instance = null;
+        BaseCommand instance;
         try {
             instance = (BaseCommand) constructor.newInstance(args);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
