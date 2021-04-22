@@ -597,7 +597,7 @@ public abstract class CommandManager<
         }
         for (int i = 0; i < parameters.length; i++) {
             String dependency = annotations.getAnnotationValue(parameters[i], Dependency.class);
-            String key = (key = dependency) == null || key.isEmpty() ? parameters[i].getType().getName() : key;
+            String key = dependency == null || dependency.isEmpty() ? parameters[i].getType().getName() : dependency;
             Object object = dependencies.row(parameters[i].getType()).get(key);
             if (object == null) {
                 throw new UnresolvedDependencyException("Could not find a registered instance of " +
