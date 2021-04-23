@@ -578,8 +578,11 @@ public abstract class CommandManager<
         Constructor<?> constructor = null;
         for (Constructor<?> possibleConstructor : commandClass.getConstructors()) {
             if (annotations.hasAnnotation(possibleConstructor, Dependency.class)) {
+                if (constructor != null) {
+                    throw new IllegalStateException("Command " + commandClass.getName() + " has more than one " +
+                            "constructor annotated @Depenedency.");
+                }
                 constructor = possibleConstructor;
-                break;
             }
         }
         if (commandClass.getConstructors().length == 1) {
