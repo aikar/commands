@@ -637,9 +637,8 @@ public abstract class BaseCommand {
 
             final List<String> cmds = new ArrayList<>();
             if (search != null) {
-                CommandRouter.CommandRouteResult result = router.matchCommand(search, true);
-                if (result != null) {
-                    cmds.addAll(completeCommand(issuer, result.cmd, result.args, commandLabel, isAsync));
+                for (RegisteredCommand<?> command : search.commands) {
+                    cmds.addAll(completeCommand(issuer, command, args, commandLabel, isAsync));
                 }
             }
 
