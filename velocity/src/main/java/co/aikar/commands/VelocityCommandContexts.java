@@ -31,9 +31,10 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.velocity.contexts.OnlinePlayer;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 import org.jetbrains.annotations.Nullable;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
@@ -56,7 +57,7 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
 
         registerContext(TextFormat.class, c -> {
             String first = c.popFirstArg();
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            Stream<TextFormat> colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -> namedTextColor);
             if (!c.hasFlag("colorsonly")) {
                 colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
@@ -67,7 +68,7 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
                 colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.toString())));
             }
 
-            TextColor match = ACFUtil.simpleMatch(TextColor.class, first);
+            TextColor match = NamedTextColor.NAMES.value(ACFUtil.simplifyString(first));
             if (match == null) {
                 String valid = colors.map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));

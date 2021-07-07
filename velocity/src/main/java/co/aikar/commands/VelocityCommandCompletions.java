@@ -34,16 +34,16 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            Stream<TextFormat> colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -> namedTextColor);
             if (!c.hasConfig("colorsonly")) {
                 colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
             }

@@ -11,14 +11,13 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ACFVelocityUtil {
 
-    @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return LegacyComponentSerializer.legacy().deserialize(message);
+        return LegacyComponentSerializer.legacySection().deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
