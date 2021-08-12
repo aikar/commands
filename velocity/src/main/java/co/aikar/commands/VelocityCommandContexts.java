@@ -23,18 +23,19 @@
 
 package co.aikar.commands;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import co.aikar.commands.velocity.contexts.OnlinePlayer;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
-import co.aikar.commands.velocity.contexts.OnlinePlayer;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
 
@@ -56,22 +57,27 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
 
         registerContext(TextFormat.class, c -> {
             String first = c.popFirstArg();
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            Set<TextFormat> colors = new HashSet<>(NamedTextColor.NAMES.values());
             if (!c.hasFlag("colorsonly")) {
-                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
+                colors.addAll(Arrays.asList(TextDecoration.values()));
             }
             String filter = c.getFlagValue("filter", (String) null);
             if (filter != null) {
                 filter = ACFUtil.simplifyString(filter);
                 String finalFilter = filter;
-                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.toString())));
+                colors.removeIf(color -> finalFilter.equals(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))));
             }
 
-            TextColor match = ACFUtil.simpleMatch(TextColor.class, first);
+            TextFormat match = null;
+            for (TextFormat color : colors) {
+                if (ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color)).equals(first)) {
+                    match = color;
+                    break;
+                }
+            }
             if (match == null) {
-                String valid = colors.map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
+                String valid = colors.stream().map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
                         .collect(Collectors.joining("<c1>,</c1> "));
-
                 throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             }
             return match;

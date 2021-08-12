@@ -10,15 +10,17 @@ import java.util.stream.Collectors;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
-import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ACFVelocityUtil {
 
-    @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return LegacyComponentSerializer.legacy().deserialize(message);
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
@@ -76,5 +78,15 @@ public class ACFVelocityUtil {
             throw new NullPointerException(String.format(message, values));
         }
         return object;
+    }
+
+    public static String getTextFormatName(TextFormat textFormat) {
+        if (textFormat instanceof NamedTextColor) {
+            return ((NamedTextColor) textFormat).toString();
+        } else if (textFormat instanceof TextDecoration) {
+            return ((TextDecoration) textFormat).toString();
+        } else {
+            return "";
+        }
     }
 }

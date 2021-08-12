@@ -23,14 +23,12 @@
 
 package co.aikar.commands;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.UUID;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class VelocityCommandIssuer implements CommandIssuer {
     private final VelocityCommandManager manager;

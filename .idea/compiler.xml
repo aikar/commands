@@ -7,15 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="acf-jda" />
+        <module name="acf-paper" />
+        <module name="example-plugin" />
         <module name="acf-sponge" />
         <module name="acf" />
-        <module name="acf-example" />
-        <module name="example-plugin" />
-        <module name="acf-brigadier" />
-        <module name="acf-paper" />
-        <module name="acf-jda" />
-        <module name="acf-core" />
         <module name="acf-velocity" />
+        <module name="acf-core" />
+        <module name="acf-brigadier" />
+        <module name="acf-example" />
         <module name="acf-bukkit" />
         <module name="acf-bungee" />
       </profile>
@@ -47,6 +47,7 @@
       <module name="acf-parent" options="" />
       <module name="acf-sponge" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
+      <module name="commands" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
     </option>
   </component>
