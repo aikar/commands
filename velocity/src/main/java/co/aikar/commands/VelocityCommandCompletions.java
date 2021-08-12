@@ -23,39 +23,38 @@
 
 package co.aikar.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            Set<TextFormat> colors = new HashSet<>(NamedTextColor.NAMES.values());
             if (!c.hasConfig("colorsonly")) {
-                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
+                colors.addAll(Arrays.asList(TextDecoration.values()));
             }
             String filter = c.getConfig("filter");
             if (filter != null) {
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)
                         .collect(Collectors.toSet());
 
-                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.toString())));
+                colors.removeIf(col -> filters.contains(ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(col))));
             }
 
-            return colors.map(color -> ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());
+            return colors.stream().map(color -> ACFUtil.simplifyString(ACFVelocityUtil.getTextFormatName(color))).collect(Collectors.toList());
         });
         registerCompletion("players", c -> {
             CommandSource sender = c.getSender();
