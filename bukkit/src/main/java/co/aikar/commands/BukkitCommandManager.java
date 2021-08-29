@@ -126,7 +126,7 @@ public class BukkitCommandManager extends CommandManager<
                 return;
             }
             Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
-        }, 5, 5);
+        }, 30, 30);
 
         registerDependency(plugin.getClass(), plugin);
         registerDependency(Logger.class, plugin.getLogger());
