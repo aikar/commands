@@ -34,7 +34,7 @@ See [Examples](https://github.com/aikar/commands/wiki/Real-World-Examples) for s
 
 We are on version:
  - GROUP: co.aikar
- - VERSION `0.5.0-SNAPSHOT`
+ - VERSION `0.5.1-SNAPSHOT`
 
 ARTIFACTID varies by platform target:
  * [Bukkit](https://spigotmc.org): ***acf-bukkit*** (For targetting Bukkit/Spigot)

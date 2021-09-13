@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,28 +35,28 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
+            Stream<String> colors = NamedTextColor.NAMES.keys().stream().map((String::toUpperCase));
             if (!c.hasConfig("colorsonly")) {
-                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
+                colors = Stream.concat(colors, Arrays.stream(TextDecoration.values())
+                        .map((dec -> dec.name().toUpperCase())));
             }
             String filter = c.getConfig("filter");
             if (filter != null) {
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)
                         .collect(Collectors.toSet());
 
-                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.toString())));
+                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color)));
             }
-
-            return colors.map(color -> ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());
+            return colors.map(color -> ACFUtil.simplifyString(color)).collect(Collectors.toList());
         });
         registerCompletion("players", c -> {
             CommandSource sender = c.getSender();

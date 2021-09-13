@@ -74,12 +74,10 @@ public class VelocityRootCommand implements Command, RootCommand {
         return children;
     }
 
-    @Override
     public void execute(CommandSource source, String[] args) {
         execute(manager.getCommandIssuer(source), getCommandName(), args);
     }
 
-    @Override
     public List<String> suggest(CommandSource source, String[] args) {
         return getTabCompletions(manager.getCommandIssuer(source), getCommandName(), args);
     }

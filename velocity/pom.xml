@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>acf-parent</artifactId>
 		<groupId>co.aikar</groupId>
-		<version>0.5.0-SNAPSHOT</version>
+		<version>0.5.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>acf-velocity</artifactId>
-	<version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+	<version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 
 	<name>ACF (Velocity)</name>
 
@@ -26,13 +26,13 @@
 		<dependency>
 			<groupId>co.aikar</groupId>
 			<artifactId>acf-core</artifactId>
-			<version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+			<version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.velocitypowered</groupId>
 			<artifactId>velocity-api</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>3.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -31,9 +31,10 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.velocity.contexts.OnlinePlayer;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import net.kyori.text.format.TextFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 import org.jetbrains.annotations.Nullable;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
@@ -52,29 +53,6 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
             return proxiedPlayer;
-        });
-
-        registerContext(TextFormat.class, c -> {
-            String first = c.popFirstArg();
-            Stream<TextFormat> colors = Stream.of(TextColor.values());
-            if (!c.hasFlag("colorsonly")) {
-                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
-            }
-            String filter = c.getFlagValue("filter", (String) null);
-            if (filter != null) {
-                filter = ACFUtil.simplifyString(filter);
-                String finalFilter = filter;
-                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.toString())));
-            }
-
-            TextColor match = ACFUtil.simpleMatch(TextColor.class, first);
-            if (match == null) {
-                String valid = colors.map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
-                        .collect(Collectors.joining("<c1>,</c1> "));
-
-                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
-            }
-            return match;
         });
     }
 
