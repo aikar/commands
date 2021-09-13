@@ -2,13 +2,13 @@ language: java
 sudo: required
 dist: trusty
 jdk:
-  - oraclejdk8
   - openjdk8
   - openjdk11
+  - openjdk16
 git:
   submodules: false
 before_install:
-  - sudo apt-get update
+  #- sudo apt-get update
   # workaround for missing cacerts in openjdk
   - sudo dpkg --purge --force-depends ca-certificates-java
   - sudo apt-get install ca-certificates-java
