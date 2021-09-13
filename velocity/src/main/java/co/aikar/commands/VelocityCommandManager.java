@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.velocitypowered.api.command.CommandMeta;
 import net.kyori.adventure.text.format.TextColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,7 +134,8 @@ public class VelocityCommandManager extends
                 if (force) {
                     proxy.getCommandManager().unregister(commandName);
                 }
-                proxy.getCommandManager().register(commandName, velocityCommand);
+                CommandMeta meta = proxy.getCommandManager().metaBuilder(commandName).build();
+                proxy.getCommandManager().register(meta, velocityCommand);
             }
             velocityCommand.isRegistered = true;
             registeredCommands.put(commandName, velocityCommand);
