@@ -29,7 +29,9 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpSearchTags;
+import co.aikar.commands.annotation.HideConditions;
 import co.aikar.commands.annotation.Private;
+import co.aikar.commands.annotation.ShowConditions;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.contexts.ContextResolver;
 import org.jetbrains.annotations.Nullable;
@@ -98,6 +100,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.DEFAULT_EMPTY); // no replacements as it should be per-issuer
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.showConditions = annotations.getAnnotationValue(method, ShowConditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.hideConditions = annotations.getAnnotationValue(method, HideConditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.syntaxText = annotations.getAnnotationValue(method, Syntax.class, Annotations.REPLACEMENTS);
 

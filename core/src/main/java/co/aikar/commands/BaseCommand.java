@@ -32,7 +32,9 @@ import co.aikar.commands.annotation.Conditions;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.HelpCommand;
+import co.aikar.commands.annotation.HideConditions;
 import co.aikar.commands.annotation.PreCommand;
+import co.aikar.commands.annotation.ShowConditions;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.UnknownHandler;
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
@@ -261,6 +263,8 @@ public abstract class BaseCommand {
         this.description = annotations.getAnnotationValue(self, Description.class, Annotations.NO_EMPTY | Annotations.REPLACEMENTS);
         this.parentSubcommand = getParentSubcommand(self);
         this.conditions = annotations.getAnnotationValue(self, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.showConditions = annotations.getAnnotationValue(self, ShowConditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
+        this.hideConditions = annotations.getAnnotationValue(self, HideConditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
         computePermissions(); // Must be before any subcommands so they can inherit permissions
         registerSubcommands();
@@ -646,7 +650,7 @@ public abstract class BaseCommand {
             final List<String> cmds = new ArrayList<>();
             if (search != null) {
                 CommandRouter.CommandRouteResult result = router.matchCommand(search, true);
-                if (result != null) {
+                if (result != null && this.manager.visibilityConditions.shouldTabComplete(result.cmd, issuer)) {
                     cmds.addAll(completeCommand(issuer, result.cmd, result.args, commandLabel, isAsync));
                 }
             }
@@ -677,7 +681,9 @@ public abstract class BaseCommand {
                 }
 
                 String[] split = ACFPatterns.SPACE.split(value.prefSubCommand);
-                cmds.add(split[cmdIndex]);
+                if (this.manager.visibilityConditions.shouldTabComplete(value, issuer)) {
+                    cmds.add(split[cmdIndex]);
+                }
             }
         }
         return new ArrayList<>(cmds);
