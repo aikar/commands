@@ -69,6 +69,7 @@ public abstract class CommandManager<
     protected Map<String, RootCommand> rootCommands = new HashMap<>();
     protected final CommandReplacements replacements = new CommandReplacements(this);
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
+    protected final CommandVisibilityConditions<I, CC> visibilityConditions = new CommandVisibilityConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     boolean logUnhandledExceptions = true;
     protected Table<Class<?>, String, Object> dependencies = new Table<>();
@@ -132,6 +133,10 @@ public abstract class CommandManager<
 
     public CommandConditions<I, CEC, CC> getCommandConditions() {
         return conditions;
+    }
+
+    public CommandVisibilityConditions<I, CC> getCommandVisibilityConditions() {
+        return visibilityConditions;
     }
 
     /**

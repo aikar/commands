@@ -144,6 +144,14 @@ public abstract class BaseCommand {
      */
     @Nullable String conditions;
     /**
+     * The show conditions of the command. This may be null if no show conditions has been provided.
+     */
+    @Nullable String showConditions;
+    /**
+     * The hide conditions of the command. This may be null if no hide conditions has been provided.
+     */
+    @Nullable String hideConditions;
+    /**
      * Identifies if the command has an explicit help command annotated with {@link HelpCommand}
      */
     boolean hasHelpCommand;

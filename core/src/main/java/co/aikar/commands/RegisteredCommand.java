@@ -68,6 +68,8 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
     String permission;
     String complete;
     String conditions;
+    String showConditions;
+    String hideConditions;
     public String helpSearchTags;
 
     boolean isPrivate;
