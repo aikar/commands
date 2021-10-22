@@ -41,10 +41,10 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
-import net.kyori.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class VelocityCommandManager extends
-        CommandManager<CommandSource, VelocityCommandIssuer, TextColor, VelocityMessageFormatter, VelocityCommandExecutionContext, VelocityConditionContext> {
+        CommandManager<CommandSource, VelocityCommandIssuer, NamedTextColor, VelocityMessageFormatter, VelocityCommandExecutionContext, VelocityConditionContext> {
 
     protected final ProxyServer proxy;
     protected final PluginContainer plugin;
@@ -56,10 +56,10 @@ public class VelocityCommandManager extends
     public VelocityCommandManager(ProxyServer proxy, Object plugin) {
         this.proxy = proxy;
         this.plugin = proxy.getPluginManager().getPlugin(plugin.getClass().getAnnotation(Plugin.class).id()).get();
-        this.formatters.put(MessageType.ERROR, defaultFormatter = new VelocityMessageFormatter(TextColor.RED, TextColor.YELLOW, TextColor.RED));
-        this.formatters.put(MessageType.SYNTAX, new VelocityMessageFormatter(TextColor.YELLOW, TextColor.GREEN, TextColor.WHITE));
-        this.formatters.put(MessageType.INFO, new VelocityMessageFormatter(TextColor.BLUE, TextColor.DARK_GREEN, TextColor.GREEN));
-        this.formatters.put(MessageType.HELP, new VelocityMessageFormatter(TextColor.AQUA, TextColor.GREEN, TextColor.YELLOW));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new VelocityMessageFormatter(NamedTextColor.RED, NamedTextColor.YELLOW, NamedTextColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new VelocityMessageFormatter(NamedTextColor.YELLOW, NamedTextColor.GREEN, NamedTextColor.WHITE));
+        this.formatters.put(MessageType.INFO, new VelocityMessageFormatter(NamedTextColor.BLUE, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN));
+        this.formatters.put(MessageType.HELP, new VelocityMessageFormatter(NamedTextColor.AQUA, NamedTextColor.GREEN, NamedTextColor.YELLOW));
 
         getLocales();
 
@@ -129,7 +129,7 @@ public class VelocityCommandManager extends
                 if (force) {
                     proxy.getCommandManager().unregister(commandName);
                 }
-                proxy.getCommandManager().register(velocityCommand, commandName);
+                proxy.getCommandManager().register(commandName, velocityCommand);
             }
             velocityCommand.isRegistered = true;
             registeredCommands.put(commandName, velocityCommand);

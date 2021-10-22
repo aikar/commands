@@ -1,17 +1,16 @@
 package co.aikar.commands;
 
-import net.kyori.text.format.TextColor;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-public class VelocityMessageFormatter extends MessageFormatter<TextColor> {
+public class VelocityMessageFormatter extends MessageFormatter<NamedTextColor> {
 
-    public VelocityMessageFormatter(TextColor... colors) {
+    public VelocityMessageFormatter(NamedTextColor... colors) {
         super(colors);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    String format(TextColor color, String message) {
-        return LegacyComponentSerializer.legacy().serialize(LegacyComponentSerializer.legacy().deserialize(message).color(color));
+    String format(NamedTextColor color, String message) {
+        return LegacyComponentSerializer.legacySection().serialize(LegacyComponentSerializer.legacySection().deserialize(message).color(color));
     }
 }
