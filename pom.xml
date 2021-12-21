@@ -25,7 +25,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>co.aikar</groupId>
     <artifactId>acf-parent</artifactId>
-    <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+    <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
     <packaging>pom</packaging>
     <name>ACF (All)</name>
     <url>https://acf.emc.gs</url>
@@ -126,7 +126,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <sourcepath>src/main/java</sourcepath>
                     <destDir>../docs/${project.artifactId}/</destDir>

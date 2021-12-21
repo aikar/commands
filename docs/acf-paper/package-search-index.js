@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"co.aikar.commands"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"co.aikar.commands"}];updateSearchResults();
