@@ -36,58 +36,57 @@
 <span class="source-line-no">023</span><span id="line-23"></span>
 <span class="source-line-no">024</span><span id="line-24">package co.aikar.commands;</span>
 <span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">import java.util.ArrayList;</span>
-<span class="source-line-no">027</span><span id="line-27">import java.util.Arrays;</span>
-<span class="source-line-no">028</span><span id="line-28">import java.util.Set;</span>
-<span class="source-line-no">029</span><span id="line-29">import java.util.stream.Collectors;</span>
-<span class="source-line-no">030</span><span id="line-30">import java.util.stream.Stream;</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">import com.velocitypowered.api.command.CommandSource;</span>
-<span class="source-line-no">033</span><span id="line-33">import com.velocitypowered.api.proxy.Player;</span>
-<span class="source-line-no">034</span><span id="line-34">import com.velocitypowered.api.proxy.ProxyServer;</span>
-<span class="source-line-no">035</span><span id="line-35"></span>
-<span class="source-line-no">036</span><span id="line-36">import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;</span>
-<span class="source-line-no">037</span><span id="line-37">import net.kyori.adventure.text.format.NamedTextColor;</span>
-<span class="source-line-no">038</span><span id="line-38">import net.kyori.adventure.text.format.TextDecoration;</span>
-<span class="source-line-no">039</span><span id="line-39">import net.kyori.adventure.text.format.TextFormat;</span>
-<span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41">public class VelocityCommandCompletions extends CommandCompletions&lt;VelocityCommandCompletionContext&gt; {</span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">    public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {</span>
-<span class="source-line-no">044</span><span id="line-44">        super(manager);</span>
-<span class="source-line-no">045</span><span id="line-45">        registerAsyncCompletion("chatcolors", c -&gt; {</span>
-<span class="source-line-no">046</span><span id="line-46">            Stream&lt;TextFormat&gt; colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -&gt; namedTextColor);</span>
-<span class="source-line-no">047</span><span id="line-47">            if (!c.hasConfig("colorsonly")) {</span>
-<span class="source-line-no">048</span><span id="line-48">                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));</span>
-<span class="source-line-no">049</span><span id="line-49">            }</span>
-<span class="source-line-no">050</span><span id="line-50">            String filter = c.getConfig("filter");</span>
-<span class="source-line-no">051</span><span id="line-51">            if (filter != null) {</span>
-<span class="source-line-no">052</span><span id="line-52">                Set&lt;String&gt; filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)</span>
-<span class="source-line-no">053</span><span id="line-53">                        .collect(Collectors.toSet());</span>
-<span class="source-line-no">054</span><span id="line-54"></span>
-<span class="source-line-no">055</span><span id="line-55">                colors = colors.filter(color -&gt; filters.contains(ACFUtil.simplifyString(color.toString())));</span>
-<span class="source-line-no">056</span><span id="line-56">            }</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">            return colors.map(color -&gt; ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());</span>
-<span class="source-line-no">059</span><span id="line-59">        });</span>
-<span class="source-line-no">060</span><span id="line-60">        registerCompletion("players", c -&gt; {</span>
-<span class="source-line-no">061</span><span id="line-61">            CommandSource sender = c.getSender();</span>
-<span class="source-line-no">062</span><span id="line-62">            ACFVelocityUtil.validate(sender, "Sender cannot be null");</span>
-<span class="source-line-no">063</span><span id="line-63">            String input = c.getInput();</span>
-<span class="source-line-no">064</span><span id="line-64"></span>
-<span class="source-line-no">065</span><span id="line-65">            ArrayList&lt;String&gt; matchedPlayers = new ArrayList&lt;&gt;();</span>
-<span class="source-line-no">066</span><span id="line-66">            for (Player player : server.getAllPlayers()) {</span>
-<span class="source-line-no">067</span><span id="line-67">                String name = player.getUsername();</span>
-<span class="source-line-no">068</span><span id="line-68">                if (ApacheCommonsLangUtil.startsWithIgnoreCase(name, input)) {</span>
-<span class="source-line-no">069</span><span id="line-69">                    matchedPlayers.add(name);</span>
-<span class="source-line-no">070</span><span id="line-70">                }</span>
-<span class="source-line-no">071</span><span id="line-71">            }</span>
-<span class="source-line-no">072</span><span id="line-72"></span>
-<span class="source-line-no">073</span><span id="line-73">            matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);</span>
-<span class="source-line-no">074</span><span id="line-74">            return matchedPlayers;</span>
-<span class="source-line-no">075</span><span id="line-75">        });</span>
-<span class="source-line-no">076</span><span id="line-76">    }</span>
-<span class="source-line-no">077</span><span id="line-77">}</span>
+<span class="source-line-no">026</span><span id="line-26">import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;</span>
+<span class="source-line-no">027</span><span id="line-27">import com.velocitypowered.api.command.CommandSource;</span>
+<span class="source-line-no">028</span><span id="line-28">import com.velocitypowered.api.proxy.Player;</span>
+<span class="source-line-no">029</span><span id="line-29">import com.velocitypowered.api.proxy.ProxyServer;</span>
+<span class="source-line-no">030</span><span id="line-30">import net.kyori.adventure.text.format.NamedTextColor;</span>
+<span class="source-line-no">031</span><span id="line-31">import net.kyori.adventure.text.format.TextDecoration;</span>
+<span class="source-line-no">032</span><span id="line-32">import net.kyori.adventure.text.format.TextFormat;</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">import java.util.ArrayList;</span>
+<span class="source-line-no">035</span><span id="line-35">import java.util.Arrays;</span>
+<span class="source-line-no">036</span><span id="line-36">import java.util.Set;</span>
+<span class="source-line-no">037</span><span id="line-37">import java.util.stream.Collectors;</span>
+<span class="source-line-no">038</span><span id="line-38">import java.util.stream.Stream;</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">public class VelocityCommandCompletions extends CommandCompletions&lt;VelocityCommandCompletionContext&gt; {</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">    public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {</span>
+<span class="source-line-no">043</span><span id="line-43">        super(manager);</span>
+<span class="source-line-no">044</span><span id="line-44">        registerAsyncCompletion("chatcolors", c -&gt; {</span>
+<span class="source-line-no">045</span><span id="line-45">            Stream&lt;TextFormat&gt; colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -&gt; namedTextColor);</span>
+<span class="source-line-no">046</span><span id="line-46">            if (!c.hasConfig("colorsonly")) {</span>
+<span class="source-line-no">047</span><span id="line-47">                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));</span>
+<span class="source-line-no">048</span><span id="line-48">            }</span>
+<span class="source-line-no">049</span><span id="line-49">            String filter = c.getConfig("filter");</span>
+<span class="source-line-no">050</span><span id="line-50">            if (filter != null) {</span>
+<span class="source-line-no">051</span><span id="line-51">                Set&lt;String&gt; filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)</span>
+<span class="source-line-no">052</span><span id="line-52">                        .collect(Collectors.toSet());</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">                colors = colors.filter(color -&gt; filters.contains(ACFUtil.simplifyString(color.toString())));</span>
+<span class="source-line-no">055</span><span id="line-55">            }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">            return colors.map(color -&gt; ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());</span>
+<span class="source-line-no">058</span><span id="line-58">        });</span>
+<span class="source-line-no">059</span><span id="line-59">        registerCompletion("players", c -&gt; {</span>
+<span class="source-line-no">060</span><span id="line-60">            CommandSource sender = c.getSender();</span>
+<span class="source-line-no">061</span><span id="line-61">            ACFVelocityUtil.validate(sender, "Sender cannot be null");</span>
+<span class="source-line-no">062</span><span id="line-62">            String input = c.getInput();</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">            ArrayList&lt;String&gt; matchedPlayers = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">065</span><span id="line-65">            for (Player player : server.getAllPlayers()) {</span>
+<span class="source-line-no">066</span><span id="line-66">                String name = player.getUsername();</span>
+<span class="source-line-no">067</span><span id="line-67">                if (ApacheCommonsLangUtil.startsWithIgnoreCase(name, input)) {</span>
+<span class="source-line-no">068</span><span id="line-68">                    matchedPlayers.add(name);</span>
+<span class="source-line-no">069</span><span id="line-69">                }</span>
+<span class="source-line-no">070</span><span id="line-70">            }</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">            matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);</span>
+<span class="source-line-no">073</span><span id="line-73">            return matchedPlayers;</span>
+<span class="source-line-no">074</span><span id="line-74">        });</span>
+<span class="source-line-no">075</span><span id="line-75">    }</span>
+<span class="source-line-no">076</span><span id="line-76">}</span>
 
 
 

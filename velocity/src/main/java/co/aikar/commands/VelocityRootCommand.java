@@ -96,5 +96,4 @@ public class VelocityRootCommand implements SimpleCommand, RootCommand {
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
         return CompletableFuture.completedFuture(getTabCompletions(manager.getCommandIssuer(invocation.source()), getCommandName(), invocation.arguments()));
     }
-
 }

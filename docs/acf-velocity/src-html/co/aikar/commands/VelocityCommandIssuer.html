@@ -36,79 +36,77 @@
 <span class="source-line-no">023</span><span id="line-23"></span>
 <span class="source-line-no">024</span><span id="line-24">package co.aikar.commands;</span>
 <span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">import java.nio.charset.StandardCharsets;</span>
-<span class="source-line-no">027</span><span id="line-27">import java.util.Objects;</span>
-<span class="source-line-no">028</span><span id="line-28">import java.util.UUID;</span>
+<span class="source-line-no">026</span><span id="line-26">import com.velocitypowered.api.command.CommandSource;</span>
+<span class="source-line-no">027</span><span id="line-27">import com.velocitypowered.api.proxy.Player;</span>
+<span class="source-line-no">028</span><span id="line-28">import org.jetbrains.annotations.NotNull;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">import com.velocitypowered.api.command.CommandSource;</span>
-<span class="source-line-no">033</span><span id="line-33">import com.velocitypowered.api.proxy.Player;</span>
-<span class="source-line-no">034</span><span id="line-34"></span>
-<span class="source-line-no">035</span><span id="line-35">public class VelocityCommandIssuer implements CommandIssuer {</span>
-<span class="source-line-no">036</span><span id="line-36">    private final VelocityCommandManager manager;</span>
-<span class="source-line-no">037</span><span id="line-37">    private final CommandSource source;</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">    VelocityCommandIssuer(VelocityCommandManager manager, CommandSource source) {</span>
-<span class="source-line-no">040</span><span id="line-40">        this.manager = manager;</span>
-<span class="source-line-no">041</span><span id="line-41">        this.source = source;</span>
-<span class="source-line-no">042</span><span id="line-42">    }</span>
-<span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">    @Override</span>
-<span class="source-line-no">046</span><span id="line-46">    public CommandSource getIssuer() {</span>
-<span class="source-line-no">047</span><span id="line-47">        return source;</span>
-<span class="source-line-no">048</span><span id="line-48">    }</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">    public Player getPlayer() {</span>
-<span class="source-line-no">051</span><span id="line-51">        return isPlayer() ? (Player) source : null;</span>
-<span class="source-line-no">052</span><span id="line-52">    }</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">    @Override</span>
-<span class="source-line-no">055</span><span id="line-55">    public CommandManager getManager() {</span>
-<span class="source-line-no">056</span><span id="line-56">        return manager;</span>
-<span class="source-line-no">057</span><span id="line-57">    }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">    @Override</span>
-<span class="source-line-no">060</span><span id="line-60">    public boolean isPlayer() {</span>
-<span class="source-line-no">061</span><span id="line-61">        return source instanceof Player;</span>
-<span class="source-line-no">062</span><span id="line-62">    }</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">    @Override</span>
-<span class="source-line-no">065</span><span id="line-65">    public @NotNull UUID getUniqueId() {</span>
-<span class="source-line-no">066</span><span id="line-66">        if (isPlayer()) {</span>
-<span class="source-line-no">067</span><span id="line-67">            return ((Player) source).getUniqueId();</span>
-<span class="source-line-no">068</span><span id="line-68">        }</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">        // TODO: Find a better solution for this</span>
-<span class="source-line-no">071</span><span id="line-71">        //generate a unique id based of the name (like for the console command sender)</span>
-<span class="source-line-no">072</span><span id="line-72">        return UUID.randomUUID();</span>
-<span class="source-line-no">073</span><span id="line-73">    }</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">    @Override</span>
-<span class="source-line-no">076</span><span id="line-76">    public void sendMessageInternal(String message) {</span>
-<span class="source-line-no">077</span><span id="line-77">        source.sendMessage(ACFVelocityUtil.color(message));</span>
-<span class="source-line-no">078</span><span id="line-78">    }</span>
-<span class="source-line-no">079</span><span id="line-79"></span>
-<span class="source-line-no">080</span><span id="line-80">    @Override</span>
-<span class="source-line-no">081</span><span id="line-81">    public boolean hasPermission(String name) {</span>
-<span class="source-line-no">082</span><span id="line-82">        return source.hasPermission(name);</span>
-<span class="source-line-no">083</span><span id="line-83">    }</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">    @Override</span>
-<span class="source-line-no">087</span><span id="line-87">    public boolean equals(Object o) {</span>
-<span class="source-line-no">088</span><span id="line-88">        if (this == o) return true;</span>
-<span class="source-line-no">089</span><span id="line-89">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="source-line-no">090</span><span id="line-90">        VelocityCommandIssuer that = (VelocityCommandIssuer) o;</span>
-<span class="source-line-no">091</span><span id="line-91">        return Objects.equals(source, that.source);</span>
-<span class="source-line-no">092</span><span id="line-92">    }</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">    @Override</span>
-<span class="source-line-no">095</span><span id="line-95">    public int hashCode() {</span>
-<span class="source-line-no">096</span><span id="line-96">        return Objects.hash(source);</span>
-<span class="source-line-no">097</span><span id="line-97">    }</span>
-<span class="source-line-no">098</span><span id="line-98">}</span>
+<span class="source-line-no">030</span><span id="line-30">import java.util.Objects;</span>
+<span class="source-line-no">031</span><span id="line-31">import java.util.UUID;</span>
+<span class="source-line-no">032</span><span id="line-32"></span>
+<span class="source-line-no">033</span><span id="line-33">public class VelocityCommandIssuer implements CommandIssuer {</span>
+<span class="source-line-no">034</span><span id="line-34">    private final VelocityCommandManager manager;</span>
+<span class="source-line-no">035</span><span id="line-35">    private final CommandSource source;</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">    VelocityCommandIssuer(VelocityCommandManager manager, CommandSource source) {</span>
+<span class="source-line-no">038</span><span id="line-38">        this.manager = manager;</span>
+<span class="source-line-no">039</span><span id="line-39">        this.source = source;</span>
+<span class="source-line-no">040</span><span id="line-40">    }</span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">    @Override</span>
+<span class="source-line-no">044</span><span id="line-44">    public CommandSource getIssuer() {</span>
+<span class="source-line-no">045</span><span id="line-45">        return source;</span>
+<span class="source-line-no">046</span><span id="line-46">    }</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">    public Player getPlayer() {</span>
+<span class="source-line-no">049</span><span id="line-49">        return isPlayer() ? (Player) source : null;</span>
+<span class="source-line-no">050</span><span id="line-50">    }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">    @Override</span>
+<span class="source-line-no">053</span><span id="line-53">    public CommandManager getManager() {</span>
+<span class="source-line-no">054</span><span id="line-54">        return manager;</span>
+<span class="source-line-no">055</span><span id="line-55">    }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">    @Override</span>
+<span class="source-line-no">058</span><span id="line-58">    public boolean isPlayer() {</span>
+<span class="source-line-no">059</span><span id="line-59">        return source instanceof Player;</span>
+<span class="source-line-no">060</span><span id="line-60">    }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">    @Override</span>
+<span class="source-line-no">063</span><span id="line-63">    public @NotNull UUID getUniqueId() {</span>
+<span class="source-line-no">064</span><span id="line-64">        if (isPlayer()) {</span>
+<span class="source-line-no">065</span><span id="line-65">            return ((Player) source).getUniqueId();</span>
+<span class="source-line-no">066</span><span id="line-66">        }</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">        // TODO: Find a better solution for this</span>
+<span class="source-line-no">069</span><span id="line-69">        //generate a unique id based of the name (like for the console command sender)</span>
+<span class="source-line-no">070</span><span id="line-70">        return UUID.randomUUID();</span>
+<span class="source-line-no">071</span><span id="line-71">    }</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">    @Override</span>
+<span class="source-line-no">074</span><span id="line-74">    public void sendMessageInternal(String message) {</span>
+<span class="source-line-no">075</span><span id="line-75">        source.sendMessage(ACFVelocityUtil.color(message));</span>
+<span class="source-line-no">076</span><span id="line-76">    }</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">    @Override</span>
+<span class="source-line-no">079</span><span id="line-79">    public boolean hasPermission(String name) {</span>
+<span class="source-line-no">080</span><span id="line-80">        return source.hasPermission(name);</span>
+<span class="source-line-no">081</span><span id="line-81">    }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">    @Override</span>
+<span class="source-line-no">085</span><span id="line-85">    public boolean equals(Object o) {</span>
+<span class="source-line-no">086</span><span id="line-86">        if (this == o) return true;</span>
+<span class="source-line-no">087</span><span id="line-87">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="source-line-no">088</span><span id="line-88">        VelocityCommandIssuer that = (VelocityCommandIssuer) o;</span>
+<span class="source-line-no">089</span><span id="line-89">        return Objects.equals(source, that.source);</span>
+<span class="source-line-no">090</span><span id="line-90">    }</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">    @Override</span>
+<span class="source-line-no">093</span><span id="line-93">    public int hashCode() {</span>
+<span class="source-line-no">094</span><span id="line-94">        return Objects.hash(source);</span>
+<span class="source-line-no">095</span><span id="line-95">    }</span>
+<span class="source-line-no">096</span><span id="line-96">}</span>
 
 
 

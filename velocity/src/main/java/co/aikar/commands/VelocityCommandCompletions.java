@@ -23,20 +23,19 @@
 
 package co.aikar.commands;
 
+import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
+import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
-
-import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.format.TextFormat;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 

@@ -23,19 +23,19 @@
 
 package co.aikar.commands;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import co.aikar.commands.velocity.contexts.OnlinePlayer;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-
-import co.aikar.commands.velocity.contexts.OnlinePlayer;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextFormat;
+
+import net.kyori.adventure.text.format.TextColor;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class VelocityCommandContexts extends CommandContexts<VelocityCommandExecutionContext> {
 
