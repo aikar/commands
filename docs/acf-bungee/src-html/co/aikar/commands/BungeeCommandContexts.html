@@ -78,30 +78,38 @@
 <span class="source-line-no">065</span><span id="line-65">                colors = colors.filter(color -&gt; finalFilter.equals(ACFUtil.simplifyString(color.name())));</span>
 <span class="source-line-no">066</span><span id="line-66">            }</span>
 <span class="source-line-no">067</span><span id="line-67"></span>
-<span class="source-line-no">068</span><span id="line-68">            ChatColor match = ACFUtil.simpleMatch(ChatColor.class, first);</span>
-<span class="source-line-no">069</span><span id="line-69">            if (match == null) {</span>
-<span class="source-line-no">070</span><span id="line-70">                String valid = colors</span>
-<span class="source-line-no">071</span><span id="line-71">                        .map(color -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(color.name()) + "&lt;/c2&gt;")</span>
-<span class="source-line-no">072</span><span id="line-72">                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);</span>
-<span class="source-line-no">075</span><span id="line-75">            }</span>
-<span class="source-line-no">076</span><span id="line-76">            return match;</span>
-<span class="source-line-no">077</span><span id="line-77">        });</span>
-<span class="source-line-no">078</span><span id="line-78">    }</span>
-<span class="source-line-no">079</span><span id="line-79"></span>
-<span class="source-line-no">080</span><span id="line-80">    @Nullable</span>
-<span class="source-line-no">081</span><span id="line-81">    private co.aikar.commands.contexts.OnlineProxiedPlayer getOnlinePlayer(BungeeCommandExecutionContext c) throws InvalidCommandArgument {</span>
-<span class="source-line-no">082</span><span id="line-82">        ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), c.popFirstArg());</span>
-<span class="source-line-no">083</span><span id="line-83">        if (proxiedPlayer == null) {</span>
-<span class="source-line-no">084</span><span id="line-84">            if (c.hasAnnotation(Optional.class)) {</span>
-<span class="source-line-no">085</span><span id="line-85">                return null;</span>
-<span class="source-line-no">086</span><span id="line-86">            }</span>
-<span class="source-line-no">087</span><span id="line-87">            throw new InvalidCommandArgument(false);</span>
-<span class="source-line-no">088</span><span id="line-88">        }</span>
-<span class="source-line-no">089</span><span id="line-89">        return new co.aikar.commands.contexts.OnlineProxiedPlayer(proxiedPlayer);</span>
-<span class="source-line-no">090</span><span id="line-90">    }</span>
-<span class="source-line-no">091</span><span id="line-91">}</span>
+<span class="source-line-no">068</span><span id="line-68">            ChatColor match = null;</span>
+<span class="source-line-no">069</span><span id="line-69">            String simplified = ACFUtil.simplifyString(first);</span>
+<span class="source-line-no">070</span><span id="line-70">            for (ChatColor chatColor : ChatColor.values()) {</span>
+<span class="source-line-no">071</span><span id="line-71">                String simple = ACFUtil.simplifyString(chatColor.name());</span>
+<span class="source-line-no">072</span><span id="line-72">                if (simplified.equals(simple)) {</span>
+<span class="source-line-no">073</span><span id="line-73">                    match = chatColor;</span>
+<span class="source-line-no">074</span><span id="line-74">                    break;</span>
+<span class="source-line-no">075</span><span id="line-75">                }</span>
+<span class="source-line-no">076</span><span id="line-76">            }</span>
+<span class="source-line-no">077</span><span id="line-77">            if (match == null) {</span>
+<span class="source-line-no">078</span><span id="line-78">                String valid = colors</span>
+<span class="source-line-no">079</span><span id="line-79">                        .map(color -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(color.name()) + "&lt;/c2&gt;")</span>
+<span class="source-line-no">080</span><span id="line-80">                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));</span>
+<span class="source-line-no">081</span><span id="line-81"></span>
+<span class="source-line-no">082</span><span id="line-82">                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);</span>
+<span class="source-line-no">083</span><span id="line-83">            }</span>
+<span class="source-line-no">084</span><span id="line-84">            return match;</span>
+<span class="source-line-no">085</span><span id="line-85">        });</span>
+<span class="source-line-no">086</span><span id="line-86">    }</span>
+<span class="source-line-no">087</span><span id="line-87"></span>
+<span class="source-line-no">088</span><span id="line-88">    @Nullable</span>
+<span class="source-line-no">089</span><span id="line-89">    private co.aikar.commands.contexts.OnlineProxiedPlayer getOnlinePlayer(BungeeCommandExecutionContext c) throws InvalidCommandArgument {</span>
+<span class="source-line-no">090</span><span id="line-90">        ProxiedPlayer proxiedPlayer = ACFBungeeUtil.findPlayerSmart(c.getIssuer(), c.popFirstArg());</span>
+<span class="source-line-no">091</span><span id="line-91">        if (proxiedPlayer == null) {</span>
+<span class="source-line-no">092</span><span id="line-92">            if (c.hasAnnotation(Optional.class)) {</span>
+<span class="source-line-no">093</span><span id="line-93">                return null;</span>
+<span class="source-line-no">094</span><span id="line-94">            }</span>
+<span class="source-line-no">095</span><span id="line-95">            throw new InvalidCommandArgument(false);</span>
+<span class="source-line-no">096</span><span id="line-96">        }</span>
+<span class="source-line-no">097</span><span id="line-97">        return new co.aikar.commands.contexts.OnlineProxiedPlayer(proxiedPlayer);</span>
+<span class="source-line-no">098</span><span id="line-98">    }</span>
+<span class="source-line-no">099</span><span id="line-99">}</span>
 
 
 
