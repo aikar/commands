@@ -43,9 +43,10 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class VelocityCommandManager extends
-        CommandManager<CommandSource, VelocityCommandIssuer, TextColor, VelocityMessageFormatter, VelocityCommandExecutionContext, VelocityConditionContext> {
+        CommandManager<CommandSource, VelocityCommandIssuer, NamedTextColor, VelocityMessageFormatter, VelocityCommandExecutionContext, VelocityConditionContext> {
 
     protected final ProxyServer proxy;
     protected final PluginContainer plugin;
@@ -57,14 +58,10 @@ public class VelocityCommandManager extends
     public VelocityCommandManager(ProxyServer proxy, Object plugin) {
         this.proxy = proxy;
         this.plugin = proxy.getPluginManager().getPlugin(plugin.getClass().getAnnotation(Plugin.class).id()).get();
-        this.formatters.put(MessageType.ERROR, defaultFormatter = new VelocityMessageFormatter(TextColor.fromHexString("#FF5555"),
-                TextColor.fromHexString("#FFFF55"), TextColor.fromHexString("#FF5555")));
-        this.formatters.put(MessageType.SYNTAX, new VelocityMessageFormatter(TextColor.fromHexString("#FFFF55"),
-                TextColor.fromHexString("#55FF55"), TextColor.fromHexString("#FFFFFF")));
-        this.formatters.put(MessageType.INFO, new VelocityMessageFormatter(TextColor.fromHexString("#5555FF"),
-                TextColor.fromHexString("#00AA00"), TextColor.fromHexString("#55FF55")));
-        this.formatters.put(MessageType.HELP, new VelocityMessageFormatter(TextColor.fromHexString("#55FFFF"),
-                TextColor.fromHexString("#55FF55"), TextColor.fromHexString("#FFFF55")));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new VelocityMessageFormatter(NamedTextColor.RED, NamedTextColor.YELLOW, NamedTextColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new VelocityMessageFormatter(NamedTextColor.YELLOW, NamedTextColor.GREEN, NamedTextColor.WHITE));
+        this.formatters.put(MessageType.INFO, new VelocityMessageFormatter(NamedTextColor.BLUE, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN));
+        this.formatters.put(MessageType.HELP, new VelocityMessageFormatter(NamedTextColor.AQUA, NamedTextColor.GREEN, NamedTextColor.YELLOW));
 
         getLocales();
 

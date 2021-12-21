@@ -25,7 +25,6 @@ package co.aikar.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,27 +35,27 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsLangUtil;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.TextFormat;
 
 public class VelocityCommandCompletions extends CommandCompletions<VelocityCommandCompletionContext> {
 
     public VelocityCommandCompletions(ProxyServer server, CommandManager manager) {
         super(manager);
         registerAsyncCompletion("chatcolors", c -> {
-            Stream<String> colors = NamedTextColor.NAMES.keys().stream().map((String::toUpperCase));
+            Stream<TextFormat> colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -> namedTextColor);
             if (!c.hasConfig("colorsonly")) {
-                colors = Stream.concat(colors, Arrays.stream(TextDecoration.values())
-                        .map((dec -> dec.name().toUpperCase())));
+                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
             }
             String filter = c.getConfig("filter");
             if (filter != null) {
                 Set<String> filters = Arrays.stream(ACFPatterns.COLON.split(filter)).map(ACFUtil::simplifyString)
                         .collect(Collectors.toSet());
 
-                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color)));
+                colors = colors.filter(color -> filters.contains(ACFUtil.simplifyString(color.toString())));
             }
-            return colors.map(color -> ACFUtil.simplifyString(color)).collect(Collectors.toList());
+
+            return colors.map(color -> ACFUtil.simplifyString(color.toString())).collect(Collectors.toList());
         });
         registerCompletion("players", c -> {
             CommandSource sender = c.getSender();

@@ -54,6 +54,29 @@ public class VelocityCommandContexts extends CommandContexts<VelocityCommandExec
             }
             return proxiedPlayer;
         });
+
+        registerContext(TextFormat.class, c -> {
+            String first = c.popFirstArg();
+            Stream<TextFormat> colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -> namedTextColor);
+            if (!c.hasFlag("colorsonly")) {
+                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));
+            }
+            String filter = c.getFlagValue("filter", (String) null);
+            if (filter != null) {
+                filter = ACFUtil.simplifyString(filter);
+                String finalFilter = filter;
+                colors = colors.filter(color -> finalFilter.equals(ACFUtil.simplifyString(color.toString())));
+            }
+
+            TextColor match = NamedTextColor.NAMES.value(ACFUtil.simplifyString(first));
+            if (match == null) {
+                String valid = colors.map(color -> "<c2>" + ACFUtil.simplifyString(color.toString()) + "</c2>")
+                        .collect(Collectors.joining("<c1>,</c1> "));
+
+                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
+            }
+            return match;
+        });
     }
 
     @Nullable

@@ -10,15 +10,14 @@ import java.util.stream.Collectors;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
+
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ACFVelocityUtil {
 
-    @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return Component.text(message.replace("&", LegacyComponentSerializer.SECTION_CHAR+""));
+        return LegacyComponentSerializer.legacySection().deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
