@@ -1,5 +1,11 @@
 package co.aikar.commands;
 
+import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,18 +13,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
-
-import net.kyori.text.TextComponent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
-
 public class ACFVelocityUtil {
 
     @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return LegacyComponentSerializer.legacy().deserialize(message);
+        return LegacyComponentSerializer.legacy('&').deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {

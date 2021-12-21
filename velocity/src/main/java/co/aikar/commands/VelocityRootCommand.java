@@ -30,8 +30,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.command.SimpleCommand;
 
-public class VelocityRootCommand implements Command, RootCommand {
+public class VelocityRootCommand implements SimpleCommand, RootCommand {
 
     private final VelocityCommandManager manager;
     private final String name;
@@ -75,13 +76,13 @@ public class VelocityRootCommand implements Command, RootCommand {
     }
 
     @Override
-    public void execute(CommandSource source, String[] args) {
-        execute(manager.getCommandIssuer(source), getCommandName(), args);
+    public void execute(Invocation invocation) {
+        execute(manager.getCommandIssuer(invocation.source()), getCommandName(), invocation.arguments());
     }
 
     @Override
-    public List<String> suggest(CommandSource source, String[] args) {
-        return getTabCompletions(manager.getCommandIssuer(source), getCommandName(), args);
+    public List<String> suggest(Invocation invocation) {
+        return getTabCompletions(manager.getCommandIssuer(invocation.source()), getCommandName(), invocation.arguments());
     }
 
     @Override
