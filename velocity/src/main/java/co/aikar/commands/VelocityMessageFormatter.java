@@ -10,8 +10,7 @@ public class VelocityMessageFormatter extends MessageFormatter<TextColor> {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     String format(TextColor color, String message) {
-        return LegacyComponentSerializer.legacy('&').serialize(LegacyComponentSerializer.legacy('&').deserialize(message).color(color));
+        return LegacyComponentSerializer.legacyAmpersand().serialize(LegacyComponentSerializer.legacy('&').deserialize(message).color(color));
     }
 }

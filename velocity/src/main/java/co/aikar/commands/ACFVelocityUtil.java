@@ -15,9 +15,8 @@ import java.util.stream.Collectors;
 
 public class ACFVelocityUtil {
 
-    @SuppressWarnings("deprecation")
     public static TextComponent color(String message) {
-        return LegacyComponentSerializer.legacy('&').deserialize(message);
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(message);
     }
 
     public static Player findPlayerSmart(ProxyServer server, CommandIssuer issuer, String search) {
