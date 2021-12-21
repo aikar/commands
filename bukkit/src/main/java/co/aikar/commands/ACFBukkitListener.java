@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 class ACFBukkitListener implements Listener {
     private BukkitCommandManager manager;
     private final Plugin plugin;
@@ -47,10 +49,11 @@ class ACFBukkitListener implements Listener {
         }
         manager.unregisterCommands();
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if(this.manager.autoDetectFromClient) {
+        if (this.manager.autoDetectFromClient) {
             this.manager.readPlayerLocale(player);
             this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> manager.readPlayerLocale(player), 20);
         } else {
@@ -62,6 +65,8 @@ class ACFBukkitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent quitEvent) {
         //cleanup
-        manager.issuersLocale.remove(quitEvent.getPlayer().getUniqueId());
+        UUID playerUniqueId = quitEvent.getPlayer().getUniqueId();
+        manager.issuersLocale.remove(playerUniqueId);
+        manager.issuersLocaleString.remove(playerUniqueId);
     }
 }

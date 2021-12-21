@@ -185,7 +185,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         String input = args[argIndex];
 
         String completion = argIndex < completions.length ? completions[argIndex] : null;
-        if (completion == null || "*".equals(completion)) {
+        if (completion == null || completion.isEmpty() || "*".equals(completion)) {
             completion = findDefaultCompletion(cmd, args);
         }
 

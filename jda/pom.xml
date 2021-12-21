@@ -30,20 +30,19 @@
     <parent>
         <groupId>co.aikar</groupId>
         <artifactId>acf-parent</artifactId>
-        <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+        <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>acf-jda</artifactId>
-    <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+    <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 
     <name>ACF (JDA)</name>
 
     <repositories>
         <repository>
-            <id>jcenter</id>
-            <name>jcenter-bintray</name>
-            <url>https://jcenter.bintray.com</url>
+            <id>m2-dv8tion</id>
+            <url>https://m2.dv8tion.net/releases</url>
         </repository>
     </repositories>
 
@@ -51,13 +50,13 @@
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-core</artifactId>
-            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_168</version>
+            <version>4.4.0_350</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
