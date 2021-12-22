@@ -164,7 +164,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
             return s.charAt(0);
         });
         registerContext(String.class, (c) -> {
-            // This will fail fast, its either in the values or its not
+            // This will fail fast, it's either in the values or it's not
             if (c.hasAnnotation(Values.class)) {
                 return c.popFirstArg();
             }
@@ -239,7 +239,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
             } else if (first != null && ACFUtil.isInteger(first)) {
                 c.popFirstArg();
                 page = ACFUtil.parseInt(first);
-                if (page == null){
+                if (page == null) {
                     throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", first);
                 }
                 if (!c.getArgs().isEmpty()) {
@@ -294,7 +294,7 @@ public class CommandContexts<R extends CommandExecutionContext<?, ? extends Comm
     /**
      * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)
      * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}
-     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender
+     * as the core wants to use the platform-agnostic term of "Issuer" instead of Sender
      */
     @Deprecated
     public <T> void registerSenderAwareContext(Class<T> context, IssuerAwareContextResolver<T, R> supplier) {

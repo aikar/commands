@@ -40,7 +40,7 @@ public class BungeeLocales extends Locales {
     }
 
     /**
-     * Loads a file out of the plugins data folder by the given name
+     * Loads a file out of the plugin's data folder by the given name
      *
      * @param file
      * @param locale

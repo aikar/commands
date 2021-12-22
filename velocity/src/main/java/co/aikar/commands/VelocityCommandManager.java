@@ -107,7 +107,7 @@ public class VelocityCommandManager extends
             return;
         }
 
-        //This can be null if we didn't received a settings packet
+        //This can be null if we didn't receive a settings packet
         Locale locale = player.getPlayerSettings().getLocale();
         if (locale != null) {
             setIssuerLocale(player, player.getPlayerSettings().getLocale());

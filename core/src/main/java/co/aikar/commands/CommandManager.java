@@ -338,7 +338,7 @@ public abstract class CommandManager<
     }
 
     /**
-     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered.
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have its own exception handler registered.
      *
      * @param exceptionHandler the handler that should handle uncaught exceptions.  May not be null if logExceptions is false
      */
@@ -350,7 +350,7 @@ public abstract class CommandManager<
     }
 
     /**
-     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have it's own exception handler registered, and lets you control if ACF should also log the exception still.
+     * Sets the default {@link ExceptionHandler} that is called when an exception occurs while executing a command, if the command doesn't have its own exception handler registered, and lets you control if ACF should also log the exception still.
      * <p>
      * If you disable logging, you need to log it yourself in your handler.
      *

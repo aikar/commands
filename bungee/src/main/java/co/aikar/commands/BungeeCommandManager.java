@@ -48,7 +48,7 @@ public class BungeeCommandManager extends CommandManager<
         BungeeMessageFormatter,
         BungeeCommandExecutionContext,
         BungeeConditionContext
-    > {
+        > {
 
     protected final Plugin plugin;
     protected Map<String, BungeeRootCommand> registeredCommands = new HashMap<>();
@@ -111,7 +111,7 @@ public class BungeeCommandManager extends CommandManager<
             return;
         }
 
-        //This can be null if we didn't received a settings packet
+        //This can be null if we didn't receive a settings packet
         Locale locale = player.getLocale();
         if (locale != null) {
             setIssuerLocale(player, player.getLocale());
@@ -137,7 +137,7 @@ public class BungeeCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();
             bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());
-            if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered)  {
+            if (bungeeCommand.getSubCommands().isEmpty() && bungeeCommand.isRegistered) {
                 unregisterCommand(bungeeCommand);
                 bungeeCommand.isRegistered = false;
                 registeredCommands.remove(commandName);
@@ -177,7 +177,7 @@ public class BungeeCommandManager extends CommandManager<
     public RootCommand createRootCommand(String cmd) {
         return new BungeeRootCommand(this, cmd);
     }
-    
+
     @Override
     public Collection<RootCommand> getRegisteredRootCommands() {
         return Collections.unmodifiableCollection(registeredCommands.values());

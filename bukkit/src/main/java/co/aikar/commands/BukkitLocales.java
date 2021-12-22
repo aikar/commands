@@ -50,6 +50,7 @@ public class BukkitLocales extends Locales {
 
     /**
      * Loads the given file
+     *
      * @param file
      * @param locale
      * @return If any language keys were added
@@ -63,7 +64,8 @@ public class BukkitLocales extends Locales {
     }
 
     /**
-     * Loads a file out of the plugins data folder by the given name
+     * Loads a file out of the plugin's data folder by the given name
+     *
      * @param file
      * @param locale
      * @return If any language keys were added
@@ -79,6 +81,7 @@ public class BukkitLocales extends Locales {
     /**
      * Loads every message from the Configuration object. Any nested values will be treated as namespace
      * so acf-core:\n\tfoo: bar will be acf-core.foo = bar
+     *
      * @param config
      * @param locale
      * @return If any language keys were added
