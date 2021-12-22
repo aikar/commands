@@ -177,7 +177,7 @@
 <span class="source-line-no">164</span><span id="line-164">            return s.charAt(0);</span>
 <span class="source-line-no">165</span><span id="line-165">        });</span>
 <span class="source-line-no">166</span><span id="line-166">        registerContext(String.class, (c) -&gt; {</span>
-<span class="source-line-no">167</span><span id="line-167">            // This will fail fast, its either in the values or its not</span>
+<span class="source-line-no">167</span><span id="line-167">            // This will fail fast, it's either in the values or it's not</span>
 <span class="source-line-no">168</span><span id="line-168">            if (c.hasAnnotation(Values.class)) {</span>
 <span class="source-line-no">169</span><span id="line-169">                return c.popFirstArg();</span>
 <span class="source-line-no">170</span><span id="line-170">            }</span>
@@ -252,7 +252,7 @@
 <span class="source-line-no">239</span><span id="line-239">            } else if (first != null &amp;&amp; ACFUtil.isInteger(first)) {</span>
 <span class="source-line-no">240</span><span id="line-240">                c.popFirstArg();</span>
 <span class="source-line-no">241</span><span id="line-241">                page = ACFUtil.parseInt(first);</span>
-<span class="source-line-no">242</span><span id="line-242">                if (page == null){</span>
+<span class="source-line-no">242</span><span id="line-242">                if (page == null) {</span>
 <span class="source-line-no">243</span><span id="line-243">                    throw new InvalidCommandArgument(MessageKeys.MUST_BE_A_NUMBER, "{num}", first);</span>
 <span class="source-line-no">244</span><span id="line-244">                }</span>
 <span class="source-line-no">245</span><span id="line-245">                if (!c.getArgs().isEmpty()) {</span>
@@ -307,7 +307,7 @@
 <span class="source-line-no">294</span><span id="line-294">    /**</span>
 <span class="source-line-no">295</span><span id="line-295">     * @see #registerIssuerAwareContext(Class, IssuerAwareContextResolver)</span>
 <span class="source-line-no">296</span><span id="line-296">     * @deprecated Please switch to {@link #registerIssuerAwareContext(Class, IssuerAwareContextResolver)}</span>
-<span class="source-line-no">297</span><span id="line-297">     * as the core wants to use the platform agnostic term of "Issuer" instead of Sender</span>
+<span class="source-line-no">297</span><span id="line-297">     * as the core wants to use the platform-agnostic term of "Issuer" instead of Sender</span>
 <span class="source-line-no">298</span><span id="line-298">     */</span>
 <span class="source-line-no">299</span><span id="line-299">    @Deprecated</span>
 <span class="source-line-no">300</span><span id="line-300">    public &lt;T&gt; void registerSenderAwareContext(Class&lt;T&gt; context, IssuerAwareContextResolver&lt;T, R&gt; supplier) {</span>

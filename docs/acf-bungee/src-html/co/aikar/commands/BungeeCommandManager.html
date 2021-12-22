@@ -61,7 +61,7 @@
 <span class="source-line-no">048</span><span id="line-48">        BungeeMessageFormatter,</span>
 <span class="source-line-no">049</span><span id="line-49">        BungeeCommandExecutionContext,</span>
 <span class="source-line-no">050</span><span id="line-50">        BungeeConditionContext</span>
-<span class="source-line-no">051</span><span id="line-51">    &gt; {</span>
+<span class="source-line-no">051</span><span id="line-51">        &gt; {</span>
 <span class="source-line-no">052</span><span id="line-52"></span>
 <span class="source-line-no">053</span><span id="line-53">    protected final Plugin plugin;</span>
 <span class="source-line-no">054</span><span id="line-54">    protected Map&lt;String, BungeeRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();</span>
@@ -124,7 +124,7 @@
 <span class="source-line-no">111</span><span id="line-111">            return;</span>
 <span class="source-line-no">112</span><span id="line-112">        }</span>
 <span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">        //This can be null if we didn't received a settings packet</span>
+<span class="source-line-no">114</span><span id="line-114">        //This can be null if we didn't receive a settings packet</span>
 <span class="source-line-no">115</span><span id="line-115">        Locale locale = player.getLocale();</span>
 <span class="source-line-no">116</span><span id="line-116">        if (locale != null) {</span>
 <span class="source-line-no">117</span><span id="line-117">            setIssuerLocale(player, player.getLocale());</span>
@@ -150,7 +150,7 @@
 <span class="source-line-no">137</span><span id="line-137">            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);</span>
 <span class="source-line-no">138</span><span id="line-138">            BungeeRootCommand bungeeCommand = (BungeeRootCommand) entry.getValue();</span>
 <span class="source-line-no">139</span><span id="line-139">            bungeeCommand.getSubCommands().values().removeAll(command.subCommands.values());</span>
-<span class="source-line-no">140</span><span id="line-140">            if (bungeeCommand.getSubCommands().isEmpty() &amp;&amp; bungeeCommand.isRegistered)  {</span>
+<span class="source-line-no">140</span><span id="line-140">            if (bungeeCommand.getSubCommands().isEmpty() &amp;&amp; bungeeCommand.isRegistered) {</span>
 <span class="source-line-no">141</span><span id="line-141">                unregisterCommand(bungeeCommand);</span>
 <span class="source-line-no">142</span><span id="line-142">                bungeeCommand.isRegistered = false;</span>
 <span class="source-line-no">143</span><span id="line-143">                registeredCommands.remove(commandName);</span>
@@ -190,7 +190,7 @@
 <span class="source-line-no">177</span><span id="line-177">    public RootCommand createRootCommand(String cmd) {</span>
 <span class="source-line-no">178</span><span id="line-178">        return new BungeeRootCommand(this, cmd);</span>
 <span class="source-line-no">179</span><span id="line-179">    }</span>
-<span class="source-line-no">180</span><span id="line-180">    </span>
+<span class="source-line-no">180</span><span id="line-180"></span>
 <span class="source-line-no">181</span><span id="line-181">    @Override</span>
 <span class="source-line-no">182</span><span id="line-182">    public Collection&lt;RootCommand&gt; getRegisteredRootCommands() {</span>
 <span class="source-line-no">183</span><span id="line-183">        return Collections.unmodifiableCollection(registeredCommands.values());</span>

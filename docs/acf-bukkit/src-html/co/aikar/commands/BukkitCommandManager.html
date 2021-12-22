@@ -105,325 +105,324 @@
 <span class="source-line-no">092</span><span id="line-92">    private boolean cantReadLocale = false;</span>
 <span class="source-line-no">093</span><span id="line-93">    protected boolean autoDetectFromClient = true;</span>
 <span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">    @SuppressWarnings("JavaReflectionMemberAccess")</span>
-<span class="source-line-no">096</span><span id="line-96">    public BukkitCommandManager(Plugin plugin) {</span>
-<span class="source-line-no">097</span><span id="line-97">        this.plugin = plugin;</span>
-<span class="source-line-no">098</span><span id="line-98">        String prefix = this.plugin.getDescription().getPrefix();</span>
-<span class="source-line-no">099</span><span id="line-99">        this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());</span>
-<span class="source-line-no">100</span><span id="line-100">        this.timingManager = TimingManager.of(plugin);</span>
-<span class="source-line-no">101</span><span id="line-101">        this.commandTiming = this.timingManager.of("Commands");</span>
-<span class="source-line-no">102</span><span id="line-102">        this.commandMap = hookCommandMap();</span>
-<span class="source-line-no">103</span><span id="line-103">        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));</span>
-<span class="source-line-no">104</span><span id="line-104">        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));</span>
-<span class="source-line-no">105</span><span id="line-105">        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));</span>
-<span class="source-line-no">106</span><span id="line-106">        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));</span>
-<span class="source-line-no">107</span><span id="line-107">        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?\\)");</span>
-<span class="source-line-no">108</span><span id="line-108">        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());</span>
-<span class="source-line-no">109</span><span id="line-109">        if (matcher.find()) {</span>
-<span class="source-line-no">110</span><span id="line-110">            this.mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);</span>
-<span class="source-line-no">111</span><span id="line-111">            this.mcPatchVersion = ACFUtil.parseInt(matcher.toMatchResult().group(3), 0);</span>
-<span class="source-line-no">112</span><span id="line-112">        } else {</span>
-<span class="source-line-no">113</span><span id="line-113">            this.mcMinorVersion = -1;</span>
-<span class="source-line-no">114</span><span id="line-114">            this.mcPatchVersion = -1;</span>
-<span class="source-line-no">115</span><span id="line-115">        }</span>
-<span class="source-line-no">116</span><span id="line-116">        Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -&gt; {</span>
-<span class="source-line-no">117</span><span id="line-117">            if (hasUnstableAPI("help")) {</span>
-<span class="source-line-no">118</span><span id="line-118">                return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);</span>
-<span class="source-line-no">119</span><span id="line-119">            } else {</span>
-<span class="source-line-no">120</span><span id="line-120">                return new GenericCommandHelpTopic(command);</span>
-<span class="source-line-no">121</span><span id="line-121">            }</span>
-<span class="source-line-no">122</span><span id="line-122">        });</span>
-<span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">        getLocales(); // auto load locales</span>
-<span class="source-line-no">127</span><span id="line-127">        this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -&gt; {</span>
-<span class="source-line-no">128</span><span id="line-128">            if (this.cantReadLocale || !this.autoDetectFromClient) {</span>
-<span class="source-line-no">129</span><span id="line-129">                return;</span>
-<span class="source-line-no">130</span><span id="line-130">            }</span>
-<span class="source-line-no">131</span><span id="line-131">            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);</span>
-<span class="source-line-no">132</span><span id="line-132">        }, 30, 30);</span>
-<span class="source-line-no">133</span><span id="line-133"></span>
-<span class="source-line-no">134</span><span id="line-134">        registerDependency(plugin.getClass(), plugin);</span>
-<span class="source-line-no">135</span><span id="line-135">        registerDependency(Logger.class, plugin.getLogger());</span>
-<span class="source-line-no">136</span><span id="line-136">        registerDependency(FileConfiguration.class, plugin.getConfig());</span>
-<span class="source-line-no">137</span><span id="line-137">        registerDependency(FileConfiguration.class, "config", plugin.getConfig());</span>
-<span class="source-line-no">138</span><span id="line-138">        registerDependency(Plugin.class, plugin);</span>
-<span class="source-line-no">139</span><span id="line-139">        registerDependency(JavaPlugin.class, plugin);</span>
-<span class="source-line-no">140</span><span id="line-140">        registerDependency(PluginManager.class, Bukkit.getPluginManager());</span>
-<span class="source-line-no">141</span><span id="line-141">        registerDependency(Server.class, Bukkit.getServer());</span>
-<span class="source-line-no">142</span><span id="line-142">        registerDependency(BukkitScheduler.class, Bukkit.getScheduler());</span>
-<span class="source-line-no">143</span><span id="line-143">        registerDependency(ScoreboardManager.class, Bukkit.getScoreboardManager());</span>
-<span class="source-line-no">144</span><span id="line-144">        registerDependency(ItemFactory.class, Bukkit.getItemFactory());</span>
-<span class="source-line-no">145</span><span id="line-145">    }</span>
-<span class="source-line-no">146</span><span id="line-146"></span>
-<span class="source-line-no">147</span><span id="line-147">    @NotNull</span>
-<span class="source-line-no">148</span><span id="line-148">    private CommandMap hookCommandMap() {</span>
-<span class="source-line-no">149</span><span id="line-149">        CommandMap commandMap = null;</span>
-<span class="source-line-no">150</span><span id="line-150">        try {</span>
-<span class="source-line-no">151</span><span id="line-151">            Server server = Bukkit.getServer();</span>
-<span class="source-line-no">152</span><span id="line-152">            Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");</span>
-<span class="source-line-no">153</span><span id="line-153">            getCommandMap.setAccessible(true);</span>
-<span class="source-line-no">154</span><span id="line-154">            commandMap = (CommandMap) getCommandMap.invoke(server);</span>
-<span class="source-line-no">155</span><span id="line-155">            if (!SimpleCommandMap.class.isAssignableFrom(commandMap.getClass())) {</span>
-<span class="source-line-no">156</span><span id="line-156">                this.log(LogLevel.ERROR, "ERROR: CommandMap has been hijacked! Offending command map is located at: " + commandMap.getClass().getName());</span>
-<span class="source-line-no">157</span><span id="line-157">                this.log(LogLevel.ERROR, "We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");</span>
-<span class="source-line-no">158</span><span id="line-158">                this.log(LogLevel.ERROR, "We can not guarantee things are going to work.");</span>
-<span class="source-line-no">159</span><span id="line-159">                Field cmField = server.getClass().getDeclaredField("commandMap");</span>
-<span class="source-line-no">160</span><span id="line-160">                commandMap = new ProxyCommandMap(this, commandMap);</span>
-<span class="source-line-no">161</span><span id="line-161">                cmField.set(server, commandMap);</span>
-<span class="source-line-no">162</span><span id="line-162">                this.log(LogLevel.INFO, "Injected Proxy Command Map... good luck...");</span>
-<span class="source-line-no">163</span><span id="line-163">            }</span>
-<span class="source-line-no">164</span><span id="line-164">            Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");</span>
-<span class="source-line-no">165</span><span id="line-165">            knownCommands.setAccessible(true);</span>
-<span class="source-line-no">166</span><span id="line-166">            //noinspection unchecked</span>
-<span class="source-line-no">167</span><span id="line-167">            this.knownCommands = (Map&lt;String, Command&gt;) knownCommands.get(commandMap);</span>
-<span class="source-line-no">168</span><span id="line-168">        } catch (Exception e) {</span>
-<span class="source-line-no">169</span><span id="line-169">            this.log(LogLevel.ERROR, "Failed to get Command Map. ACF will not function.");</span>
-<span class="source-line-no">170</span><span id="line-170">            ACFUtil.sneaky(e);</span>
-<span class="source-line-no">171</span><span id="line-171">        }</span>
-<span class="source-line-no">172</span><span id="line-172">        return commandMap;</span>
-<span class="source-line-no">173</span><span id="line-173">    }</span>
-<span class="source-line-no">174</span><span id="line-174"></span>
-<span class="source-line-no">175</span><span id="line-175">    public Plugin getPlugin() {</span>
-<span class="source-line-no">176</span><span id="line-176">        return this.plugin;</span>
-<span class="source-line-no">177</span><span id="line-177">    }</span>
-<span class="source-line-no">178</span><span id="line-178"></span>
-<span class="source-line-no">179</span><span id="line-179">    @Override</span>
-<span class="source-line-no">180</span><span id="line-180">    public boolean isCommandIssuer(Class&lt;?&gt; type) {</span>
-<span class="source-line-no">181</span><span id="line-181">        return CommandSender.class.isAssignableFrom(type);</span>
-<span class="source-line-no">182</span><span id="line-182">    }</span>
-<span class="source-line-no">183</span><span id="line-183"></span>
-<span class="source-line-no">184</span><span id="line-184">    @Override</span>
-<span class="source-line-no">185</span><span id="line-185">    public synchronized CommandContexts&lt;BukkitCommandExecutionContext&gt; getCommandContexts() {</span>
-<span class="source-line-no">186</span><span id="line-186">        if (this.contexts == null) {</span>
-<span class="source-line-no">187</span><span id="line-187">            this.contexts = new BukkitCommandContexts(this);</span>
-<span class="source-line-no">188</span><span id="line-188">        }</span>
-<span class="source-line-no">189</span><span id="line-189">        return contexts;</span>
-<span class="source-line-no">190</span><span id="line-190">    }</span>
-<span class="source-line-no">191</span><span id="line-191"></span>
-<span class="source-line-no">192</span><span id="line-192">    @Override</span>
-<span class="source-line-no">193</span><span id="line-193">    public synchronized CommandCompletions&lt;BukkitCommandCompletionContext&gt; getCommandCompletions() {</span>
-<span class="source-line-no">194</span><span id="line-194">        if (this.completions == null) {</span>
-<span class="source-line-no">195</span><span id="line-195">            this.completions = new BukkitCommandCompletions(this);</span>
-<span class="source-line-no">196</span><span id="line-196">        }</span>
-<span class="source-line-no">197</span><span id="line-197">        return completions;</span>
-<span class="source-line-no">198</span><span id="line-198">    }</span>
+<span class="source-line-no">095</span><span id="line-95">    public BukkitCommandManager(Plugin plugin) {</span>
+<span class="source-line-no">096</span><span id="line-96">        this.plugin = plugin;</span>
+<span class="source-line-no">097</span><span id="line-97">        String prefix = this.plugin.getDescription().getPrefix();</span>
+<span class="source-line-no">098</span><span id="line-98">        this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());</span>
+<span class="source-line-no">099</span><span id="line-99">        this.timingManager = TimingManager.of(plugin);</span>
+<span class="source-line-no">100</span><span id="line-100">        this.commandTiming = this.timingManager.of("Commands");</span>
+<span class="source-line-no">101</span><span id="line-101">        this.commandMap = hookCommandMap();</span>
+<span class="source-line-no">102</span><span id="line-102">        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));</span>
+<span class="source-line-no">103</span><span id="line-103">        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));</span>
+<span class="source-line-no">104</span><span id="line-104">        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));</span>
+<span class="source-line-no">105</span><span id="line-105">        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));</span>
+<span class="source-line-no">106</span><span id="line-106">        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?\\)");</span>
+<span class="source-line-no">107</span><span id="line-107">        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());</span>
+<span class="source-line-no">108</span><span id="line-108">        if (matcher.find()) {</span>
+<span class="source-line-no">109</span><span id="line-109">            this.mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);</span>
+<span class="source-line-no">110</span><span id="line-110">            this.mcPatchVersion = ACFUtil.parseInt(matcher.toMatchResult().group(3), 0);</span>
+<span class="source-line-no">111</span><span id="line-111">        } else {</span>
+<span class="source-line-no">112</span><span id="line-112">            this.mcMinorVersion = -1;</span>
+<span class="source-line-no">113</span><span id="line-113">            this.mcPatchVersion = -1;</span>
+<span class="source-line-no">114</span><span id="line-114">        }</span>
+<span class="source-line-no">115</span><span id="line-115">        Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -&gt; {</span>
+<span class="source-line-no">116</span><span id="line-116">            if (hasUnstableAPI("help")) {</span>
+<span class="source-line-no">117</span><span id="line-117">                return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);</span>
+<span class="source-line-no">118</span><span id="line-118">            } else {</span>
+<span class="source-line-no">119</span><span id="line-119">                return new GenericCommandHelpTopic(command);</span>
+<span class="source-line-no">120</span><span id="line-120">            }</span>
+<span class="source-line-no">121</span><span id="line-121">        });</span>
+<span class="source-line-no">122</span><span id="line-122"></span>
+<span class="source-line-no">123</span><span id="line-123">        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">        getLocales(); // auto load locales</span>
+<span class="source-line-no">126</span><span id="line-126">        this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -&gt; {</span>
+<span class="source-line-no">127</span><span id="line-127">            if (this.cantReadLocale || !this.autoDetectFromClient) {</span>
+<span class="source-line-no">128</span><span id="line-128">                return;</span>
+<span class="source-line-no">129</span><span id="line-129">            }</span>
+<span class="source-line-no">130</span><span id="line-130">            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);</span>
+<span class="source-line-no">131</span><span id="line-131">        }, 30, 30);</span>
+<span class="source-line-no">132</span><span id="line-132"></span>
+<span class="source-line-no">133</span><span id="line-133">        registerDependency(plugin.getClass(), plugin);</span>
+<span class="source-line-no">134</span><span id="line-134">        registerDependency(Logger.class, plugin.getLogger());</span>
+<span class="source-line-no">135</span><span id="line-135">        registerDependency(FileConfiguration.class, plugin.getConfig());</span>
+<span class="source-line-no">136</span><span id="line-136">        registerDependency(FileConfiguration.class, "config", plugin.getConfig());</span>
+<span class="source-line-no">137</span><span id="line-137">        registerDependency(Plugin.class, plugin);</span>
+<span class="source-line-no">138</span><span id="line-138">        registerDependency(JavaPlugin.class, plugin);</span>
+<span class="source-line-no">139</span><span id="line-139">        registerDependency(PluginManager.class, Bukkit.getPluginManager());</span>
+<span class="source-line-no">140</span><span id="line-140">        registerDependency(Server.class, Bukkit.getServer());</span>
+<span class="source-line-no">141</span><span id="line-141">        registerDependency(BukkitScheduler.class, Bukkit.getScheduler());</span>
+<span class="source-line-no">142</span><span id="line-142">        registerDependency(ScoreboardManager.class, Bukkit.getScoreboardManager());</span>
+<span class="source-line-no">143</span><span id="line-143">        registerDependency(ItemFactory.class, Bukkit.getItemFactory());</span>
+<span class="source-line-no">144</span><span id="line-144">    }</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">    @NotNull</span>
+<span class="source-line-no">147</span><span id="line-147">    private CommandMap hookCommandMap() {</span>
+<span class="source-line-no">148</span><span id="line-148">        CommandMap commandMap = null;</span>
+<span class="source-line-no">149</span><span id="line-149">        try {</span>
+<span class="source-line-no">150</span><span id="line-150">            Server server = Bukkit.getServer();</span>
+<span class="source-line-no">151</span><span id="line-151">            Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");</span>
+<span class="source-line-no">152</span><span id="line-152">            getCommandMap.setAccessible(true);</span>
+<span class="source-line-no">153</span><span id="line-153">            commandMap = (CommandMap) getCommandMap.invoke(server);</span>
+<span class="source-line-no">154</span><span id="line-154">            if (!SimpleCommandMap.class.isAssignableFrom(commandMap.getClass())) {</span>
+<span class="source-line-no">155</span><span id="line-155">                this.log(LogLevel.ERROR, "ERROR: CommandMap has been hijacked! Offending command map is located at: " + commandMap.getClass().getName());</span>
+<span class="source-line-no">156</span><span id="line-156">                this.log(LogLevel.ERROR, "We are going to try to hijack it back and resolve this, but you are now in dangerous territory.");</span>
+<span class="source-line-no">157</span><span id="line-157">                this.log(LogLevel.ERROR, "We can not guarantee things are going to work.");</span>
+<span class="source-line-no">158</span><span id="line-158">                Field cmField = server.getClass().getDeclaredField("commandMap");</span>
+<span class="source-line-no">159</span><span id="line-159">                commandMap = new ProxyCommandMap(this, commandMap);</span>
+<span class="source-line-no">160</span><span id="line-160">                cmField.set(server, commandMap);</span>
+<span class="source-line-no">161</span><span id="line-161">                this.log(LogLevel.INFO, "Injected Proxy Command Map... good luck...");</span>
+<span class="source-line-no">162</span><span id="line-162">            }</span>
+<span class="source-line-no">163</span><span id="line-163">            Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");</span>
+<span class="source-line-no">164</span><span id="line-164">            knownCommands.setAccessible(true);</span>
+<span class="source-line-no">165</span><span id="line-165">            //noinspection unchecked</span>
+<span class="source-line-no">166</span><span id="line-166">            this.knownCommands = (Map&lt;String, Command&gt;) knownCommands.get(commandMap);</span>
+<span class="source-line-no">167</span><span id="line-167">        } catch (Exception e) {</span>
+<span class="source-line-no">168</span><span id="line-168">            this.log(LogLevel.ERROR, "Failed to get Command Map. ACF will not function.");</span>
+<span class="source-line-no">169</span><span id="line-169">            ACFUtil.sneaky(e);</span>
+<span class="source-line-no">170</span><span id="line-170">        }</span>
+<span class="source-line-no">171</span><span id="line-171">        return commandMap;</span>
+<span class="source-line-no">172</span><span id="line-172">    }</span>
+<span class="source-line-no">173</span><span id="line-173"></span>
+<span class="source-line-no">174</span><span id="line-174">    public Plugin getPlugin() {</span>
+<span class="source-line-no">175</span><span id="line-175">        return this.plugin;</span>
+<span class="source-line-no">176</span><span id="line-176">    }</span>
+<span class="source-line-no">177</span><span id="line-177"></span>
+<span class="source-line-no">178</span><span id="line-178">    @Override</span>
+<span class="source-line-no">179</span><span id="line-179">    public boolean isCommandIssuer(Class&lt;?&gt; type) {</span>
+<span class="source-line-no">180</span><span id="line-180">        return CommandSender.class.isAssignableFrom(type);</span>
+<span class="source-line-no">181</span><span id="line-181">    }</span>
+<span class="source-line-no">182</span><span id="line-182"></span>
+<span class="source-line-no">183</span><span id="line-183">    @Override</span>
+<span class="source-line-no">184</span><span id="line-184">    public synchronized CommandContexts&lt;BukkitCommandExecutionContext&gt; getCommandContexts() {</span>
+<span class="source-line-no">185</span><span id="line-185">        if (this.contexts == null) {</span>
+<span class="source-line-no">186</span><span id="line-186">            this.contexts = new BukkitCommandContexts(this);</span>
+<span class="source-line-no">187</span><span id="line-187">        }</span>
+<span class="source-line-no">188</span><span id="line-188">        return contexts;</span>
+<span class="source-line-no">189</span><span id="line-189">    }</span>
+<span class="source-line-no">190</span><span id="line-190"></span>
+<span class="source-line-no">191</span><span id="line-191">    @Override</span>
+<span class="source-line-no">192</span><span id="line-192">    public synchronized CommandCompletions&lt;BukkitCommandCompletionContext&gt; getCommandCompletions() {</span>
+<span class="source-line-no">193</span><span id="line-193">        if (this.completions == null) {</span>
+<span class="source-line-no">194</span><span id="line-194">            this.completions = new BukkitCommandCompletions(this);</span>
+<span class="source-line-no">195</span><span id="line-195">        }</span>
+<span class="source-line-no">196</span><span id="line-196">        return completions;</span>
+<span class="source-line-no">197</span><span id="line-197">    }</span>
+<span class="source-line-no">198</span><span id="line-198"></span>
 <span class="source-line-no">199</span><span id="line-199"></span>
-<span class="source-line-no">200</span><span id="line-200"></span>
-<span class="source-line-no">201</span><span id="line-201">    @Override</span>
-<span class="source-line-no">202</span><span id="line-202">    public BukkitLocales getLocales() {</span>
-<span class="source-line-no">203</span><span id="line-203">        if (this.locales == null) {</span>
-<span class="source-line-no">204</span><span id="line-204">            this.locales = new BukkitLocales(this);</span>
-<span class="source-line-no">205</span><span id="line-205">            this.locales.loadLanguages();</span>
-<span class="source-line-no">206</span><span id="line-206">        }</span>
-<span class="source-line-no">207</span><span id="line-207">        return locales;</span>
-<span class="source-line-no">208</span><span id="line-208">    }</span>
+<span class="source-line-no">200</span><span id="line-200">    @Override</span>
+<span class="source-line-no">201</span><span id="line-201">    public BukkitLocales getLocales() {</span>
+<span class="source-line-no">202</span><span id="line-202">        if (this.locales == null) {</span>
+<span class="source-line-no">203</span><span id="line-203">            this.locales = new BukkitLocales(this);</span>
+<span class="source-line-no">204</span><span id="line-204">            this.locales.loadLanguages();</span>
+<span class="source-line-no">205</span><span id="line-205">        }</span>
+<span class="source-line-no">206</span><span id="line-206">        return locales;</span>
+<span class="source-line-no">207</span><span id="line-207">    }</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
 <span class="source-line-no">209</span><span id="line-209"></span>
-<span class="source-line-no">210</span><span id="line-210"></span>
-<span class="source-line-no">211</span><span id="line-211">    @Override</span>
-<span class="source-line-no">212</span><span id="line-212">    public boolean hasRegisteredCommands() {</span>
-<span class="source-line-no">213</span><span id="line-213">        return !registeredCommands.isEmpty();</span>
-<span class="source-line-no">214</span><span id="line-214">    }</span>
-<span class="source-line-no">215</span><span id="line-215"></span>
-<span class="source-line-no">216</span><span id="line-216">    public void registerCommand(BaseCommand command, boolean force) {</span>
-<span class="source-line-no">217</span><span id="line-217">        final String plugin = this.plugin.getName().toLowerCase(Locale.ENGLISH);</span>
-<span class="source-line-no">218</span><span id="line-218">        command.onRegister(this);</span>
-<span class="source-line-no">219</span><span id="line-219">        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {</span>
-<span class="source-line-no">220</span><span id="line-220">            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);</span>
-<span class="source-line-no">221</span><span id="line-221">            BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();</span>
-<span class="source-line-no">222</span><span id="line-222">            if (!bukkitCommand.isRegistered) {</span>
-<span class="source-line-no">223</span><span id="line-223">                Command oldCommand = commandMap.getCommand(commandName);</span>
-<span class="source-line-no">224</span><span id="line-224">                if (oldCommand instanceof PluginIdentifiableCommand &amp;&amp; ((PluginIdentifiableCommand) oldCommand).getPlugin() == this.plugin) {</span>
-<span class="source-line-no">225</span><span id="line-225">                    knownCommands.remove(commandName);</span>
-<span class="source-line-no">226</span><span id="line-226">                    oldCommand.unregister(commandMap);</span>
-<span class="source-line-no">227</span><span id="line-227">                } else if (oldCommand != null &amp;&amp; force) {</span>
-<span class="source-line-no">228</span><span id="line-228">                    knownCommands.remove(commandName);</span>
-<span class="source-line-no">229</span><span id="line-229">                    for (Map.Entry&lt;String, Command&gt; ce : knownCommands.entrySet()) {</span>
-<span class="source-line-no">230</span><span id="line-230">                        String key = ce.getKey();</span>
-<span class="source-line-no">231</span><span id="line-231">                        Command value = ce.getValue();</span>
-<span class="source-line-no">232</span><span id="line-232">                        if (key.contains(":") &amp;&amp; oldCommand.equals(value)) {</span>
-<span class="source-line-no">233</span><span id="line-233">                            String[] split = ACFPatterns.COLON.split(key, 2);</span>
-<span class="source-line-no">234</span><span id="line-234">                            if (split.length &gt; 1) {</span>
-<span class="source-line-no">235</span><span id="line-235">                                oldCommand.unregister(commandMap);</span>
-<span class="source-line-no">236</span><span id="line-236">                                oldCommand.setLabel(split[0] + ":" + command.getName());</span>
-<span class="source-line-no">237</span><span id="line-237">                                oldCommand.register(commandMap);</span>
-<span class="source-line-no">238</span><span id="line-238">                            }</span>
-<span class="source-line-no">239</span><span id="line-239">                        }</span>
-<span class="source-line-no">240</span><span id="line-240">                    }</span>
-<span class="source-line-no">241</span><span id="line-241">                }</span>
-<span class="source-line-no">242</span><span id="line-242">                commandMap.register(commandName, plugin, bukkitCommand);</span>
-<span class="source-line-no">243</span><span id="line-243">            }</span>
-<span class="source-line-no">244</span><span id="line-244">            bukkitCommand.isRegistered = true;</span>
-<span class="source-line-no">245</span><span id="line-245">            registeredCommands.put(commandName, bukkitCommand);</span>
-<span class="source-line-no">246</span><span id="line-246">        }</span>
-<span class="source-line-no">247</span><span id="line-247">    }</span>
-<span class="source-line-no">248</span><span id="line-248"></span>
-<span class="source-line-no">249</span><span id="line-249">    @Override</span>
-<span class="source-line-no">250</span><span id="line-250">    public void registerCommand(BaseCommand command) {</span>
-<span class="source-line-no">251</span><span id="line-251">        registerCommand(command, false);</span>
-<span class="source-line-no">252</span><span id="line-252">    }</span>
-<span class="source-line-no">253</span><span id="line-253"></span>
-<span class="source-line-no">254</span><span id="line-254">    public void unregisterCommand(BaseCommand command) {</span>
-<span class="source-line-no">255</span><span id="line-255">        for (RootCommand rootcommand : command.registeredCommands.values()) {</span>
-<span class="source-line-no">256</span><span id="line-256">            BukkitRootCommand bukkitCommand = (BukkitRootCommand) rootcommand;</span>
-<span class="source-line-no">257</span><span id="line-257">            bukkitCommand.getSubCommands().values().removeAll(command.subCommands.values());</span>
-<span class="source-line-no">258</span><span id="line-258">            if (bukkitCommand.isRegistered &amp;&amp; bukkitCommand.getSubCommands().isEmpty()) {</span>
-<span class="source-line-no">259</span><span id="line-259">                unregisterCommand(bukkitCommand);</span>
-<span class="source-line-no">260</span><span id="line-260">                bukkitCommand.isRegistered = false;</span>
-<span class="source-line-no">261</span><span id="line-261">            }</span>
-<span class="source-line-no">262</span><span id="line-262">        }</span>
-<span class="source-line-no">263</span><span id="line-263">    }</span>
-<span class="source-line-no">264</span><span id="line-264"></span>
-<span class="source-line-no">265</span><span id="line-265">    /**</span>
-<span class="source-line-no">266</span><span id="line-266">     * @param command</span>
-<span class="source-line-no">267</span><span id="line-267">     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.</span>
-<span class="source-line-no">268</span><span id="line-268">     */</span>
-<span class="source-line-no">269</span><span id="line-269">    @Deprecated</span>
-<span class="source-line-no">270</span><span id="line-270">    public void unregisterCommand(BukkitRootCommand command) {</span>
-<span class="source-line-no">271</span><span id="line-271">        final String plugin = this.plugin.getName().toLowerCase(Locale.ENGLISH);</span>
-<span class="source-line-no">272</span><span id="line-272">        command.unregister(commandMap);</span>
-<span class="source-line-no">273</span><span id="line-273">        String key = command.getName();</span>
-<span class="source-line-no">274</span><span id="line-274">        Command registered = knownCommands.get(key);</span>
-<span class="source-line-no">275</span><span id="line-275">        if (command.equals(registered)) {</span>
-<span class="source-line-no">276</span><span id="line-276">            knownCommands.remove(key);</span>
-<span class="source-line-no">277</span><span id="line-277">        }</span>
-<span class="source-line-no">278</span><span id="line-278">        knownCommands.remove(plugin + ":" + key);</span>
-<span class="source-line-no">279</span><span id="line-279">        registeredCommands.remove(key);</span>
-<span class="source-line-no">280</span><span id="line-280">    }</span>
-<span class="source-line-no">281</span><span id="line-281"></span>
-<span class="source-line-no">282</span><span id="line-282">    public void unregisterCommands() {</span>
-<span class="source-line-no">283</span><span id="line-283">        for (String key : new HashSet&lt;&gt;(registeredCommands.keySet())) {</span>
-<span class="source-line-no">284</span><span id="line-284">            unregisterCommand(registeredCommands.get(key));</span>
-<span class="source-line-no">285</span><span id="line-285">        }</span>
-<span class="source-line-no">286</span><span id="line-286">    }</span>
+<span class="source-line-no">210</span><span id="line-210">    @Override</span>
+<span class="source-line-no">211</span><span id="line-211">    public boolean hasRegisteredCommands() {</span>
+<span class="source-line-no">212</span><span id="line-212">        return !registeredCommands.isEmpty();</span>
+<span class="source-line-no">213</span><span id="line-213">    }</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">    public void registerCommand(BaseCommand command, boolean force) {</span>
+<span class="source-line-no">216</span><span id="line-216">        final String plugin = this.plugin.getName().toLowerCase(Locale.ENGLISH);</span>
+<span class="source-line-no">217</span><span id="line-217">        command.onRegister(this);</span>
+<span class="source-line-no">218</span><span id="line-218">        for (Map.Entry&lt;String, RootCommand&gt; entry : command.registeredCommands.entrySet()) {</span>
+<span class="source-line-no">219</span><span id="line-219">            String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);</span>
+<span class="source-line-no">220</span><span id="line-220">            BukkitRootCommand bukkitCommand = (BukkitRootCommand) entry.getValue();</span>
+<span class="source-line-no">221</span><span id="line-221">            if (!bukkitCommand.isRegistered) {</span>
+<span class="source-line-no">222</span><span id="line-222">                Command oldCommand = commandMap.getCommand(commandName);</span>
+<span class="source-line-no">223</span><span id="line-223">                if (oldCommand instanceof PluginIdentifiableCommand &amp;&amp; ((PluginIdentifiableCommand) oldCommand).getPlugin() == this.plugin) {</span>
+<span class="source-line-no">224</span><span id="line-224">                    knownCommands.remove(commandName);</span>
+<span class="source-line-no">225</span><span id="line-225">                    oldCommand.unregister(commandMap);</span>
+<span class="source-line-no">226</span><span id="line-226">                } else if (oldCommand != null &amp;&amp; force) {</span>
+<span class="source-line-no">227</span><span id="line-227">                    knownCommands.remove(commandName);</span>
+<span class="source-line-no">228</span><span id="line-228">                    for (Map.Entry&lt;String, Command&gt; ce : knownCommands.entrySet()) {</span>
+<span class="source-line-no">229</span><span id="line-229">                        String key = ce.getKey();</span>
+<span class="source-line-no">230</span><span id="line-230">                        Command value = ce.getValue();</span>
+<span class="source-line-no">231</span><span id="line-231">                        if (key.contains(":") &amp;&amp; oldCommand.equals(value)) {</span>
+<span class="source-line-no">232</span><span id="line-232">                            String[] split = ACFPatterns.COLON.split(key, 2);</span>
+<span class="source-line-no">233</span><span id="line-233">                            if (split.length &gt; 1) {</span>
+<span class="source-line-no">234</span><span id="line-234">                                oldCommand.unregister(commandMap);</span>
+<span class="source-line-no">235</span><span id="line-235">                                oldCommand.setLabel(split[0] + ":" + command.getName());</span>
+<span class="source-line-no">236</span><span id="line-236">                                oldCommand.register(commandMap);</span>
+<span class="source-line-no">237</span><span id="line-237">                            }</span>
+<span class="source-line-no">238</span><span id="line-238">                        }</span>
+<span class="source-line-no">239</span><span id="line-239">                    }</span>
+<span class="source-line-no">240</span><span id="line-240">                }</span>
+<span class="source-line-no">241</span><span id="line-241">                commandMap.register(commandName, plugin, bukkitCommand);</span>
+<span class="source-line-no">242</span><span id="line-242">            }</span>
+<span class="source-line-no">243</span><span id="line-243">            bukkitCommand.isRegistered = true;</span>
+<span class="source-line-no">244</span><span id="line-244">            registeredCommands.put(commandName, bukkitCommand);</span>
+<span class="source-line-no">245</span><span id="line-245">        }</span>
+<span class="source-line-no">246</span><span id="line-246">    }</span>
+<span class="source-line-no">247</span><span id="line-247"></span>
+<span class="source-line-no">248</span><span id="line-248">    @Override</span>
+<span class="source-line-no">249</span><span id="line-249">    public void registerCommand(BaseCommand command) {</span>
+<span class="source-line-no">250</span><span id="line-250">        registerCommand(command, false);</span>
+<span class="source-line-no">251</span><span id="line-251">    }</span>
+<span class="source-line-no">252</span><span id="line-252"></span>
+<span class="source-line-no">253</span><span id="line-253">    public void unregisterCommand(BaseCommand command) {</span>
+<span class="source-line-no">254</span><span id="line-254">        for (RootCommand rootcommand : command.registeredCommands.values()) {</span>
+<span class="source-line-no">255</span><span id="line-255">            BukkitRootCommand bukkitCommand = (BukkitRootCommand) rootcommand;</span>
+<span class="source-line-no">256</span><span id="line-256">            bukkitCommand.getSubCommands().values().removeAll(command.subCommands.values());</span>
+<span class="source-line-no">257</span><span id="line-257">            if (bukkitCommand.isRegistered &amp;&amp; bukkitCommand.getSubCommands().isEmpty()) {</span>
+<span class="source-line-no">258</span><span id="line-258">                unregisterCommand(bukkitCommand);</span>
+<span class="source-line-no">259</span><span id="line-259">                bukkitCommand.isRegistered = false;</span>
+<span class="source-line-no">260</span><span id="line-260">            }</span>
+<span class="source-line-no">261</span><span id="line-261">        }</span>
+<span class="source-line-no">262</span><span id="line-262">    }</span>
+<span class="source-line-no">263</span><span id="line-263"></span>
+<span class="source-line-no">264</span><span id="line-264">    /**</span>
+<span class="source-line-no">265</span><span id="line-265">     * @param command</span>
+<span class="source-line-no">266</span><span id="line-266">     * @deprecated Use unregisterCommand(BaseCommand) - this will be visibility reduced later.</span>
+<span class="source-line-no">267</span><span id="line-267">     */</span>
+<span class="source-line-no">268</span><span id="line-268">    @Deprecated</span>
+<span class="source-line-no">269</span><span id="line-269">    public void unregisterCommand(BukkitRootCommand command) {</span>
+<span class="source-line-no">270</span><span id="line-270">        final String plugin = this.plugin.getName().toLowerCase(Locale.ENGLISH);</span>
+<span class="source-line-no">271</span><span id="line-271">        command.unregister(commandMap);</span>
+<span class="source-line-no">272</span><span id="line-272">        String key = command.getName();</span>
+<span class="source-line-no">273</span><span id="line-273">        Command registered = knownCommands.get(key);</span>
+<span class="source-line-no">274</span><span id="line-274">        if (command.equals(registered)) {</span>
+<span class="source-line-no">275</span><span id="line-275">            knownCommands.remove(key);</span>
+<span class="source-line-no">276</span><span id="line-276">        }</span>
+<span class="source-line-no">277</span><span id="line-277">        knownCommands.remove(plugin + ":" + key);</span>
+<span class="source-line-no">278</span><span id="line-278">        registeredCommands.remove(key);</span>
+<span class="source-line-no">279</span><span id="line-279">    }</span>
+<span class="source-line-no">280</span><span id="line-280"></span>
+<span class="source-line-no">281</span><span id="line-281">    public void unregisterCommands() {</span>
+<span class="source-line-no">282</span><span id="line-282">        for (String key : new HashSet&lt;&gt;(registeredCommands.keySet())) {</span>
+<span class="source-line-no">283</span><span id="line-283">            unregisterCommand(registeredCommands.get(key));</span>
+<span class="source-line-no">284</span><span id="line-284">        }</span>
+<span class="source-line-no">285</span><span id="line-285">    }</span>
+<span class="source-line-no">286</span><span id="line-286"></span>
 <span class="source-line-no">287</span><span id="line-287"></span>
-<span class="source-line-no">288</span><span id="line-288"></span>
-<span class="source-line-no">289</span><span id="line-289">    private Field getEntityField(Player player) throws NoSuchFieldException {</span>
-<span class="source-line-no">290</span><span id="line-290">        Class cls = player.getClass();</span>
-<span class="source-line-no">291</span><span id="line-291">        while (cls != Object.class) {</span>
-<span class="source-line-no">292</span><span id="line-292">            if (cls.getName().endsWith("CraftEntity")) {</span>
-<span class="source-line-no">293</span><span id="line-293">                Field field = cls.getDeclaredField("entity");</span>
-<span class="source-line-no">294</span><span id="line-294">                field.setAccessible(true);</span>
-<span class="source-line-no">295</span><span id="line-295">                return field;</span>
-<span class="source-line-no">296</span><span id="line-296">            }</span>
-<span class="source-line-no">297</span><span id="line-297">            cls = cls.getSuperclass();</span>
-<span class="source-line-no">298</span><span id="line-298">        }</span>
-<span class="source-line-no">299</span><span id="line-299">        return null;</span>
-<span class="source-line-no">300</span><span id="line-300">    }</span>
-<span class="source-line-no">301</span><span id="line-301"></span>
-<span class="source-line-no">302</span><span id="line-302">    public Locale setPlayerLocale(Player player, Locale locale) {</span>
-<span class="source-line-no">303</span><span id="line-303">        return this.setIssuerLocale(player, locale);</span>
-<span class="source-line-no">304</span><span id="line-304">    }</span>
-<span class="source-line-no">305</span><span id="line-305"></span>
-<span class="source-line-no">306</span><span id="line-306">    void readPlayerLocale(Player player) {</span>
-<span class="source-line-no">307</span><span id="line-307">        if (!player.isOnline() || cantReadLocale) {</span>
-<span class="source-line-no">308</span><span id="line-308">            return;</span>
-<span class="source-line-no">309</span><span id="line-309">        }</span>
-<span class="source-line-no">310</span><span id="line-310">        try {</span>
-<span class="source-line-no">311</span><span id="line-311">            Field entityField = getEntityField(player);</span>
-<span class="source-line-no">312</span><span id="line-312">            if (entityField == null) {</span>
-<span class="source-line-no">313</span><span id="line-313">                return;</span>
-<span class="source-line-no">314</span><span id="line-314">            }</span>
-<span class="source-line-no">315</span><span id="line-315">            Object nmsPlayer = entityField.get(player);</span>
-<span class="source-line-no">316</span><span id="line-316">            if (nmsPlayer != null) {</span>
-<span class="source-line-no">317</span><span id="line-317">                Field localeField = nmsPlayer.getClass().getDeclaredField("locale");</span>
-<span class="source-line-no">318</span><span id="line-318">                localeField.setAccessible(true);</span>
-<span class="source-line-no">319</span><span id="line-319">                Object localeString = localeField.get(nmsPlayer);</span>
-<span class="source-line-no">320</span><span id="line-320">                if (localeString instanceof String) {</span>
-<span class="source-line-no">321</span><span id="line-321">                    UUID playerUniqueId = player.getUniqueId();</span>
-<span class="source-line-no">322</span><span id="line-322">                    if (!localeString.equals(issuersLocaleString.get(playerUniqueId))) {</span>
-<span class="source-line-no">323</span><span id="line-323">                        String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);</span>
-<span class="source-line-no">324</span><span id="line-324">                        Locale locale = split.length &gt; 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);</span>
-<span class="source-line-no">325</span><span id="line-325">                        Locale prev = issuersLocale.put(playerUniqueId, locale);</span>
-<span class="source-line-no">326</span><span id="line-326">                        issuersLocaleString.put(playerUniqueId, (String) localeString);</span>
-<span class="source-line-no">327</span><span id="line-327">                        if (!Objects.equals(locale, prev)) {</span>
-<span class="source-line-no">328</span><span id="line-328">                            this.notifyLocaleChange(getCommandIssuer(player), prev, locale);</span>
-<span class="source-line-no">329</span><span id="line-329">                        }</span>
-<span class="source-line-no">330</span><span id="line-330">                    }</span>
-<span class="source-line-no">331</span><span id="line-331">                }</span>
-<span class="source-line-no">332</span><span id="line-332">            }</span>
-<span class="source-line-no">333</span><span id="line-333">        } catch (Exception e) {</span>
-<span class="source-line-no">334</span><span id="line-334">            cantReadLocale = true;</span>
-<span class="source-line-no">335</span><span id="line-335">            this.localeTask.cancel();</span>
-<span class="source-line-no">336</span><span id="line-336">            this.log(LogLevel.INFO, "Can't read players locale, you will be unable to automatically detect players language. Only Bukkit 1.7+ is supported for this.", e);</span>
-<span class="source-line-no">337</span><span id="line-337">        }</span>
-<span class="source-line-no">338</span><span id="line-338">    }</span>
-<span class="source-line-no">339</span><span id="line-339"></span>
-<span class="source-line-no">340</span><span id="line-340">    public TimingManager getTimings() {</span>
-<span class="source-line-no">341</span><span id="line-341">        return timingManager;</span>
-<span class="source-line-no">342</span><span id="line-342">    }</span>
-<span class="source-line-no">343</span><span id="line-343"></span>
-<span class="source-line-no">344</span><span id="line-344">    @Override</span>
-<span class="source-line-no">345</span><span id="line-345">    public RootCommand createRootCommand(String cmd) {</span>
-<span class="source-line-no">346</span><span id="line-346">        return new BukkitRootCommand(this, cmd);</span>
-<span class="source-line-no">347</span><span id="line-347">    }</span>
-<span class="source-line-no">348</span><span id="line-348"></span>
-<span class="source-line-no">349</span><span id="line-349">    @Override</span>
-<span class="source-line-no">350</span><span id="line-350">    public Collection&lt;RootCommand&gt; getRegisteredRootCommands() {</span>
-<span class="source-line-no">351</span><span id="line-351">        return Collections.unmodifiableCollection(registeredCommands.values());</span>
-<span class="source-line-no">352</span><span id="line-352">    }</span>
-<span class="source-line-no">353</span><span id="line-353"></span>
-<span class="source-line-no">354</span><span id="line-354">    @Override</span>
-<span class="source-line-no">355</span><span id="line-355">    public BukkitCommandIssuer getCommandIssuer(Object issuer) {</span>
-<span class="source-line-no">356</span><span id="line-356">        if (!(issuer instanceof CommandSender)) {</span>
-<span class="source-line-no">357</span><span id="line-357">            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");</span>
-<span class="source-line-no">358</span><span id="line-358">        }</span>
-<span class="source-line-no">359</span><span id="line-359">        return new BukkitCommandIssuer(this, (CommandSender) issuer);</span>
-<span class="source-line-no">360</span><span id="line-360">    }</span>
-<span class="source-line-no">361</span><span id="line-361"></span>
-<span class="source-line-no">362</span><span id="line-362">    @Override</span>
-<span class="source-line-no">363</span><span id="line-363">    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {</span>
-<span class="source-line-no">364</span><span id="line-364">        return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);</span>
-<span class="source-line-no">365</span><span id="line-365">    }</span>
-<span class="source-line-no">366</span><span id="line-366"></span>
-<span class="source-line-no">367</span><span id="line-367">    @Override</span>
-<span class="source-line-no">368</span><span id="line-368">    public BukkitCommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {</span>
-<span class="source-line-no">369</span><span id="line-369">        return new BukkitCommandCompletionContext(command, (BukkitCommandIssuer) sender, input, config, args);</span>
-<span class="source-line-no">370</span><span id="line-370">    }</span>
-<span class="source-line-no">371</span><span id="line-371"></span>
-<span class="source-line-no">372</span><span id="line-372">    @Override</span>
-<span class="source-line-no">373</span><span id="line-373">    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {</span>
-<span class="source-line-no">374</span><span id="line-374">        return new BukkitRegisteredCommand(command, cmdName, method, prefSubCommand);</span>
-<span class="source-line-no">375</span><span id="line-375">    }</span>
-<span class="source-line-no">376</span><span id="line-376"></span>
-<span class="source-line-no">377</span><span id="line-377">    @Override</span>
-<span class="source-line-no">378</span><span id="line-378">    public BukkitConditionContext createConditionContext(CommandIssuer issuer, String config) {</span>
-<span class="source-line-no">379</span><span id="line-379">        return new BukkitConditionContext((BukkitCommandIssuer) issuer, config);</span>
-<span class="source-line-no">380</span><span id="line-380">    }</span>
+<span class="source-line-no">288</span><span id="line-288">    private Field getEntityField(Player player) throws NoSuchFieldException {</span>
+<span class="source-line-no">289</span><span id="line-289">        Class cls = player.getClass();</span>
+<span class="source-line-no">290</span><span id="line-290">        while (cls != Object.class) {</span>
+<span class="source-line-no">291</span><span id="line-291">            if (cls.getName().endsWith("CraftEntity")) {</span>
+<span class="source-line-no">292</span><span id="line-292">                Field field = cls.getDeclaredField("entity");</span>
+<span class="source-line-no">293</span><span id="line-293">                field.setAccessible(true);</span>
+<span class="source-line-no">294</span><span id="line-294">                return field;</span>
+<span class="source-line-no">295</span><span id="line-295">            }</span>
+<span class="source-line-no">296</span><span id="line-296">            cls = cls.getSuperclass();</span>
+<span class="source-line-no">297</span><span id="line-297">        }</span>
+<span class="source-line-no">298</span><span id="line-298">        return null;</span>
+<span class="source-line-no">299</span><span id="line-299">    }</span>
+<span class="source-line-no">300</span><span id="line-300"></span>
+<span class="source-line-no">301</span><span id="line-301">    public Locale setPlayerLocale(Player player, Locale locale) {</span>
+<span class="source-line-no">302</span><span id="line-302">        return this.setIssuerLocale(player, locale);</span>
+<span class="source-line-no">303</span><span id="line-303">    }</span>
+<span class="source-line-no">304</span><span id="line-304"></span>
+<span class="source-line-no">305</span><span id="line-305">    void readPlayerLocale(Player player) {</span>
+<span class="source-line-no">306</span><span id="line-306">        if (!player.isOnline() || cantReadLocale) {</span>
+<span class="source-line-no">307</span><span id="line-307">            return;</span>
+<span class="source-line-no">308</span><span id="line-308">        }</span>
+<span class="source-line-no">309</span><span id="line-309">        try {</span>
+<span class="source-line-no">310</span><span id="line-310">            Field entityField = getEntityField(player);</span>
+<span class="source-line-no">311</span><span id="line-311">            if (entityField == null) {</span>
+<span class="source-line-no">312</span><span id="line-312">                return;</span>
+<span class="source-line-no">313</span><span id="line-313">            }</span>
+<span class="source-line-no">314</span><span id="line-314">            Object nmsPlayer = entityField.get(player);</span>
+<span class="source-line-no">315</span><span id="line-315">            if (nmsPlayer != null) {</span>
+<span class="source-line-no">316</span><span id="line-316">                Field localeField = nmsPlayer.getClass().getDeclaredField("locale");</span>
+<span class="source-line-no">317</span><span id="line-317">                localeField.setAccessible(true);</span>
+<span class="source-line-no">318</span><span id="line-318">                Object localeString = localeField.get(nmsPlayer);</span>
+<span class="source-line-no">319</span><span id="line-319">                if (localeString instanceof String) {</span>
+<span class="source-line-no">320</span><span id="line-320">                    UUID playerUniqueId = player.getUniqueId();</span>
+<span class="source-line-no">321</span><span id="line-321">                    if (!localeString.equals(issuersLocaleString.get(playerUniqueId))) {</span>
+<span class="source-line-no">322</span><span id="line-322">                        String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);</span>
+<span class="source-line-no">323</span><span id="line-323">                        Locale locale = split.length &gt; 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);</span>
+<span class="source-line-no">324</span><span id="line-324">                        Locale prev = issuersLocale.put(playerUniqueId, locale);</span>
+<span class="source-line-no">325</span><span id="line-325">                        issuersLocaleString.put(playerUniqueId, (String) localeString);</span>
+<span class="source-line-no">326</span><span id="line-326">                        if (!Objects.equals(locale, prev)) {</span>
+<span class="source-line-no">327</span><span id="line-327">                            this.notifyLocaleChange(getCommandIssuer(player), prev, locale);</span>
+<span class="source-line-no">328</span><span id="line-328">                        }</span>
+<span class="source-line-no">329</span><span id="line-329">                    }</span>
+<span class="source-line-no">330</span><span id="line-330">                }</span>
+<span class="source-line-no">331</span><span id="line-331">            }</span>
+<span class="source-line-no">332</span><span id="line-332">        } catch (Exception e) {</span>
+<span class="source-line-no">333</span><span id="line-333">            cantReadLocale = true;</span>
+<span class="source-line-no">334</span><span id="line-334">            this.localeTask.cancel();</span>
+<span class="source-line-no">335</span><span id="line-335">            this.log(LogLevel.INFO, "Can't read players locale, you will be unable to automatically detect players language. Only Bukkit 1.7+ is supported for this.", e);</span>
+<span class="source-line-no">336</span><span id="line-336">        }</span>
+<span class="source-line-no">337</span><span id="line-337">    }</span>
+<span class="source-line-no">338</span><span id="line-338"></span>
+<span class="source-line-no">339</span><span id="line-339">    public TimingManager getTimings() {</span>
+<span class="source-line-no">340</span><span id="line-340">        return timingManager;</span>
+<span class="source-line-no">341</span><span id="line-341">    }</span>
+<span class="source-line-no">342</span><span id="line-342"></span>
+<span class="source-line-no">343</span><span id="line-343">    @Override</span>
+<span class="source-line-no">344</span><span id="line-344">    public RootCommand createRootCommand(String cmd) {</span>
+<span class="source-line-no">345</span><span id="line-345">        return new BukkitRootCommand(this, cmd);</span>
+<span class="source-line-no">346</span><span id="line-346">    }</span>
+<span class="source-line-no">347</span><span id="line-347"></span>
+<span class="source-line-no">348</span><span id="line-348">    @Override</span>
+<span class="source-line-no">349</span><span id="line-349">    public Collection&lt;RootCommand&gt; getRegisteredRootCommands() {</span>
+<span class="source-line-no">350</span><span id="line-350">        return Collections.unmodifiableCollection(registeredCommands.values());</span>
+<span class="source-line-no">351</span><span id="line-351">    }</span>
+<span class="source-line-no">352</span><span id="line-352"></span>
+<span class="source-line-no">353</span><span id="line-353">    @Override</span>
+<span class="source-line-no">354</span><span id="line-354">    public BukkitCommandIssuer getCommandIssuer(Object issuer) {</span>
+<span class="source-line-no">355</span><span id="line-355">        if (!(issuer instanceof CommandSender)) {</span>
+<span class="source-line-no">356</span><span id="line-356">            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");</span>
+<span class="source-line-no">357</span><span id="line-357">        }</span>
+<span class="source-line-no">358</span><span id="line-358">        return new BukkitCommandIssuer(this, (CommandSender) issuer);</span>
+<span class="source-line-no">359</span><span id="line-359">    }</span>
+<span class="source-line-no">360</span><span id="line-360"></span>
+<span class="source-line-no">361</span><span id="line-361">    @Override</span>
+<span class="source-line-no">362</span><span id="line-362">    public BukkitCommandExecutionContext createCommandContext(RegisteredCommand command, CommandParameter parameter, CommandIssuer sender, List&lt;String&gt; args, int i, Map&lt;String, Object&gt; passedArgs) {</span>
+<span class="source-line-no">363</span><span id="line-363">        return new BukkitCommandExecutionContext(command, parameter, (BukkitCommandIssuer) sender, args, i, passedArgs);</span>
+<span class="source-line-no">364</span><span id="line-364">    }</span>
+<span class="source-line-no">365</span><span id="line-365"></span>
+<span class="source-line-no">366</span><span id="line-366">    @Override</span>
+<span class="source-line-no">367</span><span id="line-367">    public BukkitCommandCompletionContext createCompletionContext(RegisteredCommand command, CommandIssuer sender, String input, String config, String[] args) {</span>
+<span class="source-line-no">368</span><span id="line-368">        return new BukkitCommandCompletionContext(command, (BukkitCommandIssuer) sender, input, config, args);</span>
+<span class="source-line-no">369</span><span id="line-369">    }</span>
+<span class="source-line-no">370</span><span id="line-370"></span>
+<span class="source-line-no">371</span><span id="line-371">    @Override</span>
+<span class="source-line-no">372</span><span id="line-372">    public RegisteredCommand createRegisteredCommand(BaseCommand command, String cmdName, Method method, String prefSubCommand) {</span>
+<span class="source-line-no">373</span><span id="line-373">        return new BukkitRegisteredCommand(command, cmdName, method, prefSubCommand);</span>
+<span class="source-line-no">374</span><span id="line-374">    }</span>
+<span class="source-line-no">375</span><span id="line-375"></span>
+<span class="source-line-no">376</span><span id="line-376">    @Override</span>
+<span class="source-line-no">377</span><span id="line-377">    public BukkitConditionContext createConditionContext(CommandIssuer issuer, String config) {</span>
+<span class="source-line-no">378</span><span id="line-378">        return new BukkitConditionContext((BukkitCommandIssuer) issuer, config);</span>
+<span class="source-line-no">379</span><span id="line-379">    }</span>
+<span class="source-line-no">380</span><span id="line-380"></span>
 <span class="source-line-no">381</span><span id="line-381"></span>
-<span class="source-line-no">382</span><span id="line-382"></span>
-<span class="source-line-no">383</span><span id="line-383">    @Override</span>
-<span class="source-line-no">384</span><span id="line-384">    public void log(LogLevel level, String message, Throwable throwable) {</span>
-<span class="source-line-no">385</span><span id="line-385">        Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;</span>
-<span class="source-line-no">386</span><span id="line-386">        logger.log(logLevel, LogLevel.LOG_PREFIX + message);</span>
-<span class="source-line-no">387</span><span id="line-387">        if (throwable != null) {</span>
-<span class="source-line-no">388</span><span id="line-388">            for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {</span>
-<span class="source-line-no">389</span><span id="line-389">                logger.log(logLevel, LogLevel.LOG_PREFIX + line);</span>
-<span class="source-line-no">390</span><span id="line-390">            }</span>
-<span class="source-line-no">391</span><span id="line-391">        }</span>
-<span class="source-line-no">392</span><span id="line-392">    }</span>
-<span class="source-line-no">393</span><span id="line-393"></span>
-<span class="source-line-no">394</span><span id="line-394">    public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {</span>
-<span class="source-line-no">395</span><span id="line-395">        boolean old = this.usePerIssuerLocale;</span>
-<span class="source-line-no">396</span><span id="line-396">        this.usePerIssuerLocale = usePerIssuerLocale;</span>
-<span class="source-line-no">397</span><span id="line-397">        this.autoDetectFromClient = autoDetectFromClient;</span>
-<span class="source-line-no">398</span><span id="line-398">        return old;</span>
-<span class="source-line-no">399</span><span id="line-399">    }</span>
-<span class="source-line-no">400</span><span id="line-400"></span>
-<span class="source-line-no">401</span><span id="line-401">    @Override</span>
-<span class="source-line-no">402</span><span id="line-402">    public String getCommandPrefix(CommandIssuer issuer) {</span>
-<span class="source-line-no">403</span><span id="line-403">        return issuer.isPlayer() ? "/" : "";</span>
-<span class="source-line-no">404</span><span id="line-404">    }</span>
-<span class="source-line-no">405</span><span id="line-405"></span>
-<span class="source-line-no">406</span><span id="line-406">    @Override</span>
-<span class="source-line-no">407</span><span id="line-407">    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List&lt;String&gt; args, Throwable t) {</span>
-<span class="source-line-no">408</span><span id="line-408">        if (t instanceof CommandException &amp;&amp; t.getCause() != null &amp;&amp; t.getMessage().startsWith("Unhandled exception")) {</span>
-<span class="source-line-no">409</span><span id="line-409">            t = t.getCause();</span>
-<span class="source-line-no">410</span><span id="line-410">        }</span>
-<span class="source-line-no">411</span><span id="line-411">        return super.handleUncaughtException(scope, registeredCommand, sender, args, t);</span>
-<span class="source-line-no">412</span><span id="line-412">    }</span>
-<span class="source-line-no">413</span><span id="line-413">}</span>
+<span class="source-line-no">382</span><span id="line-382">    @Override</span>
+<span class="source-line-no">383</span><span id="line-383">    public void log(LogLevel level, String message, Throwable throwable) {</span>
+<span class="source-line-no">384</span><span id="line-384">        Level logLevel = level == LogLevel.INFO ? Level.INFO : Level.SEVERE;</span>
+<span class="source-line-no">385</span><span id="line-385">        logger.log(logLevel, LogLevel.LOG_PREFIX + message);</span>
+<span class="source-line-no">386</span><span id="line-386">        if (throwable != null) {</span>
+<span class="source-line-no">387</span><span id="line-387">            for (String line : ACFPatterns.NEWLINE.split(ApacheCommonsExceptionUtil.getFullStackTrace(throwable))) {</span>
+<span class="source-line-no">388</span><span id="line-388">                logger.log(logLevel, LogLevel.LOG_PREFIX + line);</span>
+<span class="source-line-no">389</span><span id="line-389">            }</span>
+<span class="source-line-no">390</span><span id="line-390">        }</span>
+<span class="source-line-no">391</span><span id="line-391">    }</span>
+<span class="source-line-no">392</span><span id="line-392"></span>
+<span class="source-line-no">393</span><span id="line-393">    public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {</span>
+<span class="source-line-no">394</span><span id="line-394">        boolean old = this.usePerIssuerLocale;</span>
+<span class="source-line-no">395</span><span id="line-395">        this.usePerIssuerLocale = usePerIssuerLocale;</span>
+<span class="source-line-no">396</span><span id="line-396">        this.autoDetectFromClient = autoDetectFromClient;</span>
+<span class="source-line-no">397</span><span id="line-397">        return old;</span>
+<span class="source-line-no">398</span><span id="line-398">    }</span>
+<span class="source-line-no">399</span><span id="line-399"></span>
+<span class="source-line-no">400</span><span id="line-400">    @Override</span>
+<span class="source-line-no">401</span><span id="line-401">    public String getCommandPrefix(CommandIssuer issuer) {</span>
+<span class="source-line-no">402</span><span id="line-402">        return issuer.isPlayer() ? "/" : "";</span>
+<span class="source-line-no">403</span><span id="line-403">    }</span>
+<span class="source-line-no">404</span><span id="line-404"></span>
+<span class="source-line-no">405</span><span id="line-405">    @Override</span>
+<span class="source-line-no">406</span><span id="line-406">    protected boolean handleUncaughtException(BaseCommand scope, RegisteredCommand registeredCommand, CommandIssuer sender, List&lt;String&gt; args, Throwable t) {</span>
+<span class="source-line-no">407</span><span id="line-407">        if (t instanceof CommandException &amp;&amp; t.getCause() != null &amp;&amp; t.getMessage().startsWith("Unhandled exception")) {</span>
+<span class="source-line-no">408</span><span id="line-408">            t = t.getCause();</span>
+<span class="source-line-no">409</span><span id="line-409">        }</span>
+<span class="source-line-no">410</span><span id="line-410">        return super.handleUncaughtException(scope, registeredCommand, sender, args, t);</span>
+<span class="source-line-no">411</span><span id="line-411">    }</span>
+<span class="source-line-no">412</span><span id="line-412">}</span>
 
 
 

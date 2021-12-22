@@ -589,104 +589,102 @@
 <span class="source-line-no">576</span><span id="line-576"></span>
 <span class="source-line-no">577</span><span id="line-577">    public static boolean isFloat(String string) {</span>
 <span class="source-line-no">578</span><span id="line-578">        try {</span>
-<span class="source-line-no">579</span><span id="line-579">            //noinspection ResultOfMethodCallIgnored</span>
-<span class="source-line-no">580</span><span id="line-580">            Float.parseFloat(string);</span>
-<span class="source-line-no">581</span><span id="line-581">            return true;</span>
-<span class="source-line-no">582</span><span id="line-582">        } catch (Exception e) {</span>
-<span class="source-line-no">583</span><span id="line-583">            return false;</span>
-<span class="source-line-no">584</span><span id="line-584">        }</span>
-<span class="source-line-no">585</span><span id="line-585">    }</span>
-<span class="source-line-no">586</span><span id="line-586"></span>
-<span class="source-line-no">587</span><span id="line-587">    public static boolean isDouble(String string) {</span>
-<span class="source-line-no">588</span><span id="line-588">        try {</span>
-<span class="source-line-no">589</span><span id="line-589">            //noinspection ResultOfMethodCallIgnored</span>
-<span class="source-line-no">590</span><span id="line-590">            Double.parseDouble(string);</span>
-<span class="source-line-no">591</span><span id="line-591">            return true;</span>
-<span class="source-line-no">592</span><span id="line-592">        } catch (Exception e) {</span>
-<span class="source-line-no">593</span><span id="line-593">            return false;</span>
-<span class="source-line-no">594</span><span id="line-594">        }</span>
-<span class="source-line-no">595</span><span id="line-595">    }</span>
-<span class="source-line-no">596</span><span id="line-596"></span>
-<span class="source-line-no">597</span><span id="line-597">    public static boolean isBetween(float num, double min, double max) {</span>
-<span class="source-line-no">598</span><span id="line-598">        return num &gt;= min &amp;&amp; num &lt;= max;</span>
-<span class="source-line-no">599</span><span id="line-599">    }</span>
-<span class="source-line-no">600</span><span id="line-600"></span>
-<span class="source-line-no">601</span><span id="line-601">    @SuppressWarnings("SameParameterValue")</span>
-<span class="source-line-no">602</span><span id="line-602">    public static double precision(double x, int p) {</span>
-<span class="source-line-no">603</span><span id="line-603">        double pow = Math.pow(10, p);</span>
-<span class="source-line-no">604</span><span id="line-604">        return Math.round(x * pow) / pow;</span>
-<span class="source-line-no">605</span><span id="line-605">    }</span>
-<span class="source-line-no">606</span><span id="line-606"></span>
-<span class="source-line-no">607</span><span id="line-607">    public static void sneaky(Throwable t) {</span>
-<span class="source-line-no">608</span><span id="line-608">        //noinspection RedundantTypeArguments</span>
-<span class="source-line-no">609</span><span id="line-609">        throw ACFUtil.&lt;RuntimeException&gt;superSneaky(t);</span>
-<span class="source-line-no">610</span><span id="line-610">    }</span>
-<span class="source-line-no">611</span><span id="line-611"></span>
-<span class="source-line-no">612</span><span id="line-612">    private static &lt;T extends Throwable&gt; T superSneaky(Throwable t) throws T {</span>
-<span class="source-line-no">613</span><span id="line-613">        //noinspection ConstantConditions,unchecked</span>
-<span class="source-line-no">614</span><span id="line-614">        throw (T) t;</span>
-<span class="source-line-no">615</span><span id="line-615">    }</span>
-<span class="source-line-no">616</span><span id="line-616"></span>
-<span class="source-line-no">617</span><span id="line-617">    public static &lt;T&gt; List&lt;T&gt; preformOnImmutable(List&lt;T&gt; list, Consumer&lt;List&lt;T&gt;&gt; action) {</span>
-<span class="source-line-no">618</span><span id="line-618">        try {</span>
-<span class="source-line-no">619</span><span id="line-619">            action.accept(list);</span>
-<span class="source-line-no">620</span><span id="line-620">        } catch (UnsupportedOperationException ex) {</span>
-<span class="source-line-no">621</span><span id="line-621">            list = new ArrayList&lt;&gt;(list);</span>
-<span class="source-line-no">622</span><span id="line-622">            action.accept(list);</span>
-<span class="source-line-no">623</span><span id="line-623">        }</span>
-<span class="source-line-no">624</span><span id="line-624"></span>
-<span class="source-line-no">625</span><span id="line-625">        return list;</span>
-<span class="source-line-no">626</span><span id="line-626">    }</span>
-<span class="source-line-no">627</span><span id="line-627"></span>
-<span class="source-line-no">628</span><span id="line-628">    public static &lt;T&gt; T getFirstElement(Iterable&lt;T&gt; iterable) {</span>
-<span class="source-line-no">629</span><span id="line-629">        if (iterable == null) {</span>
-<span class="source-line-no">630</span><span id="line-630">            return null;</span>
-<span class="source-line-no">631</span><span id="line-631">        }</span>
-<span class="source-line-no">632</span><span id="line-632">        Iterator&lt;T&gt; iterator = iterable.iterator();</span>
-<span class="source-line-no">633</span><span id="line-633">        if (iterator.hasNext()) {</span>
-<span class="source-line-no">634</span><span id="line-634">            return iterator.next();</span>
-<span class="source-line-no">635</span><span id="line-635">        }</span>
-<span class="source-line-no">636</span><span id="line-636"></span>
-<span class="source-line-no">637</span><span id="line-637">        return null;</span>
-<span class="source-line-no">638</span><span id="line-638">    }</span>
-<span class="source-line-no">639</span><span id="line-639"></span>
-<span class="source-line-no">640</span><span id="line-640">    private static class ApplyModifierToNumber {</span>
-<span class="source-line-no">641</span><span id="line-641">        private String num;</span>
-<span class="source-line-no">642</span><span id="line-642">        private boolean suffixes;</span>
-<span class="source-line-no">643</span><span id="line-643">        private double mod;</span>
-<span class="source-line-no">644</span><span id="line-644"></span>
-<span class="source-line-no">645</span><span id="line-645">        public ApplyModifierToNumber(String num, boolean suffixes) {</span>
-<span class="source-line-no">646</span><span id="line-646">            this.num = num;</span>
-<span class="source-line-no">647</span><span id="line-647">            this.suffixes = suffixes;</span>
-<span class="source-line-no">648</span><span id="line-648">        }</span>
-<span class="source-line-no">649</span><span id="line-649"></span>
-<span class="source-line-no">650</span><span id="line-650">        public String getNum() {</span>
-<span class="source-line-no">651</span><span id="line-651">            return num;</span>
-<span class="source-line-no">652</span><span id="line-652">        }</span>
-<span class="source-line-no">653</span><span id="line-653"></span>
-<span class="source-line-no">654</span><span id="line-654">        public double getMod() {</span>
-<span class="source-line-no">655</span><span id="line-655">            return mod;</span>
-<span class="source-line-no">656</span><span id="line-656">        }</span>
-<span class="source-line-no">657</span><span id="line-657"></span>
-<span class="source-line-no">658</span><span id="line-658">        public ApplyModifierToNumber invoke() {</span>
-<span class="source-line-no">659</span><span id="line-659">            mod = 1;</span>
-<span class="source-line-no">660</span><span id="line-660">            if (suffixes) {</span>
-<span class="source-line-no">661</span><span id="line-661">                switch (num.charAt(num.length() - 1)) {</span>
-<span class="source-line-no">662</span><span id="line-662">                    case 'M':</span>
-<span class="source-line-no">663</span><span id="line-663">                    case 'm':</span>
-<span class="source-line-no">664</span><span id="line-664">                        mod = 1000000D;</span>
-<span class="source-line-no">665</span><span id="line-665">                        num = num.substring(0, num.length() - 1);</span>
-<span class="source-line-no">666</span><span id="line-666">                        break;</span>
-<span class="source-line-no">667</span><span id="line-667">                    case 'K':</span>
-<span class="source-line-no">668</span><span id="line-668">                    case 'k':</span>
-<span class="source-line-no">669</span><span id="line-669">                        mod = 1000D;</span>
-<span class="source-line-no">670</span><span id="line-670">                        num = num.substring(0, num.length() - 1);</span>
-<span class="source-line-no">671</span><span id="line-671">                }</span>
-<span class="source-line-no">672</span><span id="line-672">            }</span>
-<span class="source-line-no">673</span><span id="line-673">            return this;</span>
-<span class="source-line-no">674</span><span id="line-674">        }</span>
-<span class="source-line-no">675</span><span id="line-675">    }</span>
-<span class="source-line-no">676</span><span id="line-676">}</span>
+<span class="source-line-no">579</span><span id="line-579">            Float.parseFloat(string);</span>
+<span class="source-line-no">580</span><span id="line-580">            return true;</span>
+<span class="source-line-no">581</span><span id="line-581">        } catch (Exception e) {</span>
+<span class="source-line-no">582</span><span id="line-582">            return false;</span>
+<span class="source-line-no">583</span><span id="line-583">        }</span>
+<span class="source-line-no">584</span><span id="line-584">    }</span>
+<span class="source-line-no">585</span><span id="line-585"></span>
+<span class="source-line-no">586</span><span id="line-586">    public static boolean isDouble(String string) {</span>
+<span class="source-line-no">587</span><span id="line-587">        try {</span>
+<span class="source-line-no">588</span><span id="line-588">            Double.parseDouble(string);</span>
+<span class="source-line-no">589</span><span id="line-589">            return true;</span>
+<span class="source-line-no">590</span><span id="line-590">        } catch (Exception e) {</span>
+<span class="source-line-no">591</span><span id="line-591">            return false;</span>
+<span class="source-line-no">592</span><span id="line-592">        }</span>
+<span class="source-line-no">593</span><span id="line-593">    }</span>
+<span class="source-line-no">594</span><span id="line-594"></span>
+<span class="source-line-no">595</span><span id="line-595">    public static boolean isBetween(float num, double min, double max) {</span>
+<span class="source-line-no">596</span><span id="line-596">        return num &gt;= min &amp;&amp; num &lt;= max;</span>
+<span class="source-line-no">597</span><span id="line-597">    }</span>
+<span class="source-line-no">598</span><span id="line-598"></span>
+<span class="source-line-no">599</span><span id="line-599">    @SuppressWarnings("SameParameterValue")</span>
+<span class="source-line-no">600</span><span id="line-600">    public static double precision(double x, int p) {</span>
+<span class="source-line-no">601</span><span id="line-601">        double pow = Math.pow(10, p);</span>
+<span class="source-line-no">602</span><span id="line-602">        return Math.round(x * pow) / pow;</span>
+<span class="source-line-no">603</span><span id="line-603">    }</span>
+<span class="source-line-no">604</span><span id="line-604"></span>
+<span class="source-line-no">605</span><span id="line-605">    public static void sneaky(Throwable t) {</span>
+<span class="source-line-no">606</span><span id="line-606">        //noinspection RedundantTypeArguments</span>
+<span class="source-line-no">607</span><span id="line-607">        throw ACFUtil.&lt;RuntimeException&gt;superSneaky(t);</span>
+<span class="source-line-no">608</span><span id="line-608">    }</span>
+<span class="source-line-no">609</span><span id="line-609"></span>
+<span class="source-line-no">610</span><span id="line-610">    private static &lt;T extends Throwable&gt; T superSneaky(Throwable t) throws T {</span>
+<span class="source-line-no">611</span><span id="line-611">        // noinspection unchecked</span>
+<span class="source-line-no">612</span><span id="line-612">        throw (T) t;</span>
+<span class="source-line-no">613</span><span id="line-613">    }</span>
+<span class="source-line-no">614</span><span id="line-614"></span>
+<span class="source-line-no">615</span><span id="line-615">    public static &lt;T&gt; List&lt;T&gt; preformOnImmutable(List&lt;T&gt; list, Consumer&lt;List&lt;T&gt;&gt; action) {</span>
+<span class="source-line-no">616</span><span id="line-616">        try {</span>
+<span class="source-line-no">617</span><span id="line-617">            action.accept(list);</span>
+<span class="source-line-no">618</span><span id="line-618">        } catch (UnsupportedOperationException ex) {</span>
+<span class="source-line-no">619</span><span id="line-619">            list = new ArrayList&lt;&gt;(list);</span>
+<span class="source-line-no">620</span><span id="line-620">            action.accept(list);</span>
+<span class="source-line-no">621</span><span id="line-621">        }</span>
+<span class="source-line-no">622</span><span id="line-622"></span>
+<span class="source-line-no">623</span><span id="line-623">        return list;</span>
+<span class="source-line-no">624</span><span id="line-624">    }</span>
+<span class="source-line-no">625</span><span id="line-625"></span>
+<span class="source-line-no">626</span><span id="line-626">    public static &lt;T&gt; T getFirstElement(Iterable&lt;T&gt; iterable) {</span>
+<span class="source-line-no">627</span><span id="line-627">        if (iterable == null) {</span>
+<span class="source-line-no">628</span><span id="line-628">            return null;</span>
+<span class="source-line-no">629</span><span id="line-629">        }</span>
+<span class="source-line-no">630</span><span id="line-630">        Iterator&lt;T&gt; iterator = iterable.iterator();</span>
+<span class="source-line-no">631</span><span id="line-631">        if (iterator.hasNext()) {</span>
+<span class="source-line-no">632</span><span id="line-632">            return iterator.next();</span>
+<span class="source-line-no">633</span><span id="line-633">        }</span>
+<span class="source-line-no">634</span><span id="line-634"></span>
+<span class="source-line-no">635</span><span id="line-635">        return null;</span>
+<span class="source-line-no">636</span><span id="line-636">    }</span>
+<span class="source-line-no">637</span><span id="line-637"></span>
+<span class="source-line-no">638</span><span id="line-638">    private static class ApplyModifierToNumber {</span>
+<span class="source-line-no">639</span><span id="line-639">        private String num;</span>
+<span class="source-line-no">640</span><span id="line-640">        private boolean suffixes;</span>
+<span class="source-line-no">641</span><span id="line-641">        private double mod;</span>
+<span class="source-line-no">642</span><span id="line-642"></span>
+<span class="source-line-no">643</span><span id="line-643">        public ApplyModifierToNumber(String num, boolean suffixes) {</span>
+<span class="source-line-no">644</span><span id="line-644">            this.num = num;</span>
+<span class="source-line-no">645</span><span id="line-645">            this.suffixes = suffixes;</span>
+<span class="source-line-no">646</span><span id="line-646">        }</span>
+<span class="source-line-no">647</span><span id="line-647"></span>
+<span class="source-line-no">648</span><span id="line-648">        public String getNum() {</span>
+<span class="source-line-no">649</span><span id="line-649">            return num;</span>
+<span class="source-line-no">650</span><span id="line-650">        }</span>
+<span class="source-line-no">651</span><span id="line-651"></span>
+<span class="source-line-no">652</span><span id="line-652">        public double getMod() {</span>
+<span class="source-line-no">653</span><span id="line-653">            return mod;</span>
+<span class="source-line-no">654</span><span id="line-654">        }</span>
+<span class="source-line-no">655</span><span id="line-655"></span>
+<span class="source-line-no">656</span><span id="line-656">        public ApplyModifierToNumber invoke() {</span>
+<span class="source-line-no">657</span><span id="line-657">            mod = 1;</span>
+<span class="source-line-no">658</span><span id="line-658">            if (suffixes) {</span>
+<span class="source-line-no">659</span><span id="line-659">                switch (num.charAt(num.length() - 1)) {</span>
+<span class="source-line-no">660</span><span id="line-660">                    case 'M':</span>
+<span class="source-line-no">661</span><span id="line-661">                    case 'm':</span>
+<span class="source-line-no">662</span><span id="line-662">                        mod = 1000000D;</span>
+<span class="source-line-no">663</span><span id="line-663">                        num = num.substring(0, num.length() - 1);</span>
+<span class="source-line-no">664</span><span id="line-664">                        break;</span>
+<span class="source-line-no">665</span><span id="line-665">                    case 'K':</span>
+<span class="source-line-no">666</span><span id="line-666">                    case 'k':</span>
+<span class="source-line-no">667</span><span id="line-667">                        mod = 1000D;</span>
+<span class="source-line-no">668</span><span id="line-668">                        num = num.substring(0, num.length() - 1);</span>
+<span class="source-line-no">669</span><span id="line-669">                }</span>
+<span class="source-line-no">670</span><span id="line-670">            }</span>
+<span class="source-line-no">671</span><span id="line-671">            return this;</span>
+<span class="source-line-no">672</span><span id="line-672">        }</span>
+<span class="source-line-no">673</span><span id="line-673">    }</span>
+<span class="source-line-no">674</span><span id="line-674">}</span>
 
 
 

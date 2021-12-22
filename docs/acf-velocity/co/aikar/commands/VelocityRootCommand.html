@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 <dd><code>co.aikar.commands.RootCommand</code>, <code>com.velocitypowered.api.command.Command</code>, <code>com.velocitypowered.api.command.InvocableCommand&lt;com.velocitypowered.api.command.SimpleCommand.Invocation&gt;</code>, <code>com.velocitypowered.api.command.SimpleCommand</code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-36">VelocityRootCommand</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-34">VelocityRootCommand</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.RootCommand</span></div>
 </section>
@@ -159,7 +159,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="getCommandName()">
 <h3>getCommandName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-50">getCommandName</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-48">getCommandName</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>getCommandName</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -169,7 +169,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="addChild(co.aikar.commands.BaseCommand)">
 <h3>addChild</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-55">addChild</a></span><wbr><span class="parameters">(co.aikar.commands.BaseCommand&nbsp;command)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-53">addChild</a></span><wbr><span class="parameters">(co.aikar.commands.BaseCommand&nbsp;command)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>addChild</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -179,7 +179,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="getManager()">
 <h3>getManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">co.aikar.commands.CommandManager</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-64">getManager</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">co.aikar.commands.CommandManager</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-62">getManager</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>getManager</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -189,7 +189,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="getSubCommands()">
 <h3>getSubCommands</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>co.aikar.commands.RegisteredCommand&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-69">getSubCommands</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.google.common.collect.SetMultimap&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr>co.aikar.commands.RegisteredCommand&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-67">getSubCommands</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>getSubCommands</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -199,7 +199,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="getChildren()">
 <h3>getChildren</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;co.aikar.commands.BaseCommand&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-74">getChildren</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;co.aikar.commands.BaseCommand&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-72">getChildren</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>getChildren</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -209,7 +209,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="getDefCommand()">
 <h3>getDefCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">co.aikar.commands.BaseCommand</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-79">getDefCommand</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">co.aikar.commands.BaseCommand</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-77">getDefCommand</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>getDefCommand</code>&nbsp;in interface&nbsp;<code>co.aikar.commands.RootCommand</code></dd>
@@ -219,7 +219,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="execute(com.velocitypowered.api.command.SimpleCommand.Invocation)">
 <h3>execute</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-84">execute</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-82">execute</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>execute</code>&nbsp;in interface&nbsp;<code>com.velocitypowered.api.command.InvocableCommand&lt;com.velocitypowered.api.command.SimpleCommand.Invocation&gt;</code></dd>
@@ -229,7 +229,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="suggest(com.velocitypowered.api.command.SimpleCommand.Invocation)">
 <h3>suggest</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-90">suggest</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-88">suggest</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>suggest</code>&nbsp;in interface&nbsp;<code>com.velocitypowered.api.command.InvocableCommand&lt;com.velocitypowered.api.command.SimpleCommand.Invocation&gt;</code></dd>
@@ -239,7 +239,7 @@ implements com.velocitypowered.api.command.SimpleCommand, co.aikar.commands.Root
 <li>
 <section class="detail" id="suggestAsync(com.velocitypowered.api.command.SimpleCommand.Invocation)">
 <h3>suggestAsync</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-95">suggestAsync</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/VelocityRootCommand.html#line-93">suggestAsync</a></span><wbr><span class="parameters">(com.velocitypowered.api.command.SimpleCommand.Invocation&nbsp;invocation)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>suggestAsync</code>&nbsp;in interface&nbsp;<code>com.velocitypowered.api.command.InvocableCommand&lt;com.velocitypowered.api.command.SimpleCommand.Invocation&gt;</code></dd>
