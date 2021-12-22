@@ -29,8 +29,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import com.velocitypowered.api.command.Command;
-import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 
 public class VelocityRootCommand implements SimpleCommand, RootCommand {

@@ -27,7 +27,6 @@ import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.TabCompleteEvent;
 
 import java.util.Arrays;
 import java.util.List;
