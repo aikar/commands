@@ -31,11 +31,11 @@ import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted") // No IDEA, you are wrong
-public class CommandConditions <
+public class CommandConditions<
         I extends CommandIssuer,
         CEC extends CommandExecutionContext<CEC, I>,
         CC extends ConditionContext<I>
-    > {
+        > {
     private CommandManager manager;
     private Map<String, Condition<I>> conditions = new HashMap<>();
     private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = new Table<>();
@@ -88,7 +88,6 @@ public class CommandConditions <
             String config = split.length == 2 ? split[1] : null;
             //noinspection unchecked
             CC conditionContext = (CC) this.manager.createConditionContext(issuer, config);
-            //noinspection unchecked
             condition.validateCondition(conditionContext);
         }
     }
@@ -117,7 +116,7 @@ public class CommandConditions <
 
             if (condition == null) {
                 RegisteredCommand cmd = execContext.getCmd();
-                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" +execContext.getParam().getName());
+                this.manager.log(LogLevel.ERROR, "Could not find command condition " + id + " for " + cmd.method.getName() + "::" + execContext.getParam().getName());
                 continue;
             }
             String config = split.length == 2 ? split[1] : null;
@@ -129,11 +128,11 @@ public class CommandConditions <
         }
     }
 
-    public interface Condition <I extends CommandIssuer> {
+    public interface Condition<I extends CommandIssuer> {
         void validateCondition(ConditionContext<I> context) throws InvalidCommandArgument;
     }
 
-    public interface ParameterCondition <P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
+    public interface ParameterCondition<P, CEC extends CommandExecutionContext, I extends CommandIssuer> {
         void validateCondition(ConditionContext<I> context, CEC execContext, P value) throws InvalidCommandArgument;
     }
 }

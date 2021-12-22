@@ -55,7 +55,6 @@ final class ACFPatterns {
     private ACFPatterns() {
     }
 
-    @SuppressWarnings("Convert2MethodRef")
     static final Map<String, Pattern> patternCache = ExpiringMap.builder()
             .maxSize(200)
             .expiration(1, TimeUnit.HOURS)

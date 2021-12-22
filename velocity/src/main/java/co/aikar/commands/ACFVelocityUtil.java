@@ -55,7 +55,6 @@ public class ACFVelocityUtil {
         }
 
         Optional<Player> exactMatch = server.getPlayer(partialName);
-        //noinspection OptionalIsPresent
         if (exactMatch.isPresent()) {
             return Collections.singleton(exactMatch.get());
         }

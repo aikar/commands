@@ -576,7 +576,6 @@ public final class ACFUtil {
 
     public static boolean isFloat(String string) {
         try {
-            //noinspection ResultOfMethodCallIgnored
             Float.parseFloat(string);
             return true;
         } catch (Exception e) {
@@ -586,7 +585,6 @@ public final class ACFUtil {
 
     public static boolean isDouble(String string) {
         try {
-            //noinspection ResultOfMethodCallIgnored
             Double.parseDouble(string);
             return true;
         } catch (Exception e) {
@@ -610,7 +608,7 @@ public final class ACFUtil {
     }
 
     private static <T extends Throwable> T superSneaky(Throwable t) throws T {
-        //noinspection ConstantConditions,unchecked
+        // noinspection unchecked
         throw (T) t;
     }
 

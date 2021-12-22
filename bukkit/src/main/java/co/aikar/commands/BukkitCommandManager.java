@@ -92,7 +92,6 @@ public class BukkitCommandManager extends CommandManager<
     private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
 
-    @SuppressWarnings("JavaReflectionMemberAccess")
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
         String prefix = this.plugin.getDescription().getPrefix();

@@ -225,7 +225,6 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
             final CommandParameter<CEC> parameter = parameters[i];
             final String parameterName = parameter.getName();
             final Class<?> type = parameter.getType();
-            //noinspection unchecked
             final ContextResolver<?, CEC> resolver = parameter.getResolver();
             //noinspection unchecked
             CEC context = (CEC) this.manager.createCommandContext(this, parameter, sender, args, i, passedArgs);

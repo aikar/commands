@@ -47,7 +47,6 @@ public class BukkitCommandIssuer implements CommandIssuer {
 
     @Override
     public CommandSender getIssuer() {
-        //noinspection unchecked
         return sender;
     }
 

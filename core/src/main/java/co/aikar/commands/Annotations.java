@@ -32,8 +32,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-@SuppressWarnings("TypeParameterExplicitlyExtendsObject")
-class Annotations <M extends CommandManager> extends AnnotationLookups {
+class Annotations<M extends CommandManager> extends AnnotationLookups {
 
     public static final int NOTHING = 0;
     public static final int REPLACEMENTS = 1;
