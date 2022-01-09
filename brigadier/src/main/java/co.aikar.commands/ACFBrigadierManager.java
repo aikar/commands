@@ -89,6 +89,30 @@ public class ACFBrigadierManager<S> {
         root = rootBuilder.build();
         boolean isForwardingCommand = rootCommand.getDefCommand() instanceof ForwardingCommand;
 
+        if (rootCommand.getDefaultRegisteredCommand() != null) {
+            CommandNode<S> paramNode = root;
+            CommandParameter[] parameters = rootCommand.getDefaultRegisteredCommand().parameters;
+            for (int i = 0; i < parameters.length; i++) {
+                CommandParameter param = parameters[i];
+                CommandParameter nextParam = param.getNextParam();
+                if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
+                    continue;
+                }
+                RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
+                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param))
+                        .suggests(suggestionProvider)
+                        .requires(sender -> permCheckerRoot.test(rootCommand, sender));
+
+                if (nextParam != null && nextParam.canExecuteWithoutInput()) {
+                    builder.executes(executor);
+                }
+
+                CommandNode<S> subSubCommand = builder.build();
+                paramNode.addChild(subSubCommand);
+                paramNode = subSubCommand;
+            }
+        }
+
         for (Map.Entry<String, RegisteredCommand> subCommand : rootCommand.getSubCommands().entries()) {
             if ((BaseCommand.isSpecialSubcommand(subCommand.getKey()) && !isForwardingCommand) || (!subCommand.getKey().equals("help") && subCommand.getValue().prefSubCommand.equals("help"))) {
                 // don't register stuff like __catchunknown and don't help command aliases
