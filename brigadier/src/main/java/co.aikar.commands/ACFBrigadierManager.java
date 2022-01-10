@@ -92,25 +92,7 @@ public class ACFBrigadierManager<S> {
         if (rootCommand.getDefaultRegisteredCommand() != null) {
             CommandNode<S> paramNode = root;
             CommandParameter[] parameters = rootCommand.getDefaultRegisteredCommand().parameters;
-            for (int i = 0; i < parameters.length; i++) {
-                CommandParameter param = parameters[i];
-                CommandParameter nextParam = param.getNextParam();
-                if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
-                    continue;
-                }
-                RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
-                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param))
-                        .suggests(suggestionProvider)
-                        .requires(sender -> permCheckerRoot.test(rootCommand, sender));
-
-                if (nextParam != null && nextParam.canExecuteWithoutInput()) {
-                    builder.executes(executor);
-                }
-
-                CommandNode<S> subSubCommand = builder.build();
-                paramNode.addChild(subSubCommand);
-                paramNode = subSubCommand;
-            }
+            registerParameters(parameters, rootCommand, paramNode, suggestionProvider, executor, permCheckerRoot);
         }
 
         for (Map.Entry<String, RegisteredCommand> subCommand : rootCommand.getSubCommands().entries()) {
@@ -157,25 +139,7 @@ public class ACFBrigadierManager<S> {
 
             CommandNode<S> paramNode = subCommandNode;
             CommandParameter[] parameters = subCommand.getValue().parameters;
-            for (int i = 0; i < parameters.length; i++) {
-                CommandParameter param = parameters[i];
-                CommandParameter nextParam = param.getNextParam();
-                if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
-                    continue;
-                }
-                RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
-                        .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param))
-                        .suggests(suggestionProvider)
-                        .requires(sender -> permCheckerSub.test(subCommand.getValue(), sender));
-
-                if (nextParam != null && nextParam.canExecuteWithoutInput()) {
-                    builder.executes(executor);
-                }
-
-                CommandNode<S> subSubCommand = builder.build();
-                paramNode.addChild(subSubCommand);
-                paramNode = subSubCommand;
-            }
+            registerParameters(parameters, subCommand.getValue(), paramNode, suggestionProvider, executor, permCheckerSub);
 
             if (!isForwardingCommand) {
                 currentParent.addChild(subCommandNode);
@@ -183,6 +147,33 @@ public class ACFBrigadierManager<S> {
         }
 
         return root;
+    }
+
+    <C> void registerParameters(CommandParameter[] parameters,
+                                C command,
+                                CommandNode<S> node,
+                                SuggestionProvider<S> suggestionProvider,
+                                Command<S> executor,
+                                BiPredicate<C, S> permChecker) {
+        for (int i = 0; i < parameters.length; i++) {
+            CommandParameter param = parameters[i];
+            CommandParameter nextParam = param.getNextParam();
+            if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
+                continue;
+            }
+            RequiredArgumentBuilder<S, Object> builder = RequiredArgumentBuilder
+                    .<S, Object>argument(param.getName(), getArgumentTypeByClazz(param))
+                    .suggests(suggestionProvider)
+                    .requires(sender -> permChecker.test(command, sender));
+
+            if (nextParam != null && nextParam.canExecuteWithoutInput()) {
+                builder.executes(executor);
+            }
+
+            CommandNode<S> subSubCommand = builder.build();
+            node.addChild(subSubCommand);
+            node = subSubCommand;
+        }
     }
 
 }
