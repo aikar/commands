@@ -89,10 +89,9 @@ public class ACFBrigadierManager<S> {
         root = rootBuilder.build();
         boolean isForwardingCommand = rootCommand.getDefCommand() instanceof ForwardingCommand;
 
-        if (rootCommand.getDefaultRegisteredCommand() != null) {
-            CommandNode<S> paramNode = root;
-            CommandParameter[] parameters = rootCommand.getDefaultRegisteredCommand().parameters;
-            registerParameters(parameters, rootCommand, paramNode, suggestionProvider, executor, permCheckerRoot);
+        RegisteredCommand defaultCommand = rootCommand.getDefaultRegisteredCommand();
+        if (defaultCommand != null) {
+            registerParameters(defaultCommand, root, suggestionProvider, executor, permCheckerSub);
         }
 
         for (Map.Entry<String, RegisteredCommand> subCommand : rootCommand.getSubCommands().entries()) {
@@ -137,9 +136,7 @@ public class ACFBrigadierManager<S> {
                 subCommandNode = root;
             }
 
-            CommandNode<S> paramNode = subCommandNode;
-            CommandParameter[] parameters = subCommand.getValue().parameters;
-            registerParameters(parameters, subCommand.getValue(), paramNode, suggestionProvider, executor, permCheckerSub);
+            registerParameters(subCommand.getValue(), subCommandNode, suggestionProvider, executor, permCheckerSub);
 
             if (!isForwardingCommand) {
                 currentParent.addChild(subCommandNode);
@@ -149,14 +146,13 @@ public class ACFBrigadierManager<S> {
         return root;
     }
 
-    <C> void registerParameters(CommandParameter[] parameters,
-                                C command,
-                                CommandNode<S> node,
-                                SuggestionProvider<S> suggestionProvider,
-                                Command<S> executor,
-                                BiPredicate<C, S> permChecker) {
-        for (int i = 0; i < parameters.length; i++) {
-            CommandParameter param = parameters[i];
+    void registerParameters(RegisteredCommand command,
+                            CommandNode<S> node,
+                            SuggestionProvider<S> suggestionProvider,
+                            Command<S> executor,
+                            BiPredicate<RegisteredCommand, S> permChecker) {
+        for (int i = 0; i < command.parameters.length; i++) {
+            CommandParameter param = command.parameters[i];
             CommandParameter nextParam = param.getNextParam();
             if (param.isCommandIssuer() || (param.canExecuteWithoutInput() && nextParam != null && !nextParam.canExecuteWithoutInput())) {
                 continue;
