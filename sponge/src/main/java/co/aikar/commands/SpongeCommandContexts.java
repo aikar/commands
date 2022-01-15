@@ -25,7 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.sponge.contexts.OnlinePlayer;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Contract;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
@@ -49,10 +49,10 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         super(manager);
 
         registerIssuerOnlyContext(CommandResultSupplier.class, c -> new CommandResultSupplier());
-        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional()));
+        registerContext(OnlinePlayer.class, c -> getOnlinePlayer(c.getIssuer(), c.popFirstArg(), false));
         registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -> {
-            OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional());
-            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer()) : null;
+            OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), c.popFirstArg(), false);
+            return new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer());
         });
         registerContext(User.class, c -> {
             String name = c.popFirstArg();
@@ -164,7 +164,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         });
     }
 
-    @Nullable
+    @Contract("_,_,false -> !null")
     OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {
         Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);
         if (player == null) {
