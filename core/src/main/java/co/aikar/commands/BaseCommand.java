@@ -638,7 +638,7 @@ public abstract class BaseCommand {
             final List<String> cmds = new ArrayList<>();
             if (search != null) {
                 for (RegisteredCommand<?> command : search.commands) {
-                    cmds.addAll(completeCommand(issuer, command, args, commandLabel, isAsync));
+                    cmds.addAll(completeCommand(issuer, command, search.args, commandLabel, isAsync));
                 }
             }
 
