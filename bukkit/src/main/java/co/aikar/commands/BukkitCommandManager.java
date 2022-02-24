@@ -40,6 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.help.GenericCommandHelpTopic;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -141,6 +142,7 @@ public class BukkitCommandManager extends CommandManager<
         registerDependency(BukkitScheduler.class, Bukkit.getScheduler());
         registerDependency(ScoreboardManager.class, Bukkit.getScoreboardManager());
         registerDependency(ItemFactory.class, Bukkit.getItemFactory());
+        registerDependency(PluginDescriptionFile.class, plugin.getDescription());
     }
 
     @NotNull
