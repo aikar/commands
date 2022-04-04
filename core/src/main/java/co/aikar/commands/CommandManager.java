@@ -518,6 +518,29 @@ public abstract class CommandManager<
 
         dependencies.put(clazz, key, instance);
     }
+    
+    /**
+     * Unregisters an instance of the class, it will no longer be able to be injected
+     * 
+     * @param clazz the class the injector should look for to remove
+     */
+    public <T> void unregisterDependency(Class<? extends T> clazz) {
+        unregisterDependency(clazz, clazz.getName());
+    }
+
+    /**
+     * Unregisters an instance of the class, it will no longer be able to be injected
+     * 
+     * @param clazz the class the injector should look for to remove
+     * @param key   the key which needs to be present if that
+     */
+    public <T> void unregisterDependency(Class<? extends T> clazz, String key) {
+        if (!dependencies.containsKey(clazz, key)) {
+            throw new IllegalStateException("Unable to deregister a dependency of " + clazz.getName() + " with the key " + key + " because it wasn't registered");
+        }
+
+        dependencies.remove(clazz, key);
+    }
 
     /**
      * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}

@@ -82,6 +82,14 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         return this.completionMap.put(prepareCompletionId(id), handler);
     }
 
+    public CommandCompletionHandler deregisterCompletion(String id) {
+        if (this.completionMap.containsKey(id)) {
+            throw new IllegalStateException("The supplied key " + id + " does not exist in any completions");
+        }
+
+        return this.completionMap.remove(id);
+    }
+
     /**
      * Registr a completion handler to provide command completions based on the user input.
      * This handler is declared to be safe to be executed asynchronously.
