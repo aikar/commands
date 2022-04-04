@@ -89,7 +89,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @throws IllegalStateException If the completion couldn't be found
      */
     public CommandCompletionHandler deregisterCompletion(String id) {
-        if (this.completionMap.containsKey(id)) {
+        if (!this.completionMap.containsKey(id)) {
             throw new IllegalStateException("The supplied key " + id + " does not exist in any completions");
         }
 
