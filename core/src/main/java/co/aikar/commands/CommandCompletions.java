@@ -83,12 +83,12 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     }
 
     /**
-     * Deregister a completion handler.
+     * Unregister a completion handler.
      * @param id
      * @return
      * @throws IllegalStateException If the completion couldn't be found
      */
-    public CommandCompletionHandler deregisterCompletion(String id) {
+    public CommandCompletionHandler unregisterCompletion(String id) {
         if (!this.completionMap.containsKey(id)) {
             throw new IllegalStateException("The supplied key " + id + " does not exist in any completions");
         }

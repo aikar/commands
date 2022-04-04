@@ -520,23 +520,23 @@ public abstract class CommandManager<
     }
     
     /**
-     * Deregisters an instance of the class, it will no longer be able to be injected
+     * Unregisters an instance of the class, it will no longer be able to be injected
      * 
      * @param clazz the class the injector should look for to remove
      * @throws IllegalStateException If the dependency was not found.
      */
     public <T> void deregisterDependency(Class<? extends T> clazz) {
-        deregisterDependency(clazz, clazz.getName());
+        unregisterDependency(clazz, clazz.getName());
     }
 
     /**
-     * Deregisters an instance of the class, it will no longer be able to be injected
+     * Unregisters an instance of the class, it will no longer be able to be injected
      * 
      * @param clazz the class the injector should look for to remove
      * @param key   the key which needs to be present if that
      * @throws IllegalStateException If the dependency was not found.
      */
-    public <T> void deregisterDependency(Class<? extends T> clazz, String key) {
+    public <T> void unregisterDependency(Class<? extends T> clazz, String key) {
         if (!dependencies.containsKey(clazz, key)) {
             throw new IllegalStateException("Unable to deregister a dependency of " + clazz.getName() + " with the key " + key + " because it wasn't registered");
         }
