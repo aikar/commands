@@ -142,12 +142,12 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 }
                 offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             } else {
-                if (!isValidName(name)) {
-                    throw new InvalidCommandArgument(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
-                }
                 offlinePlayer = Bukkit.getOfflinePlayer(name);
             }
             if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
+                if (!c.hasFlag("uuid") && !isValidName(name)) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+                }
                 throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,
                         "{search}", name);
             }

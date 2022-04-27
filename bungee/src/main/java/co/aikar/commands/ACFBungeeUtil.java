@@ -113,10 +113,6 @@ public class ACFBungeeUtil {
     public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {
         CommandSender requester = issuer.getIssuer();
         String name = ACFUtil.replace(search, ":confirm", "");
-        if (!isValidName(name)) {
-            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
-            return null;
-        }
 
         List<ProxiedPlayer> matches = new ArrayList<>(ProxyServer.getInstance().matchPlayer(name));
 
@@ -128,6 +124,10 @@ public class ACFBungeeUtil {
         }
 
         if (matches.isEmpty()) {
+            if (!isValidName(name)) {
+                issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+                return null;
+            }
             issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,
                     "{search}", name);
             return null;

@@ -17,10 +17,6 @@ public class ACFSpongeUtil {
             return null;
         }
         String name = ACFUtil.replace(search, ":confirm", "");
-        if (!isValidName(name)) {
-            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
-            return null;
-        }
 
         List<Player> matches = matchPlayer(name);
         List<Player> confirmList = new ArrayList<>();
@@ -35,6 +31,10 @@ public class ACFSpongeUtil {
         }
 
         if (matches.isEmpty()) {
+            if (!isValidName(name)) {
+                issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
+                return null;
+            }
             Player player = ACFUtil.getFirstElement(confirmList);
             if (player == null) {
                 issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);
