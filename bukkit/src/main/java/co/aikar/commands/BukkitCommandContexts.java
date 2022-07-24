@@ -210,9 +210,9 @@ public class BukkitCommandContexts extends CommandContexts<BukkitCommandExecutio
                 throw new InvalidCommandArgument(MinecraftMessageKeys.LOCATION_PLEASE_SPECIFY_XYZ);
             }
 
-            Double x = ACFUtil.parseDouble(split[0]);
-            Double y = ACFUtil.parseDouble(split[1]);
-            Double z = ACFUtil.parseDouble(split[2]);
+            Double x = ACFUtil.parseDouble(split[0], rel ? 0.0D : null);
+            Double y = ACFUtil.parseDouble(split[1], rel ? 0.0D : null);
+            Double z = ACFUtil.parseDouble(split[2], rel ? 0.0D : null);
 
             if (sourceLoc != null && rel) {
                 x += sourceLoc.getX();
