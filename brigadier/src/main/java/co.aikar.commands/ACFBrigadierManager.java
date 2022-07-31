@@ -162,7 +162,7 @@ public class ACFBrigadierManager<S> {
                     .suggests(suggestionProvider)
                     .requires(sender -> permChecker.test(command, sender));
 
-            if (nextParam != null && nextParam.canExecuteWithoutInput()) {
+            if (nextParam == null || nextParam.canExecuteWithoutInput()) {
                 builder.executes(executor);
             }
 
