@@ -101,7 +101,7 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         //noinspection unchecked
         this.commandIssuer = paramIndex == 0 && manager.isCommandIssuer(type);
         this.canConsumeInput = !this.commandIssuer && !(resolver instanceof IssuerOnlyContextResolver);
-        this.consumesRest = (type == String.class && !annotations.hasAnnotation(param, Single.class)) || (isLast && type == String[].class);
+        this.consumesRest = isLast && ((type == String.class && !annotations.hasAnnotation(param, Single.class)) || (type == String[].class));
 
         this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
