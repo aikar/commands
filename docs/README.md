@@ -41,9 +41,10 @@ See [Examples](https://github.com/aikar/commands/wiki/Real-World-Examples) for s
 ## Targeted Platforms / Current Version
 
 We are on version:
+(This version is not deployed yet)
 
 - GROUP: co.aikar
-- VERSION `0.5.1-SNAPSHOT`
+- VERSION `0.6.0-SNAPSHOT`
 
 ARTIFACTID varies by platform target:
 

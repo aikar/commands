@@ -30,12 +30,12 @@
     <parent>
         <groupId>co.aikar</groupId>
         <artifactId>acf-parent</artifactId>
-        <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
+        <version><!--VERSION-->0.6.0-SNAPSHOT<!--VERSION--></version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>acf-brigadier</artifactId>
-    <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
+    <version><!--VERSION-->0.6.0-SNAPSHOT<!--VERSION--></version>
 
     <name>ACF (Brigadier)</name>
 
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-core</artifactId>
-            <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
+            <version><!--VERSION-->0.6.0-SNAPSHOT<!--VERSION--></version>
             <scope>provided</scope>
         </dependency>
         <dependency>
