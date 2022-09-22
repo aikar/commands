@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
+This is the command Framework originally created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 
 ACF Started as a Bukkit Command Framework, but has shifted to be platform-agnostic and can be used on any Java based
 application.
@@ -20,10 +20,12 @@ Clean up your command handlers and unleash rich command experiences that would b
 
 While the 0.x.x series of ACF is "Beta", note that it is very stable. It has been used for years on EMC.
 
-It is labeled Beta as the framework is growing fast and gaining new features, and API's are subject to breakage. The new
-features also may contain bugs, but we will work to fix them fast.
+It is labeled Beta as the framework is growing and gaining new features, and API's are subject to breakage. The new
+features also may contain bugs, but we will work to fix them.
 
-Please be prepared to keep up with changes, but I try to keep them as least disruptful as possible.
+Branches previxed with dev/XXX indicate that the branch is likely to be very unstable, possibly completely
+non-functional.
+May also not have the new changes implemented to that branch yet.
 
 v1.0.0 will be the signal that ACF features are more complete and the API will remain stable for a long time.
 
@@ -67,14 +69,6 @@ If this library has helped you, please consider donating as a way of saying than
 
 [![PayPal Donate](https://aikar.co/donate.png "Donate with PayPal")](https://paypal.me/empireminecraft)
 
-## Why does it require Java 8+?
-
-Get off your dinosaur and get on this rocket ship!
-
-Dinosaurs have been dead for a long time, so get off it before you start to smell.
-
-[Download Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-
 # Java Docs
 
 - [ACF (Core)](https://aikar.github.io/commands/acf-core)
@@ -103,7 +97,7 @@ Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 
 As with all my other public projects
 
-Commands (c) Daniel Ennis (Aikar) 2016-2018.
+Commands (c) Daniel Ennis (Aikar) 2016-2022.
 
 Commands is licensed [MIT](https://tldrlegal.com/license/mit-license). See [LICENSE](LICENSE)
 

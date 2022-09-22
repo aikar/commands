@@ -26,10 +26,10 @@ Keep them separate, so they can be reviewed and pulled separately.
 
 Additionally, keep them small and incremental!
 
-## Discuss with Aikar before starting any major behavior change / annotation addition
+## Discuss with Project Devs before starting any major behavior change / annotation addition
 
-Before you go spending a lot of time on a PR that isn't resolving an issue that Aikar filed, please consult with Aikar
-on Discord or IRC about the idea, to ensure it fits well with the projects goals.
+Before you go spending a lot of time on a PR that isn't resolving an issue that is filed, please consult with the
+project maintainers on Discord about the idea, to ensure it fits well with the projects goals.
 
 ACF is moving to a very extensible goal for the 1.0.0 release, with powerful custom annotation support.
 
