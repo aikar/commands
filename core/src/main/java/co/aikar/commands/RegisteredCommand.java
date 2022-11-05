@@ -93,7 +93,7 @@ public class RegisteredCommand<CEC extends CommandExecutionContext<CEC, ? extend
         this.prefSubCommand = prefSubCommand;
 
         this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
-        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.DEFAULT_EMPTY); // no replacements as it should be per-issuer
+        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);
         this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
         this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
