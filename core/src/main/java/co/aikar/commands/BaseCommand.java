@@ -153,7 +153,7 @@ public abstract class BaseCommand {
      */
     private ExceptionHandler exceptionHandler = null;
     /**
-     * The last operative context data of this command. This may be null if this command hasn't been run yet.
+     * The last operative context data of this command. This may be null if this command is not currently being executed.
      */
     private final ThreadLocal<CommandOperationContext> lastCommandOperationContext = new ThreadLocal<>();
     /**
@@ -521,6 +521,7 @@ public abstract class BaseCommand {
      */
     private void postCommandOperation() {
         CommandManager.commandOperationContext.get().pop();
+        lastCommandOperationContext.set(null);
         execSubcommand = null;
         execLabel = null;
         origArgs = new String[]{};
