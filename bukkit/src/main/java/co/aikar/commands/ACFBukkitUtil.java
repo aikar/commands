@@ -318,9 +318,13 @@ public class ACFBukkitUtil {
         }
     }
 
+    @Deprecated
+    public static boolean isValidName(String name) {
+        return isValidName(name, null);
+    }
 
     public static boolean isValidName(String name, CommandManager manager) {
-        return name != null && !name.isEmpty() && (manager.isAllowInvalidName() || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
+        return name != null && !name.isEmpty() && ((manager != null && manager.isAllowInvalidName()) || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
     }
 
     static boolean isValidItem(ItemStack item) {

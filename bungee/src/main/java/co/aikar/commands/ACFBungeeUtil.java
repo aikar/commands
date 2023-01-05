@@ -149,8 +149,13 @@ public class ACFBungeeUtil {
         throw new IllegalStateException("You may not use the ACFBungeeUtil#findPlayerSmart(CommandSender) async to the command execution.");
     }
 
+    @Deprecated
+    public static boolean isValidName(String name) {
+        return isValidName(name, null);
+    }
+
     public static boolean isValidName(String name, CommandManager manager) {
-        return name != null && !name.isEmpty() && (manager.isAllowInvalidName() || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
+        return name != null && !name.isEmpty() && ((manager != null && manager.isAllowInvalidName()) || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
     }
 
     public static <T> T validate(T object, String message, Object... values) {
@@ -159,6 +164,4 @@ public class ACFBungeeUtil {
         }
         return object;
     }
-
-
 }
