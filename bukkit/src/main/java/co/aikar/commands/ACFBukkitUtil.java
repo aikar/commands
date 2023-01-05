@@ -282,7 +282,7 @@ public class ACFBukkitUtil {
 
         //noinspection Duplicates
         if (matches.isEmpty()) {
-            if (!isValidName(name)) {
+            if (!isValidName(name, issuer.getManager())) {
                 issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 return null;
             }
@@ -319,8 +319,8 @@ public class ACFBukkitUtil {
     }
 
 
-    public static boolean isValidName(String name) {
-        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
+    public static boolean isValidName(String name, CommandManager manager) {
+        return name != null && !name.isEmpty() && (manager.isAllowInvalidName() || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
     }
 
     static boolean isValidItem(ItemStack item) {

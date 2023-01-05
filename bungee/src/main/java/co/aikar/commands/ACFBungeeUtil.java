@@ -124,7 +124,7 @@ public class ACFBungeeUtil {
         }
 
         if (matches.isEmpty()) {
-            if (!isValidName(name)) {
+            if (!isValidName(name, issuer.getManager())) {
                 issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 return null;
             }
@@ -149,8 +149,8 @@ public class ACFBungeeUtil {
         throw new IllegalStateException("You may not use the ACFBungeeUtil#findPlayerSmart(CommandSender) async to the command execution.");
     }
 
-    public static boolean isValidName(String name) {
-        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
+    public static boolean isValidName(String name, CommandManager manager) {
+        return name != null && !name.isEmpty() && (manager.isAllowInvalidName() || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
     }
 
     public static <T> T validate(T object, String message, Object... values) {
