@@ -38,6 +38,7 @@
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
+      <module name="commands" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
     </option>
   </component>
