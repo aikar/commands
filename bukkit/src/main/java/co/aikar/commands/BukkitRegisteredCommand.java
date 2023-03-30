@@ -23,28 +23,11 @@
 
 package co.aikar.commands;
 
-import co.aikar.timings.lib.MCTiming;
-
 import java.lang.reflect.Method;
 
 public class BukkitRegisteredCommand extends RegisteredCommand<BukkitCommandExecutionContext> {
-    private final MCTiming timing;
     BukkitRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         super(scope, command, method, prefSubCommand);
-        BukkitCommandManager manager = (BukkitCommandManager) scope.manager;
-        this.timing = manager.getTimings().of("Command: " + this.command, manager.commandTiming);
     }
 
-
-    @Override
-    public void preCommand() {
-        timing.startTiming();
-        super.preCommand();
-    }
-
-    @Override
-    public void postCommand() {
-        super.postCommand();
-        timing.stopTiming();
-    }
 }
