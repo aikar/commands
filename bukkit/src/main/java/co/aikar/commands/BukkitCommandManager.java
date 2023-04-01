@@ -79,7 +79,7 @@ public class BukkitCommandManager extends CommandManager<
     private final CommandMap commandMap;
     @Deprecated
     private final TimingManager timingManager;
-    private final BukkitTask localeTask;
+    private final ACFBukkitScheduler scheduler;
     private final Logger logger;
     public final Integer mcMinorVersion;
     public final Integer mcPatchVersion;
@@ -93,7 +93,12 @@ public class BukkitCommandManager extends CommandManager<
     protected boolean autoDetectFromClient = true;
 
     public BukkitCommandManager(Plugin plugin) {
+        this(plugin, new ACFBukkitScheduler());
+    }
+
+    public BukkitCommandManager(Plugin plugin, ACFBukkitScheduler scheduler) {
         this.plugin = plugin;
+        this.scheduler = scheduler;
         String prefix = this.plugin.getDescription().getPrefix();
         this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());
         this.timingManager = TimingManager.of(plugin);
@@ -122,7 +127,7 @@ public class BukkitCommandManager extends CommandManager<
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
 
         getLocales(); // auto load locales
-        this.localeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        scheduler.createLocaleTask(plugin, ()->{
             if (this.cantReadLocale || !this.autoDetectFromClient) {
                 return;
             }
@@ -137,7 +142,7 @@ public class BukkitCommandManager extends CommandManager<
         registerDependency(JavaPlugin.class, plugin);
         registerDependency(PluginManager.class, Bukkit.getPluginManager());
         registerDependency(Server.class, Bukkit.getServer());
-        registerDependency(BukkitScheduler.class, Bukkit.getScheduler());
+        scheduler.registerSchedulerDependencies(this);
         registerDependency(ScoreboardManager.class, Bukkit.getScoreboardManager());
         registerDependency(ItemFactory.class, Bukkit.getItemFactory());
         registerDependency(PluginDescriptionFile.class, plugin.getDescription());
@@ -331,7 +336,7 @@ public class BukkitCommandManager extends CommandManager<
             }
         } catch (Exception e) {
             cantReadLocale = true;
-            this.localeTask.cancel();
+            this.scheduler.cancelLocaleTask();
             this.log(LogLevel.INFO, "Can't read players locale, you will be unable to automatically detect players language. Only Bukkit 1.7+ is supported for this.", e);
         }
     }
@@ -339,6 +344,10 @@ public class BukkitCommandManager extends CommandManager<
     @Deprecated
     public TimingManager getTimings() {
         return timingManager;
+    }
+
+    public ACFBukkitScheduler getScheduler() {
+        return scheduler;
     }
 
     @Override

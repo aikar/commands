@@ -32,7 +32,11 @@ public class PaperCommandManager extends BukkitCommandManager {
 
     // If we get anything Paper specific
     public PaperCommandManager(Plugin plugin) {
-        super(plugin);
+        this(plugin, new ACFBukkitScheduler());
+    }
+
+    public PaperCommandManager(Plugin plugin, ACFBukkitScheduler scheduler) {
+        super(plugin, scheduler);
         try {
             Class.forName("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent");
             plugin.getServer().getPluginManager().registerEvents(new PaperAsyncTabCompleteHandler(this), plugin);

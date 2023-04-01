@@ -34,15 +34,15 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>acf-paper</artifactId>
+    <artifactId>acf-folia</artifactId>
     <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 
-    <name>ACF (Paper)</name>
+    <name>ACF (Folia)</name>
 
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
-            <artifactId>acf-bukkit</artifactId>
+            <artifactId>acf-paper</artifactId>
             <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
             <scope>compile</scope>
         </dependency>
@@ -51,18 +51,6 @@
             <artifactId>acf-brigadier</artifactId>
             <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-mojangapi</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dev.folia</groupId>
