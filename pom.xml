@@ -206,6 +206,5 @@
         <module>sponge</module>
         <module>jda</module>
         <module>velocity</module>
-        <module>folia</module>
     </modules>
 </project>

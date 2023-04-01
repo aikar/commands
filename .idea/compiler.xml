@@ -14,7 +14,6 @@
         <module name="acf" />
         <module name="acf-velocity" />
         <module name="acf-core" />
-        <module name="acf-folia" />
         <module name="acf-brigadier" />
         <module name="acf-example" />
         <module name="acf-bukkit" />
@@ -24,6 +23,7 @@
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
       <module name="acf-example" target="1.8" />
+      <module name="acf-folia" target="1.8" />
       <module name="commands" target="1.8" />
       <module name="example-plugin" target="1.8" />
     </bytecodeTargetLevel>

@@ -41,6 +41,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>dev.folia</groupId>
+            <artifactId>folia-api</artifactId>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-bukkit</artifactId>
             <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
@@ -62,12 +68,6 @@
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-mojangapi</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>dev.folia</groupId>
-            <artifactId>folia-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
