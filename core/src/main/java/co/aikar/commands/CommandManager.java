@@ -525,7 +525,7 @@ public abstract class CommandManager<
      * @param clazz the class the injector should look for to remove
      * @throws IllegalStateException If the dependency was not found.
      */
-    public <T> void deregisterDependency(Class<? extends T> clazz) {
+    public <T> void unregisterDependency(Class<? extends T> clazz) {
         unregisterDependency(clazz, clazz.getName());
     }
 
@@ -538,7 +538,7 @@ public abstract class CommandManager<
      */
     public <T> void unregisterDependency(Class<? extends T> clazz, String key) {
         if (!dependencies.containsKey(clazz, key)) {
-            throw new IllegalStateException("Unable to deregister a dependency of " + clazz.getName() + " with the key " + key + " because it wasn't registered");
+            throw new IllegalStateException("Unable to unregister a dependency of " + clazz.getName() + " with the key " + key + " because it wasn't registered");
         }
 
         dependencies.remove(clazz, key);
