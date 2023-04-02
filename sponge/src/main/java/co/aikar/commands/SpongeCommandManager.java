@@ -70,6 +70,8 @@ public class SpongeCommandManager extends CommandManager<
         this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));
         getLocales(); // auto load locales
 
+        this.validNamePredicate = ACFSpongeUtil::isValidName;
+
         Sponge.getEventManager().registerListeners(plugin, new ACFSpongeListener(this));
 
         //TODO more default dependencies for sponge

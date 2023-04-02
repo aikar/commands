@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 
 @SuppressWarnings("WeakerAccess")
@@ -75,9 +76,9 @@ public abstract class CommandManager<
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
-    protected boolean allowInvalidName = false;
     protected List<IssuerLocaleChangedCallback<I>> localeChangedCallbacks = new ArrayList<>();
     protected Set<Locale> supportedLanguages = new HashSet<>(Arrays.asList(Locales.ENGLISH, Locales.DUTCH, Locales.GERMAN, Locales.SPANISH, Locales.FRENCH, Locales.CZECH, Locales.PORTUGUESE, Locales.SWEDISH, Locales.NORWEGIAN_BOKMAAL, Locales.NORWEGIAN_NYNORSK, Locales.RUSSIAN, Locales.BULGARIAN, Locales.HUNGARIAN, Locales.TURKISH, Locales.JAPANESE, Locales.CHINESE, Locales.SIMPLIFIED_CHINESE, Locales.TRADITIONAL_CHINESE, Locales.KOREAN));
+    protected Predicate<String> validNamePredicate = name -> true;
     protected Map<MessageType, MF> formatters = new IdentityHashMap<>();
     protected MF defaultFormatter;
     protected int defaultHelpPerPage = 10;
@@ -274,14 +275,16 @@ public abstract class CommandManager<
         return old;
     }
 
-    public boolean isAllowInvalidName() {
-        return allowInvalidName;
+    public boolean isValidName(@NotNull String name) {
+        return validNamePredicate.test(name);
     }
 
-    public boolean allowInvalidName(boolean setting) {
-        boolean old = allowInvalidName;
-        allowInvalidName = setting;
-        return old;
+    public @NotNull Predicate<String> getValidNamePredicate() {
+        return validNamePredicate;
+    }
+
+    public void setValidNamePredicate(@NotNull Predicate<String> isValidName) {
+        this.validNamePredicate = isValidName;
     }
 
     public ConditionContext createConditionContext(CommandIssuer issuer, String config) {

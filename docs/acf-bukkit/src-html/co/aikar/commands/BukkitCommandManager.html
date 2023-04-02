@@ -55,101 +55,101 @@
 <span class="source-line-no">042</span><span id="line-42">import org.bukkit.plugin.PluginDescriptionFile;</span>
 <span class="source-line-no">043</span><span id="line-43">import org.bukkit.plugin.PluginManager;</span>
 <span class="source-line-no">044</span><span id="line-44">import org.bukkit.plugin.java.JavaPlugin;</span>
-<span class="source-line-no">045</span><span id="line-45">import org.bukkit.scheduler.BukkitScheduler;</span>
-<span class="source-line-no">046</span><span id="line-46">import org.bukkit.scheduler.BukkitTask;</span>
-<span class="source-line-no">047</span><span id="line-47">import org.bukkit.scoreboard.ScoreboardManager;</span>
-<span class="source-line-no">048</span><span id="line-48">import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">import java.lang.reflect.Field;</span>
-<span class="source-line-no">051</span><span id="line-51">import java.lang.reflect.Method;</span>
-<span class="source-line-no">052</span><span id="line-52">import java.util.Collection;</span>
-<span class="source-line-no">053</span><span id="line-53">import java.util.Collections;</span>
-<span class="source-line-no">054</span><span id="line-54">import java.util.HashMap;</span>
-<span class="source-line-no">055</span><span id="line-55">import java.util.HashSet;</span>
-<span class="source-line-no">056</span><span id="line-56">import java.util.List;</span>
-<span class="source-line-no">057</span><span id="line-57">import java.util.Locale;</span>
-<span class="source-line-no">058</span><span id="line-58">import java.util.Map;</span>
-<span class="source-line-no">059</span><span id="line-59">import java.util.Objects;</span>
-<span class="source-line-no">060</span><span id="line-60">import java.util.UUID;</span>
-<span class="source-line-no">061</span><span id="line-61">import java.util.concurrent.ConcurrentHashMap;</span>
-<span class="source-line-no">062</span><span id="line-62">import java.util.logging.Level;</span>
-<span class="source-line-no">063</span><span id="line-63">import java.util.logging.Logger;</span>
-<span class="source-line-no">064</span><span id="line-64">import java.util.regex.Matcher;</span>
-<span class="source-line-no">065</span><span id="line-65">import java.util.regex.Pattern;</span>
-<span class="source-line-no">066</span><span id="line-66"></span>
-<span class="source-line-no">067</span><span id="line-67">@SuppressWarnings("WeakerAccess")</span>
-<span class="source-line-no">068</span><span id="line-68">public class BukkitCommandManager extends CommandManager&lt;</span>
-<span class="source-line-no">069</span><span id="line-69">        CommandSender,</span>
-<span class="source-line-no">070</span><span id="line-70">        BukkitCommandIssuer,</span>
-<span class="source-line-no">071</span><span id="line-71">        ChatColor,</span>
-<span class="source-line-no">072</span><span id="line-72">        BukkitMessageFormatter,</span>
-<span class="source-line-no">073</span><span id="line-73">        BukkitCommandExecutionContext,</span>
-<span class="source-line-no">074</span><span id="line-74">        BukkitConditionContext</span>
-<span class="source-line-no">075</span><span id="line-75">        &gt; {</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">    @SuppressWarnings("WeakerAccess")</span>
-<span class="source-line-no">078</span><span id="line-78">    protected final Plugin plugin;</span>
-<span class="source-line-no">079</span><span id="line-79">    private final CommandMap commandMap;</span>
-<span class="source-line-no">080</span><span id="line-80">    @Deprecated</span>
-<span class="source-line-no">081</span><span id="line-81">    private final TimingManager timingManager;</span>
-<span class="source-line-no">082</span><span id="line-82">    private ACFBukkitScheduler scheduler;</span>
-<span class="source-line-no">083</span><span id="line-83">    private final Logger logger;</span>
-<span class="source-line-no">084</span><span id="line-84">    public final Integer mcMinorVersion;</span>
-<span class="source-line-no">085</span><span id="line-85">    public final Integer mcPatchVersion;</span>
-<span class="source-line-no">086</span><span id="line-86">    protected Map&lt;String, Command&gt; knownCommands = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">087</span><span id="line-87">    protected Map&lt;String, BukkitRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();</span>
-<span class="source-line-no">088</span><span id="line-88">    protected BukkitCommandContexts contexts;</span>
-<span class="source-line-no">089</span><span id="line-89">    protected BukkitCommandCompletions completions;</span>
-<span class="source-line-no">090</span><span id="line-90">    protected BukkitLocales locales;</span>
-<span class="source-line-no">091</span><span id="line-91">    protected Map&lt;UUID, String&gt; issuersLocaleString = new ConcurrentHashMap&lt;&gt;();</span>
-<span class="source-line-no">092</span><span id="line-92">    private boolean cantReadLocale = false;</span>
-<span class="source-line-no">093</span><span id="line-93">    protected boolean autoDetectFromClient = true;</span>
-<span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">    public BukkitCommandManager(Plugin plugin) {</span>
-<span class="source-line-no">096</span><span id="line-96">        this.plugin = plugin;</span>
-<span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">        //See what schedule we should use, bukkit or folia</span>
-<span class="source-line-no">099</span><span id="line-99">        try {</span>
-<span class="source-line-no">100</span><span id="line-100">            Class.forName("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");</span>
-<span class="source-line-no">101</span><span id="line-101">            this.scheduler = new ACFFoliaScheduler();</span>
-<span class="source-line-no">102</span><span id="line-102">        } catch (ClassNotFoundException ignored) {</span>
-<span class="source-line-no">103</span><span id="line-103">            this.scheduler = new ACFBukkitScheduler();</span>
-<span class="source-line-no">104</span><span id="line-104">        }</span>
-<span class="source-line-no">105</span><span id="line-105"></span>
-<span class="source-line-no">106</span><span id="line-106">        String prefix = this.plugin.getDescription().getPrefix();</span>
-<span class="source-line-no">107</span><span id="line-107">        this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());</span>
-<span class="source-line-no">108</span><span id="line-108">        this.timingManager = TimingManager.of(plugin);</span>
-<span class="source-line-no">109</span><span id="line-109">        this.commandMap = hookCommandMap();</span>
-<span class="source-line-no">110</span><span id="line-110">        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));</span>
-<span class="source-line-no">111</span><span id="line-111">        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));</span>
-<span class="source-line-no">112</span><span id="line-112">        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));</span>
-<span class="source-line-no">113</span><span id="line-113">        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));</span>
-<span class="source-line-no">114</span><span id="line-114">        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?\\)");</span>
-<span class="source-line-no">115</span><span id="line-115">        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());</span>
-<span class="source-line-no">116</span><span id="line-116">        if (matcher.find()) {</span>
-<span class="source-line-no">117</span><span id="line-117">            this.mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);</span>
-<span class="source-line-no">118</span><span id="line-118">            this.mcPatchVersion = ACFUtil.parseInt(matcher.toMatchResult().group(3), 0);</span>
-<span class="source-line-no">119</span><span id="line-119">        } else {</span>
-<span class="source-line-no">120</span><span id="line-120">            this.mcMinorVersion = -1;</span>
-<span class="source-line-no">121</span><span id="line-121">            this.mcPatchVersion = -1;</span>
-<span class="source-line-no">122</span><span id="line-122">        }</span>
-<span class="source-line-no">123</span><span id="line-123">        Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -&gt; {</span>
-<span class="source-line-no">124</span><span id="line-124">            if (hasUnstableAPI("help")) {</span>
-<span class="source-line-no">125</span><span id="line-125">                return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);</span>
-<span class="source-line-no">126</span><span id="line-126">            } else {</span>
-<span class="source-line-no">127</span><span id="line-127">                return new GenericCommandHelpTopic(command);</span>
-<span class="source-line-no">128</span><span id="line-128">            }</span>
-<span class="source-line-no">129</span><span id="line-129">        });</span>
+<span class="source-line-no">045</span><span id="line-45">import org.bukkit.scoreboard.ScoreboardManager;</span>
+<span class="source-line-no">046</span><span id="line-46">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">import java.lang.reflect.Field;</span>
+<span class="source-line-no">049</span><span id="line-49">import java.lang.reflect.Method;</span>
+<span class="source-line-no">050</span><span id="line-50">import java.util.Collection;</span>
+<span class="source-line-no">051</span><span id="line-51">import java.util.Collections;</span>
+<span class="source-line-no">052</span><span id="line-52">import java.util.HashMap;</span>
+<span class="source-line-no">053</span><span id="line-53">import java.util.HashSet;</span>
+<span class="source-line-no">054</span><span id="line-54">import java.util.List;</span>
+<span class="source-line-no">055</span><span id="line-55">import java.util.Locale;</span>
+<span class="source-line-no">056</span><span id="line-56">import java.util.Map;</span>
+<span class="source-line-no">057</span><span id="line-57">import java.util.Objects;</span>
+<span class="source-line-no">058</span><span id="line-58">import java.util.UUID;</span>
+<span class="source-line-no">059</span><span id="line-59">import java.util.concurrent.ConcurrentHashMap;</span>
+<span class="source-line-no">060</span><span id="line-60">import java.util.logging.Level;</span>
+<span class="source-line-no">061</span><span id="line-61">import java.util.logging.Logger;</span>
+<span class="source-line-no">062</span><span id="line-62">import java.util.regex.Matcher;</span>
+<span class="source-line-no">063</span><span id="line-63">import java.util.regex.Pattern;</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">@SuppressWarnings("WeakerAccess")</span>
+<span class="source-line-no">066</span><span id="line-66">public class BukkitCommandManager extends CommandManager&lt;</span>
+<span class="source-line-no">067</span><span id="line-67">        CommandSender,</span>
+<span class="source-line-no">068</span><span id="line-68">        BukkitCommandIssuer,</span>
+<span class="source-line-no">069</span><span id="line-69">        ChatColor,</span>
+<span class="source-line-no">070</span><span id="line-70">        BukkitMessageFormatter,</span>
+<span class="source-line-no">071</span><span id="line-71">        BukkitCommandExecutionContext,</span>
+<span class="source-line-no">072</span><span id="line-72">        BukkitConditionContext</span>
+<span class="source-line-no">073</span><span id="line-73">        &gt; {</span>
+<span class="source-line-no">074</span><span id="line-74"></span>
+<span class="source-line-no">075</span><span id="line-75">    @SuppressWarnings("WeakerAccess")</span>
+<span class="source-line-no">076</span><span id="line-76">    protected final Plugin plugin;</span>
+<span class="source-line-no">077</span><span id="line-77">    private final CommandMap commandMap;</span>
+<span class="source-line-no">078</span><span id="line-78">    @Deprecated</span>
+<span class="source-line-no">079</span><span id="line-79">    private final TimingManager timingManager;</span>
+<span class="source-line-no">080</span><span id="line-80">    private ACFBukkitScheduler scheduler;</span>
+<span class="source-line-no">081</span><span id="line-81">    private final Logger logger;</span>
+<span class="source-line-no">082</span><span id="line-82">    public final Integer mcMinorVersion;</span>
+<span class="source-line-no">083</span><span id="line-83">    public final Integer mcPatchVersion;</span>
+<span class="source-line-no">084</span><span id="line-84">    protected Map&lt;String, Command&gt; knownCommands = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">085</span><span id="line-85">    protected Map&lt;String, BukkitRootCommand&gt; registeredCommands = new HashMap&lt;&gt;();</span>
+<span class="source-line-no">086</span><span id="line-86">    protected BukkitCommandContexts contexts;</span>
+<span class="source-line-no">087</span><span id="line-87">    protected BukkitCommandCompletions completions;</span>
+<span class="source-line-no">088</span><span id="line-88">    protected BukkitLocales locales;</span>
+<span class="source-line-no">089</span><span id="line-89">    protected Map&lt;UUID, String&gt; issuersLocaleString = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="source-line-no">090</span><span id="line-90">    private boolean cantReadLocale = false;</span>
+<span class="source-line-no">091</span><span id="line-91">    protected boolean autoDetectFromClient = true;</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">    public BukkitCommandManager(Plugin plugin) {</span>
+<span class="source-line-no">094</span><span id="line-94">        this.plugin = plugin;</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">        //See what schedule we should use, bukkit or folia</span>
+<span class="source-line-no">097</span><span id="line-97">        try {</span>
+<span class="source-line-no">098</span><span id="line-98">            Class.forName("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");</span>
+<span class="source-line-no">099</span><span id="line-99">            this.scheduler = new ACFFoliaScheduler();</span>
+<span class="source-line-no">100</span><span id="line-100">        } catch (ClassNotFoundException ignored) {</span>
+<span class="source-line-no">101</span><span id="line-101">            this.scheduler = new ACFBukkitScheduler();</span>
+<span class="source-line-no">102</span><span id="line-102">        }</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">        String prefix = this.plugin.getDescription().getPrefix();</span>
+<span class="source-line-no">105</span><span id="line-105">        this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());</span>
+<span class="source-line-no">106</span><span id="line-106">        this.timingManager = TimingManager.of(plugin);</span>
+<span class="source-line-no">107</span><span id="line-107">        this.commandMap = hookCommandMap();</span>
+<span class="source-line-no">108</span><span id="line-108">        this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));</span>
+<span class="source-line-no">109</span><span id="line-109">        this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));</span>
+<span class="source-line-no">110</span><span id="line-110">        this.formatters.put(MessageType.INFO, new BukkitMessageFormatter(ChatColor.BLUE, ChatColor.DARK_GREEN, ChatColor.GREEN));</span>
+<span class="source-line-no">111</span><span id="line-111">        this.formatters.put(MessageType.HELP, new BukkitMessageFormatter(ChatColor.AQUA, ChatColor.GREEN, ChatColor.YELLOW));</span>
+<span class="source-line-no">112</span><span id="line-112">        Pattern versionPattern = Pattern.compile("\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?\\)");</span>
+<span class="source-line-no">113</span><span id="line-113">        Matcher matcher = versionPattern.matcher(Bukkit.getVersion());</span>
+<span class="source-line-no">114</span><span id="line-114">        if (matcher.find()) {</span>
+<span class="source-line-no">115</span><span id="line-115">            this.mcMinorVersion = ACFUtil.parseInt(matcher.toMatchResult().group(2), 0);</span>
+<span class="source-line-no">116</span><span id="line-116">            this.mcPatchVersion = ACFUtil.parseInt(matcher.toMatchResult().group(3), 0);</span>
+<span class="source-line-no">117</span><span id="line-117">        } else {</span>
+<span class="source-line-no">118</span><span id="line-118">            this.mcMinorVersion = -1;</span>
+<span class="source-line-no">119</span><span id="line-119">            this.mcPatchVersion = -1;</span>
+<span class="source-line-no">120</span><span id="line-120">        }</span>
+<span class="source-line-no">121</span><span id="line-121">        Bukkit.getHelpMap().registerHelpTopicFactory(BukkitRootCommand.class, command -&gt; {</span>
+<span class="source-line-no">122</span><span id="line-122">            if (hasUnstableAPI("help")) {</span>
+<span class="source-line-no">123</span><span id="line-123">                return new ACFBukkitHelpTopic(this, (BukkitRootCommand) command);</span>
+<span class="source-line-no">124</span><span id="line-124">            } else {</span>
+<span class="source-line-no">125</span><span id="line-125">                return new GenericCommandHelpTopic(command);</span>
+<span class="source-line-no">126</span><span id="line-126">            }</span>
+<span class="source-line-no">127</span><span id="line-127">        });</span>
+<span class="source-line-no">128</span><span id="line-128"></span>
+<span class="source-line-no">129</span><span id="line-129">        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);</span>
 <span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">        Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);</span>
-<span class="source-line-no">132</span><span id="line-132"></span>
-<span class="source-line-no">133</span><span id="line-133">        getLocales(); // auto load locales</span>
-<span class="source-line-no">134</span><span id="line-134">        scheduler.createLocaleTask(plugin, () -&gt; {</span>
-<span class="source-line-no">135</span><span id="line-135">            if (this.cantReadLocale || !this.autoDetectFromClient) {</span>
-<span class="source-line-no">136</span><span id="line-136">                return;</span>
-<span class="source-line-no">137</span><span id="line-137">            }</span>
-<span class="source-line-no">138</span><span id="line-138">            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);</span>
-<span class="source-line-no">139</span><span id="line-139">        }, 30, 30);</span>
+<span class="source-line-no">131</span><span id="line-131">        getLocales(); // auto load locales</span>
+<span class="source-line-no">132</span><span id="line-132">        scheduler.createLocaleTask(plugin, () -&gt; {</span>
+<span class="source-line-no">133</span><span id="line-133">            if (this.cantReadLocale || !this.autoDetectFromClient) {</span>
+<span class="source-line-no">134</span><span id="line-134">                return;</span>
+<span class="source-line-no">135</span><span id="line-135">            }</span>
+<span class="source-line-no">136</span><span id="line-136">            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);</span>
+<span class="source-line-no">137</span><span id="line-137">        }, 30, 30);</span>
+<span class="source-line-no">138</span><span id="line-138"></span>
+<span class="source-line-no">139</span><span id="line-139">        this.validNamePredicate = ACFBukkitUtil::isValidName;</span>
 <span class="source-line-no">140</span><span id="line-140"></span>
 <span class="source-line-no">141</span><span id="line-141">        registerDependency(plugin.getClass(), plugin);</span>
 <span class="source-line-no">142</span><span id="line-142">        registerDependency(Logger.class, plugin.getLogger());</span>

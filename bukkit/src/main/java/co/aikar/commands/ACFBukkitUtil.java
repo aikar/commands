@@ -33,6 +33,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -282,7 +283,7 @@ public class ACFBukkitUtil {
 
         //noinspection Duplicates
         if (matches.isEmpty()) {
-            if (!isValidName(name, issuer.getManager())) {
+            if (!issuer.getManager().isValidName(name)) {
                 issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 return null;
             }
@@ -318,13 +319,8 @@ public class ACFBukkitUtil {
         }
     }
 
-    @Deprecated
-    public static boolean isValidName(String name) {
-        return isValidName(name, null);
-    }
-
-    public static boolean isValidName(String name, CommandManager manager) {
-        return name != null && !name.isEmpty() && ((manager != null && manager.isAllowInvalidName()) || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
+    public static boolean isValidName(@Nullable String name) {
+        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 
     static boolean isValidItem(ItemStack item) {

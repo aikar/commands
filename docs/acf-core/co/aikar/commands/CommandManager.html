@@ -76,7 +76,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-50">CommandManager</a>&lt;IT,<wbr>I extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,<wbr>FT,<wbr>MF extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;FT&gt;,<wbr>CEC extends <a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,<wbr>I&gt;,<wbr>CC extends <a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I&gt;&gt;</span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-51">CommandManager</a>&lt;IT,<wbr>I extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,<wbr>FT,<wbr>MF extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;FT&gt;,<wbr>CEC extends <a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;CEC,<wbr>I&gt;,<wbr>CC extends <a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;I&gt;&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 </section>
 <section class="summary">
@@ -129,6 +129,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#usePerIssuerLocale" class="member-name-link">usePerIssuerLocale</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#validNamePredicate" class="member-name-link">validNamePredicate</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -311,29 +314,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Gets a list of all currently supported languages for this manager.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUncaughtException(co.aikar.commands.BaseCommand,co.aikar.commands.RegisteredCommand,co.aikar.commands.CommandIssuer,java.util.List,java.lang.Throwable)" class="member-name-link">handleUncaughtException</a><wbr>(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;scope,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidNamePredicate()" class="member-name-link">getValidNamePredicate</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUncaughtException(co.aikar.commands.BaseCommand,co.aikar.commands.RegisteredCommand,co.aikar.commands.CommandIssuer,java.util.List,java.lang.Throwable)" class="member-name-link">handleUncaughtException</a><wbr>(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;scope,
  <a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;registeredCommand,
  <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;args,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;t)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasPermission(co.aikar.commands.CommandIssuer,java.lang.String)" class="member-name-link">hasPermission</a><wbr>(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;permission)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasPermission(co.aikar.commands.CommandIssuer,java.util.Set)" class="member-name-link">hasPermission</a><wbr>(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
- <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;permissions)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasPermission(co.aikar.commands.CommandIssuer,java.lang.String)" class="member-name-link">hasPermission</a><wbr>(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;permission)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hasRegisteredCommands()" class="member-name-link">hasRegisteredCommands</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isCommandIssuer(java.lang.Class)" class="member-name-link">isCommandIssuer</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isLoggingUnhandledExceptions()" class="member-name-link">isLoggingUnhandledExceptions</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasPermission(co.aikar.commands.CommandIssuer,java.util.Set)" class="member-name-link">hasPermission</a><wbr>(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+ <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;permissions)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#hasRegisteredCommands()" class="member-name-link">hasRegisteredCommands</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isCommandIssuer(java.lang.Class)" class="member-name-link">isCommandIssuer</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isLoggingUnhandledExceptions()" class="member-name-link">isLoggingUnhandledExceptions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isValidName(java.lang.String)" class="member-name-link">isValidName</a><wbr>(@NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#log(co.aikar.commands.LogLevel,java.lang.String)" class="member-name-link">log</a><wbr>(co.aikar.commands.LogLevel&nbsp;level,
@@ -434,12 +443,15 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIssuerLocale(IT,java.util.Locale)" class="member-name-link">setIssuerLocale</a><wbr>(<a href="CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;locale)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#usePerIssuerLocale(boolean)" class="member-name-link">usePerIssuerLocale</a><wbr>(boolean&nbsp;setting)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidNamePredicate(java.util.function.Predicate)" class="member-name-link">setValidNamePredicate</a><wbr>(@NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;isValidName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#usingPerIssuerLocale()" class="member-name-link">usingPerIssuerLocale</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#usePerIssuerLocale(boolean)" class="member-name-link">usePerIssuerLocale</a><wbr>(boolean&nbsp;setting)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#usingPerIssuerLocale()" class="member-name-link">usingPerIssuerLocale</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -460,79 +472,85 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="rootCommands">
 <h3>rootCommands</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-69">rootCommands</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-70">rootCommands</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="replacements">
 <h3>replacements</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="CommandReplacements.html" title="class in co.aikar.commands">CommandReplacements</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-70">replacements</a></span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="CommandReplacements.html" title="class in co.aikar.commands">CommandReplacements</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-71">replacements</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="conditions">
 <h3>conditions</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a> extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CEC</a> extends <a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">CEC</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CC</a> extends <a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-71">conditions</a></span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a> extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CEC</a> extends <a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">CEC</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CC</a> extends <a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-72">conditions</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="defaultExceptionHandler">
 <h3>defaultExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-72">defaultExceptionHandler</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-73">defaultExceptionHandler</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="dependencies">
 <h3>dependencies</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">co.aikar.util.Table&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-74">dependencies</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">co.aikar.util.Table&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-75">dependencies</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="helpFormatter">
 <h3>helpFormatter</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-75">helpFormatter</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-76">helpFormatter</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="usePerIssuerLocale">
 <h3>usePerIssuerLocale</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-77">usePerIssuerLocale</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-78">usePerIssuerLocale</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="localeChangedCallbacks">
 <h3>localeChangedCallbacks</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands">IssuerLocaleChangedCallback</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a> extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-78">localeChangedCallbacks</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands">IssuerLocaleChangedCallback</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a> extends <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-79">localeChangedCallbacks</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="supportedLanguages">
 <h3>supportedLanguages</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-79">supportedLanguages</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-80">supportedLanguages</a></span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="validNamePredicate">
+<h3>validNamePredicate</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-81">validNamePredicate</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="formatters">
 <h3>formatters</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">MF</a> extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-80">formatters</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">MF</a> extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-82">formatters</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="defaultFormatter">
 <h3>defaultFormatter</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a> extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-81">defaultFormatter</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a> extends <a href="MessageFormatter.html" title="class in co.aikar.commands">MessageFormatter</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">FT</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-83">defaultFormatter</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="defaultHelpPerPage">
 <h3>defaultHelpPerPage</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-82">defaultHelpPerPage</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-84">defaultHelpPerPage</a></span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="issuersLocale">
 <h3>issuersLocale</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-84">issuersLocale</a></span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html" title="class or interface in java.util" class="external-link">UUID</a>,<wbr><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-86">issuersLocale</a></span></div>
 </section>
 </li>
 </ul>
@@ -546,7 +564,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>CommandManager</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-51">CommandManager</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-52">CommandManager</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -560,45 +578,45 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getCurrentCommandOperationContext()">
 <h3>getCurrentCommandOperationContext</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-91">getCurrentCommandOperationContext</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandOperationContext.html" title="class in co.aikar.commands">CommandOperationContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-93">getCurrentCommandOperationContext</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCurrentCommandIssuer()">
 <h3>getCurrentCommandIssuer</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-95">getCurrentCommandIssuer</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-97">getCurrentCommandIssuer</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCurrentCommandManager()">
 <h3>getCurrentCommandManager</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="class in co.aikar.commands">CommandManager</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-100">getCurrentCommandManager</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="class in co.aikar.commands">CommandManager</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-102">getCurrentCommandManager</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setFormat(co.aikar.commands.MessageType,MF)">
 <h3 id="setFormat(co.aikar.commands.MessageType,co.aikar.commands.MessageFormatter)">setFormat</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-105">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-107">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  <a href="CommandManager.html" title="type parameter in CommandManager">MF</a>&nbsp;formatter)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getFormat(co.aikar.commands.MessageType)">
 <h3>getFormat</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-109">getFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-111">getFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="setFormat(co.aikar.commands.MessageType,FT...)">
 <h3 id="setFormat(co.aikar.commands.MessageType,java.lang.Object[])">setFormat</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-113">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-115">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  <a href="CommandManager.html" title="type parameter in CommandManager">FT</a>...&nbsp;colors)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="setFormat(co.aikar.commands.MessageType,int,FT)">
 <h3 id="setFormat(co.aikar.commands.MessageType,int,java.lang.Object)">setFormat</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-120">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-122">setFormat</a></span><wbr><span class="parameters">(<a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  int&nbsp;i,
  <a href="CommandManager.html" title="type parameter in CommandManager">FT</a>&nbsp;color)</span></div>
 </section>
@@ -606,25 +624,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDefaultFormatter()">
 <h3>getDefaultFormatter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-125">getDefaultFormatter</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">MF</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-127">getDefaultFormatter</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setDefaultFormatter(MF)">
 <h3 id="setDefaultFormatter(co.aikar.commands.MessageFormatter)">setDefaultFormatter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-129">setDefaultFormatter</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">MF</a>&nbsp;defaultFormatter)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-131">setDefaultFormatter</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">MF</a>&nbsp;defaultFormatter)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCommandConditions()">
 <h3>getCommandConditions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CEC</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CC</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-133">getCommandConditions</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandConditions.html" title="class in co.aikar.commands">CommandConditions</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CEC</a>,<wbr><a href="CommandManager.html" title="type parameter in CommandManager">CC</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-135">getCommandConditions</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCommandContexts()">
 <h3>getCommandContexts</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandContexts.html" title="class in co.aikar.commands">CommandContexts</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-142">getCommandContexts</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandContexts.html" title="class in co.aikar.commands">CommandContexts</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-144">getCommandContexts</a></span>()</div>
 <div class="block">Gets the command contexts manager</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -635,7 +653,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getCommandCompletions()">
 <h3>getCommandCompletions</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-149">getCommandCompletions</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandCompletions.html" title="class in co.aikar.commands">CommandCompletions</a>&lt;?&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-151">getCommandCompletions</a></span>()</div>
 <div class="block">Gets the command completions manager</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -647,7 +665,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="generateCommandHelp(java.lang.String)">
 <h3>generateCommandHelp</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-154">generateCommandHelp</a></span><wbr><span class="parameters">(@NotNull
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-156">generateCommandHelp</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;command)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
@@ -658,7 +676,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="generateCommandHelp(co.aikar.commands.CommandIssuer,java.lang.String)">
 <h3>generateCommandHelp</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-168">generateCommandHelp</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-170">generateCommandHelp</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;command)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
@@ -670,7 +688,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="generateCommandHelp()">
 <h3>generateCommandHelp</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-178">generateCommandHelp</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-180">generateCommandHelp</a></span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
 </div>
@@ -680,7 +698,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="generateCommandHelp(co.aikar.commands.CommandIssuer,co.aikar.commands.RootCommand)">
 <h3>generateCommandHelp</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-193">generateCommandHelp</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelp.html" title="class in co.aikar.commands">CommandHelp</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-195">generateCommandHelp</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&nbsp;rootCommand)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
@@ -691,7 +709,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDefaultHelpPerPage()">
 <h3>getDefaultHelpPerPage</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-203">getDefaultHelpPerPage</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-205">getDefaultHelpPerPage</a></span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
 </div>
@@ -701,7 +719,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setDefaultHelpPerPage(int)">
 <h3>setDefaultHelpPerPage</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-213">setDefaultHelpPerPage</a></span><wbr><span class="parameters">(int&nbsp;defaultHelpPerPage)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-215">setDefaultHelpPerPage</a></span><wbr><span class="parameters">(int&nbsp;defaultHelpPerPage)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
 </div>
@@ -711,7 +729,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setHelpFormatter(co.aikar.commands.CommandHelpFormatter)">
 <h3>setHelpFormatter</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-223">setHelpFormatter</a></span><wbr><span class="parameters">(<a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a>&nbsp;helpFormatter)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-225">setHelpFormatter</a></span><wbr><span class="parameters">(<a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a>&nbsp;helpFormatter)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
 </div>
@@ -721,7 +739,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getHelpFormatter()">
 <h3>getHelpFormatter</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-232">getHelpFormatter</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandHelpFormatter.html" title="class in co.aikar.commands">CommandHelpFormatter</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-234">getHelpFormatter</a></span>()</div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Unstable API</div>
 </div>
@@ -730,7 +748,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerCommand(co.aikar.commands.BaseCommand)">
 <h3>registerCommand</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-248">registerCommand</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-250">registerCommand</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command)</span></div>
 <div class="block">Registers a command with ACF</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -741,31 +759,31 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="hasRegisteredCommands()">
 <h3>hasRegisteredCommands</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-250">hasRegisteredCommands</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-252">hasRegisteredCommands</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="isCommandIssuer(java.lang.Class)">
 <h3>isCommandIssuer</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-252">isCommandIssuer</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-254">isCommandIssuer</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCommandIssuer(java.lang.Object)">
 <h3>getCommandIssuer</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">I</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-255">getCommandIssuer</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;issuer)</span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandManager.html" title="type parameter in CommandManager">I</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-257">getCommandIssuer</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;issuer)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="createRootCommand(java.lang.String)">
 <h3>createRootCommand</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-257">createRootCommand</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cmd)</span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-259">createRootCommand</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cmd)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getLocales()">
 <h3>getLocales</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Locales.html" title="class in co.aikar.commands">Locales</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-264">getLocales</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="Locales.html" title="class in co.aikar.commands">Locales</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-266">getLocales</a></span>()</div>
 <div class="block">Returns a Locales Manager to add and modify language tables for your commands.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -775,26 +793,47 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="usingPerIssuerLocale()">
 <h3>usingPerIssuerLocale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-266">usingPerIssuerLocale</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-268">usingPerIssuerLocale</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="usePerIssuerLocale(boolean)">
 <h3>usePerIssuerLocale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-270">usePerIssuerLocale</a></span><wbr><span class="parameters">(boolean&nbsp;setting)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-272">usePerIssuerLocale</a></span><wbr><span class="parameters">(boolean&nbsp;setting)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isValidName(java.lang.String)">
+<h3>isValidName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-278">isValidName</a></span><wbr><span class="parameters">(@NotNull
+ @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getValidNamePredicate()">
+<h3>getValidNamePredicate</h3>
+<div class="member-signature"><span class="annotations">@NotNull
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-282">getValidNamePredicate</a></span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setValidNamePredicate(java.util.function.Predicate)">
+<h3>setValidNamePredicate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-286">setValidNamePredicate</a></span><wbr><span class="parameters">(@NotNull
+ @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;isValidName)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="createConditionContext(co.aikar.commands.CommandIssuer,java.lang.String)">
 <h3>createConditionContext</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-276">createConditionContext</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ConditionContext.html" title="class in co.aikar.commands">ConditionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-290">createConditionContext</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;config)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="createCommandContext(co.aikar.commands.RegisteredCommand,co.aikar.commands.CommandParameter,co.aikar.commands.CommandIssuer,java.util.List,int,java.util.Map)">
 <h3>createCommandContext</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-281">createCommandContext</a></span><wbr><span class="parameters">(<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;command,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandExecutionContext.html" title="class in co.aikar.commands">CommandExecutionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-295">createCommandContext</a></span><wbr><span class="parameters">(<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;command,
  <a href="CommandParameter.html" title="class in co.aikar.commands">CommandParameter</a>&nbsp;parameter,
  <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;args,
@@ -805,7 +844,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="createCompletionContext(co.aikar.commands.RegisteredCommand,co.aikar.commands.CommandIssuer,java.lang.String,java.lang.String,java.lang.String[])">
 <h3>createCompletionContext</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-283">createCompletionContext</a></span><wbr><span class="parameters">(<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;command,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="CommandCompletionContext.html" title="class in co.aikar.commands">CommandCompletionContext</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-297">createCompletionContext</a></span><wbr><span class="parameters">(<a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;command,
  <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;config,
@@ -815,7 +854,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="log(co.aikar.commands.LogLevel,java.lang.String,java.lang.Throwable)">
 <h3>log</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-285">log</a></span><wbr><span class="parameters">(co.aikar.commands.LogLevel&nbsp;level,
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-299">log</a></span><wbr><span class="parameters">(co.aikar.commands.LogLevel&nbsp;level,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;throwable)</span></div>
 </section>
@@ -823,14 +862,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="log(co.aikar.commands.LogLevel,java.lang.String)">
 <h3>log</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-287">log</a></span><wbr><span class="parameters">(co.aikar.commands.LogLevel&nbsp;level,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-301">log</a></span><wbr><span class="parameters">(co.aikar.commands.LogLevel&nbsp;level,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCommandReplacements()">
 <h3>getCommandReplacements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandReplacements.html" title="class in co.aikar.commands">CommandReplacements</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-301">getCommandReplacements</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandReplacements.html" title="class in co.aikar.commands">CommandReplacements</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-315">getCommandReplacements</a></span>()</div>
 <div class="block">Lets you add custom string replacements that can be applied to annotation values,
  to reduce duplication/repetition of common values such as permission nodes and command prefixes.
  <p>
@@ -846,41 +885,41 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="hasPermission(co.aikar.commands.CommandIssuer,java.util.Set)">
 <h3>hasPermission</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-305">hasPermission</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-319">hasPermission</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;permissions)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="hasPermission(co.aikar.commands.CommandIssuer,java.lang.String)">
 <h3>hasPermission</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-314">hasPermission</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-328">hasPermission</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;permission)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getRootCommand(java.lang.String)">
 <h3>getRootCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-326">getRootCommand</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-340">getRootCommand</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cmd)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="obtainRootCommand(java.lang.String)">
 <h3>obtainRootCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-330">obtainRootCommand</a></span><wbr><span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-344">obtainRootCommand</a></span><wbr><span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cmd)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getRegisteredRootCommands()">
 <h3>getRegisteredRootCommands</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-334">getRegisteredRootCommands</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="RootCommand.html" title="interface in co.aikar.commands">RootCommand</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-348">getRegisteredRootCommands</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="createRegisteredCommand(co.aikar.commands.BaseCommand,java.lang.String,java.lang.reflect.Method,java.lang.String)">
 <h3>createRegisteredCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-336">createRegisteredCommand</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-350">createRegisteredCommand</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;command,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cmdName,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html" title="class or interface in java.lang.reflect" class="external-link">Method</a>&nbsp;method,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefSubCommand)</span></div>
@@ -889,7 +928,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setDefaultExceptionHandler(co.aikar.commands.ExceptionHandler)">
 <h3>setDefaultExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-345">setDefaultExceptionHandler</a></span><wbr><span class="parameters">(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-359">setDefaultExceptionHandler</a></span><wbr><span class="parameters">(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler)</span></div>
 <div class="block">Sets the default <a href="ExceptionHandler.html" title="interface in co.aikar.commands"><code>ExceptionHandler</code></a> that is called when an exception occurs while executing a command, if the command doesn't have its own exception handler registered.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -900,7 +939,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setDefaultExceptionHandler(co.aikar.commands.ExceptionHandler,boolean)">
 <h3>setDefaultExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-360">setDefaultExceptionHandler</a></span><wbr><span class="parameters">(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-374">setDefaultExceptionHandler</a></span><wbr><span class="parameters">(<a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a>&nbsp;exceptionHandler,
  boolean&nbsp;logExceptions)</span></div>
 <div class="block">Sets the default <a href="ExceptionHandler.html" title="interface in co.aikar.commands"><code>ExceptionHandler</code></a> that is called when an exception occurs while executing a command, if the command doesn't have its own exception handler registered, and lets you control if ACF should also log the exception still.
  <p>
@@ -915,13 +954,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="isLoggingUnhandledExceptions()">
 <h3>isLoggingUnhandledExceptions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-368">isLoggingUnhandledExceptions</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-382">isLoggingUnhandledExceptions</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getDefaultExceptionHandler()">
 <h3>getDefaultExceptionHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-377">getDefaultExceptionHandler</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ExceptionHandler.html" title="interface in co.aikar.commands">ExceptionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-391">getDefaultExceptionHandler</a></span>()</div>
 <div class="block">Gets the current default exception handler, might be null.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -932,7 +971,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="handleUncaughtException(co.aikar.commands.BaseCommand,co.aikar.commands.RegisteredCommand,co.aikar.commands.CommandIssuer,java.util.List,java.lang.Throwable)">
 <h3>handleUncaughtException</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-381">handleUncaughtException</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;scope,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-395">handleUncaughtException</a></span><wbr><span class="parameters">(<a href="BaseCommand.html" title="class in co.aikar.commands">BaseCommand</a>&nbsp;scope,
  <a href="RegisteredCommand.html" title="class in co.aikar.commands">RegisteredCommand</a>&nbsp;registeredCommand,
  <a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;sender,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;args,
@@ -942,7 +981,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="sendMessage(IT,co.aikar.commands.MessageType,co.aikar.locales.MessageKeyProvider,java.lang.String...)">
 <h3 id="sendMessage(java.lang.Object,co.aikar.commands.MessageType,co.aikar.locales.MessageKeyProvider,java.lang.String[])">sendMessage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-394">sendMessage</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuerArg,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-408">sendMessage</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuerArg,
  <a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  co.aikar.locales.MessageKeyProvider&nbsp;key,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;replacements)</span></div>
@@ -951,7 +990,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="sendMessage(co.aikar.commands.CommandIssuer,co.aikar.commands.MessageType,co.aikar.locales.MessageKeyProvider,java.lang.String...)">
 <h3>sendMessage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-398">sendMessage</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-412">sendMessage</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  co.aikar.locales.MessageKeyProvider&nbsp;key,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;replacements)</span></div>
@@ -960,7 +999,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="formatMessage(co.aikar.commands.CommandIssuer,co.aikar.commands.MessageType,co.aikar.locales.MessageKeyProvider,java.lang.String...)">
 <h3>formatMessage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-406">formatMessage</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-420">formatMessage</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer,
  <a href="MessageType.html" title="class in co.aikar.commands">MessageType</a>&nbsp;type,
  co.aikar.locales.MessageKeyProvider&nbsp;key,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;replacements)</span></div>
@@ -969,13 +1008,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onLocaleChange(co.aikar.commands.IssuerLocaleChangedCallback)">
 <h3>onLocaleChange</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-422">onLocaleChange</a></span><wbr><span class="parameters">(<a href="IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands">IssuerLocaleChangedCallback</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;&nbsp;onChange)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-436">onLocaleChange</a></span><wbr><span class="parameters">(<a href="IssuerLocaleChangedCallback.html" title="interface in co.aikar.commands">IssuerLocaleChangedCallback</a>&lt;<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&gt;&nbsp;onChange)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="notifyLocaleChange(I,java.util.Locale,java.util.Locale)">
 <h3 id="notifyLocaleChange(co.aikar.commands.CommandIssuer,java.util.Locale,java.util.Locale)">notifyLocaleChange</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-426">notifyLocaleChange</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-440">notifyLocaleChange</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">I</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;oldLocale,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;newLocale)</span></div>
 </section>
@@ -983,20 +1022,20 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setIssuerLocale(IT,java.util.Locale)">
 <h3 id="setIssuerLocale(java.lang.Object,java.util.Locale)">setIssuerLocale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-436">setIssuerLocale</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuer,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-450">setIssuerLocale</a></span><wbr><span class="parameters">(<a href="CommandManager.html" title="type parameter in CommandManager">IT</a>&nbsp;issuer,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;locale)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getIssuerLocale(co.aikar.commands.CommandIssuer)">
 <h3>getIssuerLocale</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-447">getIssuerLocale</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-461">getIssuerLocale</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getSupportedLanguages()">
 <h3>getSupportedLanguages</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-476">getSupportedLanguages</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-490">getSupportedLanguages</a></span>()</div>
 <div class="block">Gets a list of all currently supported languages for this manager.
  These locales will be automatically loaded from</div>
 <dl class="notes">
@@ -1007,7 +1046,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addSupportedLanguage(java.util.Locale)">
 <h3>addSupportedLanguage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-486">addSupportedLanguage</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;locale)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-500">addSupportedLanguage</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html" title="class or interface in java.util" class="external-link">Locale</a>&nbsp;locale)</span></div>
 <div class="block">Adds a new locale to the list of automatic Locales to load Message Bundles for.
  All bundles loaded under the previous supported languages will now automatically load for this new locale too.</div>
 <dl class="notes">
@@ -1019,7 +1058,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerDependency(java.lang.Class,T)">
 <h3 id="registerDependency(java.lang.Class,java.lang.Object)">registerDependency</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-500">registerDependency</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends T&gt;&nbsp;clazz,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-514">registerDependency</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends T&gt;&nbsp;clazz,
  T&nbsp;instance)</span></div>
 <div class="block">Registers an instance of a class to be registered as an injectable dependency.<br>
  The command manager will attempt to inject all fields in a command class that are annotated with
@@ -1036,7 +1075,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerDependency(java.lang.Class,java.lang.String,T)">
 <h3 id="registerDependency(java.lang.Class,java.lang.String,java.lang.Object)">registerDependency</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-514">registerDependency</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends T&gt;&nbsp;clazz,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-528">registerDependency</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends T&gt;&nbsp;clazz,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  T&nbsp;instance)</span></div>
 <div class="block">Registers an instance of a class to be registered as an injectable dependency.<br>
@@ -1056,7 +1095,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="enableUnstableAPI(java.lang.String)">
 <h3>enableUnstableAPI</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-562">enableUnstableAPI</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;api)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-576">enableUnstableAPI</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;api)</span></div>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
 <div class="deprecation-comment">Use this with caution! If you enable and use Unstable API's, your next compile using ACF
  may require you to update your implementation to those unstable API's</div>
@@ -1066,7 +1105,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getCommandPrefix(co.aikar.commands.CommandIssuer)">
 <h3>getCommandPrefix</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-581">getCommandPrefix</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandManager.html#line-595">getCommandPrefix</a></span><wbr><span class="parameters">(<a href="CommandIssuer.html" title="interface in co.aikar.commands">CommandIssuer</a>&nbsp;issuer)</span></div>
 </section>
 </li>
 </ul>

@@ -66,6 +66,8 @@ public class BungeeCommandManager extends CommandManager<
 
         getLocales(); // auto load locales
 
+        this.validNamePredicate = ACFBungeeUtil::isValidName;
+
         plugin.getProxy().getPluginManager().registerListener(plugin, new ACFBungeeListener(this, plugin));
 
         //BungeeCord has no event for listening for client setting changes

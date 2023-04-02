@@ -62,6 +62,8 @@ public class VelocityCommandManager extends
 
         getLocales();
 
+        this.validNamePredicate = ACFVelocityUtil::isValidName;
+
         proxy.getEventManager().register(plugin, new ACFVelocityListener(this, this.plugin, proxy));
 
         registerDependency(plugin.getClass(), plugin);

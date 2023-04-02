@@ -1,5 +1,6 @@
 package co.aikar.commands;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
@@ -31,7 +32,7 @@ public class ACFSpongeUtil {
         }
 
         if (matches.isEmpty()) {
-            if (!isValidName(name, issuer.getManager())) {
+            if (!issuer.getManager().isValidName(name)) {
                 issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 return null;
             }
@@ -89,12 +90,8 @@ public class ACFSpongeUtil {
         return matchedPlayers;
     }
 
-    @Deprecated
-    public static boolean isValidName(String name) {
-        return isValidName(name, null);
+    public static boolean isValidName(@Nullable String name) {
+        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 
-    public static boolean isValidName(String name, CommandManager manager) {
-        return name != null && !name.isEmpty() && ((manager != null && manager.isAllowInvalidName()) || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
-    }
 }

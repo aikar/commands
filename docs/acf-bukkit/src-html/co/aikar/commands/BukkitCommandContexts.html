@@ -158,7 +158,7 @@
 <span class="source-line-no">145</span><span id="line-145">                offlinePlayer = Bukkit.getOfflinePlayer(name);</span>
 <span class="source-line-no">146</span><span id="line-146">            }</span>
 <span class="source-line-no">147</span><span id="line-147">            if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() &amp;&amp; !offlinePlayer.isOnline())) {</span>
-<span class="source-line-no">148</span><span id="line-148">                if (!c.hasFlag("uuid") &amp;&amp; !isValidName(name)) {</span>
+<span class="source-line-no">148</span><span id="line-148">                if (!c.hasFlag("uuid") &amp;&amp; !manager.isValidName(name)) {</span>
 <span class="source-line-no">149</span><span id="line-149">                    throw new InvalidCommandArgument(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</span>
 <span class="source-line-no">150</span><span id="line-150">                }</span>
 <span class="source-line-no">151</span><span id="line-151">                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND_OFFLINE,</span>

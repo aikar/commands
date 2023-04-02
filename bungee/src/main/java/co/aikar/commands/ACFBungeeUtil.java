@@ -27,6 +27,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,7 @@ public class ACFBungeeUtil {
         }
 
         if (matches.isEmpty()) {
-            if (!isValidName(name, issuer.getManager())) {
+            if (!issuer.getManager().isValidName(name)) {
                 issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);
                 return null;
             }
@@ -149,13 +150,8 @@ public class ACFBungeeUtil {
         throw new IllegalStateException("You may not use the ACFBungeeUtil#findPlayerSmart(CommandSender) async to the command execution.");
     }
 
-    @Deprecated
-    public static boolean isValidName(String name) {
-        return isValidName(name, null);
-    }
-
-    public static boolean isValidName(String name, CommandManager manager) {
-        return name != null && !name.isEmpty() && ((manager != null && manager.isAllowInvalidName()) || ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches());
+    public static boolean isValidName(@Nullable String name) {
+        return name != null && !name.isEmpty() && ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();
     }
 
     public static <T> T validate(T object, String message, Object... values) {

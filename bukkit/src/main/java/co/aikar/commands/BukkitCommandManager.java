@@ -42,8 +42,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -137,6 +135,8 @@ public class BukkitCommandManager extends CommandManager<
             }
             Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
         }, 30, 30);
+
+        this.validNamePredicate = ACFBukkitUtil::isValidName;
 
         registerDependency(plugin.getClass(), plugin);
         registerDependency(Logger.class, plugin.getLogger());
