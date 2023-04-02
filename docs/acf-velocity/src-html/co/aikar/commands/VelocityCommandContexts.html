@@ -45,65 +45,60 @@
 <span class="source-line-no">032</span><span id="line-32">import net.kyori.adventure.text.format.TextFormat;</span>
 <span class="source-line-no">033</span><span id="line-33"></span>
 <span class="source-line-no">034</span><span id="line-34">import net.kyori.adventure.text.format.TextColor;</span>
-<span class="source-line-no">035</span><span id="line-35">import org.jetbrains.annotations.Nullable;</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">import java.util.stream.Collectors;</span>
-<span class="source-line-no">038</span><span id="line-38">import java.util.stream.Stream;</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">public class VelocityCommandContexts extends CommandContexts&lt;VelocityCommandExecutionContext&gt; {</span>
-<span class="source-line-no">041</span><span id="line-41"></span>
-<span class="source-line-no">042</span><span id="line-42">    VelocityCommandContexts(ProxyServer server, CommandManager manager) {</span>
-<span class="source-line-no">043</span><span id="line-43">        super(manager);</span>
-<span class="source-line-no">044</span><span id="line-44">        registerContext(OnlinePlayer.class, (c) -&gt; getOnlinePlayer(server, c));</span>
-<span class="source-line-no">045</span><span id="line-45">        registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -&gt; {</span>
-<span class="source-line-no">046</span><span id="line-46">            OnlinePlayer onlinePlayer = getOnlinePlayer(server, c);</span>
-<span class="source-line-no">047</span><span id="line-47">            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer()) : null;</span>
-<span class="source-line-no">048</span><span id="line-48">        });</span>
-<span class="source-line-no">049</span><span id="line-49">        registerIssuerAwareContext(CommandSource.class, VelocityCommandExecutionContext::getSender);</span>
-<span class="source-line-no">050</span><span id="line-50">        registerIssuerAwareContext(Player.class, (c) -&gt; {</span>
-<span class="source-line-no">051</span><span id="line-51">            Player proxiedPlayer = c.getSender() instanceof Player ? (Player) c.getSender() : null;</span>
-<span class="source-line-no">052</span><span id="line-52">            if (proxiedPlayer == null &amp;&amp; !c.isOptional()) {</span>
-<span class="source-line-no">053</span><span id="line-53">                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);</span>
-<span class="source-line-no">054</span><span id="line-54">            }</span>
-<span class="source-line-no">055</span><span id="line-55">            return proxiedPlayer;</span>
-<span class="source-line-no">056</span><span id="line-56">        });</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">        registerContext(TextFormat.class, c -&gt; {</span>
-<span class="source-line-no">059</span><span id="line-59">            String first = c.popFirstArg();</span>
-<span class="source-line-no">060</span><span id="line-60">            Stream&lt;TextFormat&gt; colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -&gt; namedTextColor);</span>
-<span class="source-line-no">061</span><span id="line-61">            if (!c.hasFlag("colorsonly")) {</span>
-<span class="source-line-no">062</span><span id="line-62">                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));</span>
-<span class="source-line-no">063</span><span id="line-63">            }</span>
-<span class="source-line-no">064</span><span id="line-64">            String filter = c.getFlagValue("filter", (String) null);</span>
-<span class="source-line-no">065</span><span id="line-65">            if (filter != null) {</span>
-<span class="source-line-no">066</span><span id="line-66">                filter = ACFUtil.simplifyString(filter);</span>
-<span class="source-line-no">067</span><span id="line-67">                String finalFilter = filter;</span>
-<span class="source-line-no">068</span><span id="line-68">                colors = colors.filter(color -&gt; finalFilter.equals(ACFUtil.simplifyString(color.toString())));</span>
-<span class="source-line-no">069</span><span id="line-69">            }</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">            TextColor match = NamedTextColor.NAMES.value(ACFUtil.simplifyString(first));</span>
-<span class="source-line-no">072</span><span id="line-72">            if (match == null) {</span>
-<span class="source-line-no">073</span><span id="line-73">                String valid = colors.map(color -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(color.toString()) + "&lt;/c2&gt;")</span>
-<span class="source-line-no">074</span><span id="line-74">                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);</span>
-<span class="source-line-no">077</span><span id="line-77">            }</span>
-<span class="source-line-no">078</span><span id="line-78">            return match;</span>
-<span class="source-line-no">079</span><span id="line-79">        });</span>
-<span class="source-line-no">080</span><span id="line-80">    }</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">    @Nullable</span>
-<span class="source-line-no">083</span><span id="line-83">    private OnlinePlayer getOnlinePlayer(ProxyServer server, VelocityCommandExecutionContext c) throws InvalidCommandArgument {</span>
-<span class="source-line-no">084</span><span id="line-84">        Player proxiedPlayer = ACFVelocityUtil.findPlayerSmart(server, c.getIssuer(), c.popFirstArg());</span>
-<span class="source-line-no">085</span><span id="line-85">        if (proxiedPlayer == null) {</span>
-<span class="source-line-no">086</span><span id="line-86">            if (c.isOptional()) {</span>
-<span class="source-line-no">087</span><span id="line-87">                return null;</span>
-<span class="source-line-no">088</span><span id="line-88">            }</span>
-<span class="source-line-no">089</span><span id="line-89">            throw new InvalidCommandArgument(false);</span>
-<span class="source-line-no">090</span><span id="line-90">        }</span>
-<span class="source-line-no">091</span><span id="line-91">        return new OnlinePlayer(proxiedPlayer);</span>
-<span class="source-line-no">092</span><span id="line-92">    }</span>
-<span class="source-line-no">093</span><span id="line-93">}</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">import java.util.stream.Collectors;</span>
+<span class="source-line-no">037</span><span id="line-37">import java.util.stream.Stream;</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">public class VelocityCommandContexts extends CommandContexts&lt;VelocityCommandExecutionContext&gt; {</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41">    VelocityCommandContexts(ProxyServer server, CommandManager manager) {</span>
+<span class="source-line-no">042</span><span id="line-42">        super(manager);</span>
+<span class="source-line-no">043</span><span id="line-43">        registerContext(OnlinePlayer.class, (c) -&gt; getOnlinePlayer(server, c));</span>
+<span class="source-line-no">044</span><span id="line-44">        registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -&gt; {</span>
+<span class="source-line-no">045</span><span id="line-45">            OnlinePlayer onlinePlayer = getOnlinePlayer(server, c);</span>
+<span class="source-line-no">046</span><span id="line-46">            return new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer());</span>
+<span class="source-line-no">047</span><span id="line-47">        });</span>
+<span class="source-line-no">048</span><span id="line-48">        registerIssuerAwareContext(CommandSource.class, VelocityCommandExecutionContext::getSender);</span>
+<span class="source-line-no">049</span><span id="line-49">        registerIssuerAwareContext(Player.class, (c) -&gt; {</span>
+<span class="source-line-no">050</span><span id="line-50">            Player proxiedPlayer = c.getSender() instanceof Player ? (Player) c.getSender() : null;</span>
+<span class="source-line-no">051</span><span id="line-51">            if (proxiedPlayer == null &amp;&amp; !c.isOptional()) {</span>
+<span class="source-line-no">052</span><span id="line-52">                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);</span>
+<span class="source-line-no">053</span><span id="line-53">            }</span>
+<span class="source-line-no">054</span><span id="line-54">            return proxiedPlayer;</span>
+<span class="source-line-no">055</span><span id="line-55">        });</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">        registerContext(TextFormat.class, c -&gt; {</span>
+<span class="source-line-no">058</span><span id="line-58">            String first = c.popFirstArg();</span>
+<span class="source-line-no">059</span><span id="line-59">            Stream&lt;TextFormat&gt; colors = NamedTextColor.NAMES.values().stream().map(namedTextColor -&gt; namedTextColor);</span>
+<span class="source-line-no">060</span><span id="line-60">            if (!c.hasFlag("colorsonly")) {</span>
+<span class="source-line-no">061</span><span id="line-61">                colors = Stream.concat(colors, Stream.of(TextDecoration.values()));</span>
+<span class="source-line-no">062</span><span id="line-62">            }</span>
+<span class="source-line-no">063</span><span id="line-63">            String filter = c.getFlagValue("filter", (String) null);</span>
+<span class="source-line-no">064</span><span id="line-64">            if (filter != null) {</span>
+<span class="source-line-no">065</span><span id="line-65">                filter = ACFUtil.simplifyString(filter);</span>
+<span class="source-line-no">066</span><span id="line-66">                String finalFilter = filter;</span>
+<span class="source-line-no">067</span><span id="line-67">                colors = colors.filter(color -&gt; finalFilter.equals(ACFUtil.simplifyString(color.toString())));</span>
+<span class="source-line-no">068</span><span id="line-68">            }</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">            TextColor match = NamedTextColor.NAMES.value(ACFUtil.simplifyString(first));</span>
+<span class="source-line-no">071</span><span id="line-71">            if (match == null) {</span>
+<span class="source-line-no">072</span><span id="line-72">                String valid = colors.map(color -&gt; "&lt;c2&gt;" + ACFUtil.simplifyString(color.toString()) + "&lt;/c2&gt;")</span>
+<span class="source-line-no">073</span><span id="line-73">                        .collect(Collectors.joining("&lt;c1&gt;,&lt;/c1&gt; "));</span>
+<span class="source-line-no">074</span><span id="line-74"></span>
+<span class="source-line-no">075</span><span id="line-75">                throw new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);</span>
+<span class="source-line-no">076</span><span id="line-76">            }</span>
+<span class="source-line-no">077</span><span id="line-77">            return match;</span>
+<span class="source-line-no">078</span><span id="line-78">        });</span>
+<span class="source-line-no">079</span><span id="line-79">    }</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">    private OnlinePlayer getOnlinePlayer(ProxyServer server, VelocityCommandExecutionContext c) throws InvalidCommandArgument {</span>
+<span class="source-line-no">082</span><span id="line-82">        Player proxiedPlayer = ACFVelocityUtil.findPlayerSmart(server, c.getIssuer(), c.popFirstArg());</span>
+<span class="source-line-no">083</span><span id="line-83">        if (proxiedPlayer == null) {</span>
+<span class="source-line-no">084</span><span id="line-84">            throw new InvalidCommandArgument(false);</span>
+<span class="source-line-no">085</span><span id="line-85">        }</span>
+<span class="source-line-no">086</span><span id="line-86">        return new OnlinePlayer(proxiedPlayer);</span>
+<span class="source-line-no">087</span><span id="line-87">    }</span>
+<span class="source-line-no">088</span><span id="line-88">}</span>
 
 
 

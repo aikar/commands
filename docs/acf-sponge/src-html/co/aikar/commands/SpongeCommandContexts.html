@@ -38,7 +38,7 @@
 <span class="source-line-no">025</span><span id="line-25"></span>
 <span class="source-line-no">026</span><span id="line-26">import co.aikar.commands.contexts.CommandResultSupplier;</span>
 <span class="source-line-no">027</span><span id="line-27">import co.aikar.commands.sponge.contexts.OnlinePlayer;</span>
-<span class="source-line-no">028</span><span id="line-28">import org.jetbrains.annotations.Nullable;</span>
+<span class="source-line-no">028</span><span id="line-28">import org.jetbrains.annotations.Contract;</span>
 <span class="source-line-no">029</span><span id="line-29">import org.spongepowered.api.Sponge;</span>
 <span class="source-line-no">030</span><span id="line-30">import org.spongepowered.api.command.CommandSource;</span>
 <span class="source-line-no">031</span><span id="line-31">import org.spongepowered.api.entity.living.player.Player;</span>
@@ -62,10 +62,10 @@
 <span class="source-line-no">049</span><span id="line-49">        super(manager);</span>
 <span class="source-line-no">050</span><span id="line-50"></span>
 <span class="source-line-no">051</span><span id="line-51">        registerIssuerOnlyContext(CommandResultSupplier.class, c -&gt; new CommandResultSupplier());</span>
-<span class="source-line-no">052</span><span id="line-52">        registerContext(OnlinePlayer.class, c -&gt; getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional()));</span>
+<span class="source-line-no">052</span><span id="line-52">        registerContext(OnlinePlayer.class, c -&gt; getOnlinePlayer(c.getIssuer(), c.popFirstArg(), false));</span>
 <span class="source-line-no">053</span><span id="line-53">        registerContext(co.aikar.commands.contexts.OnlinePlayer.class, c -&gt; {</span>
-<span class="source-line-no">054</span><span id="line-54">            OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), c.popFirstArg(), c.isOptional());</span>
-<span class="source-line-no">055</span><span id="line-55">            return onlinePlayer != null ? new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer()) : null;</span>
+<span class="source-line-no">054</span><span id="line-54">            OnlinePlayer onlinePlayer = getOnlinePlayer(c.getIssuer(), c.popFirstArg(), false);</span>
+<span class="source-line-no">055</span><span id="line-55">            return new co.aikar.commands.contexts.OnlinePlayer(onlinePlayer.getPlayer());</span>
 <span class="source-line-no">056</span><span id="line-56">        });</span>
 <span class="source-line-no">057</span><span id="line-57">        registerContext(User.class, c -&gt; {</span>
 <span class="source-line-no">058</span><span id="line-58">            String name = c.popFirstArg();</span>
@@ -177,7 +177,7 @@
 <span class="source-line-no">164</span><span id="line-164">        });</span>
 <span class="source-line-no">165</span><span id="line-165">    }</span>
 <span class="source-line-no">166</span><span id="line-166"></span>
-<span class="source-line-no">167</span><span id="line-167">    @Nullable</span>
+<span class="source-line-no">167</span><span id="line-167">    @Contract("_,_,false -&gt; !null")</span>
 <span class="source-line-no">168</span><span id="line-168">    OnlinePlayer getOnlinePlayer(SpongeCommandIssuer issuer, String lookup, boolean allowMissing) throws InvalidCommandArgument {</span>
 <span class="source-line-no">169</span><span id="line-169">        Player player = ACFSpongeUtil.findPlayerSmart(issuer, lookup);</span>
 <span class="source-line-no">170</span><span id="line-170">        if (player == null) {</span>

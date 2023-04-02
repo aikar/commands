@@ -43,48 +43,47 @@
 <span class="source-line-no">030</span><span id="line-30"></span>
 <span class="source-line-no">031</span><span id="line-31">    private boolean brigadierAvailable;</span>
 <span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">    // If we get anything Paper specific</span>
-<span class="source-line-no">034</span><span id="line-34">    public PaperCommandManager(Plugin plugin) {</span>
-<span class="source-line-no">035</span><span id="line-35">        super(plugin);</span>
-<span class="source-line-no">036</span><span id="line-36">        try {</span>
-<span class="source-line-no">037</span><span id="line-37">            Class.forName("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent");</span>
-<span class="source-line-no">038</span><span id="line-38">            plugin.getServer().getPluginManager().registerEvents(new PaperAsyncTabCompleteHandler(this), plugin);</span>
-<span class="source-line-no">039</span><span id="line-39">        } catch (ClassNotFoundException ignored) {</span>
-<span class="source-line-no">040</span><span id="line-40">            // Ignored</span>
-<span class="source-line-no">041</span><span id="line-41">        }</span>
-<span class="source-line-no">042</span><span id="line-42">        try {</span>
-<span class="source-line-no">043</span><span id="line-43">            Class.forName("com.destroystokyo.paper.event.brigadier.CommandRegisteredEvent");</span>
-<span class="source-line-no">044</span><span id="line-44">            brigadierAvailable = true;</span>
-<span class="source-line-no">045</span><span id="line-45">        } catch (ClassNotFoundException ignored) {</span>
-<span class="source-line-no">046</span><span id="line-46">            // Ignored</span>
-<span class="source-line-no">047</span><span id="line-47">        }</span>
-<span class="source-line-no">048</span><span id="line-48">    }</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">    @Override</span>
-<span class="source-line-no">051</span><span id="line-51">    public void enableUnstableAPI(String api) {</span>
-<span class="source-line-no">052</span><span id="line-52">        super.enableUnstableAPI(api);</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">        if ("brigadier".equals(api) &amp;&amp; brigadierAvailable) {</span>
-<span class="source-line-no">055</span><span id="line-55">            new PaperBrigadierManager(plugin, this);</span>
-<span class="source-line-no">056</span><span id="line-56">        }</span>
-<span class="source-line-no">057</span><span id="line-57">    }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">    @Override</span>
-<span class="source-line-no">060</span><span id="line-60">    public synchronized CommandContexts&lt;BukkitCommandExecutionContext&gt; getCommandContexts() {</span>
-<span class="source-line-no">061</span><span id="line-61">        if (this.contexts == null) {</span>
-<span class="source-line-no">062</span><span id="line-62">            this.contexts = new PaperCommandContexts(this);</span>
-<span class="source-line-no">063</span><span id="line-63">        }</span>
-<span class="source-line-no">064</span><span id="line-64">        return this.contexts;</span>
-<span class="source-line-no">065</span><span id="line-65">    }</span>
-<span class="source-line-no">066</span><span id="line-66"></span>
-<span class="source-line-no">067</span><span id="line-67">    @Override</span>
-<span class="source-line-no">068</span><span id="line-68">    public synchronized CommandCompletions&lt;BukkitCommandCompletionContext&gt; getCommandCompletions() {</span>
-<span class="source-line-no">069</span><span id="line-69">        if (this.completions == null) {</span>
-<span class="source-line-no">070</span><span id="line-70">            this.completions = new PaperCommandCompletions(this);</span>
-<span class="source-line-no">071</span><span id="line-71">        }</span>
-<span class="source-line-no">072</span><span id="line-72">        return this.completions;</span>
-<span class="source-line-no">073</span><span id="line-73">    }</span>
-<span class="source-line-no">074</span><span id="line-74">}</span>
+<span class="source-line-no">033</span><span id="line-33">    public PaperCommandManager(Plugin plugin) {</span>
+<span class="source-line-no">034</span><span id="line-34">        super(plugin);</span>
+<span class="source-line-no">035</span><span id="line-35">        try {</span>
+<span class="source-line-no">036</span><span id="line-36">            Class.forName("com.destroystokyo.paper.event.server.AsyncTabCompleteEvent");</span>
+<span class="source-line-no">037</span><span id="line-37">            plugin.getServer().getPluginManager().registerEvents(new PaperAsyncTabCompleteHandler(this), plugin);</span>
+<span class="source-line-no">038</span><span id="line-38">        } catch (ClassNotFoundException ignored) {</span>
+<span class="source-line-no">039</span><span id="line-39">            // Ignored</span>
+<span class="source-line-no">040</span><span id="line-40">        }</span>
+<span class="source-line-no">041</span><span id="line-41">        try {</span>
+<span class="source-line-no">042</span><span id="line-42">            Class.forName("com.destroystokyo.paper.event.brigadier.CommandRegisteredEvent");</span>
+<span class="source-line-no">043</span><span id="line-43">            brigadierAvailable = true;</span>
+<span class="source-line-no">044</span><span id="line-44">        } catch (ClassNotFoundException ignored) {</span>
+<span class="source-line-no">045</span><span id="line-45">            // Ignored</span>
+<span class="source-line-no">046</span><span id="line-46">        }</span>
+<span class="source-line-no">047</span><span id="line-47">    }</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">    @Override</span>
+<span class="source-line-no">050</span><span id="line-50">    public void enableUnstableAPI(String api) {</span>
+<span class="source-line-no">051</span><span id="line-51">        super.enableUnstableAPI(api);</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">        if ("brigadier".equals(api) &amp;&amp; brigadierAvailable) {</span>
+<span class="source-line-no">054</span><span id="line-54">            new PaperBrigadierManager(plugin, this);</span>
+<span class="source-line-no">055</span><span id="line-55">        }</span>
+<span class="source-line-no">056</span><span id="line-56">    }</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">    @Override</span>
+<span class="source-line-no">059</span><span id="line-59">    public synchronized CommandContexts&lt;BukkitCommandExecutionContext&gt; getCommandContexts() {</span>
+<span class="source-line-no">060</span><span id="line-60">        if (this.contexts == null) {</span>
+<span class="source-line-no">061</span><span id="line-61">            this.contexts = new PaperCommandContexts(this);</span>
+<span class="source-line-no">062</span><span id="line-62">        }</span>
+<span class="source-line-no">063</span><span id="line-63">        return this.contexts;</span>
+<span class="source-line-no">064</span><span id="line-64">    }</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">    @Override</span>
+<span class="source-line-no">067</span><span id="line-67">    public synchronized CommandCompletions&lt;BukkitCommandCompletionContext&gt; getCommandCompletions() {</span>
+<span class="source-line-no">068</span><span id="line-68">        if (this.completions == null) {</span>
+<span class="source-line-no">069</span><span id="line-69">            this.completions = new PaperCommandCompletions(this);</span>
+<span class="source-line-no">070</span><span id="line-70">        }</span>
+<span class="source-line-no">071</span><span id="line-71">        return this.completions;</span>
+<span class="source-line-no">072</span><span id="line-72">    }</span>
+<span class="source-line-no">073</span><span id="line-73">}</span>
 
 
 

@@ -166,7 +166,7 @@
 <span class="source-line-no">153</span><span id="line-153">     */</span>
 <span class="source-line-no">154</span><span id="line-154">    private ExceptionHandler exceptionHandler = null;</span>
 <span class="source-line-no">155</span><span id="line-155">    /**</span>
-<span class="source-line-no">156</span><span id="line-156">     * The last operative context data of this command. This may be null if this command hasn't been run yet.</span>
+<span class="source-line-no">156</span><span id="line-156">     * The last operative context data of this command. This may be null if this command is not currently being executed.</span>
 <span class="source-line-no">157</span><span id="line-157">     */</span>
 <span class="source-line-no">158</span><span id="line-158">    private final ThreadLocal&lt;CommandOperationContext&gt; lastCommandOperationContext = new ThreadLocal&lt;&gt;();</span>
 <span class="source-line-no">159</span><span id="line-159">    /**</span>
@@ -534,125 +534,125 @@
 <span class="source-line-no">521</span><span id="line-521">     */</span>
 <span class="source-line-no">522</span><span id="line-522">    private void postCommandOperation() {</span>
 <span class="source-line-no">523</span><span id="line-523">        CommandManager.commandOperationContext.get().pop();</span>
-<span class="source-line-no">524</span><span id="line-524">        execSubcommand = null;</span>
-<span class="source-line-no">525</span><span id="line-525">        execLabel = null;</span>
-<span class="source-line-no">526</span><span id="line-526">        origArgs = new String[]{};</span>
-<span class="source-line-no">527</span><span id="line-527">    }</span>
-<span class="source-line-no">528</span><span id="line-528"></span>
-<span class="source-line-no">529</span><span id="line-529">    /**</span>
-<span class="source-line-no">530</span><span id="line-530">     * This is ran before any command operation has been performed.</span>
-<span class="source-line-no">531</span><span id="line-531">     *</span>
-<span class="source-line-no">532</span><span id="line-532">     * @param issuer       The user who executed the command.</span>
-<span class="source-line-no">533</span><span id="line-533">     * @param commandLabel The label the user used to execute the command. This is not the command name, but their input.</span>
-<span class="source-line-no">534</span><span id="line-534">     *                     When there is multiple aliases, this is which alias was used</span>
-<span class="source-line-no">535</span><span id="line-535">     * @param args         The arguments passed to the command when executing it.</span>
-<span class="source-line-no">536</span><span id="line-536">     * @param isAsync      Whether the command is executed off of the main thread.</span>
-<span class="source-line-no">537</span><span id="line-537">     * @return The context which is being registered to the {@link CommandManager}'s {@link</span>
-<span class="source-line-no">538</span><span id="line-538">     * CommandManager#commandOperationContext thread local stack}.</span>
-<span class="source-line-no">539</span><span id="line-539">     */</span>
-<span class="source-line-no">540</span><span id="line-540">    private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {</span>
-<span class="source-line-no">541</span><span id="line-541">        Stack&lt;CommandOperationContext&gt; contexts = CommandManager.commandOperationContext.get();</span>
-<span class="source-line-no">542</span><span id="line-542">        CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);</span>
-<span class="source-line-no">543</span><span id="line-543">        contexts.push(context);</span>
-<span class="source-line-no">544</span><span id="line-544">        lastCommandOperationContext.set(context);</span>
-<span class="source-line-no">545</span><span id="line-545">        execSubcommand = null;</span>
-<span class="source-line-no">546</span><span id="line-546">        execLabel = commandLabel;</span>
-<span class="source-line-no">547</span><span id="line-547">        origArgs = args;</span>
-<span class="source-line-no">548</span><span id="line-548">        return context;</span>
-<span class="source-line-no">549</span><span id="line-549">    }</span>
-<span class="source-line-no">550</span><span id="line-550"></span>
-<span class="source-line-no">551</span><span id="line-551">    /**</span>
-<span class="source-line-no">552</span><span id="line-552">     * Gets the current command issuer.</span>
-<span class="source-line-no">553</span><span id="line-553">     *</span>
-<span class="source-line-no">554</span><span id="line-554">     * @return The current command issuer.</span>
-<span class="source-line-no">555</span><span id="line-555">     */</span>
-<span class="source-line-no">556</span><span id="line-556">    public CommandIssuer getCurrentCommandIssuer() {</span>
-<span class="source-line-no">557</span><span id="line-557">        return CommandManager.getCurrentCommandIssuer();</span>
-<span class="source-line-no">558</span><span id="line-558">    }</span>
-<span class="source-line-no">559</span><span id="line-559"></span>
-<span class="source-line-no">560</span><span id="line-560">    /**</span>
-<span class="source-line-no">561</span><span id="line-561">     * Gets the current command manager.</span>
-<span class="source-line-no">562</span><span id="line-562">     *</span>
-<span class="source-line-no">563</span><span id="line-563">     * @return The current command manager.</span>
-<span class="source-line-no">564</span><span id="line-564">     */</span>
-<span class="source-line-no">565</span><span id="line-565">    public CommandManager getCurrentCommandManager() {</span>
-<span class="source-line-no">566</span><span id="line-566">        return CommandManager.getCurrentCommandManager();</span>
-<span class="source-line-no">567</span><span id="line-567">    }</span>
-<span class="source-line-no">568</span><span id="line-568"></span>
-<span class="source-line-no">569</span><span id="line-569">    private void executeCommand(CommandOperationContext commandOperationContext,</span>
-<span class="source-line-no">570</span><span id="line-570">                                CommandIssuer issuer, String[] args, RegisteredCommand cmd) {</span>
-<span class="source-line-no">571</span><span id="line-571">        if (cmd.hasPermission(issuer)) {</span>
-<span class="source-line-no">572</span><span id="line-572">            commandOperationContext.setRegisteredCommand(cmd);</span>
-<span class="source-line-no">573</span><span id="line-573">            if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {</span>
-<span class="source-line-no">574</span><span id="line-574">                return;</span>
-<span class="source-line-no">575</span><span id="line-575">            }</span>
-<span class="source-line-no">576</span><span id="line-576">            List&lt;String&gt; sargs = Arrays.asList(args);</span>
-<span class="source-line-no">577</span><span id="line-577">            cmd.invoke(issuer, sargs, commandOperationContext);</span>
-<span class="source-line-no">578</span><span id="line-578">        } else {</span>
-<span class="source-line-no">579</span><span id="line-579">            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);</span>
-<span class="source-line-no">580</span><span id="line-580">        }</span>
-<span class="source-line-no">581</span><span id="line-581">    }</span>
-<span class="source-line-no">582</span><span id="line-582"></span>
-<span class="source-line-no">583</span><span id="line-583">    /**</span>
-<span class="source-line-no">584</span><span id="line-584">     * Please use command conditions for restricting execution</span>
-<span class="source-line-no">585</span><span id="line-585">     *</span>
-<span class="source-line-no">586</span><span id="line-586">     * @param issuer</span>
-<span class="source-line-no">587</span><span id="line-587">     * @param cmd</span>
-<span class="source-line-no">588</span><span id="line-588">     * @return</span>
-<span class="source-line-no">589</span><span id="line-589">     * @deprecated See {@link CommandConditions}</span>
-<span class="source-line-no">590</span><span id="line-590">     */</span>
-<span class="source-line-no">591</span><span id="line-591">    @SuppressWarnings("DeprecatedIsStillUsed")</span>
-<span class="source-line-no">592</span><span id="line-592">    @Deprecated</span>
-<span class="source-line-no">593</span><span id="line-593">    public boolean canExecute(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {</span>
-<span class="source-line-no">594</span><span id="line-594">        return true;</span>
-<span class="source-line-no">595</span><span id="line-595">    }</span>
-<span class="source-line-no">596</span><span id="line-596"></span>
-<span class="source-line-no">597</span><span id="line-597">    /**</span>
-<span class="source-line-no">598</span><span id="line-598">     * Gets tab completed data from the given command from the user.</span>
-<span class="source-line-no">599</span><span id="line-599">     *</span>
-<span class="source-line-no">600</span><span id="line-600">     * @param issuer       The user who executed the tabcomplete.</span>
-<span class="source-line-no">601</span><span id="line-601">     * @param commandLabel The label which is being used by the user.</span>
-<span class="source-line-no">602</span><span id="line-602">     * @param args         The arguments the user has typed so far.</span>
-<span class="source-line-no">603</span><span id="line-603">     * @return All possibilities in the tab complete.</span>
-<span class="source-line-no">604</span><span id="line-604">     */</span>
-<span class="source-line-no">605</span><span id="line-605">    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args) {</span>
-<span class="source-line-no">606</span><span id="line-606">        return tabComplete(issuer, commandLabel, args, false);</span>
-<span class="source-line-no">607</span><span id="line-607">    }</span>
-<span class="source-line-no">608</span><span id="line-608"></span>
-<span class="source-line-no">609</span><span id="line-609">    /**</span>
-<span class="source-line-no">610</span><span id="line-610">     * Gets the tab complete suggestions from a given command. This will automatically find anything</span>
-<span class="source-line-no">611</span><span id="line-611">     * which is valid for the specified command through the command's implementation.</span>
-<span class="source-line-no">612</span><span id="line-612">     *</span>
-<span class="source-line-no">613</span><span id="line-613">     * @param issuer       The issuer of the command.</span>
-<span class="source-line-no">614</span><span id="line-614">     * @param commandLabel The command name as entered by the user instead of the ACF registered name.</span>
-<span class="source-line-no">615</span><span id="line-615">     * @param args         All arguments entered by the user.</span>
-<span class="source-line-no">616</span><span id="line-616">     * @param isAsync      Whether this is run off of the main thread.</span>
-<span class="source-line-no">617</span><span id="line-617">     * @return The possibilities to tab complete in no particular order.</span>
-<span class="source-line-no">618</span><span id="line-618">     */</span>
-<span class="source-line-no">619</span><span id="line-619">    @SuppressWarnings("WeakerAccess")</span>
-<span class="source-line-no">620</span><span id="line-620">    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)</span>
-<span class="source-line-no">621</span><span id="line-621">            throws IllegalArgumentException {</span>
-<span class="source-line-no">622</span><span id="line-622">        return tabComplete(issuer, manager.getRootCommand(commandLabel.toLowerCase(Locale.ENGLISH)), args, isAsync);</span>
-<span class="source-line-no">623</span><span id="line-623">    }</span>
-<span class="source-line-no">624</span><span id="line-624"></span>
-<span class="source-line-no">625</span><span id="line-625">    List&lt;String&gt; tabComplete(CommandIssuer issuer, RootCommand rootCommand, String[] args, boolean isAsync)</span>
-<span class="source-line-no">626</span><span id="line-626">            throws IllegalArgumentException {</span>
-<span class="source-line-no">627</span><span id="line-627">        if (args.length == 0) {</span>
-<span class="source-line-no">628</span><span id="line-628">            args = new String[]{""};</span>
-<span class="source-line-no">629</span><span id="line-629">        }</span>
-<span class="source-line-no">630</span><span id="line-630">        String commandLabel = rootCommand.getCommandName();</span>
-<span class="source-line-no">631</span><span id="line-631">        try {</span>
-<span class="source-line-no">632</span><span id="line-632">            CommandRouter router = manager.getRouter();</span>
-<span class="source-line-no">633</span><span id="line-633"></span>
-<span class="source-line-no">634</span><span id="line-634">            preCommandOperation(issuer, commandLabel, args, isAsync);</span>
-<span class="source-line-no">635</span><span id="line-635"></span>
-<span class="source-line-no">636</span><span id="line-636">            final RouteSearch search = router.routeCommand(rootCommand, commandLabel, args, true);</span>
-<span class="source-line-no">637</span><span id="line-637"></span>
-<span class="source-line-no">638</span><span id="line-638">            final List&lt;String&gt; cmds = new ArrayList&lt;&gt;();</span>
-<span class="source-line-no">639</span><span id="line-639">            if (search != null) {</span>
-<span class="source-line-no">640</span><span id="line-640">                CommandRouter.CommandRouteResult result = router.matchCommand(search, true);</span>
-<span class="source-line-no">641</span><span id="line-641">                if (result != null) {</span>
-<span class="source-line-no">642</span><span id="line-642">                    cmds.addAll(completeCommand(issuer, result.cmd, result.args, commandLabel, isAsync));</span>
+<span class="source-line-no">524</span><span id="line-524">        lastCommandOperationContext.set(null);</span>
+<span class="source-line-no">525</span><span id="line-525">        execSubcommand = null;</span>
+<span class="source-line-no">526</span><span id="line-526">        execLabel = null;</span>
+<span class="source-line-no">527</span><span id="line-527">        origArgs = new String[]{};</span>
+<span class="source-line-no">528</span><span id="line-528">    }</span>
+<span class="source-line-no">529</span><span id="line-529"></span>
+<span class="source-line-no">530</span><span id="line-530">    /**</span>
+<span class="source-line-no">531</span><span id="line-531">     * This is ran before any command operation has been performed.</span>
+<span class="source-line-no">532</span><span id="line-532">     *</span>
+<span class="source-line-no">533</span><span id="line-533">     * @param issuer       The user who executed the command.</span>
+<span class="source-line-no">534</span><span id="line-534">     * @param commandLabel The label the user used to execute the command. This is not the command name, but their input.</span>
+<span class="source-line-no">535</span><span id="line-535">     *                     When there is multiple aliases, this is which alias was used</span>
+<span class="source-line-no">536</span><span id="line-536">     * @param args         The arguments passed to the command when executing it.</span>
+<span class="source-line-no">537</span><span id="line-537">     * @param isAsync      Whether the command is executed off of the main thread.</span>
+<span class="source-line-no">538</span><span id="line-538">     * @return The context which is being registered to the {@link CommandManager}'s {@link</span>
+<span class="source-line-no">539</span><span id="line-539">     * CommandManager#commandOperationContext thread local stack}.</span>
+<span class="source-line-no">540</span><span id="line-540">     */</span>
+<span class="source-line-no">541</span><span id="line-541">    private CommandOperationContext preCommandOperation(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync) {</span>
+<span class="source-line-no">542</span><span id="line-542">        Stack&lt;CommandOperationContext&gt; contexts = CommandManager.commandOperationContext.get();</span>
+<span class="source-line-no">543</span><span id="line-543">        CommandOperationContext context = this.manager.createCommandOperationContext(this, issuer, commandLabel, args, isAsync);</span>
+<span class="source-line-no">544</span><span id="line-544">        contexts.push(context);</span>
+<span class="source-line-no">545</span><span id="line-545">        lastCommandOperationContext.set(context);</span>
+<span class="source-line-no">546</span><span id="line-546">        execSubcommand = null;</span>
+<span class="source-line-no">547</span><span id="line-547">        execLabel = commandLabel;</span>
+<span class="source-line-no">548</span><span id="line-548">        origArgs = args;</span>
+<span class="source-line-no">549</span><span id="line-549">        return context;</span>
+<span class="source-line-no">550</span><span id="line-550">    }</span>
+<span class="source-line-no">551</span><span id="line-551"></span>
+<span class="source-line-no">552</span><span id="line-552">    /**</span>
+<span class="source-line-no">553</span><span id="line-553">     * Gets the current command issuer.</span>
+<span class="source-line-no">554</span><span id="line-554">     *</span>
+<span class="source-line-no">555</span><span id="line-555">     * @return The current command issuer.</span>
+<span class="source-line-no">556</span><span id="line-556">     */</span>
+<span class="source-line-no">557</span><span id="line-557">    public CommandIssuer getCurrentCommandIssuer() {</span>
+<span class="source-line-no">558</span><span id="line-558">        return CommandManager.getCurrentCommandIssuer();</span>
+<span class="source-line-no">559</span><span id="line-559">    }</span>
+<span class="source-line-no">560</span><span id="line-560"></span>
+<span class="source-line-no">561</span><span id="line-561">    /**</span>
+<span class="source-line-no">562</span><span id="line-562">     * Gets the current command manager.</span>
+<span class="source-line-no">563</span><span id="line-563">     *</span>
+<span class="source-line-no">564</span><span id="line-564">     * @return The current command manager.</span>
+<span class="source-line-no">565</span><span id="line-565">     */</span>
+<span class="source-line-no">566</span><span id="line-566">    public CommandManager getCurrentCommandManager() {</span>
+<span class="source-line-no">567</span><span id="line-567">        return CommandManager.getCurrentCommandManager();</span>
+<span class="source-line-no">568</span><span id="line-568">    }</span>
+<span class="source-line-no">569</span><span id="line-569"></span>
+<span class="source-line-no">570</span><span id="line-570">    private void executeCommand(CommandOperationContext commandOperationContext,</span>
+<span class="source-line-no">571</span><span id="line-571">                                CommandIssuer issuer, String[] args, RegisteredCommand cmd) {</span>
+<span class="source-line-no">572</span><span id="line-572">        if (cmd.hasPermission(issuer)) {</span>
+<span class="source-line-no">573</span><span id="line-573">            commandOperationContext.setRegisteredCommand(cmd);</span>
+<span class="source-line-no">574</span><span id="line-574">            if (checkPrecommand(commandOperationContext, cmd, issuer, args)) {</span>
+<span class="source-line-no">575</span><span id="line-575">                return;</span>
+<span class="source-line-no">576</span><span id="line-576">            }</span>
+<span class="source-line-no">577</span><span id="line-577">            List&lt;String&gt; sargs = Arrays.asList(args);</span>
+<span class="source-line-no">578</span><span id="line-578">            cmd.invoke(issuer, sargs, commandOperationContext);</span>
+<span class="source-line-no">579</span><span id="line-579">        } else {</span>
+<span class="source-line-no">580</span><span id="line-580">            issuer.sendMessage(MessageType.ERROR, MessageKeys.PERMISSION_DENIED);</span>
+<span class="source-line-no">581</span><span id="line-581">        }</span>
+<span class="source-line-no">582</span><span id="line-582">    }</span>
+<span class="source-line-no">583</span><span id="line-583"></span>
+<span class="source-line-no">584</span><span id="line-584">    /**</span>
+<span class="source-line-no">585</span><span id="line-585">     * Please use command conditions for restricting execution</span>
+<span class="source-line-no">586</span><span id="line-586">     *</span>
+<span class="source-line-no">587</span><span id="line-587">     * @param issuer</span>
+<span class="source-line-no">588</span><span id="line-588">     * @param cmd</span>
+<span class="source-line-no">589</span><span id="line-589">     * @return</span>
+<span class="source-line-no">590</span><span id="line-590">     * @deprecated See {@link CommandConditions}</span>
+<span class="source-line-no">591</span><span id="line-591">     */</span>
+<span class="source-line-no">592</span><span id="line-592">    @SuppressWarnings("DeprecatedIsStillUsed")</span>
+<span class="source-line-no">593</span><span id="line-593">    @Deprecated</span>
+<span class="source-line-no">594</span><span id="line-594">    public boolean canExecute(CommandIssuer issuer, RegisteredCommand&lt;?&gt; cmd) {</span>
+<span class="source-line-no">595</span><span id="line-595">        return true;</span>
+<span class="source-line-no">596</span><span id="line-596">    }</span>
+<span class="source-line-no">597</span><span id="line-597"></span>
+<span class="source-line-no">598</span><span id="line-598">    /**</span>
+<span class="source-line-no">599</span><span id="line-599">     * Gets tab completed data from the given command from the user.</span>
+<span class="source-line-no">600</span><span id="line-600">     *</span>
+<span class="source-line-no">601</span><span id="line-601">     * @param issuer       The user who executed the tabcomplete.</span>
+<span class="source-line-no">602</span><span id="line-602">     * @param commandLabel The label which is being used by the user.</span>
+<span class="source-line-no">603</span><span id="line-603">     * @param args         The arguments the user has typed so far.</span>
+<span class="source-line-no">604</span><span id="line-604">     * @return All possibilities in the tab complete.</span>
+<span class="source-line-no">605</span><span id="line-605">     */</span>
+<span class="source-line-no">606</span><span id="line-606">    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args) {</span>
+<span class="source-line-no">607</span><span id="line-607">        return tabComplete(issuer, commandLabel, args, false);</span>
+<span class="source-line-no">608</span><span id="line-608">    }</span>
+<span class="source-line-no">609</span><span id="line-609"></span>
+<span class="source-line-no">610</span><span id="line-610">    /**</span>
+<span class="source-line-no">611</span><span id="line-611">     * Gets the tab complete suggestions from a given command. This will automatically find anything</span>
+<span class="source-line-no">612</span><span id="line-612">     * which is valid for the specified command through the command's implementation.</span>
+<span class="source-line-no">613</span><span id="line-613">     *</span>
+<span class="source-line-no">614</span><span id="line-614">     * @param issuer       The issuer of the command.</span>
+<span class="source-line-no">615</span><span id="line-615">     * @param commandLabel The command name as entered by the user instead of the ACF registered name.</span>
+<span class="source-line-no">616</span><span id="line-616">     * @param args         All arguments entered by the user.</span>
+<span class="source-line-no">617</span><span id="line-617">     * @param isAsync      Whether this is run off of the main thread.</span>
+<span class="source-line-no">618</span><span id="line-618">     * @return The possibilities to tab complete in no particular order.</span>
+<span class="source-line-no">619</span><span id="line-619">     */</span>
+<span class="source-line-no">620</span><span id="line-620">    @SuppressWarnings("WeakerAccess")</span>
+<span class="source-line-no">621</span><span id="line-621">    public List&lt;String&gt; tabComplete(CommandIssuer issuer, String commandLabel, String[] args, boolean isAsync)</span>
+<span class="source-line-no">622</span><span id="line-622">            throws IllegalArgumentException {</span>
+<span class="source-line-no">623</span><span id="line-623">        return tabComplete(issuer, manager.getRootCommand(commandLabel.toLowerCase(Locale.ENGLISH)), args, isAsync);</span>
+<span class="source-line-no">624</span><span id="line-624">    }</span>
+<span class="source-line-no">625</span><span id="line-625"></span>
+<span class="source-line-no">626</span><span id="line-626">    List&lt;String&gt; tabComplete(CommandIssuer issuer, RootCommand rootCommand, String[] args, boolean isAsync)</span>
+<span class="source-line-no">627</span><span id="line-627">            throws IllegalArgumentException {</span>
+<span class="source-line-no">628</span><span id="line-628">        if (args.length == 0) {</span>
+<span class="source-line-no">629</span><span id="line-629">            args = new String[]{""};</span>
+<span class="source-line-no">630</span><span id="line-630">        }</span>
+<span class="source-line-no">631</span><span id="line-631">        String commandLabel = rootCommand.getCommandName();</span>
+<span class="source-line-no">632</span><span id="line-632">        try {</span>
+<span class="source-line-no">633</span><span id="line-633">            CommandRouter router = manager.getRouter();</span>
+<span class="source-line-no">634</span><span id="line-634"></span>
+<span class="source-line-no">635</span><span id="line-635">            preCommandOperation(issuer, commandLabel, args, isAsync);</span>
+<span class="source-line-no">636</span><span id="line-636"></span>
+<span class="source-line-no">637</span><span id="line-637">            final RouteSearch search = router.routeCommand(rootCommand, commandLabel, args, true);</span>
+<span class="source-line-no">638</span><span id="line-638"></span>
+<span class="source-line-no">639</span><span id="line-639">            final List&lt;String&gt; cmds = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">640</span><span id="line-640">            if (search != null) {</span>
+<span class="source-line-no">641</span><span id="line-641">                for (RegisteredCommand&lt;?&gt; command : search.commands) {</span>
+<span class="source-line-no">642</span><span id="line-642">                    cmds.addAll(completeCommand(issuer, command, search.args, commandLabel, isAsync));</span>
 <span class="source-line-no">643</span><span id="line-643">                }</span>
 <span class="source-line-no">644</span><span id="line-644">            }</span>
 <span class="source-line-no">645</span><span id="line-645"></span>

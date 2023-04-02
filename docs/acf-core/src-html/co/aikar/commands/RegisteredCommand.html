@@ -106,7 +106,7 @@
 <span class="source-line-no">093</span><span id="line-93">        this.prefSubCommand = prefSubCommand;</span>
 <span class="source-line-no">094</span><span id="line-94"></span>
 <span class="source-line-no">095</span><span id="line-95">        this.permission = annotations.getAnnotationValue(method, CommandPermission.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);</span>
-<span class="source-line-no">096</span><span id="line-96">        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.DEFAULT_EMPTY); // no replacements as it should be per-issuer</span>
+<span class="source-line-no">096</span><span id="line-96">        this.complete = annotations.getAnnotationValue(method, CommandCompletion.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);</span>
 <span class="source-line-no">097</span><span id="line-97">        this.helpText = annotations.getAnnotationValue(method, Description.class, Annotations.REPLACEMENTS | Annotations.DEFAULT_EMPTY);</span>
 <span class="source-line-no">098</span><span id="line-98">        this.conditions = annotations.getAnnotationValue(method, Conditions.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);</span>
 <span class="source-line-no">099</span><span id="line-99">        this.helpSearchTags = annotations.getAnnotationValue(method, HelpSearchTags.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);</span>

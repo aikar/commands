@@ -126,21 +126,21 @@
 <span class="source-line-no">113</span><span id="line-113">    public static ProxiedPlayer findPlayerSmart(CommandIssuer issuer, String search) {</span>
 <span class="source-line-no">114</span><span id="line-114">        CommandSender requester = issuer.getIssuer();</span>
 <span class="source-line-no">115</span><span id="line-115">        String name = ACFUtil.replace(search, ":confirm", "");</span>
-<span class="source-line-no">116</span><span id="line-116">        if (!isValidName(name)) {</span>
-<span class="source-line-no">117</span><span id="line-117">            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</span>
-<span class="source-line-no">118</span><span id="line-118">            return null;</span>
-<span class="source-line-no">119</span><span id="line-119">        }</span>
-<span class="source-line-no">120</span><span id="line-120"></span>
-<span class="source-line-no">121</span><span id="line-121">        List&lt;ProxiedPlayer&gt; matches = new ArrayList&lt;&gt;(ProxyServer.getInstance().matchPlayer(name));</span>
-<span class="source-line-no">122</span><span id="line-122"></span>
-<span class="source-line-no">123</span><span id="line-123">        if (matches.size() &gt; 1) {</span>
-<span class="source-line-no">124</span><span id="line-124">            String allMatches = matches.stream().map(ProxiedPlayer::getName).collect(Collectors.joining(", "));</span>
-<span class="source-line-no">125</span><span id="line-125">            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,</span>
-<span class="source-line-no">126</span><span id="line-126">                    "{search}", name, "{all}", allMatches);</span>
-<span class="source-line-no">127</span><span id="line-127">            return null;</span>
-<span class="source-line-no">128</span><span id="line-128">        }</span>
-<span class="source-line-no">129</span><span id="line-129"></span>
-<span class="source-line-no">130</span><span id="line-130">        if (matches.isEmpty()) {</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">        List&lt;ProxiedPlayer&gt; matches = new ArrayList&lt;&gt;(ProxyServer.getInstance().matchPlayer(name));</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">        if (matches.size() &gt; 1) {</span>
+<span class="source-line-no">120</span><span id="line-120">            String allMatches = matches.stream().map(ProxiedPlayer::getName).collect(Collectors.joining(", "));</span>
+<span class="source-line-no">121</span><span id="line-121">            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,</span>
+<span class="source-line-no">122</span><span id="line-122">                    "{search}", name, "{all}", allMatches);</span>
+<span class="source-line-no">123</span><span id="line-123">            return null;</span>
+<span class="source-line-no">124</span><span id="line-124">        }</span>
+<span class="source-line-no">125</span><span id="line-125"></span>
+<span class="source-line-no">126</span><span id="line-126">        if (matches.isEmpty()) {</span>
+<span class="source-line-no">127</span><span id="line-127">            if (!isValidName(name)) {</span>
+<span class="source-line-no">128</span><span id="line-128">                issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</span>
+<span class="source-line-no">129</span><span id="line-129">                return null;</span>
+<span class="source-line-no">130</span><span id="line-130">            }</span>
 <span class="source-line-no">131</span><span id="line-131">            issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER,</span>
 <span class="source-line-no">132</span><span id="line-132">                    "{search}", name);</span>
 <span class="source-line-no">133</span><span id="line-133">            return null;</span>

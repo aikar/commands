@@ -114,7 +114,7 @@
 <span class="source-line-no">101</span><span id="line-101">        //noinspection unchecked</span>
 <span class="source-line-no">102</span><span id="line-102">        this.commandIssuer = paramIndex == 0 &amp;&amp; manager.isCommandIssuer(type);</span>
 <span class="source-line-no">103</span><span id="line-103">        this.canConsumeInput = !this.commandIssuer &amp;&amp; !(resolver instanceof IssuerOnlyContextResolver);</span>
-<span class="source-line-no">104</span><span id="line-104">        this.consumesRest = (type == String.class &amp;&amp; !annotations.hasAnnotation(param, Single.class)) || (isLast &amp;&amp; type == String[].class);</span>
+<span class="source-line-no">104</span><span id="line-104">        this.consumesRest = isLast &amp;&amp; ((type == String.class &amp;&amp; !annotations.hasAnnotation(param, Single.class)) || (type == String[].class));</span>
 <span class="source-line-no">105</span><span id="line-105"></span>
 <span class="source-line-no">106</span><span id="line-106">        this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);</span>
 <span class="source-line-no">107</span><span id="line-107"></span>

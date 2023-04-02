@@ -281,67 +281,65 @@
 <span class="source-line-no">268</span><span id="line-268">            return null;</span>
 <span class="source-line-no">269</span><span id="line-269">        }</span>
 <span class="source-line-no">270</span><span id="line-270">        String name = ACFUtil.replace(search, ":confirm", "");</span>
-<span class="source-line-no">271</span><span id="line-271"></span>
-<span class="source-line-no">272</span><span id="line-272">        if (!isValidName(name)) {</span>
-<span class="source-line-no">273</span><span id="line-273">            issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</span>
-<span class="source-line-no">274</span><span id="line-274">            return null;</span>
-<span class="source-line-no">275</span><span id="line-275">        }</span>
-<span class="source-line-no">276</span><span id="line-276"></span>
-<span class="source-line-no">277</span><span id="line-277">        List&lt;Player&gt; matches = Bukkit.getServer().matchPlayer(name);</span>
-<span class="source-line-no">278</span><span id="line-278">        List&lt;Player&gt; confirmList = new ArrayList&lt;&gt;();</span>
-<span class="source-line-no">279</span><span id="line-279">        findMatches(search, requester, matches, confirmList);</span>
-<span class="source-line-no">280</span><span id="line-280"></span>
-<span class="source-line-no">281</span><span id="line-281"></span>
-<span class="source-line-no">282</span><span id="line-282">        if (matches.size() &gt; 1 || confirmList.size() &gt; 1) {</span>
-<span class="source-line-no">283</span><span id="line-283">            String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));</span>
-<span class="source-line-no">284</span><span id="line-284">            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,</span>
-<span class="source-line-no">285</span><span id="line-285">                    "{search}", name, "{all}", allMatches);</span>
-<span class="source-line-no">286</span><span id="line-286">            return null;</span>
-<span class="source-line-no">287</span><span id="line-287">        }</span>
-<span class="source-line-no">288</span><span id="line-288"></span>
-<span class="source-line-no">289</span><span id="line-289">        //noinspection Duplicates</span>
-<span class="source-line-no">290</span><span id="line-290">        if (matches.isEmpty()) {</span>
-<span class="source-line-no">291</span><span id="line-291">            Player player = ACFUtil.getFirstElement(confirmList);</span>
-<span class="source-line-no">292</span><span id="line-292">            if (player == null) {</span>
-<span class="source-line-no">293</span><span id="line-293">                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);</span>
-<span class="source-line-no">294</span><span id="line-294">                return null;</span>
-<span class="source-line-no">295</span><span id="line-295">            } else {</span>
-<span class="source-line-no">296</span><span id="line-296">                issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());</span>
-<span class="source-line-no">297</span><span id="line-297">                return null;</span>
-<span class="source-line-no">298</span><span id="line-298">            }</span>
-<span class="source-line-no">299</span><span id="line-299">        }</span>
-<span class="source-line-no">300</span><span id="line-300"></span>
-<span class="source-line-no">301</span><span id="line-301">        return matches.get(0);</span>
-<span class="source-line-no">302</span><span id="line-302">    }</span>
-<span class="source-line-no">303</span><span id="line-303"></span>
-<span class="source-line-no">304</span><span id="line-304">    private static void findMatches(String search, CommandSender requester, List&lt;Player&gt; matches, List&lt;Player&gt; confirmList) {</span>
-<span class="source-line-no">305</span><span id="line-305">        // Remove vanished players from smart matching.</span>
-<span class="source-line-no">306</span><span id="line-306">        Iterator&lt;Player&gt; iter = matches.iterator();</span>
-<span class="source-line-no">307</span><span id="line-307">        //noinspection Duplicates</span>
-<span class="source-line-no">308</span><span id="line-308">        while (iter.hasNext()) {</span>
-<span class="source-line-no">309</span><span id="line-309">            Player player = iter.next();</span>
-<span class="source-line-no">310</span><span id="line-310">            if (requester instanceof Player &amp;&amp; !((Player) requester).canSee(player)) {</span>
-<span class="source-line-no">311</span><span id="line-311">                if (requester.hasPermission("acf.seevanish")) {</span>
-<span class="source-line-no">312</span><span id="line-312">                    if (!search.endsWith(":confirm")) {</span>
-<span class="source-line-no">313</span><span id="line-313">                        confirmList.add(player);</span>
-<span class="source-line-no">314</span><span id="line-314">                        iter.remove();</span>
-<span class="source-line-no">315</span><span id="line-315">                    }</span>
-<span class="source-line-no">316</span><span id="line-316">                } else {</span>
-<span class="source-line-no">317</span><span id="line-317">                    iter.remove();</span>
-<span class="source-line-no">318</span><span id="line-318">                }</span>
-<span class="source-line-no">319</span><span id="line-319">            }</span>
-<span class="source-line-no">320</span><span id="line-320">        }</span>
-<span class="source-line-no">321</span><span id="line-321">    }</span>
-<span class="source-line-no">322</span><span id="line-322"></span>
-<span class="source-line-no">323</span><span id="line-323"></span>
-<span class="source-line-no">324</span><span id="line-324">    public static boolean isValidName(String name) {</span>
-<span class="source-line-no">325</span><span id="line-325">        return name != null &amp;&amp; !name.isEmpty() &amp;&amp; ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();</span>
-<span class="source-line-no">326</span><span id="line-326">    }</span>
-<span class="source-line-no">327</span><span id="line-327"></span>
-<span class="source-line-no">328</span><span id="line-328">    static boolean isValidItem(ItemStack item) {</span>
-<span class="source-line-no">329</span><span id="line-329">        return item != null &amp;&amp; item.getType() != Material.AIR &amp;&amp; item.getAmount() &gt; 0;</span>
-<span class="source-line-no">330</span><span id="line-330">    }</span>
-<span class="source-line-no">331</span><span id="line-331">}</span>
+<span class="source-line-no">271</span><span id="line-271">        List&lt;Player&gt; matches = Bukkit.getServer().matchPlayer(name);</span>
+<span class="source-line-no">272</span><span id="line-272">        List&lt;Player&gt; confirmList = new ArrayList&lt;&gt;();</span>
+<span class="source-line-no">273</span><span id="line-273">        findMatches(search, requester, matches, confirmList);</span>
+<span class="source-line-no">274</span><span id="line-274"></span>
+<span class="source-line-no">275</span><span id="line-275"></span>
+<span class="source-line-no">276</span><span id="line-276">        if (matches.size() &gt; 1 || confirmList.size() &gt; 1) {</span>
+<span class="source-line-no">277</span><span id="line-277">            String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));</span>
+<span class="source-line-no">278</span><span id="line-278">            issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,</span>
+<span class="source-line-no">279</span><span id="line-279">                    "{search}", name, "{all}", allMatches);</span>
+<span class="source-line-no">280</span><span id="line-280">            return null;</span>
+<span class="source-line-no">281</span><span id="line-281">        }</span>
+<span class="source-line-no">282</span><span id="line-282"></span>
+<span class="source-line-no">283</span><span id="line-283">        //noinspection Duplicates</span>
+<span class="source-line-no">284</span><span id="line-284">        if (matches.isEmpty()) {</span>
+<span class="source-line-no">285</span><span id="line-285">            if (!isValidName(name)) {</span>
+<span class="source-line-no">286</span><span id="line-286">                issuer.sendError(MinecraftMessageKeys.IS_NOT_A_VALID_NAME, "{name}", name);</span>
+<span class="source-line-no">287</span><span id="line-287">                return null;</span>
+<span class="source-line-no">288</span><span id="line-288">            }</span>
+<span class="source-line-no">289</span><span id="line-289">            Player player = ACFUtil.getFirstElement(confirmList);</span>
+<span class="source-line-no">290</span><span id="line-290">            if (player == null) {</span>
+<span class="source-line-no">291</span><span id="line-291">                issuer.sendError(MinecraftMessageKeys.NO_PLAYER_FOUND_SERVER, "{search}", name);</span>
+<span class="source-line-no">292</span><span id="line-292">                return null;</span>
+<span class="source-line-no">293</span><span id="line-293">            } else {</span>
+<span class="source-line-no">294</span><span id="line-294">                issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());</span>
+<span class="source-line-no">295</span><span id="line-295">                return null;</span>
+<span class="source-line-no">296</span><span id="line-296">            }</span>
+<span class="source-line-no">297</span><span id="line-297">        }</span>
+<span class="source-line-no">298</span><span id="line-298"></span>
+<span class="source-line-no">299</span><span id="line-299">        return matches.get(0);</span>
+<span class="source-line-no">300</span><span id="line-300">    }</span>
+<span class="source-line-no">301</span><span id="line-301"></span>
+<span class="source-line-no">302</span><span id="line-302">    private static void findMatches(String search, CommandSender requester, List&lt;Player&gt; matches, List&lt;Player&gt; confirmList) {</span>
+<span class="source-line-no">303</span><span id="line-303">        // Remove vanished players from smart matching.</span>
+<span class="source-line-no">304</span><span id="line-304">        Iterator&lt;Player&gt; iter = matches.iterator();</span>
+<span class="source-line-no">305</span><span id="line-305">        //noinspection Duplicates</span>
+<span class="source-line-no">306</span><span id="line-306">        while (iter.hasNext()) {</span>
+<span class="source-line-no">307</span><span id="line-307">            Player player = iter.next();</span>
+<span class="source-line-no">308</span><span id="line-308">            if (requester instanceof Player &amp;&amp; !((Player) requester).canSee(player)) {</span>
+<span class="source-line-no">309</span><span id="line-309">                if (requester.hasPermission("acf.seevanish")) {</span>
+<span class="source-line-no">310</span><span id="line-310">                    if (!search.endsWith(":confirm")) {</span>
+<span class="source-line-no">311</span><span id="line-311">                        confirmList.add(player);</span>
+<span class="source-line-no">312</span><span id="line-312">                        iter.remove();</span>
+<span class="source-line-no">313</span><span id="line-313">                    }</span>
+<span class="source-line-no">314</span><span id="line-314">                } else {</span>
+<span class="source-line-no">315</span><span id="line-315">                    iter.remove();</span>
+<span class="source-line-no">316</span><span id="line-316">                }</span>
+<span class="source-line-no">317</span><span id="line-317">            }</span>
+<span class="source-line-no">318</span><span id="line-318">        }</span>
+<span class="source-line-no">319</span><span id="line-319">    }</span>
+<span class="source-line-no">320</span><span id="line-320"></span>
+<span class="source-line-no">321</span><span id="line-321"></span>
+<span class="source-line-no">322</span><span id="line-322">    public static boolean isValidName(String name) {</span>
+<span class="source-line-no">323</span><span id="line-323">        return name != null &amp;&amp; !name.isEmpty() &amp;&amp; ACFPatterns.VALID_NAME_PATTERN.matcher(name).matches();</span>
+<span class="source-line-no">324</span><span id="line-324">    }</span>
+<span class="source-line-no">325</span><span id="line-325"></span>
+<span class="source-line-no">326</span><span id="line-326">    static boolean isValidItem(ItemStack item) {</span>
+<span class="source-line-no">327</span><span id="line-327">        return item != null &amp;&amp; item.getType() != Material.AIR &amp;&amp; item.getAmount() &gt; 0;</span>
+<span class="source-line-no">328</span><span id="line-328">    }</span>
+<span class="source-line-no">329</span><span id="line-329">}</span>
 
 
 
