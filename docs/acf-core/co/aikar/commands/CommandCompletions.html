@@ -168,6 +168,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Registers a completion handler such as @players to default apply to all command parameters of the specified types</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterCompletion(java.lang.String)" class="member-name-link">unregisterCompletion</a><wbr>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Unregister a completion handler.</div>
+</div>
 </div>
 </div>
 </div>
@@ -214,9 +219,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="unregisterCompletion(java.lang.String)">
+<h3>unregisterCompletion</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-91">unregisterCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
+<div class="block">Unregister a completion handler.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - </dd>
+<dt>Returns:</dt>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If the completion couldn't be found</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="registerAsyncCompletion(java.lang.String,co.aikar.commands.CommandCompletions.AsyncCommandCompletionHandler)">
 <h3>registerAsyncCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-100">registerAsyncCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-114">registerAsyncCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="CommandCompletions.AsyncCommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.AsyncCommandCompletionHandler</a>&lt;<a href="CommandCompletions.html" title="type parameter in CommandCompletions">C</a>&gt;&nbsp;handler)</span></div>
 <div class="block">Registr a completion handler to provide command completions based on the user input.
  This handler is declared to be safe to be executed asynchronously.
@@ -238,7 +257,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerStaticCompletion(java.lang.String,java.lang.String)">
 <h3>registerStaticCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-114">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-128">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</span></div>
 <div class="block">Register a static list of command completions that will never change.
  Like @CommandCompletion, values are | (PIPE) separated.
@@ -255,7 +274,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerStaticCompletion(java.lang.String,java.lang.String[])">
 <h3>registerStaticCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-125">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-139">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;completions)</span></div>
 <div class="block">Register a static list of command completions that will never change</div>
 <dl class="notes">
@@ -269,7 +288,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerStaticCompletion(java.lang.String,java.util.function.Supplier)">
 <h3>registerStaticCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-137">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-151">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;supplier)</span></div>
 <div class="block">Register a static list of command completions that will never change. The list is obtained from the supplier
  immediately as part of this method call.</div>
@@ -284,7 +303,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerStaticCompletion(java.lang.String,java.util.Collection)">
 <h3>registerStaticCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-148">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="CommandCompletions.CommandCompletionHandler.html" title="interface in co.aikar.commands">CommandCompletions.CommandCompletionHandler</a></span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-162">registerStaticCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;completions)</span></div>
 <div class="block">Register a static list of command completions that will never change</div>
 <dl class="notes">
@@ -298,7 +317,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setDefaultCompletion(java.lang.String,java.lang.Class...)">
 <h3>setDefaultCompletion</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-160">setDefaultCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/co/aikar/commands/CommandCompletions.html#line-174">setDefaultCompletion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>...&nbsp;classes)</span></div>
 <div class="block">Registers a completion handler such as @players to default apply to all command parameters of the specified types
  <p>

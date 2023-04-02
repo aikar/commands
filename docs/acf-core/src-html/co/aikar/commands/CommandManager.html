@@ -545,70 +545,95 @@
 <span class="source-line-no">532</span><span id="line-532"></span>
 <span class="source-line-no">533</span><span id="line-533">        dependencies.put(clazz, key, instance);</span>
 <span class="source-line-no">534</span><span id="line-534">    }</span>
-<span class="source-line-no">535</span><span id="line-535"></span>
+<span class="source-line-no">535</span><span id="line-535">    </span>
 <span class="source-line-no">536</span><span id="line-536">    /**</span>
-<span class="source-line-no">537</span><span id="line-537">     * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}</span>
-<span class="source-line-no">538</span><span id="line-538">     * into all fields of the class and its superclasses that are marked with {@link Dependency}.</span>
-<span class="source-line-no">539</span><span id="line-539">     *</span>
-<span class="source-line-no">540</span><span id="line-540">     * @param baseCommand the instance which fields should be filled</span>
+<span class="source-line-no">537</span><span id="line-537">     * Unregisters an instance of the class, it will no longer be able to be injected</span>
+<span class="source-line-no">538</span><span id="line-538">     * </span>
+<span class="source-line-no">539</span><span id="line-539">     * @param clazz the class the injector should look for to remove</span>
+<span class="source-line-no">540</span><span id="line-540">     * @throws IllegalStateException If the dependency was not found.</span>
 <span class="source-line-no">541</span><span id="line-541">     */</span>
-<span class="source-line-no">542</span><span id="line-542">    void injectDependencies(BaseCommand baseCommand) {</span>
-<span class="source-line-no">543</span><span id="line-543">        Class clazz = baseCommand.getClass();</span>
-<span class="source-line-no">544</span><span id="line-544">        do {</span>
-<span class="source-line-no">545</span><span id="line-545">            for (Field field : clazz.getDeclaredFields()) {</span>
-<span class="source-line-no">546</span><span id="line-546">                if (annotations.hasAnnotation(field, Dependency.class)) {</span>
-<span class="source-line-no">547</span><span id="line-547">                    String dependency = annotations.getAnnotationValue(field, Dependency.class);</span>
-<span class="source-line-no">548</span><span id="line-548">                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;</span>
-<span class="source-line-no">549</span><span id="line-549">                    Object object = dependencies.row(field.getType()).get(key);</span>
-<span class="source-line-no">550</span><span id="line-550">                    if (object == null) {</span>
-<span class="source-line-no">551</span><span id="line-551">                        throw new UnresolvedDependencyException("Could not find a registered instance of " +</span>
-<span class="source-line-no">552</span><span id="line-552">                                field.getType().getName() + " with key " + key + " for field " + field.getName() +</span>
-<span class="source-line-no">553</span><span id="line-553">                                " in class " + baseCommand.getClass().getName());</span>
-<span class="source-line-no">554</span><span id="line-554">                    }</span>
-<span class="source-line-no">555</span><span id="line-555"></span>
-<span class="source-line-no">556</span><span id="line-556">                    try {</span>
-<span class="source-line-no">557</span><span id="line-557">                        boolean accessible = field.isAccessible();</span>
-<span class="source-line-no">558</span><span id="line-558">                        if (!accessible) {</span>
-<span class="source-line-no">559</span><span id="line-559">                            field.setAccessible(true);</span>
-<span class="source-line-no">560</span><span id="line-560">                        }</span>
-<span class="source-line-no">561</span><span id="line-561">                        field.set(baseCommand, object);</span>
-<span class="source-line-no">562</span><span id="line-562">                        field.setAccessible(accessible);</span>
-<span class="source-line-no">563</span><span id="line-563">                    } catch (IllegalAccessException e) {</span>
-<span class="source-line-no">564</span><span id="line-564">                        e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?</span>
-<span class="source-line-no">565</span><span id="line-565">                    }</span>
-<span class="source-line-no">566</span><span id="line-566">                }</span>
-<span class="source-line-no">567</span><span id="line-567">            }</span>
-<span class="source-line-no">568</span><span id="line-568">            clazz = clazz.getSuperclass();</span>
-<span class="source-line-no">569</span><span id="line-569">        } while (!clazz.equals(BaseCommand.class));</span>
-<span class="source-line-no">570</span><span id="line-570">    }</span>
-<span class="source-line-no">571</span><span id="line-571"></span>
-<span class="source-line-no">572</span><span id="line-572">    /**</span>
-<span class="source-line-no">573</span><span id="line-573">     * @deprecated Use this with caution! If you enable and use Unstable API's, your next compile using ACF</span>
-<span class="source-line-no">574</span><span id="line-574">     * may require you to update your implementation to those unstable API's</span>
-<span class="source-line-no">575</span><span id="line-575">     */</span>
-<span class="source-line-no">576</span><span id="line-576">    @Deprecated</span>
-<span class="source-line-no">577</span><span id="line-577">    public void enableUnstableAPI(String api) {</span>
-<span class="source-line-no">578</span><span id="line-578">        unstableAPIs.add(api);</span>
-<span class="source-line-no">579</span><span id="line-579">    }</span>
+<span class="source-line-no">542</span><span id="line-542">    public &lt;T&gt; void unregisterDependency(Class&lt;? extends T&gt; clazz) {</span>
+<span class="source-line-no">543</span><span id="line-543">        unregisterDependency(clazz, clazz.getName());</span>
+<span class="source-line-no">544</span><span id="line-544">    }</span>
+<span class="source-line-no">545</span><span id="line-545"></span>
+<span class="source-line-no">546</span><span id="line-546">    /**</span>
+<span class="source-line-no">547</span><span id="line-547">     * Unregisters an instance of the class, it will no longer be able to be injected</span>
+<span class="source-line-no">548</span><span id="line-548">     * </span>
+<span class="source-line-no">549</span><span id="line-549">     * @param clazz the class the injector should look for to remove</span>
+<span class="source-line-no">550</span><span id="line-550">     * @param key   the key which needs to be present if that</span>
+<span class="source-line-no">551</span><span id="line-551">     * @throws IllegalStateException If the dependency was not found.</span>
+<span class="source-line-no">552</span><span id="line-552">     */</span>
+<span class="source-line-no">553</span><span id="line-553">    public &lt;T&gt; void unregisterDependency(Class&lt;? extends T&gt; clazz, String key) {</span>
+<span class="source-line-no">554</span><span id="line-554">        if (!dependencies.containsKey(clazz, key)) {</span>
+<span class="source-line-no">555</span><span id="line-555">            throw new IllegalStateException("Unable to unregister a dependency of " + clazz.getName() + " with the key " + key + " because it wasn't registered");</span>
+<span class="source-line-no">556</span><span id="line-556">        }</span>
+<span class="source-line-no">557</span><span id="line-557"></span>
+<span class="source-line-no">558</span><span id="line-558">        dependencies.remove(clazz, key);</span>
+<span class="source-line-no">559</span><span id="line-559">    }</span>
+<span class="source-line-no">560</span><span id="line-560"></span>
+<span class="source-line-no">561</span><span id="line-561">    /**</span>
+<span class="source-line-no">562</span><span id="line-562">     * Attempts to inject instances of classes registered with {@link CommandManager#registerDependency(Class, Object)}</span>
+<span class="source-line-no">563</span><span id="line-563">     * into all fields of the class and its superclasses that are marked with {@link Dependency}.</span>
+<span class="source-line-no">564</span><span id="line-564">     *</span>
+<span class="source-line-no">565</span><span id="line-565">     * @param baseCommand the instance which fields should be filled</span>
+<span class="source-line-no">566</span><span id="line-566">     */</span>
+<span class="source-line-no">567</span><span id="line-567">    void injectDependencies(BaseCommand baseCommand) {</span>
+<span class="source-line-no">568</span><span id="line-568">        Class clazz = baseCommand.getClass();</span>
+<span class="source-line-no">569</span><span id="line-569">        do {</span>
+<span class="source-line-no">570</span><span id="line-570">            for (Field field : clazz.getDeclaredFields()) {</span>
+<span class="source-line-no">571</span><span id="line-571">                if (annotations.hasAnnotation(field, Dependency.class)) {</span>
+<span class="source-line-no">572</span><span id="line-572">                    String dependency = annotations.getAnnotationValue(field, Dependency.class);</span>
+<span class="source-line-no">573</span><span id="line-573">                    String key = (key = dependency).isEmpty() ? field.getType().getName() : key;</span>
+<span class="source-line-no">574</span><span id="line-574">                    Object object = dependencies.row(field.getType()).get(key);</span>
+<span class="source-line-no">575</span><span id="line-575">                    if (object == null) {</span>
+<span class="source-line-no">576</span><span id="line-576">                        throw new UnresolvedDependencyException("Could not find a registered instance of " +</span>
+<span class="source-line-no">577</span><span id="line-577">                                field.getType().getName() + " with key " + key + " for field " + field.getName() +</span>
+<span class="source-line-no">578</span><span id="line-578">                                " in class " + baseCommand.getClass().getName());</span>
+<span class="source-line-no">579</span><span id="line-579">                    }</span>
 <span class="source-line-no">580</span><span id="line-580"></span>
-<span class="source-line-no">581</span><span id="line-581">    void verifyUnstableAPI(String api) {</span>
-<span class="source-line-no">582</span><span id="line-582">        if (!unstableAPIs.contains(api)) {</span>
-<span class="source-line-no">583</span><span id="line-583">            throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");</span>
-<span class="source-line-no">584</span><span id="line-584">        }</span>
-<span class="source-line-no">585</span><span id="line-585">    }</span>
-<span class="source-line-no">586</span><span id="line-586"></span>
-<span class="source-line-no">587</span><span id="line-587">    boolean hasUnstableAPI(String api) {</span>
-<span class="source-line-no">588</span><span id="line-588">        return unstableAPIs.contains(api);</span>
-<span class="source-line-no">589</span><span id="line-589">    }</span>
-<span class="source-line-no">590</span><span id="line-590"></span>
-<span class="source-line-no">591</span><span id="line-591">    Annotations getAnnotations() {</span>
-<span class="source-line-no">592</span><span id="line-592">        return annotations;</span>
-<span class="source-line-no">593</span><span id="line-593">    }</span>
-<span class="source-line-no">594</span><span id="line-594"></span>
-<span class="source-line-no">595</span><span id="line-595">    public String getCommandPrefix(CommandIssuer issuer) {</span>
-<span class="source-line-no">596</span><span id="line-596">        return "";</span>
-<span class="source-line-no">597</span><span id="line-597">    }</span>
-<span class="source-line-no">598</span><span id="line-598">}</span>
+<span class="source-line-no">581</span><span id="line-581">                    try {</span>
+<span class="source-line-no">582</span><span id="line-582">                        boolean accessible = field.isAccessible();</span>
+<span class="source-line-no">583</span><span id="line-583">                        if (!accessible) {</span>
+<span class="source-line-no">584</span><span id="line-584">                            field.setAccessible(true);</span>
+<span class="source-line-no">585</span><span id="line-585">                        }</span>
+<span class="source-line-no">586</span><span id="line-586">                        field.set(baseCommand, object);</span>
+<span class="source-line-no">587</span><span id="line-587">                        field.setAccessible(accessible);</span>
+<span class="source-line-no">588</span><span id="line-588">                    } catch (IllegalAccessException e) {</span>
+<span class="source-line-no">589</span><span id="line-589">                        e.printStackTrace(); //TODO should we print our own exception here to make a more descriptive error?</span>
+<span class="source-line-no">590</span><span id="line-590">                    }</span>
+<span class="source-line-no">591</span><span id="line-591">                }</span>
+<span class="source-line-no">592</span><span id="line-592">            }</span>
+<span class="source-line-no">593</span><span id="line-593">            clazz = clazz.getSuperclass();</span>
+<span class="source-line-no">594</span><span id="line-594">        } while (!clazz.equals(BaseCommand.class));</span>
+<span class="source-line-no">595</span><span id="line-595">    }</span>
+<span class="source-line-no">596</span><span id="line-596"></span>
+<span class="source-line-no">597</span><span id="line-597">    /**</span>
+<span class="source-line-no">598</span><span id="line-598">     * @deprecated Use this with caution! If you enable and use Unstable API's, your next compile using ACF</span>
+<span class="source-line-no">599</span><span id="line-599">     * may require you to update your implementation to those unstable API's</span>
+<span class="source-line-no">600</span><span id="line-600">     */</span>
+<span class="source-line-no">601</span><span id="line-601">    @Deprecated</span>
+<span class="source-line-no">602</span><span id="line-602">    public void enableUnstableAPI(String api) {</span>
+<span class="source-line-no">603</span><span id="line-603">        unstableAPIs.add(api);</span>
+<span class="source-line-no">604</span><span id="line-604">    }</span>
+<span class="source-line-no">605</span><span id="line-605"></span>
+<span class="source-line-no">606</span><span id="line-606">    void verifyUnstableAPI(String api) {</span>
+<span class="source-line-no">607</span><span id="line-607">        if (!unstableAPIs.contains(api)) {</span>
+<span class="source-line-no">608</span><span id="line-608">            throw new IllegalStateException("Using an unstable API that has not been enabled ( " + api + "). See https://acfunstable.emc.gs");</span>
+<span class="source-line-no">609</span><span id="line-609">        }</span>
+<span class="source-line-no">610</span><span id="line-610">    }</span>
+<span class="source-line-no">611</span><span id="line-611"></span>
+<span class="source-line-no">612</span><span id="line-612">    boolean hasUnstableAPI(String api) {</span>
+<span class="source-line-no">613</span><span id="line-613">        return unstableAPIs.contains(api);</span>
+<span class="source-line-no">614</span><span id="line-614">    }</span>
+<span class="source-line-no">615</span><span id="line-615"></span>
+<span class="source-line-no">616</span><span id="line-616">    Annotations getAnnotations() {</span>
+<span class="source-line-no">617</span><span id="line-617">        return annotations;</span>
+<span class="source-line-no">618</span><span id="line-618">    }</span>
+<span class="source-line-no">619</span><span id="line-619"></span>
+<span class="source-line-no">620</span><span id="line-620">    public String getCommandPrefix(CommandIssuer issuer) {</span>
+<span class="source-line-no">621</span><span id="line-621">        return "";</span>
+<span class="source-line-no">622</span><span id="line-622">    }</span>
+<span class="source-line-no">623</span><span id="line-623">}</span>
 
 
 
