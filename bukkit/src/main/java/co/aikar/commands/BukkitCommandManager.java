@@ -99,7 +99,7 @@ public class BukkitCommandManager extends CommandManager<
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
             this.scheduler = new ACFFoliaScheduler();
-        } catch(ClassNotFoundException ignored) {
+        } catch (ClassNotFoundException ignored) {
             this.scheduler = new ACFBukkitScheduler();
         }
 
@@ -131,7 +131,7 @@ public class BukkitCommandManager extends CommandManager<
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
 
         getLocales(); // auto load locales
-        scheduler.createLocaleTask(plugin, ()->{
+        scheduler.createLocaleTask(plugin, () -> {
             if (this.cantReadLocale || !this.autoDetectFromClient) {
                 return;
             }

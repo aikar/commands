@@ -23,7 +23,6 @@
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
       <module name="acf-example" target="1.8" />
-      <module name="acf-folia" target="1.8" />
       <module name="commands" target="1.8" />
       <module name="example-plugin" target="1.8" />
     </bytecodeTargetLevel>
@@ -34,13 +33,11 @@
       <module name="acf-bukkit" options="-parameters" />
       <module name="acf-bungee" options="-parameters" />
       <module name="acf-core" options="-parameters" />
-      <module name="acf-folia" options="-parameters" />
       <module name="acf-jda" options="-parameters" />
       <module name="acf-paper" options="-parameters" />
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
-      <module name="act-folia" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
     </option>
   </component>

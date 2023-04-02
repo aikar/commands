@@ -41,14 +41,14 @@ public class ACFFoliaScheduler extends ACFBukkitScheduler {
 
     @Override
     public void createDelayedTask(Plugin plugin, Runnable task, long delay) {
-        //We divide by 20 because 20 ticks per second.
-        Bukkit.getAsyncScheduler().runDelayed(plugin, (scheduledTask)-> task.run(), (delay / 20), TimeUnit.SECONDS);
+        // We divide by 20 because 20 ticks per second.
+        Bukkit.getAsyncScheduler().runDelayed(plugin, (scheduledTask) -> task.run(), (delay / 20), TimeUnit.SECONDS);
     }
 
     @Override
     public void createLocaleTask(Plugin plugin, Runnable task, long delay, long period) {
-        //We divide by 20 because 20 ticks per second.
-        this.scheduledTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, (scheduledTask)-> task.run(), (delay/20), (period/20), TimeUnit.SECONDS);
+        // We divide by 20 because 20 ticks per second.
+        this.scheduledTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, (scheduledTask) -> task.run(), (delay / 20), (period / 20), TimeUnit.SECONDS);
     }
 
     @Override
