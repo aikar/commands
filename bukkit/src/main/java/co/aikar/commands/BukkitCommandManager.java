@@ -93,7 +93,12 @@ public class BukkitCommandManager extends CommandManager<
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
 
-        this.scheduler = new ACFBukkitScheduler();
+        try {
+            this.scheduler = new ACFPaperScheduler(Bukkit.getAsyncScheduler());
+        } catch (NoSuchMethodError e) {
+            // Ignored to use Bukkit Scheduler
+            this.scheduler = new ACFBukkitScheduler();
+        }
 
         String prefix = this.plugin.getDescription().getPrefix();
         this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());

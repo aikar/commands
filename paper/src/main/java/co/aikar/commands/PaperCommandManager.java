@@ -45,11 +45,6 @@ public class PaperCommandManager extends BukkitCommandManager {
         } catch (ClassNotFoundException ignored) {
             // Ignored
         }
-        try {
-            this.scheduler = new ACFPaperScheduler(Bukkit.getAsyncScheduler());
-        } catch (NoSuchMethodError e) {
-            // Ignored - BukkitCommandManager initializes the BukkitScheduler
-        }
     }
 
     @Override
