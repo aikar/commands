@@ -23,12 +23,8 @@
 
 package co.aikar.commands;
 
-import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 @SuppressWarnings("WeakerAccess")
 public class PaperCommandManager extends BukkitCommandManager {
@@ -50,9 +46,8 @@ public class PaperCommandManager extends BukkitCommandManager {
             // Ignored
         }
         try {
-            Method asyncSchedulerMethod = Bukkit.class.getMethod("getAsyncScheduler");
-            this.scheduler = new ACFPaperScheduler((AsyncScheduler) asyncSchedulerMethod.invoke(null));
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+            this.scheduler = new ACFPaperScheduler(Bukkit.getAsyncScheduler());
+        } catch (NoSuchMethodError e) {
             // Ignored - BukkitCommandManager initializes the BukkitScheduler
         }
     }
