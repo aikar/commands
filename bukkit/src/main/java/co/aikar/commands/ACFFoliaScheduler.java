@@ -23,36 +23,12 @@
 
 package co.aikar.commands;
 
-import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
-import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
-import java.util.concurrent.TimeUnit;
+@Deprecated
+public class ACFFoliaScheduler extends ACFPaperScheduler {
 
-public class ACFFoliaScheduler extends ACFBukkitScheduler {
-
-    private ScheduledTask scheduledTask;
-
-    @Override
-    public void registerSchedulerDependencies(BukkitCommandManager manager) {
-        manager.registerDependency(AsyncScheduler.class, Bukkit.getAsyncScheduler());
-    }
-
-    @Override
-    public void createDelayedTask(Plugin plugin, Runnable task, long delay) {
-        // We divide by 20 because 20 ticks per second.
-        Bukkit.getAsyncScheduler().runDelayed(plugin, (scheduledTask) -> task.run(), (delay / 20), TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void createLocaleTask(Plugin plugin, Runnable task, long delay, long period) {
-        // We divide by 20 because 20 ticks per second.
-        this.scheduledTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, (scheduledTask) -> task.run(), (delay / 20), (period / 20), TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void cancelLocaleTask() {
-        this.scheduledTask.cancel();
+    public ACFFoliaScheduler() {
+        super(Bukkit.getAsyncScheduler());
     }
 }

@@ -77,7 +77,7 @@ public class BukkitCommandManager extends CommandManager<
     private final CommandMap commandMap;
     @Deprecated
     private final TimingManager timingManager;
-    private ACFBukkitScheduler scheduler;
+    protected ACFBukkitScheduler scheduler;
     private final Logger logger;
     public final Integer mcMinorVersion;
     public final Integer mcPatchVersion;
@@ -93,13 +93,7 @@ public class BukkitCommandManager extends CommandManager<
     public BukkitCommandManager(Plugin plugin) {
         this.plugin = plugin;
 
-        //See what schedule we should use, bukkit or folia
-        try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
-            this.scheduler = new ACFFoliaScheduler();
-        } catch (ClassNotFoundException ignored) {
-            this.scheduler = new ACFBukkitScheduler();
-        }
+        this.scheduler = new ACFBukkitScheduler();
 
         String prefix = this.plugin.getDescription().getPrefix();
         this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());
