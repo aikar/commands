@@ -321,7 +321,12 @@ public class BukkitCommandManager extends CommandManager<
             }
             Object nmsPlayer = entityField.get(player);
             if (nmsPlayer != null) {
-                Field localeField = nmsPlayer.getClass().getDeclaredField("locale");
+                Field localeField;
+                try {
+                    localeField = nmsPlayer.getClass().getDeclaredField("locale");
+                } catch (NoSuchFieldException ignored) {
+                    localeField = nmsPlayer.getClass().getDeclaredField("language");
+                }
                 localeField.setAccessible(true);
                 Object localeString = localeField.get(nmsPlayer);
                 if (localeString instanceof String) {
