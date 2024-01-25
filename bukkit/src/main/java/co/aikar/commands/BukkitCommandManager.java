@@ -319,19 +319,24 @@ public class BukkitCommandManager extends CommandManager<
             try {
                 locale = player.locale();
             } catch (NoSuchMethodError ignored) {
-                Field entityField = getEntityField(player);
-                if (entityField != null) {
-                    Object nmsPlayer = entityField.get(player);
-                    if (nmsPlayer != null) {
-                        Field localeField = nmsPlayer.getClass().getDeclaredField("locale");
-                        localeField.setAccessible(true);
-                        Object localeString = localeField.get(nmsPlayer);
-                        if (localeString instanceof String) {
-                            if (!localeString.equals(issuersLocaleString.get(player.getUniqueId()))) {
-                                String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
-                                locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
-                            }
+                Object localeString = null;
+                try {
+                    localeString = player.getLocale();
+                } catch (NoSuchMethodError ignored1) {
+                    Field entityField = getEntityField(player);
+                    if (entityField != null) {
+                        Object nmsPlayer = entityField.get(player);
+                        if (nmsPlayer != null) {
+                            Field localeField = nmsPlayer.getClass().getDeclaredField("locale");
+                            localeField.setAccessible(true);
+                            localeString = localeField.get(nmsPlayer);
                         }
+                    }
+                }
+                if (localeString instanceof String) {
+                    if (!localeString.equals(issuersLocaleString.get(player.getUniqueId()))) {
+                        String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
+                        locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
                     }
                 }
             }
