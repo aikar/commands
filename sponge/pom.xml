@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>spongeapi</artifactId>
-            <version>5.1.0</version>
+            <version>9.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -66,5 +66,15 @@
                 <directory>${project.basedir}/../languages/minecraft/</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
