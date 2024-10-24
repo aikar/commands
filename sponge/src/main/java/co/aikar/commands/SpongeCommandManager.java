@@ -118,7 +118,7 @@ public class SpongeCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();
             if (!spongeCommand.isRegistered) {
-                Sponge.getCommandManager().register(this.plugin, spongeCommand, commandName);
+                spongeCommand.register();
             }
             spongeCommand.isRegistered = true;
             registeredCommands.put(commandName, spongeCommand);
