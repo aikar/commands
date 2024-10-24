@@ -26,21 +26,20 @@ package co.aikar.commands;
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.sponge.contexts.OnlinePlayer;
 import org.jetbrains.annotations.Contract;
+import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.service.user.UserStorageService;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextStyle;
+import org.spongepowered.api.user.UserManager;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.server.ServerWorld;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
@@ -56,27 +55,24 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         });
         registerContext(User.class, c -> {
             String name = c.popFirstArg();
-            // try online players first
-            Optional<Player> targetPlayer = Sponge.getGame().getServer().getPlayer(name);
-            if (targetPlayer.isPresent()) {
-                return targetPlayer.get();
-            }
+            UserManager userNamanger = Sponge.server().userManager();
+            CompletableFuture<Optional<User>> optionalUser = userNamanger.load(name);
+            // Fetch the player's profile
+            CompletableFuture<User> completableFuture = optionalUser.thenCompose(user -> {
+                if (user.isPresent()) {
+                    return CompletableFuture.completedFuture(user.get());
+                } else {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND, false, "{search}", name);
+                }
+            });
 
-            Optional<UserStorageService> service = Sponge.getGame().getServiceManager().provide(UserStorageService.class);
-            if (!service.isPresent()) {
-                manager.log(LogLevel.ERROR, "No UserStorageService is available", new Error());
-                throw new InvalidCommandArgument(MessageKeys.ERROR_GENERIC_LOGGED, false);
+            try {
+                return completableFuture.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
             }
-            Optional<User> user = service.get().get(name);
-            if (user.isPresent()) {
-                return user.get();
-            }
-            if (!c.isOptional()) {
-                throw new InvalidCommandArgument(MinecraftMessageKeys.NO_PLAYER_FOUND, false, "{search}", name);
-            }
-
-            return null;
         });
+        /* WIP no idea how old registry works so i am commenting this until someone understands what it did
         registerContext(TextColor.class, c -> {
             String first = c.popFirstArg();
             Stream<TextColor> colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();
@@ -94,6 +90,8 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
         });
+         */
+        /* Same for this, the whole text color and style is now handled by adventure
         registerContext(TextStyle.Base.class, c -> {
             String first = c.popFirstArg();
             Stream<TextStyle.Base> styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();
@@ -110,9 +108,9 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                         .collect(Collectors.joining("<c1>,</c1> "));
                 return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
             });
-        });
+        });*/
 
-        registerIssuerAwareContext(CommandSource.class, SpongeCommandExecutionContext::getSource);
+        registerIssuerAwareContext(SpongeCommandSource.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(Player.class, (c) -> {
             Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;
             if (player == null && !c.isOptional()) {
@@ -150,15 +148,33 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         });
         registerIssuerAwareContext(World.class, (c) -> {
             String firstArg = c.getFirstArg();
-            java.util.Optional<World> world = firstArg != null ? Sponge.getServer().getWorld(firstArg) : java.util.Optional.empty();
+
+            if (firstArg == null) {
+                if (c.isOptional()) {
+                    return null;
+                } else {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
+                }
+            }
+
+            ResourceKey worldKey = ResourceKey.of("minecraft", firstArg);
+            Optional<ServerWorld> serverWorld = Sponge.server().worldManager().world(worldKey);
+
+            Optional<World> world = Optional.empty();
+            if (serverWorld.isPresent()) {
+                world = Optional.of( serverWorld.get() );
+            }
+
             if (world.isPresent()) {
                 c.popFirstArg();
-            }
-            if (!world.isPresent() && c.getSource() instanceof Player) {
-                world = java.util.Optional.of(((Player) c.getSource()).getWorld());
-            }
-            if (!world.isPresent()) {
-                throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
+            } else {
+                if (c.getSource() instanceof Player) {
+                    world = java.util.Optional.of(((Player) c.getSource()).world());
+                }
+
+                if (!world.isPresent()) {
+                    throw new InvalidCommandArgument(MinecraftMessageKeys.INVALID_WORLD);
+                }
             }
             return world.get();
         });
