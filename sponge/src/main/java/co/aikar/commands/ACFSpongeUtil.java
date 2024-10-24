@@ -2,7 +2,6 @@ package co.aikar.commands;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class ACFSpongeUtil {
     public static Player findPlayerSmart(CommandIssuer issuer, String search) {
-        CommandSource requester = issuer.getIssuer();
+        SpongeCommandSource requester = issuer.getIssuer();
         if (search == null) {
             return null;
         }
@@ -25,7 +24,7 @@ public class ACFSpongeUtil {
 
 
         if (matches.size() > 1 || confirmList.size() > 1) {
-            String allMatches = matches.stream().map(Player::getName).collect(Collectors.joining(", "));
+            String allMatches = matches.stream().map(Player::name).collect(Collectors.joining(", "));
             issuer.sendError(MinecraftMessageKeys.MULTIPLE_PLAYERS_MATCH,
                     "{search}", name, "{all}", allMatches);
             return null;
@@ -42,7 +41,7 @@ public class ACFSpongeUtil {
                 return null;
             } else {
 
-                issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.getName());
+                issuer.sendInfo(MinecraftMessageKeys.PLAYER_IS_VANISHED_CONFIRM, "{vanished}", player.name());
                 return null;
             }
         }
@@ -50,7 +49,7 @@ public class ACFSpongeUtil {
         return matches.get(0);
     }
 
-    private static void findMatches(String search, CommandSource requester, List<Player> matches, List<Player> confirmList) {
+    private static void findMatches(String search, SpongeCommandSource requester, List<Player> matches, List<Player> confirmList) {
         // Remove vanished players from smart matching.
         Iterator<Player> iter = matches.iterator();
         //noinspection Duplicates
@@ -72,8 +71,8 @@ public class ACFSpongeUtil {
     public static List<Player> matchPlayer(String partialName) {
         List<Player> matchedPlayers = new ArrayList<>();
 
-        for (Player iterPlayer : Sponge.getServer().getOnlinePlayers()) {
-            String iterPlayerName = iterPlayer.getName();
+        for (Player iterPlayer : Sponge.server().onlinePlayers()) {
+            String iterPlayerName = iterPlayer.name();
 
             if (partialName.equalsIgnoreCase(iterPlayerName)) {
                 // Exact match

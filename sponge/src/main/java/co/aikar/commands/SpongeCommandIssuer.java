@@ -23,10 +23,9 @@
 
 package co.aikar.commands;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.util.Identifiable;
 
 import java.nio.charset.StandardCharsets;
@@ -36,9 +35,9 @@ import java.util.UUID;
 public class SpongeCommandIssuer implements CommandIssuer {
 
     private final SpongeCommandManager manager;
-    private final CommandSource source;
+    private final SpongeCommandSource source;
 
-    SpongeCommandIssuer(SpongeCommandManager manager, final CommandSource source) {
+    SpongeCommandIssuer(SpongeCommandManager manager, final SpongeCommandSource source) {
         this.manager = manager;
         this.source = source;
     }
@@ -49,18 +48,18 @@ public class SpongeCommandIssuer implements CommandIssuer {
     }
 
     @Override
-    public CommandSource getIssuer() {
+    public SpongeCommandSource getIssuer() {
         return this.source;
     }
 
     @Override
     public @NotNull UUID getUniqueId() {
         if (this.source instanceof Identifiable) {
-            return ((Identifiable) source).getUniqueId();
+            return ((Identifiable) source).uniqueId();
         }
 
         //generate a unique id based of the name (like for the console command sender)
-        return UUID.nameUUIDFromBytes(source.getName().getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(source.identifier().getBytes(StandardCharsets.UTF_8));
     }
 
     public Player getPlayer() {
@@ -74,7 +73,9 @@ public class SpongeCommandIssuer implements CommandIssuer {
 
     @Override
     public void sendMessageInternal(String message) {
-        this.source.sendMessage(TextSerializers.LEGACY_FORMATTING_CODE.deserialize(message));
+        try {
+            source.audience().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
+        } catch (Exception ignored) {}
     }
 
     @Override

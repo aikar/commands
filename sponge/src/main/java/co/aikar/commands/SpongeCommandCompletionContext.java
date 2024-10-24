@@ -23,7 +23,6 @@
 
 package co.aikar.commands;
 
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
 @SuppressWarnings("WeakerAccess")
@@ -33,7 +32,7 @@ public class SpongeCommandCompletionContext extends CommandCompletionContext<Spo
         super(command, issuer, input, config, args);
     }
 
-    public CommandSource getSource() {
+    public SpongeCommandSource getSource() {
         return this.issuer.getIssuer();
     }
 
