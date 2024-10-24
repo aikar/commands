@@ -1,8 +1,8 @@
 package co.aikar.commands;
 
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.serializer.TextSerializers;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class SpongeMessageFormatter extends MessageFormatter<TextColor> {
 
@@ -11,6 +11,6 @@ public class SpongeMessageFormatter extends MessageFormatter<TextColor> {
     }
 
     public String format(TextColor color, String message) {
-        return TextSerializers.LEGACY_FORMATTING_CODE.serialize(Text.of(color, message));
+        return LegacyComponentSerializer.legacyAmpersand().serialize(Component.text(message).color(color));
     }
 }
