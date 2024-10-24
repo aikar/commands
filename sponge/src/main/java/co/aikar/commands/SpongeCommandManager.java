@@ -24,14 +24,11 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
-import co.aikar.timings.Timing;
-import co.aikar.timings.Timings;
-import org.slf4j.Logger;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.api.command.CommandCause;
+import org.spongepowered.plugin.PluginContainer;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -43,7 +40,7 @@ import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandManager extends CommandManager<
-        CommandSource,
+        SpongeCommandSource,
         SpongeCommandIssuer,
         TextColor,
         SpongeMessageFormatter,
@@ -55,24 +52,20 @@ public class SpongeCommandManager extends CommandManager<
     protected Map<String, SpongeRootCommand> registeredCommands = new HashMap<>();
     protected SpongeCommandContexts contexts;
     protected SpongeCommandCompletions completions;
-    private Timing commandTiming;
     protected SpongeLocales locales;
 
     public SpongeCommandManager(PluginContainer plugin) {
         this.plugin = plugin;
-        String pluginName = "acf-" + plugin.getName();
+        String pluginName = "acf-" + plugin.metadata().name();
         getLocales().addMessageBundles("acf-minecraft", pluginName, pluginName.toLowerCase(Locale.ENGLISH));
-        this.commandTiming = Timings.of(plugin, "Commands");
 
-        this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(TextColors.RED, TextColors.YELLOW, TextColors.RED));
-        this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(TextColors.YELLOW, TextColors.GREEN, TextColors.WHITE));
-        this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(TextColors.BLUE, TextColors.DARK_GREEN, TextColors.GREEN));
-        this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(TextColors.AQUA, TextColors.GREEN, TextColors.YELLOW));
+        this.formatters.put(MessageType.ERROR, defaultFormatter = new SpongeMessageFormatter(NamedTextColor.RED, NamedTextColor.YELLOW, NamedTextColor.RED));
+        this.formatters.put(MessageType.SYNTAX, new SpongeMessageFormatter(NamedTextColor.YELLOW, NamedTextColor.GREEN, NamedTextColor.WHITE));
+        this.formatters.put(MessageType.INFO, new SpongeMessageFormatter(NamedTextColor.BLUE, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN));
+        this.formatters.put(MessageType.HELP, new SpongeMessageFormatter(NamedTextColor.AQUA, NamedTextColor.GREEN, NamedTextColor.YELLOW));
         getLocales(); // auto load locales
 
         this.validNamePredicate = ACFSpongeUtil::isValidName;
-
-        Sponge.getEventManager().registerListeners(plugin, new ACFSpongeListener(this));
 
         //TODO more default dependencies for sponge
         registerDependency(plugin.getClass(), plugin);
@@ -84,7 +77,7 @@ public class SpongeCommandManager extends CommandManager<
 
     @Override
     public boolean isCommandIssuer(Class<?> type) {
-        return CommandSource.class.isAssignableFrom(type);
+        return CommandCause.class.isAssignableFrom(type);
     }
 
     @Override
@@ -132,10 +125,6 @@ public class SpongeCommandManager extends CommandManager<
         }
     }
 
-    public Timing createTiming(final String name) {
-        return Timings.of(this.plugin, name, this.commandTiming);
-    }
-
     @Override
     public RootCommand createRootCommand(String cmd) {
         return new SpongeRootCommand(this, cmd);
@@ -148,10 +137,14 @@ public class SpongeCommandManager extends CommandManager<
 
     @Override
     public SpongeCommandIssuer getCommandIssuer(Object issuer) {
-        if (!(issuer instanceof CommandSource)) {
+        if (issuer instanceof CommandCause) {
+            return new SpongeCommandIssuer(this, new SpongeCommandSource((CommandCause) issuer));
+        }
+
+        if (!(issuer instanceof SpongeCommandSource)) {
             throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
         }
-        return new SpongeCommandIssuer(this, (CommandSource) issuer);
+        return new SpongeCommandIssuer(this, (SpongeCommandSource) issuer);
     }
 
     @Override
@@ -171,7 +164,7 @@ public class SpongeCommandManager extends CommandManager<
 
     @Override
     public void log(final LogLevel level, final String message, final Throwable throwable) {
-        Logger logger = this.plugin.getLogger();
+        Logger logger = this.plugin.logger();
         switch(level) {
             case INFO:
                 logger.info(LogLevel.LOG_PREFIX + message);
@@ -206,6 +199,21 @@ public class SpongeCommandManager extends CommandManager<
     @Override
     public SpongeConditionContext createConditionContext(CommandIssuer issuer, String config) {
         return new SpongeConditionContext((SpongeCommandIssuer) issuer, config);
+    }
+
+    @Override
+    public Locale getIssuerLocale(CommandIssuer issuer) {
+        if (usingPerIssuerLocale() && issuer != null) {
+            SpongeCommandIssuer spongeIssuer = (SpongeCommandIssuer) issuer;
+            return spongeIssuer.getIssuer().locale();
+        }
+
+        return getLocales().getDefaultLocale();
+    }
+
+    @Override
+    public Locale setIssuerLocale(SpongeCommandSource issuer, Locale locale) {
+        throw new UnsupportedOperationException("You can't set a locale as they are resolved at command execution.");
     }
 
     @Override
