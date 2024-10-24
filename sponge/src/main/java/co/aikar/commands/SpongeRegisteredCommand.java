@@ -23,28 +23,11 @@
 
 package co.aikar.commands;
 
-import co.aikar.timings.Timing;
-
 import java.lang.reflect.Method;
 
 public class SpongeRegisteredCommand extends RegisteredCommand<SpongeCommandExecutionContext> {
-
-    private final Timing timing;
-
     SpongeRegisteredCommand(BaseCommand scope, String command, Method method, String prefSubCommand) {
         super(scope, command, method, prefSubCommand);
-        this.timing = ((SpongeCommandManager) scope.manager).createTiming("Command: " + this.command);
     }
 
-    @Override
-    public void preCommand() {
-        this.timing.startTiming();
-        super.preCommand();
-    }
-
-    @Override
-    public void postCommand() {
-        super.postCommand();
-        this.timing.stopTiming();
-    }
 }
