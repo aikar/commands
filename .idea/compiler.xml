@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="acf-jda" />
         <module name="acf-paper" />
+        <module name="acf-sponge (1)" />
         <module name="example-plugin" />
         <module name="acf-sponge" />
         <module name="acf" />
@@ -37,6 +38,7 @@
       <module name="acf-paper" options="-parameters" />
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
+      <module name="acf-sponge (1)" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
       <module name="commands" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
