@@ -28,6 +28,7 @@ import co.aikar.commands.sponge.contexts.OnlinePlayer;
 import org.jetbrains.annotations.Contract;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandCause;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.user.UserManager;
@@ -110,6 +111,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             });
         });*/
 
+        registerIssuerAwareContext(CommandCause.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(SpongeCommandSource.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(Player.class, (c) -> {
             Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;

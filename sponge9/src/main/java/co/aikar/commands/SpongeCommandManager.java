@@ -137,14 +137,15 @@ public class SpongeCommandManager extends CommandManager<
 
     @Override
     public SpongeCommandIssuer getCommandIssuer(Object issuer) {
+        if (issuer instanceof SpongeCommandSource) {
+            return new SpongeCommandIssuer(this, (SpongeCommandSource) issuer);
+        }
+
         if (issuer instanceof CommandCause) {
             return new SpongeCommandIssuer(this, new SpongeCommandSource((CommandCause) issuer));
         }
 
-        if (!(issuer instanceof SpongeCommandSource)) {
-            throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
-        }
-        return new SpongeCommandIssuer(this, (SpongeCommandSource) issuer);
+        throw new IllegalArgumentException(issuer.getClass().getName() + " is not a Command Issuer.");
     }
 
     @Override
