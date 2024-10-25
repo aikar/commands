@@ -80,6 +80,11 @@ public class SpongeCommandSource implements LocaleSource, CommandCause {
     }
 
     @Override
+    public void sendMessage(Component message) {
+        commandCause.sendMessage(message);
+    }
+
+    @Override
     public void sendMessage(Identified source, Component message) {
         commandCause.sendMessage(source, message);
     }
