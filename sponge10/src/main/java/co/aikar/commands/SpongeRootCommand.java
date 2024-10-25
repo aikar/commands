@@ -26,85 +26,38 @@ package co.aikar.commands;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandCause;
+import org.spongepowered.api.command.CommandCompletion;
 import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.parameter.CommandContext;
-import org.spongepowered.api.command.parameter.Parameter;
+import org.spongepowered.api.command.exception.CommandException;
+import org.spongepowered.api.command.parameter.ArgumentReader;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class SpongeRootCommand implements RootCommand {
+import static net.kyori.adventure.text.Component.text;
+
+public class SpongeRootCommand implements Command.Raw, RootCommand {
 
     private final SpongeCommandManager manager;
     private final String name;
     private BaseCommand defCommand;
     private SetMultimap<String, RegisteredCommand> subCommands = HashMultimap.create();
     private List<BaseCommand> children = new ArrayList<>();
-    private Command.Parameterized rootCommand;
     boolean isRegistered = false;
-
 
     SpongeRootCommand(SpongeCommandManager manager, String name) {
         this.manager = manager;
         this.name = name;
     }
 
-    private void pushRegister() {
-        Sponge.server()
-                .commandManager()
-                .registrar(Command.Parameterized.class)
-                .get().register(manager.plugin, rootCommand, name);
-
-    }
-
-    public void register() {
-        Parameter.Value<String> argument = Parameter.remainingJoinedStrings()
-                .key("main_arg")
-                .addParser((parameterKey, reader, context) -> {
-                    String input = reader.input();
-
-                    // Split the input into an argument list
-                    String[] args = input.isEmpty() ? new String[0] : input.split(" ");
-
-                    // Get the tab completions using your existing logic
-                    List<String> completions = SpongeRootCommand.this.getTabCompletions(manager.getCommandIssuer(context), SpongeRootCommand.this.name, args);
-
-                    String string = String.join(" ", completions);
-
-                    return Optional.of(string);
-                }).build();
-
-        // Build the command
-        rootCommand = Command.builder()
-                .executionRequirements(this::testPermission)
-                .executor(this::executeSponge)  // Command execution logic
-                .shortDescription(Component.text(getDescription()))
-                .extendedDescription(Component.text(getUsage()))
-                .addParameter(argument)
-                .build();
-
-        this.pushRegister();
-
-        isRegistered = true;
-    }
-
-    private CommandResult executeSponge(CommandContext context) {
-        SpongeCommandSource scchl = new SpongeCommandSource(context);
-        String[] args = context
-                .executedCommand()
-                .get().parameters()
-                .stream().map(Object::toString)
-                .toArray(String[]::new);
-        return this.executeSponge(manager.getCommandIssuer(scchl), this.name, args);
-    }
-
-    public boolean testPermission(@NotNull CommandCause source) {
-        return this.hasAnyPermission(manager.getCommandIssuer(source));
+    @Override
+    public String getCommandName() {
+        return name;
     }
 
     private CommandResult executeSponge(CommandIssuer sender, String commandLabel, String[] args) {
@@ -141,7 +94,60 @@ public class SpongeRootCommand implements RootCommand {
     }
 
     @Override
-    public String getCommandName() {
-        return name;
+    public CommandResult process(CommandCause cause, ArgumentReader.Mutable arguments) throws CommandException {
+        String[] args = argToStrlist(arguments);
+        return this.executeSponge(manager.getCommandIssuer(cause), this.name, args);
+    }
+
+    @Override
+    public List<CommandCompletion> complete(CommandCause cause, ArgumentReader.Mutable arguments) throws CommandException {
+        String[] args = argToStrlist(arguments);
+        return getTabCompletions(manager.getCommandIssuer(cause), this.name, args).stream().map(it -> new CommandCompletion() {
+            @Override
+            public String completion() {
+                return it;
+            }
+
+            @Override
+            public Optional<Component> tooltip() {
+                return Optional.empty();
+            }
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean canExecute(CommandCause cause) {
+        return this.hasAnyPermission(manager.getCommandIssuer(cause));
+    }
+
+    @Override
+    public Optional<Component> shortDescription(CommandCause cause) {
+        String description = getDescription();
+        return description != null ? Optional.of(text(description)) : Optional.empty();
+    }
+
+    @Override
+    public Optional<Component> extendedDescription(CommandCause cause) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Component usage(CommandCause cause) {
+        String usage = getUsage();
+        return usage != null ? text(usage) : text("");
+    }
+
+    private String[] argToStrlist(ArgumentReader.Mutable arguments) {
+        List<String> list = new LinkedList<>();
+
+        while (arguments.canRead()) {
+            try {
+                list.add(arguments.parseString());
+            } catch (Exception ignored) {
+                break;
+            }
+        }
+
+        return list.toArray(new String[0]);
     }
 }

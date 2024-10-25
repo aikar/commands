@@ -27,6 +27,8 @@ import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.Command;
 import org.spongepowered.api.command.CommandCause;
 import org.spongepowered.plugin.PluginContainer;
 
@@ -118,7 +120,8 @@ public class SpongeCommandManager extends CommandManager<
             String commandName = entry.getKey().toLowerCase(Locale.ENGLISH);
             SpongeRootCommand spongeCommand = (SpongeRootCommand) entry.getValue();
             if (!spongeCommand.isRegistered) {
-                spongeCommand.register();
+                Sponge.server().commandManager().registrar(Command.Raw.class).get()
+                        .register(plugin, spongeCommand, commandName);
             }
             spongeCommand.isRegistered = true;
             registeredCommands.put(commandName, spongeCommand);

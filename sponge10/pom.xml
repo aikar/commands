@@ -34,7 +34,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>acf-sponge9</artifactId>
+    <artifactId>acf-sponge10</artifactId>
     <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 
     <name>ACF (Sponge)</name>
