@@ -12,6 +12,7 @@
         <module name="acf-sponge (1)" />
         <module name="example-plugin" />
         <module name="acf-sponge" />
+        <module name="acf-sponge10" />
         <module name="acf" />
         <module name="acf-velocity" />
         <module name="acf-core" />
@@ -24,6 +25,8 @@
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
       <module name="acf-example" target="1.8" />
+      <module name="acf-sponge" target="1.8" />
+      <module name="acf-sponge10" target="1.8" />
       <module name="commands" target="1.8" />
       <module name="example-plugin" target="1.8" />
     </bytecodeTargetLevel>
@@ -38,7 +41,7 @@
       <module name="acf-paper" options="-parameters" />
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
-      <module name="acf-sponge (1)" options="-parameters" />
+      <module name="acf-sponge10" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
       <module name="commands" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
