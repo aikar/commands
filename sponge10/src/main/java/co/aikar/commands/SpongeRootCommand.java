@@ -63,7 +63,7 @@ public class SpongeRootCommand implements RootCommand {
     }
 
     public void register() {
-        Parameter.Value<String> argument = Parameter.string()
+        Parameter.Value<String> argument = Parameter.remainingJoinedStrings()
                 .key("main_arg")
                 .addParser((parameterKey, reader, context) -> {
                     String input = reader.input();
@@ -77,8 +77,7 @@ public class SpongeRootCommand implements RootCommand {
                     String string = String.join(" ", completions);
 
                     return Optional.of(string);
-                })
-                .build();
+                }).build();
 
         // Build the command
         rootCommand = Command.builder()
