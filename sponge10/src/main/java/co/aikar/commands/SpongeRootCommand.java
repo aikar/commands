@@ -34,6 +34,7 @@ import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.parameter.ArgumentReader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -138,16 +139,8 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
     }
 
     private String[] argToStrlist(ArgumentReader.Mutable arguments) {
-        List<String> list = new LinkedList<>();
-
-        while (arguments.canRead()) {
-            try {
-                list.add(arguments.parseString());
-            } catch (Exception ignored) {
-                break;
-            }
-        }
-
-        return list.toArray(new String[0]);
+        return Arrays.stream(arguments.input().split(" "))
+                .filter(string -> (!string.isEmpty()))
+                .toArray(String[]::new);
     }
 }
