@@ -26,7 +26,6 @@ package co.aikar.commands;
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.sponge.contexts.OnlinePlayer;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.jetbrains.annotations.Contract;
@@ -111,7 +110,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
         });
 
         registerContext(TextDecoration.class, c -> {
-            String first = c.popFirstArg().toUpperCase(Locale.ROOT);
+            String first = c.popFirstArg().toLowerCase(Locale.ROOT);
             TextDecoration decoration = TextDecoration.NAMES.value(first);
 
             if (decoration == null) {
