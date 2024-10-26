@@ -35,8 +35,10 @@ import org.spongepowered.api.command.parameter.ArgumentReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.Component.text;
@@ -113,6 +115,24 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
                 return Optional.empty();
             }
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly, boolean isAsync) {
+        Set<String> completions = new HashSet<>();
+        getChildren().forEach(child -> {
+            if (!commandsOnly) {
+                completions.addAll(child.tabComplete(sender, this, args, isAsync));
+            }
+            completions.addAll(child.getCommandsForCompletion(sender, args));
+        });
+
+        return completions.stream()
+                .filter(it -> !Arrays
+                        .stream(args)
+                        .collect(Collectors.toList())
+                        .contains(it))
+                .collect(Collectors.toList());
     }
 
     @Override
