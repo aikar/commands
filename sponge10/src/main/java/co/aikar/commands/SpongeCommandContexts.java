@@ -86,11 +86,13 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             TextColor color = NamedTextColor.NAMES.value(arg);
             if (color == null) {
                 color = arg.startsWith("#") ? TextColor.fromHexString(arg) : TextColor.fromHexString("#" + arg);
-                if (color != null) {
-                    NamedTextColor closest = NamedTextColor.nearestTo(color);
-                    if (color.compareTo(closest) == 0) {
-                        color = closest;
-                    }
+                if (color == null) {
+                    throw new InvalidCommandArgument("Unknown TextColor syntax");
+                }
+
+                NamedTextColor closest = NamedTextColor.nearestTo(color);
+                if (color.compareTo(closest) == 0) {
+                    color = closest;
                 }
             }
 
@@ -105,9 +107,6 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 }
             }
 
-            if (color == null) {
-                throw new InvalidCommandArgument("Unknown TextColor syntax");
-            }
             return color;
         });
 
