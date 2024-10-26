@@ -26,7 +26,9 @@ package co.aikar.commands;
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.sponge.contexts.OnlinePlayer;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.jetbrains.annotations.Contract;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
@@ -39,6 +41,7 @@ import org.spongepowered.api.world.server.ServerWorld;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -107,24 +110,28 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             }
             return color;
         });
-        /* Same for this, the whole text color and style is now handled by adventure
-        registerContext(TextStyle.Base.class, c -> {
-            String first = c.popFirstArg();
-            Stream<TextStyle.Base> styles = Sponge.getRegistry().getAllOf(TextStyle.Base.class).stream();
+
+        registerContext(TextDecoration.class, c -> {
+            String first = c.popFirstArg().toUpperCase(Locale.ROOT);
+            TextDecoration decoration = TextDecoration.NAMES.value(first);
+
+            if (decoration == null) {
+                throw new InvalidCommandArgument("Unknown TextDecoration syntax");
+            }
+
             String filter = c.getFlagValue("filter", (String) null);
             if (filter != null) {
-                filter = ACFUtil.simplifyString(filter);
-                String finalFilter = filter;
-                styles = styles.filter(style -> finalFilter.equals(ACFUtil.simplifyString(style.getName())));
+                Set<TextDecoration> textDecorations = Arrays.stream(
+                                ACFPatterns.COLON.split(filter))
+                        .map(TextDecoration.NAMES::value)
+                        .collect(Collectors.toSet());
+                if (!textDecorations.contains(decoration)) {
+                    throw new InvalidCommandArgument("Not a valid TextDecoration");
+                }
             }
-            Stream<TextStyle.Base> finalStyles = styles;
-            return Sponge.getRegistry().getType(TextStyle.Base.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
-                String valid = finalStyles
-                        .map(style -> "<c2>" + ACFUtil.simplifyString(style.getName()) + "</c2>")
-                        .collect(Collectors.joining("<c1>,</c1> "));
-                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
-            });
-        });*/
+
+            return decoration;
+        });
 
         registerIssuerAwareContext(CommandCause.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(SpongeCommandSource.class, SpongeCommandExecutionContext::getSource);
