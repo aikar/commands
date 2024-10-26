@@ -15,8 +15,6 @@
         <module name="acf-brigadier" />
         <module name="acf-example" />
         <module name="acf-bungee" />
-        <module name="acf-sponge (1)" />
-        <module name="acf-sponge9" />
         <module name="acf-sponge" />
         <module name="acf-sponge10" />
         <module name="acf-core" />
@@ -42,9 +40,7 @@
       <module name="acf-paper" options="-parameters" />
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
-      <module name="acf-sponge (1)" options="-parameters" />
       <module name="acf-sponge10" options="-parameters" />
-      <module name="acf-sponge9" options="-parameters" />
       <module name="acf-velocity" options="-parameters" />
       <module name="commands" options="-parameters" />
       <module name="example-plugin" options="-parameters" />
