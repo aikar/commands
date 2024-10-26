@@ -25,6 +25,8 @@ package co.aikar.commands;
 
 import co.aikar.commands.contexts.CommandResultSupplier;
 import co.aikar.commands.sponge.contexts.OnlinePlayer;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.jetbrains.annotations.Contract;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
@@ -35,12 +37,14 @@ import org.spongepowered.api.user.UserManager;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.server.ServerWorld;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutionContext> {
@@ -73,25 +77,36 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
                 throw new RuntimeException(e);
             }
         });
-        /* WIP no idea how old registry works so i am commenting this until someone understands what it did
+
         registerContext(TextColor.class, c -> {
-            String first = c.popFirstArg();
-            Stream<TextColor> colours = Sponge.getRegistry().getAllOf(TextColor.class).stream();
+            String arg = c.getFirstArg().toLowerCase();
+            TextColor color = NamedTextColor.NAMES.value(arg);
+            if (color == null) {
+                color = arg.startsWith("#") ? TextColor.fromHexString(arg) : TextColor.fromHexString("#" + arg);
+                if (color != null) {
+                    NamedTextColor closest = NamedTextColor.nearestTo(color);
+                    if (color.compareTo(closest) == 0) {
+                        color = closest;
+                    }
+                }
+            }
+
             String filter = c.getFlagValue("filter", (String) null);
             if (filter != null) {
-                filter = ACFUtil.simplifyString(filter);
-                String finalFilter = filter;
-                colours = colours.filter(colour -> finalFilter.equals(ACFUtil.simplifyString(colour.getName())));
+                Set<NamedTextColor> colors = Arrays.stream(
+                        ACFPatterns.COLON.split(filter))
+                        .map(NamedTextColor.NAMES::value)
+                        .collect(Collectors.toSet());
+                if (!(color instanceof NamedTextColor) || !colors.contains(color)) {
+                    throw new InvalidCommandArgument("Not a valid color");
+                }
             }
-            Stream<TextColor> finalColours = colours;
-            return Sponge.getRegistry().getType(TextColor.class, ACFUtil.simplifyString(first)).orElseThrow(() -> {
-                String valid = finalColours
-                        .map(colour -> "<c2>" + ACFUtil.simplifyString(colour.getName()) + "</c2>")
-                        .collect(Collectors.joining("<c1>,</c1> "));
-                return new InvalidCommandArgument(MessageKeys.PLEASE_SPECIFY_ONE_OF, "{valid}", valid);
-            });
+
+            if (color == null) {
+                throw new InvalidCommandArgument("Unknown TextColor syntax");
+            }
+            return color;
         });
-         */
         /* Same for this, the whole text color and style is now handled by adventure
         registerContext(TextStyle.Base.class, c -> {
             String first = c.popFirstArg();
