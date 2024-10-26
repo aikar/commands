@@ -37,7 +37,7 @@
     <artifactId>acf-sponge10</artifactId>
     <version><!--VERSION-->0.5.1-SNAPSHOT<!--VERSION--></version>
 
-    <name>ACF (Sponge)</name>
+    <name>ACF (Sponge 10)</name>
 
     <repositories>
         <repository>
