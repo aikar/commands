@@ -35,6 +35,7 @@ import org.spongepowered.api.command.parameter.ArgumentReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -128,10 +129,9 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
         });
 
         return completions.stream()
-                .filter(it -> !Arrays
+                .filter(it -> Arrays
                         .stream(args)
-                        .collect(Collectors.toList())
-                        .contains(it))
+                        .noneMatch(it::equals))
                 .collect(Collectors.toList());
     }
 
