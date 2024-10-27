@@ -26,6 +26,7 @@ package co.aikar.commands;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.util.Identifiable;
 
 import java.nio.charset.StandardCharsets;
@@ -47,6 +48,10 @@ public class SpongeCommandIssuer implements CommandIssuer {
         return this.source instanceof Player;
     }
 
+    public boolean isServerPlayer() {
+        return this.source instanceof ServerPlayer;
+    }
+
     @Override
     public SpongeCommandSource getIssuer() {
         return this.source;
@@ -64,6 +69,10 @@ public class SpongeCommandIssuer implements CommandIssuer {
 
     public Player getPlayer() {
         return isPlayer() ? (Player) source : null;
+    }
+
+    public ServerPlayer getServerPlayer() {
+        return isServerPlayer() ? (ServerPlayer) source : null;
     }
 
     @Override

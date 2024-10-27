@@ -34,6 +34,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCause;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.user.UserManager;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.server.ServerWorld;
@@ -133,8 +134,16 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
 
         registerIssuerAwareContext(CommandCause.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(SpongeCommandSource.class, SpongeCommandExecutionContext::getSource);
+        registerIssuerAwareContext(ServerPlayer.class, (c) -> {
+            ServerPlayer serverPlayer = c.getIssuer().getServerPlayer();
+            if (serverPlayer == null && !c.isOptional()) {
+                throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
+            }
+
+            return serverPlayer;
+        });
         registerIssuerAwareContext(Player.class, (c) -> {
-            Player player = c.getSource() instanceof Player ? (Player) c.getSource() : null;
+            Player player = c.getIssuer().getPlayer();
             if (player == null && !c.isOptional()) {
                 throw new InvalidCommandArgument(MessageKeys.NOT_ALLOWED_ON_CONSOLE, false);
             }
