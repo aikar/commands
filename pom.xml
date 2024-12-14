@@ -206,6 +206,7 @@
         <module>sponge</module>
         <module>sponge10</module>
         <module>jda</module>
+        <module>jda5</module>
         <module>velocity</module>
     </modules>
 </project>

@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="acf-jda" />
+        <module name="acf-jda5" />
         <module name="acf-paper" />
         <module name="example-plugin" />
         <module name="acf" />
@@ -24,8 +25,6 @@
     <bytecodeTargetLevel>
       <module name="acf" target="1.8" />
       <module name="acf-example" target="1.8" />
-      <module name="acf-sponge" target="1.8" />
-      <module name="acf-sponge10" target="1.8" />
       <module name="commands" target="1.8" />
       <module name="example-plugin" target="1.8" />
     </bytecodeTargetLevel>
@@ -37,6 +36,7 @@
       <module name="acf-bungee" options="-parameters" />
       <module name="acf-core" options="-parameters" />
       <module name="acf-jda" options="-parameters" />
+      <module name="acf-jda5" options="-parameters" />
       <module name="acf-paper" options="-parameters" />
       <module name="acf-parent" options="-parameters" />
       <module name="acf-sponge" options="-parameters" />
