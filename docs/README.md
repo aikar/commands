@@ -52,7 +52,7 @@ ARTIFACTID varies by platform target:
   still runs on Spigot)
 * [Sponge](https://www.spongepowered.org/): ***acf-sponge***
 * [BungeeCord](https://www.spigotmc.org/wiki/bungeecord/): ***acf-bungee***
-* [JDA](https://github.com/DV8FromTheWorld/JDA): ***acf-jda*** - IN PROGRESS - NOT READY
+* [JDA](https://github.com/DV8FromTheWorld/JDA): ***acf-jda5*** - INCOMPLETE - MINIMALLY IMPLEMENTED
 
 Setup Guides (Repo and Requirements): [Maven](https://github.com/aikar/commands/wiki/Maven-Setup)
 , [Gradle](https://github.com/aikar/commands/wiki/Gradle-Setup)
@@ -80,8 +80,6 @@ If this library has helped you, please consider donating as a way of saying than
 ## Contributing
 
 See Issues section.
-
-Join [#aikar on Spigot IRC - irc.spi.gt](https://aikarchat.emc.gs) to discuss.
 
 Or [Code With Aikar](https://aikardiscord.emc.gs) Discord.
 
