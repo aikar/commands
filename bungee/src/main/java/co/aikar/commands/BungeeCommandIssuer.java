@@ -35,7 +35,7 @@ public class BungeeCommandIssuer implements CommandIssuer {
     private final BungeeCommandManager manager;
     private final CommandSender sender;
 
-    BungeeCommandIssuer(BungeeCommandManager manager, CommandSender sender) {
+    protected BungeeCommandIssuer(BungeeCommandManager manager, CommandSender sender) {
         this.manager = manager;
         this.sender = sender;
     }
