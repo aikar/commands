@@ -27,7 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BukkitConditionContext extends ConditionContext<BukkitCommandIssuer> {
-    BukkitConditionContext(BukkitCommandIssuer issuer, String config) {
+    protected BukkitConditionContext(BukkitCommandIssuer issuer, String config) {
         super(issuer, config);
     }
 

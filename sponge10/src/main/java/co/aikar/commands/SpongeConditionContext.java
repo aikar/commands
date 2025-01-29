@@ -3,7 +3,7 @@ package co.aikar.commands;
 import org.spongepowered.api.entity.living.player.Player;
 
 public class SpongeConditionContext extends ConditionContext <SpongeCommandIssuer> {
-    SpongeConditionContext(SpongeCommandIssuer issuer, String config) {
+    protected SpongeConditionContext(SpongeCommandIssuer issuer, String config) {
         super(issuer, config);
     }
 

@@ -27,7 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BukkitCommandCompletionContext extends CommandCompletionContext<BukkitCommandIssuer> {
-    BukkitCommandCompletionContext(RegisteredCommand command, BukkitCommandIssuer issuer, String input, String config, String[] args) {
+    protected BukkitCommandCompletionContext(RegisteredCommand command, BukkitCommandIssuer issuer, String input, String config, String[] args) {
         super(command, issuer, input, config, args);
     }
 

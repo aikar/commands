@@ -28,7 +28,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeeCommandCompletionContext extends CommandCompletionContext<BungeeCommandIssuer> {
 
-    BungeeCommandCompletionContext(RegisteredCommand command, BungeeCommandIssuer issuer, String input, String config, String[] args) {
+    protected BungeeCommandCompletionContext(RegisteredCommand command, BungeeCommandIssuer issuer, String input, String config, String[] args) {
         super(command, issuer, input, config, args);
     }
 

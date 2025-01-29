@@ -28,7 +28,7 @@ import org.spongepowered.api.entity.living.player.Player;
 @SuppressWarnings("WeakerAccess")
 public class SpongeCommandCompletionContext extends CommandCompletionContext<SpongeCommandIssuer> {
 
-    SpongeCommandCompletionContext(final RegisteredCommand command, final SpongeCommandIssuer issuer, final String input, final String config, final String[] args) {
+    protected SpongeCommandCompletionContext(final RegisteredCommand command, final SpongeCommandIssuer issuer, final String input, final String config, final String[] args) {
         super(command, issuer, input, config, args);
     }
 

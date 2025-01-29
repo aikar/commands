@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BukkitCommandExecutionContext extends CommandExecutionContext<BukkitCommandExecutionContext, BukkitCommandIssuer> {
-    BukkitCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, BukkitCommandIssuer sender, List<String> args,
+    protected BukkitCommandExecutionContext(RegisteredCommand cmd, CommandParameter param, BukkitCommandIssuer sender, List<String> args,
                                   int index, Map<String, Object> passedArgs) {
         super(cmd, param, sender, args, index, passedArgs);
     }

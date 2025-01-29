@@ -4,7 +4,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
 public class VelocityConditionContext extends ConditionContext <VelocityCommandIssuer> {
-    VelocityConditionContext(VelocityCommandIssuer issuer, String config) {
+    protected VelocityConditionContext(VelocityCommandIssuer issuer, String config) {
         super(issuer, config);
     }
 

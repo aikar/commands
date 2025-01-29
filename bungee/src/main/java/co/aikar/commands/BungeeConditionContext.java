@@ -4,7 +4,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BungeeConditionContext extends ConditionContext <BungeeCommandIssuer> {
-    BungeeConditionContext(BungeeCommandIssuer issuer, String config) {
+    protected BungeeConditionContext(BungeeCommandIssuer issuer, String config) {
         super(issuer, config);
     }
 

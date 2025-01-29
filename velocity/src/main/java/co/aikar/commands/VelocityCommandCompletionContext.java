@@ -28,7 +28,7 @@ import com.velocitypowered.api.proxy.Player;
 
 public class VelocityCommandCompletionContext extends CommandCompletionContext<VelocityCommandIssuer> {
 
-    VelocityCommandCompletionContext(RegisteredCommand command, VelocityCommandIssuer issuer, String input, String config, String[] args) {
+    protected VelocityCommandCompletionContext(RegisteredCommand command, VelocityCommandIssuer issuer, String input, String config, String[] args) {
         super(command, issuer, input, config, args);
     }
 
