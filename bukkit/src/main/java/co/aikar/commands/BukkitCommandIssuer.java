@@ -35,7 +35,7 @@ public class BukkitCommandIssuer implements CommandIssuer {
     private final BukkitCommandManager manager;
     private final CommandSender sender;
 
-    BukkitCommandIssuer(BukkitCommandManager manager, CommandSender sender) {
+    protected BukkitCommandIssuer(BukkitCommandManager manager, CommandSender sender) {
         this.manager = manager;
         this.sender = sender;
     }

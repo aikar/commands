@@ -34,7 +34,7 @@ public class VelocityCommandIssuer implements CommandIssuer {
     private final VelocityCommandManager manager;
     private final CommandSource source;
 
-    VelocityCommandIssuer(VelocityCommandManager manager, CommandSource source) {
+    protected VelocityCommandIssuer(VelocityCommandManager manager, CommandSource source) {
         this.manager = manager;
         this.source = source;
     }

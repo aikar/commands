@@ -38,7 +38,7 @@ public class SpongeCommandIssuer implements CommandIssuer {
     private final SpongeCommandManager manager;
     private final CommandSource source;
 
-    SpongeCommandIssuer(SpongeCommandManager manager, final CommandSource source) {
+    protected SpongeCommandIssuer(SpongeCommandManager manager, final CommandSource source) {
         this.manager = manager;
         this.source = source;
     }
