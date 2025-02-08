@@ -343,7 +343,6 @@ public abstract class CommandManager<
         //handle pipe as an OR operation
         if (permission.contains("|")) {
             for (String perm : ACFPatterns.PIPE.split(permission)) {
-                perm = perm.trim();
                 if (!perm.isEmpty() && issuer.hasPermission(perm)) {
                     return true;
                 }
