@@ -414,6 +414,11 @@ public class BukkitCommandManager extends CommandManager<
         }
     }
 
+    @Override
+    public boolean usePerIssuerLocale(boolean setting) {
+        return usePerIssuerLocale(setting, setting);
+    }
+
     public boolean usePerIssuerLocale(boolean usePerIssuerLocale, boolean autoDetectFromClient) {
         boolean old = this.usePerIssuerLocale;
         this.usePerIssuerLocale = usePerIssuerLocale;
