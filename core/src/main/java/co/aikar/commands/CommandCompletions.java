@@ -196,8 +196,6 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         String[] completions = ACFPatterns.SPACE.split(cmd.complete);
         final int argIndex = args.length - 1;
 
-        String input = args[argIndex];
-
         String completion = argIndex < completions.length ? completions[argIndex] : null;
         if (completion == null || completion.isEmpty() || "*".equals(completion)) {
             completion = findDefaultCompletion(cmd, args);
@@ -213,7 +211,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
         }
 
         if (completion == null) {
-            return Collections.singletonList(input);
+            return Collections.emptyList();
         }
 
         return getCompletionValues(cmd, sender, completion, args, isAsync);
@@ -301,8 +299,8 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                 } catch (Exception e) {
                     command.handleException(sender, Arrays.asList(args), e);
                 }
-                // Something went wrong in lookup, fall back to input
-                return Collections.singletonList(input);
+                // Something went wrong in lookup
+                return Collections.emptyList();
             } else {
                 // Plaintext value
                 allCompletions.add(value);
