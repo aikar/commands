@@ -330,28 +330,28 @@ public abstract class CommandManager<
             return true;
         }
 
-        //handle commas as an AND operation
-        if (permission.contains(",")) {
-            for (String perm : ACFPatterns.COMMA.split(permission)) {
-                if (!perm.isEmpty() && !issuer.hasPermission(perm)) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        // Split on Pipes for OR checking
+        for (String orPermission : ACFPatterns.PIPE.split(permission)) {
+            if (!orPermission.isEmpty()) {
+                boolean result = false;
 
-        //handle pipe as an OR operation
-        if (permission.contains("|")) {
-            for (String perm : ACFPatterns.PIPE.split(permission)) {
-                if (!perm.isEmpty() && issuer.hasPermission(perm)) {
+                // Split on Commas for AND checking
+                for (String perm : ACFPatterns.COMMA.split(orPermission)) {
+                    if (!perm.isEmpty()) {
+                        result = issuer.hasPermission(perm);
+
+                        // Break out of AND checks since a failure was found
+                        if (!result) {
+                            break;
+                        }
+                    }
+                }
+                if (result) {
                     return true;
                 }
             }
-            return false;
         }
-
-        //if none are used just test the permission itself
-        return issuer.hasPermission(permission);
+        return false;
     }
 
     public synchronized RootCommand getRootCommand(@NotNull String cmd) {
