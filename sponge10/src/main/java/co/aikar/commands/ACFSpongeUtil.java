@@ -56,7 +56,7 @@ public class ACFSpongeUtil {
         while (iter.hasNext()) {
             Player player = iter.next();
             if (requester instanceof Player && !((Player) requester).canSee(player)) {
-                if (requester.hasPermission("acf.seevanish")) {
+                if (requester.commandCause().hasPermission("acf.seevanish")) {
                     if (!search.endsWith(":confirm")) {
                         confirmList.add(player);
                         iter.remove();
