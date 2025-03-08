@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -325,5 +326,10 @@ public class ACFBukkitUtil {
 
     static boolean isValidItem(ItemStack item) {
         return item != null && item.getType() != Material.AIR && item.getAmount() > 0;
+    }
+
+    public static Locale stringToLocale(String locale) {
+        String[] split = ACFPatterns.UNDERSCORE.split(locale);
+        return split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
     }
 }

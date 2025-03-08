@@ -128,12 +128,20 @@ public class BukkitCommandManager extends CommandManager<
         Bukkit.getPluginManager().registerEvents(new ACFBukkitListener(this, plugin), plugin);
 
         getLocales(); // auto load locales
-        scheduler.createLocaleTask(plugin, () -> {
-            if (this.cantReadLocale || !this.autoDetectFromClient) {
-                return;
-            }
-            Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
-        }, 30, 30);
+
+        try {
+            // Use new event if available for newer minecraft versions
+            Class.forName("org.bukkit.event.player.PlayerLocaleChangeEvent");
+            Bukkit.getPluginManager().registerEvents(new ACFBukkitLocalesListener(this), plugin);
+        } catch (ClassNotFoundException ignore) {
+            // Fallback to locale detection with reflection for older minecraft versions
+            scheduler.createLocaleTask(plugin, () -> {
+                if (this.cantReadLocale || !this.autoDetectFromClient) {
+                    return;
+                }
+                Bukkit.getOnlinePlayers().forEach(this::readPlayerLocale);
+            }, 30, 30);
+        }
 
         this.validNamePredicate = ACFBukkitUtil::isValidName;
 
@@ -335,8 +343,7 @@ public class BukkitCommandManager extends CommandManager<
                 }
                 if (localeString instanceof String) {
                     if (!localeString.equals(issuersLocaleString.get(player.getUniqueId()))) {
-                        String[] split = ACFPatterns.UNDERSCORE.split((String) localeString);
-                        locale = split.length > 1 ? new Locale(split[0], split[1]) : new Locale(split[0]);
+                        locale = ACFBukkitUtil.stringToLocale((String) localeString);
                     }
                 }
             }
