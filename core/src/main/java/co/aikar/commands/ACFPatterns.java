@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
-final class ACFPatterns {
+public final class ACFPatterns {
     public static final Pattern COMMA = Pattern.compile(",");
     public static final Pattern PERCENTAGE = Pattern.compile("%", Pattern.LITERAL);
     public static final Pattern NEWLINE = Pattern.compile("\n");
