@@ -55,7 +55,6 @@ class ACFBukkitLocalesListener implements Listener {
         if (locale == null) {
             return;
         }
-        manager.issuersLocaleString.put(player.getUniqueId(), locale.toString());
         manager.setPlayerLocale(player, locale);
     }
 }

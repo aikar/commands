@@ -315,6 +315,7 @@ public class BukkitCommandManager extends CommandManager<
     }
 
     public Locale setPlayerLocale(Player player, Locale locale) {
+        issuersLocaleString.put(player.getUniqueId(), locale.toString());
         return this.setIssuerLocale(player, locale);
     }
 
