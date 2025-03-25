@@ -28,6 +28,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 class ACFBukkitLocalesListener implements Listener {
@@ -48,8 +50,20 @@ class ACFBukkitLocalesListener implements Listener {
         try {
             locale = event.locale();
         } catch (NoSuchMethodError ignored) {
-            if (!event.getLocale().equals(manager.issuersLocaleString.get(player.getUniqueId()))) {
-                locale = ACFBukkitUtil.stringToLocale(event.getLocale());
+            try {
+                if (!event.getLocale().equals(manager.issuersLocaleString.get(player.getUniqueId()))) {
+                    locale = ACFBukkitUtil.stringToLocale(event.getLocale());
+                }
+            } catch (NoSuchMethodError ignored2) {
+                try {
+                    Method getNewLocale = event.getClass().getMethod("getNewLocale");
+                    getNewLocale.setAccessible(true);
+                    String value = (String) getNewLocale.invoke(event);
+                    if (!value.equals(manager.issuersLocaleString.get(player.getUniqueId()))) {
+                        locale = ACFBukkitUtil.stringToLocale(value);
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored3) {
+                }
             }
         }
         if (locale == null) {
