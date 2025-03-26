@@ -1,96 +1,54 @@
 package co.aikar.commands;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identified;
-import net.kyori.adventure.identity.Identity;
-import net.kyori.adventure.text.Component;
-import org.spongepowered.api.block.BlockSnapshot;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.command.CommandCause;
 import org.spongepowered.api.command.parameter.CommandContext;
-import org.spongepowered.api.event.Cause;
-import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.util.locale.LocaleSource;
 import org.spongepowered.api.util.locale.Locales;
-import org.spongepowered.api.world.server.ServerLocation;
-import org.spongepowered.math.vector.Vector3d;
 
 import java.util.Locale;
-import java.util.Optional;
 
-public class SpongeCommandSource implements LocaleSource, CommandCause {
-    private CommandCause commandCause;
-    private LocaleSource localeSource;
+public class SpongeCommandSource {
+    private final @NotNull CommandCause commandCause;
+    private final @NotNull Locale locale;
 
-    public SpongeCommandSource(CommandContext commandContext) {
-        commandCause = commandContext.cause();
-        Subject subject = commandContext.subject();
-        if (subject instanceof LocaleSource) {
-            localeSource = (LocaleSource) subject;
+    public SpongeCommandSource(@NotNull CommandCause cause) {
+        this.commandCause = cause;
+        if (cause instanceof LocaleSource) {
+            locale = ((LocaleSource) cause).locale();
+        } else if (cause.subject() instanceof LocaleSource) {
+            locale = ((LocaleSource) cause.subject()).locale();
         } else {
-            localeSource = null;
+            locale = Locales.DEFAULT;
         }
     }
 
+    @Deprecated
+    public SpongeCommandSource(CommandContext commandContext) {
+        this(commandContext.cause());
+    }
+
+    @Deprecated
     public <T> SpongeCommandSource(T obj) {
         if (obj instanceof CommandCause) {
             commandCause = (CommandCause) obj;
+        } else {
+            //having it set to null will lead to unexpected behaviour/NPEs
+            throw new IllegalArgumentException("When creating SpongeCommandSource the object must extend CommandCause");
         }
 
         if (obj instanceof LocaleSource) {
-            localeSource = (LocaleSource) obj;
+            locale = ((LocaleSource) obj).locale();
+        } else {
+            locale = Locales.DEFAULT;
         }
     }
 
-    @Override
-    public Locale locale() {
-        if (localeSource == null) {
-            return Locales.DEFAULT;
-        }
-        return localeSource.locale();
+    public @NotNull Locale locale() {
+        return locale;
     }
 
-    @Override
-    public Cause cause() {
-        return commandCause.cause();
-    }
-
-    @Override
-    public Subject subject() {
-        return commandCause.subject();
-    }
-
-    @Override
-    public Audience audience() {
-        return commandCause.audience();
-    }
-
-    @Override
-    public Optional<ServerLocation> location() {
-        return commandCause.location();
-    }
-
-    @Override
-    public Optional<Vector3d> rotation() {
-        return commandCause.rotation();
-    }
-
-    @Override
-    public Optional<BlockSnapshot> targetBlock() {
-        return commandCause.targetBlock();
-    }
-
-    @Override
-    public void sendMessage(Component message) {
-        commandCause.sendMessage(message);
-    }
-
-    @Override
-    public void sendMessage(Identified source, Component message) {
-        commandCause.sendMessage(source, message);
-    }
-
-    @Override
-    public void sendMessage(Identity source, Component message) {
-        commandCause.sendMessage(source, message);
+    public @NotNull CommandCause commandCause() {
+        return commandCause;
     }
 }
