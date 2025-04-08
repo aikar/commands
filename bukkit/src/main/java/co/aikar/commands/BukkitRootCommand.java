@@ -42,7 +42,7 @@ public class BukkitRootCommand extends Command implements RootCommand, PluginIde
     private List<BaseCommand> children = new ArrayList<>();
     boolean isRegistered = false;
 
-    BukkitRootCommand(BukkitCommandManager manager, String name) {
+    protected BukkitRootCommand(BukkitCommandManager manager, String name) {
         super(name);
         this.manager = manager;
         this.name = name;
