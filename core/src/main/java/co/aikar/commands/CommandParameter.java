@@ -25,6 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Conditions;
+import co.aikar.commands.annotation.ConsumesRest;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Flags;
@@ -101,7 +102,9 @@ public class CommandParameter<CEC extends CommandExecutionContext<CEC, ? extends
         //noinspection unchecked
         this.commandIssuer = paramIndex == 0 && manager.isCommandIssuer(type);
         this.canConsumeInput = !this.commandIssuer && !(resolver instanceof IssuerOnlyContextResolver);
-        this.consumesRest = isLast && ((type == String.class && !annotations.hasAnnotation(param, Single.class)) || (type == String[].class));
+        this.consumesRest = isLast && (annotations.hasAnnotation(param, ConsumesRest.class)
+                || (type == String.class && !annotations.hasAnnotation(param, Single.class))
+                || (type == String[].class));
 
         this.values = annotations.getAnnotationValues(param, Values.class, Annotations.REPLACEMENTS | Annotations.NO_EMPTY);
 
