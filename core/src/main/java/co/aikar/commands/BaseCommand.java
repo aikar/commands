@@ -287,7 +287,7 @@ public abstract class BaseCommand {
 
                         declaredConstructor.setAccessible(true);
                         Parameter[] parameters = declaredConstructor.getParameters();
-                        if (parameters.length == 1) {
+                        if (parameters.length == 1 && parameters[0].getType().isAssignableFrom(this.getClass())) {
                             subScope = (BaseCommand) declaredConstructor.newInstance(this);
                         } else {
                             manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
