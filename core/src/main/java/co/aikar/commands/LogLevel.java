@@ -23,7 +23,7 @@
 
 package co.aikar.commands;
 
-enum LogLevel {
+public enum LogLevel {
     INFO,
     ERROR;
 
