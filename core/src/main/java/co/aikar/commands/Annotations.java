@@ -27,6 +27,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -52,6 +54,16 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
 
     String getAnnotationValue(AnnotatedElement object, Class<? extends Annotation> annoClass, int options) {
         Annotation annotation = getAnnotationRecursive(object, annoClass, new HashSet<>());
+        if (annotation == null) {
+            if (object instanceof Class) {
+                annotation = getAnnotationFromParentClasses((Class<?>) object, annoClass);
+            } else if (object instanceof Method) {
+                annotation = getAnnotationFromParentMethods((Method) object, annoClass);
+            } else if (object instanceof Parameter) {
+                annotation = getAnnotationFromParentParameters((Parameter) object, annoClass);
+            }
+        }
+
         String value = null;
 
         if (annotation != null) {
@@ -102,6 +114,60 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
         }
 
         return value;
+    }
+
+    private static Annotation getAnnotationFromParentClasses(Class<?> clazz, Class<? extends Annotation> annoClass) {
+        Class<?> parent = clazz.getSuperclass();
+        while (parent != null && !parent.equals(BaseCommand.class) && !parent.equals(Object.class)) {
+            Annotation annotation = getAnnotationRecursive(parent, annoClass, new HashSet<>());
+            if (annotation != null) {
+                return annotation;
+            }
+            parent = parent.getSuperclass();
+        }
+        return null;
+    }
+
+    private static Annotation getAnnotationFromParentMethods(Method method, Class<? extends Annotation> annoClass) {
+        Class<?> clazz = method.getDeclaringClass().getSuperclass();
+        while (clazz != null && !clazz.equals(BaseCommand.class) && !clazz.equals(Object.class)) {
+            try {
+                Method parentMethod = clazz.getDeclaredMethod(method.getName(), method.getParameterTypes());
+                Annotation parentAnnotation = getAnnotationRecursive(parentMethod, annoClass, new HashSet<>());
+                if (parentAnnotation != null) {
+                    return parentAnnotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // No parent method
+                return null;
+            }
+            clazz = clazz.getSuperclass();
+        }
+
+        return null;
+    }
+
+    private static Annotation getAnnotationFromParentParameters(Parameter parameter, Class<? extends Annotation> annoClass) {
+        Class<?> clazz = parameter.getDeclaringExecutable().getDeclaringClass().getSuperclass();
+        while (clazz != null && !clazz.equals(BaseCommand.class) && !clazz.equals(Object.class)) {
+            try {
+                Method parentMethod = clazz.getDeclaredMethod(parameter.getDeclaringExecutable().getName(), parameter.getDeclaringExecutable().getParameterTypes());
+                Annotation parentAnnotation = Arrays.stream(parentMethod.getParameters())
+                        .filter(parentParameter -> parentParameter.getName().equals(parameter.getName())
+                                && parentParameter.getType().equals(parameter.getType()))
+                        .findFirst()
+                        .map(parentParameter -> getAnnotationRecursive(parentParameter, annoClass, new HashSet<>()))
+                        .orElse(null);
+                if (parentAnnotation != null) {
+                    return parentAnnotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // No parent method
+                return null;
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
     }
 
     private static Annotation getAnnotationRecursive(AnnotatedElement object, Class<? extends Annotation> annoClass, Collection<Annotation> checked) {
