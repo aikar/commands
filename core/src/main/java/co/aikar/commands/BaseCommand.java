@@ -283,14 +283,15 @@ public abstract class BaseCommand {
                 try {
                     BaseCommand subScope = null;
                     Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+                    List<String> unusableConstructorsInfo = new ArrayList<>();
                     for (Constructor<?> declaredConstructor : declaredConstructors) {
-
                         declaredConstructor.setAccessible(true);
                         Parameter[] parameters = declaredConstructor.getParameters();
                         if (parameters.length == 1 && parameters[0].getType().isAssignableFrom(this.getClass())) {
                             subScope = (BaseCommand) declaredConstructor.newInstance(this);
                         } else {
-                            manager.log(LogLevel.INFO, "Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
+                            // Unusable constructor information is only relevant if a valid subScope is not found
+                            unusableConstructorsInfo.add("Found unusable constructor: " + declaredConstructor.getName() + "(" + Stream.of(parameters).map(p -> p.getType().getSimpleName() + " " + p.getName()).collect(Collectors.joining("<c2>,</c2> ")) + ")");
                         }
                     }
                     if (subScope != null) {
@@ -301,6 +302,9 @@ public abstract class BaseCommand {
                         this.registeredCommands.putAll(subScope.registeredCommands);
                     } else {
                         this.manager.log(LogLevel.ERROR, "Could not find a subcommand ctor for " + clazz.getName());
+                        for (String constructorInfo : unusableConstructorsInfo) {
+                            this.manager.log(LogLevel.INFO, constructorInfo);
+                        }
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     this.manager.log(LogLevel.ERROR, "Error registering subclass", e);
