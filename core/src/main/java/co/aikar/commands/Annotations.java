@@ -60,7 +60,7 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
             } else if (object instanceof Method) {
                 annotation = getAnnotationFromParentMethods((Method) object, annoClass);
             } else if (object instanceof Parameter) {
-                annotation = getAnnotationFromParameters((Parameter) object, annoClass);
+                annotation = getAnnotationFromParentParameters((Parameter) object, annoClass);
             }
         }
 
@@ -147,7 +147,7 @@ class Annotations<M extends CommandManager> extends AnnotationLookups {
         return null;
     }
 
-    private static Annotation getAnnotationFromParameters(Parameter parameter, Class<? extends Annotation> annoClass) {
+    private static Annotation getAnnotationFromParentParameters(Parameter parameter, Class<? extends Annotation> annoClass) {
         Class<?> clazz = parameter.getDeclaringExecutable().getDeclaringClass().getSuperclass();
         while (clazz != null && !clazz.equals(BaseCommand.class) && !clazz.equals(Object.class)) {
             try {
