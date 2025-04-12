@@ -28,13 +28,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.Locale;
 
 class ACFBukkitLocalesListener implements Listener {
 
     private final BukkitCommandManager manager;
+    private MethodHandle localeMethod1_8 = null;
+    private boolean checkedLocaleMethod1_8 = false;
 
     ACFBukkitLocalesListener(BukkitCommandManager manager) {
         this.manager = manager;
@@ -56,13 +59,20 @@ class ACFBukkitLocalesListener implements Listener {
                 }
             } catch (NoSuchMethodError ignored2) {
                 try {
-                    Method getNewLocale = event.getClass().getMethod("getNewLocale");
-                    getNewLocale.setAccessible(true);
-                    String value = (String) getNewLocale.invoke(event);
-                    if (!value.equals(manager.issuersLocaleString.get(player.getUniqueId()))) {
-                        locale = ACFBukkitUtil.stringToLocale(value);
+                    if (!checkedLocaleMethod1_8) {
+                        checkedLocaleMethod1_8 = true;
+                        MethodHandles.Lookup lookup = MethodHandles.lookup();
+                        MethodType type = MethodType.methodType(String.class);
+                        localeMethod1_8 = lookup.findVirtual(PlayerLocaleChangeEvent.class, "getNewLocale", type);
                     }
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored3) {
+                    if (localeMethod1_8 != null) {
+                        String value = (String) localeMethod1_8.invoke(event);
+                        if (!value.equals(manager.issuersLocaleString.get(player.getUniqueId()))) {
+                            locale = ACFBukkitUtil.stringToLocale(value);
+                        }
+                    }
+                } catch (Throwable t) {
+                    manager.log(LogLevel.ERROR, "Error registering MethodHandle for LocaleChangeEvent", t);
                 }
             }
         }
