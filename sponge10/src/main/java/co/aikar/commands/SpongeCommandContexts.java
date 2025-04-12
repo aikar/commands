@@ -132,7 +132,7 @@ public class SpongeCommandContexts extends CommandContexts<SpongeCommandExecutio
             return decoration;
         });
 
-        registerIssuerAwareContext(CommandCause.class, SpongeCommandExecutionContext::getSource);
+        registerIssuerAwareContext(CommandCause.class, (context) -> context.getSource().commandCause());
         registerIssuerAwareContext(SpongeCommandSource.class, SpongeCommandExecutionContext::getSource);
         registerIssuerAwareContext(ServerPlayer.class, (c) -> {
             ServerPlayer serverPlayer = c.getIssuer().getServerPlayer();

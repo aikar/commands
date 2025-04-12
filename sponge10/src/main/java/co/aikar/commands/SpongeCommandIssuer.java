@@ -64,7 +64,7 @@ public class SpongeCommandIssuer implements CommandIssuer {
         }
 
         //generate a unique id based of the name (like for the console command sender)
-        return UUID.nameUUIDFromBytes(source.identifier().getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(source.commandCause().identifier().getBytes(StandardCharsets.UTF_8));
     }
 
     public Player getPlayer() {
@@ -83,13 +83,13 @@ public class SpongeCommandIssuer implements CommandIssuer {
     @Override
     public void sendMessageInternal(String message) {
         try {
-            source.audience().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
+            source.commandCause().audience().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
         } catch (Exception ignored) {}
     }
 
     @Override
     public boolean hasPermission(final String permission) {
-        return this.source.hasPermission(permission);
+        return this.source.commandCause().hasPermission(permission);
     }
 
     @Override
