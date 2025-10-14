@@ -105,14 +105,6 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
     @Override
     public List<CommandCompletion> complete(CommandCause cause, ArgumentReader.Mutable arguments) throws CommandException {
         String[] args = argToStrlist(arguments);
-
-        System.out.println("Argument raw = \"" + arguments.input()+ "\"");
-        StringBuilder total = new StringBuilder();
-        for (String arg : args) {
-            total.append("\"").append(arg).append("\" ");
-        }
-        System.out.println("Argument array = " + total);
-
         return getTabCompletions(manager.getCommandIssuer(cause), this.name, args)
                 .stream()
                 .map(CommandCompletion::of)
