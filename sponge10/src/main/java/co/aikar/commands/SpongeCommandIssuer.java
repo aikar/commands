@@ -27,6 +27,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
+import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.util.Identifiable;
 
 import java.nio.charset.StandardCharsets;
@@ -45,11 +46,11 @@ public class SpongeCommandIssuer implements CommandIssuer {
 
     @Override
     public boolean isPlayer() {
-        return this.source instanceof Player;
+        return getSubject() instanceof Player;
     }
 
     public boolean isServerPlayer() {
-        return this.source instanceof ServerPlayer;
+        return getSubject() instanceof ServerPlayer;
     }
 
     @Override
@@ -57,22 +58,26 @@ public class SpongeCommandIssuer implements CommandIssuer {
         return this.source;
     }
 
+    public Subject getSubject() {
+        return source.commandCause().subject();
+    }
+
     @Override
     public @NotNull UUID getUniqueId() {
-        if (this.source instanceof Identifiable) {
-            return ((Identifiable) source).uniqueId();
+        if (getSubject() instanceof Identifiable) {
+            return ((Identifiable) getSubject()).uniqueId();
         }
 
         //generate a unique id based of the name (like for the console command sender)
-        return UUID.nameUUIDFromBytes(source.commandCause().identifier().getBytes(StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(getSubject().identifier().getBytes(StandardCharsets.UTF_8));
     }
 
     public Player getPlayer() {
-        return isPlayer() ? (Player) source : null;
+        return isPlayer() ? (Player) getSubject() : null;
     }
 
     public ServerPlayer getServerPlayer() {
-        return isServerPlayer() ? (ServerPlayer) source : null;
+        return isServerPlayer() ? (ServerPlayer) getSubject() : null;
     }
 
     @Override
@@ -89,7 +94,7 @@ public class SpongeCommandIssuer implements CommandIssuer {
 
     @Override
     public boolean hasPermission(final String permission) {
-        return this.source.commandCause().hasPermission(permission);
+        return getSubject().hasPermission(permission);
     }
 
     @Override

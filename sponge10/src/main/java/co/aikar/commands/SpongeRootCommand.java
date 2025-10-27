@@ -34,12 +34,8 @@ import org.spongepowered.api.command.exception.CommandException;
 import org.spongepowered.api.command.parameter.ArgumentReader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.Component.text;
@@ -105,33 +101,9 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
     @Override
     public List<CommandCompletion> complete(CommandCause cause, ArgumentReader.Mutable arguments) throws CommandException {
         String[] args = argToStrlist(arguments);
-        return getTabCompletions(manager.getCommandIssuer(cause), this.name, args).stream().map(it -> new CommandCompletion() {
-            @Override
-            public String completion() {
-                return it;
-            }
-
-            @Override
-            public Optional<Component> tooltip() {
-                return Optional.empty();
-            }
-        }).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<String> getTabCompletions(CommandIssuer sender, String alias, String[] args, boolean commandsOnly, boolean isAsync) {
-        Set<String> completions = new HashSet<>();
-        getChildren().forEach(child -> {
-            if (!commandsOnly) {
-                completions.addAll(child.tabComplete(sender, this, args, isAsync));
-            }
-            completions.addAll(child.getCommandsForCompletion(sender, args));
-        });
-
-        return completions.stream()
-                .filter(it -> Arrays
-                        .stream(args)
-                        .noneMatch(it::equals))
+        return getTabCompletions(manager.getCommandIssuer(cause), this.name, args)
+                .stream()
+                .map(CommandCompletion::of)
                 .collect(Collectors.toList());
     }
 
@@ -158,8 +130,7 @@ public class SpongeRootCommand implements Command.Raw, RootCommand {
     }
 
     private String[] argToStrlist(ArgumentReader.Mutable arguments) {
-        return Arrays.stream(arguments.input().split(" "))
-                .filter(string -> (!string.isEmpty()))
-                .toArray(String[]::new);
+        String input = arguments.input();
+        return input.split(" ", - 1);
     }
 }
