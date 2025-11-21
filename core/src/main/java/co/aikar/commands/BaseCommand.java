@@ -263,6 +263,7 @@ public abstract class BaseCommand {
             Collections.addAll(cmdList, cmdAliases);
             cmdList.remove(cmd);
             for (String cmdAlias : cmdList) {
+                registerSubclasses(cmdAlias);
                 register(cmdAlias, this);
             }
         }

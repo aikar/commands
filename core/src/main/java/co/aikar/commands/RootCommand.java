@@ -48,7 +48,9 @@ public interface RootCommand {
             subCommands.put(e.getKey(), e.getValue());
         });
 
-        children.add(command);
+        if (!children.contains(command)) {
+            children.add(command);
+        }
     }
 
     /**
