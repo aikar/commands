@@ -79,7 +79,11 @@ class CommandRouter {
     private boolean isProbableMatch(RegisteredCommand c, String[] args, boolean completion) {
         int required = c.requiredResolvers;
         int optional = c.optionalResolvers;
-        return args.length <= required + optional && (completion || args.length >= required);
+        if (completion) {
+            return args.length <= required + optional;
+        } else {
+            return args.length >= required;
+        }
     }
 
     RouteSearch routeCommand(RootCommand command, String commandLabel, String[] args, boolean completion) {
