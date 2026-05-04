@@ -44,7 +44,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     private static final String DEFAULT_ENUM_ID = "@__defaultenum__";
     private final CommandManager manager;
     // TODO: use a CompletionProvider that can return a delegated Id or provide values such as enum support
-    private Map<String, CommandCompletionHandler> completionMap = new HashMap<>();
+    private Map<String, CompletionEntry> completionMap = new HashMap<>();
     private Map<Class, String> defaultCompletions = new HashMap<>();
 
     public CommandCompletions(CommandManager manager) {
@@ -72,14 +72,27 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     }
 
     /**
-     * Registr a completion handler to provide command completions based on the user input.
+     * Register a completion handler to provide command completions based on the user input.
      *
      * @param id
      * @param handler
      * @return
      */
     public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler) {
-        return this.completionMap.put(prepareCompletionId(id), handler);
+        return registerCompletion(id, handler, CommandCompletionFilter.startsWith());
+    }
+
+    /**
+     * Register a completion handler to provide command completions based on the user input and with a custom filter.
+     *
+     * @param id
+     * @param handler
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerCompletion(String id, CommandCompletionHandler<C> handler, CommandCompletionFilter<C> filter) {
+        CompletionEntry previous = this.completionMap.put(prepareCompletionId(id), new CompletionEntry(handler, filter));
+        return previous != null ? previous.handler : null;
     }
 
     /**
@@ -93,7 +106,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
             throw new IllegalStateException("The supplied key " + id + " does not exist in any completions");
         }
 
-        return this.completionMap.remove(id);
+        return this.completionMap.remove(id).handler;
     }
 
     /**
@@ -112,7 +125,28 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler) {
-        return this.completionMap.put(prepareCompletionId(id), handler);
+       return registerAsyncCompletion(id, handler, CommandCompletionFilter.startsWith());
+    }
+
+    /**
+     * Registr a completion handler to provide command completions based on the user input with a custom filter.
+     * This handler is declared to be safe to be executed asynchronously.
+     * <p>
+     * Not all platforms support this, so if the platform does not support asynchronous execution,
+     * your handler will be executed on the main thread.
+     * <p>
+     * Use this anytime your handler does not need to access state that is not considered thread safe.
+     * <p>
+     * Use context.isAsync() to determine if you are async or not.
+     *
+     * @param id
+     * @param handler
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerAsyncCompletion(String id, AsyncCommandCompletionHandler<C> handler, CommandCompletionFilter<C> filter) {
+        CompletionEntry previous = this.completionMap.put(prepareCompletionId(id), new CompletionEntry(handler, filter));
+        return previous != null ? previous.handler : null;
     }
 
     /**
@@ -126,7 +160,20 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerStaticCompletion(String id, String list) {
-        return registerStaticCompletion(id, ACFPatterns.PIPE.split(list));
+        return registerStaticCompletion(id, ACFPatterns.PIPE.split(list), CommandCompletionFilter.startsWith());
+    }
+
+    /**
+     * Register a static list of command completions that will never change with a custom filter.
+     * Like @CommandCompletion, values are | (PIPE) separated.
+     *
+     * @param id
+     * @param list
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String list, CommandCompletionFilter<C> filter) {
+        return registerStaticCompletion(id, ACFPatterns.PIPE.split(list), filter);
     }
 
     /**
@@ -137,7 +184,19 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerStaticCompletion(String id, String[] completions) {
-        return registerStaticCompletion(id, Arrays.asList(completions));
+        return registerStaticCompletion(id, Arrays.asList(completions), CommandCompletionFilter.startsWith());
+    }
+
+    /**
+     * Register a static list of command completions that will never change with a custom filter.
+     *
+     * @param id
+     * @param completions
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, String[] completions,  CommandCompletionFilter<C> filter) {
+        return registerStaticCompletion(id, Arrays.asList(completions), filter);
     }
 
     /**
@@ -149,7 +208,20 @@ public class CommandCompletions<C extends CommandCompletionContext> {
      * @return
      */
     public CommandCompletionHandler registerStaticCompletion(String id, Supplier<Collection<String>> supplier) {
-        return registerStaticCompletion(id, supplier.get());
+        return registerStaticCompletion(id, supplier.get(), CommandCompletionFilter.startsWith());
+    }
+
+    /**
+     * Register a static list of command completions that will never change with a custom filer. The list is obtained
+     * from the supplier immediately as part of this method call.
+     *
+     * @param id
+     * @param supplier
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Supplier<Collection<String>> supplier, CommandCompletionFilter<C> filter) {
+        return registerStaticCompletion(id, supplier.get(), filter);
     }
 
     /**
@@ -164,6 +236,18 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     }
 
     /**
+     * Register a static list of command completions that will never change with a custom filter.
+     *
+     * @param id
+     * @param completions
+     * @param filter
+     * @return
+     */
+    public CommandCompletionHandler registerStaticCompletion(String id, Collection<String> completions,  CommandCompletionFilter<C> filter) {
+        return registerAsyncCompletion(id, x -> completions, filter);
+    }
+
+    /**
      * Registers a completion handler such as @players to default apply to all command parameters of the specified types
      * <p>
      * This enables automatic completion support for parameters without manually defining it for custom objects
@@ -174,7 +258,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     public void setDefaultCompletion(String id, Class... classes) {
         // get completion with specified id
         id = prepareCompletionId(id);
-        CommandCompletionHandler completion = completionMap.get(id);
+        CompletionEntry completion = completionMap.get(id);
 
         if (completion == null) {
             // Throw something because no completion with specified id
@@ -257,9 +341,9 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
         for (String value : ACFPatterns.PIPE.split(completion)) {
             String[] complete = ACFPatterns.COLONEQUALS.split(value, 2);
-            CommandCompletionHandler handler = this.completionMap.get(complete[0].toLowerCase(Locale.ENGLISH));
-            if (handler != null) {
-                if (isAsync && !(handler instanceof AsyncCommandCompletionHandler)) {
+            CompletionEntry completionEntry = this.completionMap.get(complete[0].toLowerCase(Locale.ENGLISH));
+            if (completionEntry != null) {
+                if (isAsync && !(completionEntry.handler instanceof AsyncCommandCompletionHandler)) {
                     ACFUtil.sneaky(new SyncCompletionRequired());
                     return null;
                 }
@@ -268,7 +352,7 @@ public class CommandCompletions<C extends CommandCompletionContext> {
 
                 try {
                     //noinspection unchecked
-                    Collection<String> completions = handler.getCompletions(context);
+                    Collection<String> completions = completionEntry.handler.getCompletions(context);
 
                     //Handle completions with more than one word:
                     if (!repeat && completions != null
@@ -287,7 +371,9 @@ public class CommandCompletions<C extends CommandCompletionContext> {
                     }
 
                     if (completions != null) {
-                        allCompletions.addAll(completions);
+                        completions.stream()
+                                .filter(str -> completionEntry.filter.test(context, str))
+                                .forEach(allCompletions::add);
                         continue;
                     }
                     //noinspection ConstantIfStatement,ConstantConditions
@@ -319,4 +405,13 @@ public class CommandCompletions<C extends CommandCompletionContext> {
     public static class SyncCompletionRequired extends RuntimeException {
     }
 
+    private static final class CompletionEntry {
+        private final CommandCompletionHandler handler;
+        private final CommandCompletionFilter filter;
+
+        private CompletionEntry(CommandCompletionHandler handler, CommandCompletionFilter filter) {
+            this.handler = handler;
+            this.filter = filter;
+        }
+    }
 }
