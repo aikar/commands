@@ -123,6 +123,10 @@ public class CommandCompletionContext<I extends CommandIssuer> {
         return input;
     }
 
+    public List<String> getArgs() {
+        return args;
+    }
+
     public String getConfig() {
         return config;
     }
