@@ -27,10 +27,10 @@ import co.aikar.commands.CommandRouter.CommandRouteResult;
 import co.aikar.commands.CommandRouter.RouteSearch;
 import com.google.common.collect.SetMultimap;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public interface RootCommand {
     void addChild(BaseCommand command);
@@ -128,7 +128,7 @@ public interface RootCommand {
             }
             completions.addAll(child.getCommandsForCompletion(sender, args));
         });
-        return new ArrayList<>(completions);
+        return completions.stream().distinct().collect(Collectors.toList());
     }
 
 
